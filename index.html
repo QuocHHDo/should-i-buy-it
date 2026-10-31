@@ -260,6 +260,8 @@ button { font: inherit; color: inherit; }
 .compare-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .compare-row input { flex: 1 1 200px; min-width: 0; font: 500 15px var(--font-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; }
 .compare .suggest { top: 46px; }
+.cmpsum { margin: 0; font-size: 15px; line-height: 1.45; }
+.cmpsum b { color: var(--ink); }
 .ctable-wrap { overflow-x: auto; }
 .ctable { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; }
 .ctable th, .ctable td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
@@ -269,6 +271,8 @@ button { font: inherit; color: inherit; }
 .ctable td.win { background: var(--good-soft); color: var(--good); font-weight: 600; }
 
 /* lookups, scan, notices */
+.cmpbig { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 48px; }
+.cmpbig small { font-weight: 400; font-size: 12.5px; opacity: .8; }
 /* Reading a label photo: the numbers to check */
 .photolink { all: unset; cursor: pointer; font-size: 14px; color: var(--muted); justify-self: center; text-align: center; }
 .photolink u { color: var(--accent); font-weight: 600; }
@@ -501,6 +505,7 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
   </div>
   <section class="apphome" id="appHome" hidden data-pages-only aria-label="Scan">
     <button class="scanbig" type="button" id="scanBig"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5.5A1.5 1.5 0 015.5 4H8M16 4h2.5A1.5 1.5 0 0120 5.5V8M20 16v2.5a1.5 1.5 0 01-1.5 1.5H16M8 20H5.5A1.5 1.5 0 014 18.5V16"/><path d="M8 8v8M11 8v8M14 8v8M17 8v8"/></svg><span><b>Scan a barcode</b><small>Point your camera at any food's barcode</small></span></button>
+    <button class="btn ghost cmpbig" type="button" id="cmpBig"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/></svg> Compare two products <small>scan one, then the other</small></button>
     <button class="photolink" type="button" id="labelBtn">No barcode, or it isn't found? <u>Read a photo of the label</u></button>
     <div class="scans" id="scanRecentBox" hidden>
       <h2 class="scans-h">Recent scans</h2>

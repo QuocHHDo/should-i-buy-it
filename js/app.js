@@ -352,8 +352,13 @@
     const sec = el("section", { class: "panel compare" }, el("h3", { text: "Compare" }));
     const input = el("input", { type: "search", id: "cmpq", placeholder: "Compare with another food…", "aria-label": "Food to compare with", autocomplete: "off" });
     const list = el("ul", { class: "suggest", role: "listbox", hidden: true });
-    const row = el("div", { class: "compare-row" }, input);
+    const row = el("div", { class: "compare-row" }, input,
+      PAGES ? el("button", { class: "btn small", type: "button", text: "Scan to compare", onclick: startCompareScan }) : null);
     sec.append(row, list);
+    // Recent scans, one tap each: the products you were just holding.
+    const recent = PAGES && !compareWith ? scans.map(x => byName(x.n)).filter(g => g && g.n !== f.n).slice(0, 4) : [];
+    if (recent.length) sec.append(el("div", { class: "chiprow", style: "margin:0", role: "group", "aria-label": "Compare with a recent scan" }, el("span", { class: "lbl", text: "Recent scans" }),
+      ...recent.map(g => el("button", { class: "chip", type: "button", text: g.n, onclick: () => { compareWith = g; renderResult(current); showCompare(); } }))));
     attachSuggest(input, list, g => { compareWith = g; renderResult(current); });
     if (compareWith && compareWith.n !== f.n) {
       let a = V.scale(f, mult), b = compareWith, note = "";
@@ -369,12 +374,13 @@
       const thead = el("thead", {}, el("tr", {}, el("th", { text: a.s === "100 calories" ? "Per 100 calories" : "Per serving" }),
         el("th", {}, f.n, el("span", { class: "sv", text: a.s === "100 calories" ? "100 calories" : servingText(a) }), pill(va)),
         el("th", {}, compareWith.n, el("span", { class: "sv", text: b.s }), pill(vb))));
-      const tbody = el("tbody");
+      const tbody = el("tbody"), better = [[], []];
       for (const [label, k, unit, dir] of CMP_ROWS) {
         const x = a[k], y = b[k];
         const unknown = V.isMissing(a, k) || V.isMissing(b, k) || V.isLowerBound(a, k) || V.isLowerBound(b, k);
         // Highlight only a meaningful difference: at least 10% apart and at least 5% of the Daily Value.
         const win = !unknown && dir && V.meaningfulDiff(k, x, y) ? ((dir === "more") === (x > y) ? 0 : 1) : -1;
+        if (win >= 0) better[win].push(`${dir === "more" ? "more" : "less"} ${label.toLowerCase()}`);
         const cell = (food, i) => el("td", { class: win === i ? "win" : null, text: amt(food, k, unit) });
         tbody.append(el("tr", {}, el("td", { text: label }), cell(a, 0), cell(b, 1)));
       }
@@ -385,6 +391,12 @@
         const win = Math.abs(x - y) >= Math.max(0.05, 0.1 * Math.max(x, y)) ? (x < y ? 0 : 1) : -1;
         tbody.append(el("tr", {}, el("td", { text: "Typical price" }), el("td", { class: win === 0 ? "win" : null, text: PR.money(x) }), el("td", { class: win === 1 ? "win" : null, text: PR.money(y) })));
       }
+      // The answer in one line, for reading in the aisle: who has the meaningful advantages, and the verdicts.
+      const list = xs => xs.length < 2 ? xs.join("") : xs.slice(0, -1).join(", ") + " and " + xs[xs.length - 1];
+      const has = (name, xs) => xs.length ? `${name} has ${list(xs)}` : "";
+      const lines = [has(f.n, better[0]), has(compareWith.n, better[1])].filter(Boolean);
+      const verdicts = va.word === vb.word ? `Both: ${va.word}.` : `${f.n}: ${va.word}. ${compareWith.n}: ${vb.word}.`;
+      sec.append(el("p", { class: "cmpsum", role: "status" }, el("b", { text: lines.length ? lines.join("; ") + "." : "No meaningful difference in the nutrients that count." }), " " + verdicts));
       sec.append(el("div", { class: "ctable-wrap" }, el("table", { class: "ctable" }, thead, tbody)),
         el("p", { class: "legend", text: a.s === "100 calories" ? "Green marks a meaningful difference (at least 10% apart and 5% of the daily value). Per 100 calories shows nutrient density: what you get for the same calories." : "Green marks a meaningful difference (at least 10% apart and 5% of the daily value). Servings differ, so compare against how much you'd actually eat, or switch to per 100 calories." }),
         el("div", {}, el("button", { class: "btn small ghost", type: "button", text: "Clear comparison", onclick: () => { compareWith = null; renderResult(current); } })));
@@ -458,13 +470,14 @@
             goalsSet ? null : el("button", { class: "linkbtn", type: "button", text: "Set yours", onclick: () => showView("goals") })), el("div", { class: "verdict", text: a.word }), a.spicy ? el("span", { class: "vp spicy flag", text: "Spicy" }) : null, el("p", { class: "why", text: a.why }),
             mult !== 1 ? el("p", { class: "per", text: "The verdict is for one standard serving; the label and bars show your amount." }) : null),
           el("p", { class: "allergy", text: "Doesn't check allergens: read the label if you have a food allergy." }),
+          !isPlate && compareWith && compareWith.n !== f.n ? renderCompare(f) : null,
           isPlate ? renderPlatePrice() : renderPrice(f),
           renderWhy(f),
           isPlate ? null : renderSwaps(f),
           el("section", { class: "panel" }, el("h3", { text: "Why" }), reasons),
           isPlate ? null : renderIngredients(f),
           isPlate ? null : renderAdditives(f),
-          isPlate ? null : renderCompare(f)
+          isPlate || (compareWith && compareWith.n !== f.n) ? null : renderCompare(f)
         ))
     ].filter(Boolean));
   }
@@ -1030,7 +1043,7 @@
       if (data.status === 1 && data.product) {
         const f = S.fromOff(clean, data.product);
         // "No nutrition data" means nothing was reported, not that everything is zero (diet soda, water).
-        if (!["cal", "fat", "carb", "pro"].every(k => V.isMissing(f, k))) { saveLookup(f); addScan(f); pick(f); return; }
+        if (!["cal", "fat", "carb", "pro"].every(k => V.isMissing(f, k))) { scanned(f); return; }
         offEmpty = f.n;
       }
     } catch (e) { offErr = e; }
@@ -1039,7 +1052,7 @@
     let usdaErr = null;
     try {
       const f = await usdaByUpc(clean);
-      if (f) { saveLookup(f); addScan(f); pick(f); return; }
+      if (f) { scanned(f); return; }
     } catch (e) { usdaErr = e; }
 
     const offline = navigator.onLine === false;
@@ -1050,7 +1063,44 @@
       : [el("p", { text: `Couldn't finish the lookup: ${offErr ? `Open Food Facts ${why(offErr)}` : "Open Food Facts doesn't have it"}, and USDA ${usdaErr ? why(usdaErr) : "doesn't have it"}.` }),
           usdaErr && usdaErr.name === "RateLimit" ? el("p", { class: "muted", text: "Add your own free USDA key under Your goals to search more." }) : null];
     const photo = PAGES && LS ? el("button", { class: "btn small", type: "button", text: "Read a photo of the label", onclick: () => askLabelPhoto({ code: clean, name: offEmpty || "" }) }) : null;
-    box.replaceChildren(...lines.filter(Boolean), el("div", { class: "chiprow", style: "margin:0" }, photo, (offErr || usdaErr) && !offline ? retry : null, byName));
+    // Comparing: the first product is still there to go back to.
+    const back = compareScan === "second" && current ? el("button", { class: "btn small ghost", type: "button", text: `Back to ${current.n}`, onclick: () => { compareScan = null; pick(current); } }) : null;
+    box.replaceChildren(...lines.filter(Boolean), el("div", { class: "chiprow", style: "margin:0" }, photo, (offErr || usdaErr) && !offline ? retry : null, back, byName));
+  }
+
+  // ---------- comparing two scanned products ----------
+  // In the store with two products side by side: scan one, then the other, and the second becomes the comparison for
+  // the first. "first": the next scan starts a comparison (then the scanner reopens for the second); "second": the
+  // next scan (or typed barcode, or label photo) is compared with the product on screen.
+  let compareScan = null;
+  function scanned(f) {
+    saveLookup(f); addScan(f);
+    const mode = compareScan; compareScan = null;
+    if (mode === "second" && current && current.c !== "plate") {
+      if (current.n === f.n) { toast("That's the same product. Scan the other one."); compareScan = "second"; renderResult(current); openScan(); return; }
+      compareWith = f; renderResult(current); showCompare(); return;
+    }
+    pick(f);
+    if (mode === "first") startCompareScan();
+  }
+  // Opens the scanner for the product to compare with the one on screen.
+  function startCompareScan() {
+    if (!current) return;
+    compareScan = "second";
+    showView("check", { history: false });
+    openScan();
+    $("scanMsg").textContent = `Now scan the second product to compare with ${current.n}.`;
+    $("scan").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function startCompareFromHome() {
+    compareScan = "first";
+    // The installed app may already have the camera running: keep it, just change what the next scan does.
+    if (scanner && !$("scan").hidden) { showView("check", { history: false }); $("scanMsg").textContent = "Scan the first of the two products."; $("scan").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+    startScanFromHome(); $("scanMsg").textContent = "Scan the first of the two products.";
+  }
+  function showCompare() {
+    const c = document.querySelector("#out .compare");
+    if (c) { c.scrollIntoView({ behavior: "smooth", block: "start" }); const h = c.querySelector("h3"); if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }); } }
   }
 
   // ---------- reading a label photo ----------
@@ -1073,7 +1123,7 @@
           onSubmit: (values, serving, name) => {
             const f = LO.toFood(S, name || (ctx.code ? `Barcode ${ctx.code}` : "Product from a label photo"), serving, values);
             if (ctx.code) f.code = ctx.code;
-            saveLookup(f); addScan(f); pick(f);
+            scanned(f);
           } }));
       const first = box.querySelector(".check input") || box.querySelector("input[name=cal]"); if (first) first.focus();
     } catch (e) {
@@ -1161,7 +1211,7 @@
       })(), START_MS);
       if (attempt !== scanTry) return; // closed or restarted meanwhile
       $("scanBtn").removeAttribute("aria-busy");
-      $("scanMsg").textContent = "Point your camera at the barcode and move closer until it fills the box.";
+      $("scanMsg").textContent = compareScan === "second" && current ? `Now scan the second product to compare with ${current.n}.` : compareScan === "first" ? "Scan the first of the two products." : "Point your camera at the barcode and move closer until it fills the box.";
     } catch (e) {
       clearTimeout(waiting);
       if (attempt === scanTry) scanFailed(e);
@@ -1508,7 +1558,7 @@
       offerLookup(text, r.near, r.typo);
     });
     $("scanBtn").addEventListener("click", () => ($("scan").hidden ? openScan() : closeScan()));
-    $("scanClose").addEventListener("click", closeScan);
+    $("scanClose").addEventListener("click", () => { compareScan = null; closeScan(); });
     $("codeForm").addEventListener("submit", async e => { e.preventDefault(); const c = $("code").value; await closeScan(); barcodeLookup(c); });
 
     document.querySelectorAll("#profile input").forEach(i => i.addEventListener("change", readProfile));
@@ -1533,6 +1583,7 @@
     wireBackup(); wireBookmarklet();
     if (PAGES) {
       $("scanBig").addEventListener("click", startScanFromHome);
+      $("cmpBig").addEventListener("click", startCompareFromHome);
       $("labelBtn").addEventListener("click", () => askLabelPhoto({}));
       $("labelFile").addEventListener("change", e => { const f = e.target.files && e.target.files[0]; e.target.value = ""; if (f && LS) readLabelPhoto(f); });
       $("installBtn").addEventListener("click", install);

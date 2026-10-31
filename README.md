@@ -11,7 +11,7 @@ Live at **https://quochhdo.github.io/should-i-buy-it/**. It installs to your pho
 - **Tab bar** for Check, Plate, List, Browse and Goals (at the bottom on phones), each with its own link (`#plate`, `#list`, `#browse`, `#goals`).
 - **Personal verdict** scored against your calorie, protein, saturated fat, sodium, added sugar and fiber goals, plus a skip list and a mild-food preference.
 - **Healthier swaps** for anything below "Get it," with the difference spelled out ("5.3 g less saturated fat").
-- **Compare two foods** side by side, per serving or per 100 calories.
+- **Compare two foods** side by side, per serving or per 100 calories, with a one-line answer on top ("Reduced fat 2% milk has less saturated fat. Both: In moderation."). In the store, **Compare two products** (on the phone home, or "Scan to compare" on any product) scans one barcode, then the other; recent scans are one tap away.
 - **Browse** by category, sorted A–Z, least healthy first or healthiest first, per serving or per 100 calories.
 - **Plate builder**: combine foods at your servings into one meal with a total label and verdict.
 - **Grocery list** grouped by store section, with quantities, an estimated trip total at typical prices, a one-tap swap for "Limit it" items, check-off, copy, and "add my Get-it favorites."

@@ -114,6 +114,40 @@ const serve = () => new Promise(resolve => {
     ok(/iPhone or iPad \(Safari\): tap\s+Share/.test(await page.textContent("#installHow")), "Goals always has the full install steps");
     await ctx.close();
 
+    // 6a. Two products side by side in the store (two milks): scan one, then the other, and see them compared.
+    ({ ctx, page } = await open("?source=app", { permissions: ["camera"] }));
+    const MILK = {
+      "0000000000017": { product_name: "Whole milk", serving_size: "1 cup (240 mL)", serving_quantity: 240, categories_tags: ["en:dairies", "en:milks", "en:whole-milks"],
+        nutriments: { "energy-kcal_serving": 150, fat_serving: 8, "saturated-fat_serving": 5, "trans-fat_serving": 0, cholesterol_serving: 0.035, sodium_serving: 0.12, carbohydrates_serving: 12, fiber_serving: 0, sugars_serving: 12, "added-sugars_serving": 0, proteins_serving: 8 } },
+      "0000000000024": { product_name: "Reduced fat 2% milk", serving_size: "1 cup (240 mL)", serving_quantity: 240, categories_tags: ["en:dairies", "en:milks", "en:semi-skimmed-milks"],
+        nutriments: { "energy-kcal_serving": 120, fat_serving: 5, "saturated-fat_serving": 3, "trans-fat_serving": 0, cholesterol_serving: 0.02, sodium_serving: 0.12, carbohydrates_serving: 12, fiber_serving: 0, sugars_serving: 12, "added-sugars_serving": 0, proteins_serving: 8 } },
+    };
+    await page.route("**/world.openfoodfacts.org/**", r => { const c = (r.request().url().match(/product\/(\d+)/) || [])[1]; return r.fulfill({ contentType: "application/json", body: JSON.stringify(MILK[c] ? { code: c, status: 1, product: MILK[c] } : { status: 0 }) }); });
+    ok(await visible(page, "#cmpBig"), "the home has 'Compare two products'");
+    await page.click("#cmpBig");
+    await page.waitForFunction(() => /first/.test(document.getElementById("scanMsg").textContent));
+    await page.fill("#code", "0000000000017"); await page.click("#codeForm button[type=submit]");
+    await page.waitForFunction(() => /Whole milk/.test(document.querySelector("#out h2") && document.querySelector("#out h2").textContent) && !document.getElementById("scan").hidden && /second product to compare with Whole milk/.test(document.getElementById("scanMsg").textContent), null, { timeout: 15000 });
+    ok(true, "after the first product, the scanner reopens and asks for the second");
+    await page.fill("#code", "0000000000024"); await page.click("#codeForm button[type=submit]");
+    await page.waitForSelector("#out .compare .ctable", { timeout: 15000 });
+    const cmp = await page.evaluate(() => {
+      const t = document.querySelector("#out .compare .ctable"), side = document.querySelector("#out .side");
+      const kids = [...side.children].map(c => c.className);
+      return { head: [...t.querySelectorAll("thead th")].map(th => th.textContent.replace(/\s+/g, " ").trim()), wins: [...t.querySelectorAll("td.win")].map(td => td.parentElement.firstChild.textContent + "=" + td.textContent),
+        nearTop: kids.indexOf("panel compare") > -1 && kids.indexOf("panel compare") <= 3, wide: t.scrollWidth <= t.parentElement.clientWidth + 1, inView: t.getBoundingClientRect().top < innerHeight };
+    });
+    ok(/Whole milk/.test(cmp.head[1]) && /Reduced fat 2% milk/.test(cmp.head[2]) && cmp.wins.some(w => /^Sat/.test(w) && /3/.test(w)), `the second scan is compared with the first, side by side (${cmp.head.slice(1).join(" | ")}; better: ${cmp.wins.join(", ")})`);
+    const sum = await page.textContent("#out .cmpsum");
+    ok(/^Reduced fat 2% milk has less saturated fat\. Both: In moderation\.$/.test(sum.trim()), `a one-line answer above the table (${sum.trim()})`);
+    ok(cmp.nearTop && cmp.wide, `the comparison sits right under the verdict and fits a phone screen (${JSON.stringify(cmp)})`);
+    if (SHOTS) await page.screenshot({ path: path.join(SHOTS, "app5-compare.png"), fullPage: true });
+    // From the product page too: recent scans are one tap away.
+    await page.click("#out .compare button:has-text('Clear comparison')");
+    const chips = await page.$$eval("#out .compare [aria-label='Compare with a recent scan'] .chip", b => b.map(x => x.textContent));
+    ok(chips.includes("Reduced fat 2% milk") && await page.isVisible("#out .compare button:has-text('Scan to compare')"), `a product's Compare panel offers 'Scan to compare' and recent scans (${chips.join(", ")})`);
+    await ctx.close();
+
     // 6b. A photo of the label (a real one: Skippy peanut butter, Open Food Facts, CC BY-SA 3.0), read on the phone,
     // checked, then scored. Tesseract loads from vendor/tesseract/ only now.
     ({ ctx, page } = await open("?source=app"));
