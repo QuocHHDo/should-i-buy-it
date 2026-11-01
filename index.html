@@ -264,6 +264,12 @@ button { font: inherit; color: inherit; }
 .compare .suggest { top: 46px; }
 .cmpsum { margin: 0; font-size: 15px; line-height: 1.45; }
 .cmpsum b { color: var(--ink); }
+.shelf summary { cursor: pointer; font-weight: 600; font-size: 14px; color: var(--accent); }
+.shelf-prices { display: grid; gap: 8px; margin-top: 8px; }
+.shelfrow { display: grid; grid-template-columns: 1fr 84px 110px; gap: 6px; align-items: center; }
+.shelfname { font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shelfrow input { font: 500 16px var(--font-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 7px 8px; min-width: 0; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .ctable-wrap { overflow-x: auto; }
 .ctable { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; }
 .ctable th, .ctable td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }

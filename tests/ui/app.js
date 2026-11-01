@@ -141,6 +141,19 @@ const serve = () => new Promise(resolve => {
     const sum = await page.textContent("#out .cmpsum");
     ok(/^Reduced fat 2% milk has less saturated fat\. Both: In moderation\.$/.test(sum.trim()), `a one-line answer above the table (${sum.trim()})`);
     ok(cmp.nearTop && cmp.wide, `the comparison sits right under the verdict and fits a phone screen (${JSON.stringify(cmp)})`);
+    // Shelf prices: type the two tags, and the table adds the price of a serving and protein per dollar.
+    ok(await page.evaluate(() => document.querySelector("#out .compare details.shelf").open), "with no prices yet, the Shelf prices form is open under the table");
+    await page.fill("#shp0", "3.99"); await page.fill("#shs0", "1 gal");
+    await page.fill("#shp1", "$4.29"); await page.fill("#shs1", "half gallon");
+    await page.click("#out .shelf-prices button[type=submit]");
+    await page.waitForFunction(() => [...document.querySelectorAll("#out .ctable td")].some(td => td.textContent === "Price"));
+    const priceRows = await page.evaluate(() => [...document.querySelectorAll("#out .ctable tr")].filter(r => /^(Price|Protein per \$1)$/.test(r.firstChild.textContent)).map(r => [...r.children].map(c => c.textContent + (c.classList.contains("win") ? "*" : "")).join(" | ")));
+    ok(priceRows[0] === "Price | $0.25* | $0.54" && priceRows[1] === "Protein per $1 | 32 g* | 15 g", `shelf prices give the price of a serving and protein per $1, the better one marked (${priceRows.join(" ; ")})`);
+    await page.fill("#q", "Avocado"); await page.press("#q", "Enter"); await page.waitForFunction(() => /Avocado/.test(document.querySelector("#out h2").textContent));
+    await page.fill("#q", "Whole milk"); await page.press("#q", "Enter"); await page.waitForFunction(() => /Whole milk/.test(document.querySelector("#out h2").textContent));
+    ok(/\$0\.25/.test(await page.textContent("#out")), "the shelf price is kept for the product's own page");
+    await page.fill("#out .compare #cmpq", "Reduced fat 2% milk"); await page.press("#out .compare #cmpq", "Enter");
+    await page.waitForSelector("#out .compare .ctable");
     if (SHOTS) await page.screenshot({ path: path.join(SHOTS, "app5-compare.png"), fullPage: true });
     // From the product page too: recent scans are one tap away.
     await page.click("#out .compare button:has-text('Clear comparison')");
@@ -169,6 +182,24 @@ const serve = () => new Promise(resolve => {
     ok(/Sodium —/.test(oat.label) && !/240,000mg/.test(oat.label) && /Trans Fat —/.test(oat.label), "the label shows those lines as unknown, not the impossible numbers");
     if (SHOTS) await page.screenshot({ path: path.join(SHOTS, "app6-bad-record.png"), fullPage: false });
     ok(await page.$$eval("#out .partial-note", n => n.length) === 1, "the impossible values aren't repeated as 'not reported'");
+    // When USDA has the barcode (here a record made up for the test, per 100 g as USDA stores it), its sound numbers
+    // replace the broken ones, and the card says why.
+    const per100 = { 1008: 50, 1004: 2.08, 1258: 0.21, 1257: 0, 1253: 0, 1093: 41.7, 1005: 6.67, 1079: 0.83, 2000: 2.92, 1235: 0, 1003: 1.25 };
+    const USDA_OAT = { fdcId: 999001, description: "OAT BEVERAGE", dataType: "Branded", gtinUpc: "096619237432", brandOwner: "Costco Companies Inc.", brandName: "KIRKLAND SIGNATURE",
+      servingSizeUnit: "ml", servingSize: 240, householdServingFullText: "1 cup", foodNutrients: Object.entries(per100).map(([id, value]) => ({ nutrientId: Number(id), value })) };
+    await page.route("**/api.nal.usda.gov/**", r => r.fulfill({ contentType: "application/json", body: JSON.stringify({ foods: [USDA_OAT] }) }));
+    await page.evaluate(() => { localStorage.removeItem("lookups"); });
+    await page.reload(); await page.waitForSelector("#out h2");
+    await page.fill("#q", "0096619237432"); await page.press("#q", "Enter");
+    await page.waitForFunction(() => /uses the brand's own label data/.test(document.getElementById("out").textContent), null, { timeout: 15000 });
+    const second = await page.evaluate(() => ({ notes: document.querySelectorAll("#out .partial-note").length, label: document.querySelector("#out .leftcol").textContent.replace(/\s+/g, " ") }));
+    ok(second.notes === 0 && /Sodium 100mg/.test(second.label) && /Trans Fat 0g/.test(second.label), `Open Food Facts' broken record is replaced by USDA's, and the card says why (${second.label.slice(0, 90)}…)`);
+    // Scanned once, it's remembered by barcode: the second time needs no network at all.
+    let calls = 0; await page.route("**/world.openfoodfacts.org/**", r => { calls++; r.abort(); }); await page.route("**/api.nal.usda.gov/**", r => { calls++; r.abort(); });
+    await page.fill("#q", "Avocado"); await page.press("#q", "Enter"); await page.waitForFunction(() => /Avocado/.test(document.querySelector("#out h2").textContent));
+    await page.fill("#q", "0096619237432"); await page.press("#q", "Enter");
+    await page.waitForFunction(() => /uses the brand's own label data/.test(document.getElementById("out").textContent), null, { timeout: 5000 });
+    ok(calls === 0, `a barcode scanned before opens from this device, with no lookup (${calls} requests)`);
     await ctx.close();
     // A missing number gets a sentence only when it could change the verdict.
     const cola = { n: "Test cola", a: [], s: "355 ml", c: "lookup", tags: [], src: "off", code: "1", cal: 140, fat: 0, sat: 0, trans: 0, chol: 0, na: 0, carb: 39, fib: 0, sug: 39, add: 39, pro: 0, missing: ["na", "fib"], checked: 1, addLikelyZero: false };

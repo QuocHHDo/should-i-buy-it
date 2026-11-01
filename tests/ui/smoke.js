@@ -92,7 +92,8 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
   type("#cmpq", "chicken breast");
   const li = $(".compare .suggest li"); ok(!!li, "compare search suggests foods");
   li.dispatchEvent(new w.MouseEvent("mousedown", { bubbles: true }));
-  ok($$(".ctable tbody tr").length === 11 && $$(".ctable tbody tr").pop().textContent.startsWith("Typical price") && $$(".ctable td.win").length > 0, "compare table renders with winners marked");
+  const crow = $$(".ctable tbody tr").map(r => r.firstChild.textContent);
+  ok(crow.includes("Typical price") && crow[crow.length - 1] === "Protein per $1" && crow.length === 12 && $$(".ctable td.win").length > 0, `compare table renders with winners marked, then price and protein per dollar (${crow.slice(-2).join(", ")})`);
 
   const firstSwap = w.SelfCheckData.FOODS.find(f => f.n === swaps[0]);
   click($$(".swap")[0]);

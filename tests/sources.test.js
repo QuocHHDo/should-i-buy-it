@@ -110,3 +110,16 @@ test("16: looked-up foods get shareable ids that survive a fresh browser", () =>
   assert.equal(S.parseLinkId("#"), null);
   assert.match(S.usdaFoodUrl(171705, "k"), /\/fdc\/v1\/food\/171705\?api_key=k$/);
 });
+
+test("a second opinion: USDA's record replaces an Open Food Facts one with impossible numbers, never a sound one", () => {
+  const bad = S.makeFood("Oat", "240 g", { cal: 120, fat: 5, sat: 0.5, trans: 12, na: 240000, carb: 16, sug: 7, pro: 3 }, { src: "off", missing: [] });
+  const good = S.makeFood("Oat beverage", "240 g", { cal: 120, fat: 5, sat: 0.5, trans: 0, na: 100, carb: 16, sug: 7, pro: 3 }, { src: "usda", missing: [] });
+  const sound = S.makeFood("Milk", "240 ml", { cal: 150, fat: 8, sat: 5, na: 120, carb: 12, sug: 12, pro: 8 }, { src: "off", missing: [] });
+  assert.ok(S.trouble(bad) > 0 && S.trouble(good) === 0);
+  const pick = S.secondOpinion(bad, good);
+  assert.equal(pick.src, "usda"); assert.equal(pick.replacedOff, true);
+  assert.equal(S.secondOpinion(sound, good), sound); // nothing wrong: keep Open Food Facts
+  assert.equal(S.secondOpinion(bad, null), bad); // USDA doesn't have it: keep what there is
+  assert.equal(S.secondOpinion(bad, { ...bad, src: "usda" }), bad); // just as bad: no swap
+  assert.ok(S.sameCode("0096619237432", "96619237432") && !S.sameCode("0096619237432", "0096619237433") && !S.sameCode("", "0"));
+});

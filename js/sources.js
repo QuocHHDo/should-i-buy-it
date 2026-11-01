@@ -282,6 +282,15 @@
   }
   const usdaUpcUrl = (q, key) => "https://api.nal.usda.gov/fdc/v1/foods/search?" + new URLSearchParams({ query: q, dataType: "Branded", pageSize: "5", api_key: key || "DEMO_KEY" });
   // The record whose UPC is this barcode (search can also return products that merely mention the number).
+  // A record "holds together" when no number in it is impossible (f.issueKeys) and its calories add up (f.issues).
+  const trouble = f => (f && ((f.issueKeys || []).length * 10 + (f.issues || []).length)) || 0;
+  // Open Food Facts' record has trouble and USDA's (the brand's own filing) doesn't: use USDA's, and say why.
+  function secondOpinion(off, usda) {
+    if (!off || !trouble(off) || !usda || trouble(usda) >= trouble(off)) return off;
+    return { ...usda, replacedOff: true };
+  }
+  // Same product, whatever the zeros in front: "0096619237432" and "96619237432".
+  const sameCode = (a, b) => !!a && !!b && upcCore(a) === upcCore(b);
   const matchUpc = (foods, code) => (foods || []).find(f => f.gtinUpc && upcCore(f.gtinUpc) === upcCore(code)) || null;
   const offProductUrl = code => `https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,generic_name,brands,nutriments,serving_size,serving_quantity,serving_quantity_unit,categories_tags,additives_tags,nova_group,ingredients_text,ingredients_text_en`;
 
@@ -313,5 +322,5 @@ If "${text}" is not a food, reply {"found":false}.`;
     return f;
   }
 
-  return { PROCESSED, makeFood, check, issueSummary, settleAddedSugar, fromUsda, fromOff, usdaSearchUrl, usdaFoodUrl, usdaUpcQueries, usdaUpcUrl, matchUpc, brandedSearchUrl, rankBranded, storeBrand, isWalmart, STORE_BRANDS, linkId, parseLinkId, titleCase, offProductUrl, claudePrompt, parseJsonReply, fromClaude };
+  return { PROCESSED, makeFood, check, issueSummary, settleAddedSugar, fromUsda, fromOff, usdaSearchUrl, usdaFoodUrl, usdaUpcQueries, usdaUpcUrl, matchUpc, trouble, secondOpinion, sameCode, brandedSearchUrl, rankBranded, storeBrand, isWalmart, STORE_BRANDS, linkId, parseLinkId, titleCase, offProductUrl, claudePrompt, parseJsonReply, fromClaude };
 });

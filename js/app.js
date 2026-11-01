@@ -350,6 +350,32 @@
     ["Saturated fat", "sat", " g", "less"], ["Sodium", "na", " mg", "less"], ["Added sugar", "add", " g", "less"],
     ["Total sugars", "sug", " g", null], ["Total carbs", "carb", " g", null], ["Total fat", "fat", " g", null], ["Cholesterol", "chol", " mg", null],
   ];
+  // Shelf prices for the two products being compared: the price and the package size, as the shelf tag shows them.
+  // Saved like "Use my store's price", so the product's own page uses them too.
+  function shelfPrices(f, g) {
+    if (!PR || !PR.shelfCost) return null;
+    const item = (food, i) => {
+      const s = (myPrices[food.n] && myPrices[food.n].shelf) || {};
+      return el("div", { class: "shelfrow" }, el("span", { class: "shelfname", text: food.n }),
+        el("label", { class: "vh", for: `shp${i}`, text: `Price of ${food.n}` }), el("input", { id: `shp${i}`, name: `p${i}`, inputmode: "decimal", placeholder: "$ price", value: s.price || "" }),
+        el("label", { class: "vh", for: `shs${i}`, text: `Package size of ${food.n}` }), el("input", { id: `shs${i}`, name: `s${i}`, placeholder: "64 fl oz", value: s.size || "" }));
+    };
+    const msg = el("p", { class: "legend", role: "status" });
+    const form = el("form", { class: "shelf-prices", onsubmit: e => {
+      e.preventDefault();
+      const next = { ...myPrices }, bad = [];
+      [f, g].forEach((food, i) => {
+        const price = form.elements[`p${i}`].value.trim(), size = form.elements[`s${i}`].value.trim();
+        if (!price && !size) return;
+        const c = PR.shelfCost(price, size, food.s);
+        if (c) next[food.n] = { serving: Math.round(c.perServing * 1000) / 1000, shelf: { price, size } }; else bad.push(food.n);
+      });
+      if (bad.length) { msg.textContent = `Couldn't work out a serving's cost for ${bad.join(" and ")}. Type the price and the size, like 3.99 and 64 fl oz.`; return; }
+      myPrices = next; saveMyPrices(); showCompare();
+    } }, item(f, 0), item(g, 1), el("div", { class: "shelfbtns" }, el("button", { class: "btn small", type: "submit", text: "Use these prices" })), msg);
+    return el("details", { class: "shelf", open: [f, g].some(x => myPrices[x.n] && myPrices[x.n].shelf) ? null : true },
+      el("summary", { text: "Shelf prices" }), form);
+  }
   function renderCompare(f) {
     const sec = el("section", { class: "panel compare" }, el("h3", { text: "Compare" }));
     const input = el("input", { type: "search", id: "cmpq", placeholder: "Compare with another food…", "aria-label": "Food to compare with", autocomplete: "off" });
@@ -386,12 +412,18 @@
         const cell = (food, i) => el("td", { class: win === i ? "win" : null, text: amt(food, k, unit) });
         tbody.append(el("tr", {}, el("td", { text: label }), cell(a, 0), cell(b, 1)));
       }
-      // Price per serving, when both have one (lower highlighted when at least 10% and 5¢ apart).
+      // Price per serving, when both have one (lower highlighted when at least 10% and 5¢ apart): the shelf prices
+      // typed below, or typical prices for built-in foods. Then protein per dollar, when both are real protein sources.
       const pa = PR && PR.price({ ...f, mult }, myPrices), pb = PR && PR.price(compareWith, myPrices);
       if (pa && pb) {
         const x = cmpBasis === "kcal" && a !== f ? pa.perServing * 100 / f.cal : pa.cost, y = cmpBasis === "kcal" && b !== compareWith ? pb.perServing * 100 / compareWith.cal : pb.cost;
         const win = Math.abs(x - y) >= Math.max(0.05, 0.1 * Math.max(x, y)) ? (x < y ? 0 : 1) : -1;
-        tbody.append(el("tr", {}, el("td", { text: "Typical price" }), el("td", { class: win === 0 ? "win" : null, text: PR.money(x) }), el("td", { class: win === 1 ? "win" : null, text: PR.money(y) })));
+        tbody.append(el("tr", {}, el("td", { text: pa.mine && pb.mine ? "Price" : "Typical price" }), el("td", { class: win === 0 ? "win" : null, text: PR.money(x) }), el("td", { class: win === 1 ? "win" : null, text: PR.money(y) })));
+        const va2 = PR.value(f, pa), vb2 = PR.value(compareWith, pb);
+        if (va2 && vb2 && va2.k === "pro" && vb2.k === "pro") {
+          const w2 = Math.abs(va2.v - vb2.v) >= 0.1 * Math.max(va2.v, vb2.v) ? (va2.v > vb2.v ? 0 : 1) : -1;
+          tbody.append(el("tr", {}, el("td", { text: "Protein per $1" }), el("td", { class: w2 === 0 ? "win" : null, text: `${Math.round(va2.v)} g` }), el("td", { class: w2 === 1 ? "win" : null, text: `${Math.round(vb2.v)} g` })));
+        }
       }
       // The answer in one line, for reading in the aisle: who has the meaningful advantages, and the verdicts.
       const list = xs => xs.length < 2 ? xs.join("") : xs.slice(0, -1).join(", ") + " and " + xs[xs.length - 1];
@@ -401,6 +433,7 @@
       sec.append(el("p", { class: "cmpsum", role: "status" }, el("b", { text: lines.length ? lines.join("; ") + "." : "No meaningful difference in the nutrients that count." }), " " + verdicts));
       sec.append(el("div", { class: "ctable-wrap" }, el("table", { class: "ctable" }, thead, tbody)),
         el("p", { class: "legend", text: a.s === "100 calories" ? "Green marks a meaningful difference (at least 10% apart and 5% of the daily value). Per 100 calories shows nutrient density: what you get for the same calories." : "Green marks a meaningful difference (at least 10% apart and 5% of the daily value). Servings differ, so compare against how much you'd actually eat, or switch to per 100 calories." }),
+        shelfPrices(f, compareWith),
         el("div", {}, el("button", { class: "btn small ghost", type: "button", text: "Clear comparison", onclick: () => { compareWith = null; renderResult(current); } })));
     }
     return sec;
@@ -446,6 +479,7 @@
     wireLabel(label, box, scaled);
     const src = el("p", { class: "src" });
     if (f.src === "claude") src.append(el("b", { text: "Looked up by Claude. " }), "Typical values; check the package label.");
+    else if (f.src === "usda" && f.dataType === "Branded" && f.replacedOff) src.append(el("b", { text: "From USDA Branded Foods. " }), "Open Food Facts' record for this barcode had numbers that look wrong, so this uses the brand's own label data. Recipes change; the package wins.");
     else if (f.src === "usda" && f.dataType === "Branded") src.append(el("b", { text: "From USDA Branded Foods. " }),
       `The brand's own label${f.published ? `, published ${f.published}` : ""}${f.gtin ? ` (UPC ${f.gtin})` : ""}. ${f.perServing ? "Values per serving." : "Values per 100 g."} Recipes change; the package wins.`);
     else if (f.src === "usda") src.append(el("b", { text: "From USDA FoodData Central. " }), "Values per 100 g.");
@@ -931,6 +965,7 @@
   }
   function saveLookup(f) {
     if (FOODS.some(x => x.n === f.n)) f.n += f.src === "off" ? "" : " (lookup)";
+    if (!f.savedAt) f.savedAt = Date.now();
     lookups = [f, ...lookups.filter(x => x.n !== f.n)].slice(0, 80);
     store.set("lookups", lookups);
     updateCount(); renderBrowse();
@@ -1053,6 +1088,9 @@
   async function barcodeLookup(code) {
     const clean = String(code).replace(/\D/g, "");
     if (clean.length < 8) { toast("That doesn't look like a full barcode."); return; }
+    // Scanned before: the copy saved on this device, at once (and without signal). Re-checked online after 30 days.
+    const saved = savedByCode(clean);
+    if (saved && (Date.now() - (saved.savedAt || 0) < SAVED_FRESH_MS || navigator.onLine === false)) { scanned(saved); return; }
     const box = el("div", { class: "notice" }); $("out").replaceChildren(box);
     busy(box, `Looking up barcode ${clean}…`);
     const byName = el("button", { class: "btn small ghost", type: "button", text: "Search by name", onclick: () => { $("q").focus(); $("q").select(); } });
@@ -1066,7 +1104,11 @@
       if (data.status === 1 && data.product) {
         const f = S.fromOff(clean, data.product);
         // "No nutrition data" means nothing was reported, not that everything is zero (diet soda, water).
-        if (!["cal", "fat", "carb", "pro"].every(k => V.isMissing(f, k))) { scanned(f); return; }
+        if (!["cal", "fat", "carb", "pro"].every(k => V.isMissing(f, k))) {
+          // Numbers in it look wrong: ask USDA (the brand's own filing) for a second opinion.
+          if (S.trouble(f)) { busy(box, "Open Food Facts' numbers look wrong. Checking USDA…"); try { const u = await usdaByUpc(clean); scanned(S.secondOpinion(f, u)); return; } catch { scanned(f); return; } }
+          scanned(f); return;
+        }
         offEmpty = f.n;
       }
     } catch (e) { offErr = e; }
@@ -1079,6 +1121,8 @@
     } catch (e) { usdaErr = e; }
 
     const offline = navigator.onLine === false;
+    // Couldn't reach either database: an older saved copy beats nothing.
+    if (saved && (offErr || usdaErr)) { scanned(saved); toast("Couldn't reach the databases, so this is the copy saved on this device."); return; }
     const why = e => !e ? "" : e.name === "TimeoutError" ? "took too long to answer" : e.name === "RateLimit" ? "is out of free searches for now" : e.name === "HttpError" ? `had an error (${e.status})` : "couldn't be reached";
     const lines = offline ? [el("p", { text: "You're offline. Barcode lookup needs a connection." })]
       : !offErr && !usdaErr ? [el("p", { text: offEmpty ? `Found “${offEmpty}”, but neither Open Food Facts nor USDA has its nutrition data.` : `Neither Open Food Facts nor USDA Branded Foods has barcode ${clean}.` }),
@@ -1154,6 +1198,8 @@
         el("button", { class: "btn small", type: "button", text: "Try another photo", onclick: () => askLabelPhoto(ctx) }));
     }
   }
+  const SAVED_FRESH_MS = 30 * 86400000;
+  const savedByCode = code => lookups.find(f => S.sameCode(f.code, code) || S.sameCode(f.gtin, code)) || null;
   // USDA Branded Foods by UPC: the search only matches the exact digits stored, so try each likely form.
   async function usdaByUpc(code) {
     const key = (profile.usdaKey || "").trim() || "DEMO_KEY";

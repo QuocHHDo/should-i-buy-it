@@ -66,8 +66,18 @@
     let failed = !off.ok && (off.status === 0 || off.status >= 500);
     if (off.ok && off.json && off.json.status === 1 && off.json.product) {
       const f = S.fromOff(code, off.json.product);
-      if (!["cal", "fat", "carb", "pro"].every(k => V.isMissing(f, k)))
+      if (!["cal", "fat", "carb", "pro"].every(k => V.isMissing(f, k))) {
+        // Numbers in it look wrong: ask USDA (the brand's own filing) for a second opinion.
+        if (S.trouble(f)) {
+          for (const q of S.usdaUpcQueries(code)) {
+            const u = await bg(S.usdaUpcUrl(q, key));
+            if (!u.ok) break;
+            const hit = S.matchUpc(u.json && u.json.foods, code);
+            if (hit) { const g = S.secondOpinion(f, S.fromUsda(hit)); if (g !== f) return { food: g, source: "USDA", detail: `USDA Branded Foods' record for barcode ${code}`, note: "Open Food Facts' record had numbers that look wrong, so this uses the brand's own label data.", link: g.fdcId ? `#usda-${g.fdcId}` : null }; break; }
+          }
+        }
         return { food: f, source: "Open Food Facts", detail: `Open Food Facts' record for barcode ${code}`, note: "Crowd-sourced, so check the label on the package.", link: `#off-${code}` };
+      }
     }
     for (const q of S.usdaUpcQueries(code)) {
       const u = await bg(S.usdaUpcUrl(q, key));

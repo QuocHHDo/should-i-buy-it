@@ -44,6 +44,9 @@
       for (const [n, p] of Object.entries(v).slice(0, 500)) {
         if (!str(n) || !p || typeof p !== "object") continue;
         if (num(p.unit, 0.01, 10000)) out[n] = { unit: p.unit }; else if (num(p.serving, 0.01, 10000)) out[n] = { serving: p.serving };
+        // The shelf price and size typed in a comparison, kept so the form shows them again.
+        if (out[n] && out[n].serving && p.shelf && typeof p.shelf === "object" && typeof p.shelf.price === "string" && typeof p.shelf.size === "string" && p.shelf.price.length <= 20 && p.shelf.size.length <= 40)
+          out[n].shelf = { price: p.shelf.price, size: p.shelf.size };
       }
       return out;
     },

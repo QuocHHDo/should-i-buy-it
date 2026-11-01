@@ -58,3 +58,18 @@ test("prices never change a verdict", () => {
   PR.price(food("Eggs"), { Eggs: { unit: 99 } });
   assert.equal(FOODS.map(f => V.assess(f, V.DEFAULT_PROFILE).word).join(), before);
 });
+
+test("shelf prices: a price and a package size, as the shelf tag shows them, give the cost of one serving", () => {
+
+  const near = (x, y) => Math.abs(x - y) < 0.005;
+  assert.ok(near(PR.shelfCost("3.99", "64 fl oz", "1 cup (240 mL)").perServing, 0.506));
+  assert.ok(near(PR.shelfCost("$9.49", "2 x 64 fl oz", "240g").perServing, 0.602)); // a Costco 2-pack; 1 g counted as 1 ml
+  assert.ok(near(PR.shelfCost("4.29", "half gallon", "1 cup (240 ml)").perServing, 0.544));
+  assert.ok(near(PR.shelfCost("2.50", "1.89 L", "240 mL").perServing, 0.317));
+  assert.ok(near(PR.shelfCost("6.99", "12 servings", "1 bar").perServing, 0.583));
+  assert.ok(near(PR.shelfCost("4", "64 fl oz", "1 cup").perServing, 0.507)); // "1 cup" with no weight: 240 ml
+  assert.ok(near(PR.shelfCost("5", "2 lb", "2 Tbsp (32g)").perServing, 0.176));
+  assert.equal(PR.shelfCost("5", "a big jug", "1 cup (240 mL)"), null);
+  assert.equal(PR.shelfCost("free", "64 fl oz", "1 cup (240 mL)"), null);
+  assert.equal(PR.shelfCost("5", "64 fl oz", "1 serving"), null);
+});

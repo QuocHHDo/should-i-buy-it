@@ -48,5 +48,36 @@
     return { total, priced, missing: (items || []).length - priced };
   }
 
-  return { price, value, plateCost, money, meta: DATA.meta, has: n => !!DATA.foods[n] };
+  // A shelf price for a packaged product: "$3.99" for "64 fl oz" (or "2 x 64 fl oz", "1.89 L", "1/2 gal", "12 servings")
+  // and the label's serving ("1 cup (240 mL)", "240g") → the cost of one serving. Liquids priced by volume with a serving
+  // in grams (or the reverse) count 1 g as 1 ml, close enough for milk and juice. null when the size or the serving
+  // can't be read.
+  const SIZE = { g: ["m", 1], kg: ["m", 1000], oz: ["m", 28.3495], lb: ["m", 453.592], ml: ["v", 1], l: ["v", 1000], "fl oz": ["v", 29.5735],
+    gal: ["v", 3785.41], qt: ["v", 946.353], pt: ["v", 473.176] };
+  const amountOf = t => {
+    const s = String(t || "").toLowerCase().replace(/fluid ounces?|fl\.? ?oz\.?/g, "fl oz").replace(/ounces?/g, "oz").replace(/pounds?|lbs?\b/g, "lb")
+      .replace(/gallons?/g, "gal").replace(/quarts?/g, "qt").replace(/pints?/g, "pt").replace(/liters?|litres?/g, "l").replace(/grams?/g, "g").replace(/half/g, "1/2");
+    const n = x => { const m = String(x).match(/^(\d+)\/(\d+)$/); return m ? Number(m[1]) / Number(m[2]) : Number(x); };
+    const m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d+\/\d+|\d*\.?\d+)\s*(fl oz|kg|g|oz|lb|ml|l|gal|qt|pt)\b/);
+    if (!m) { const c = s.match(/(\d*\.?\d+)\s*servings?/); return c ? { servings: Number(c[1]) } : null; }
+    const [kind, f] = SIZE[m[3]]; const v = n(m[2]) * f * (m[1] ? Number(m[1]) : 1);
+    return Number.isFinite(v) && v > 0 ? { kind, v } : null;
+  };
+  function shelfCost(priceText, sizeText, servingText) {
+    const price = Number(String(priceText || "").replace(/[$,\s]/g, ""));
+    if (!(price > 0) || price > 10000) return null;
+    const size = amountOf(sizeText);
+    if (!size) return null;
+    if (size.servings) return size.servings > 0 ? { perServing: price / size.servings, servings: size.servings } : null;
+    // The serving's weight or volume: the amount in parentheses on US labels, else the first one given.
+    let sv = [...String(servingText || "").matchAll(/(\d*\.?\d+)\s*(g|ml|mL|oz|fl oz)\b/gi)].map(m => amountOf(m[0])).filter(Boolean).pop();
+    // "1 cup" with no weight on file: the label's household measures.
+    if (!sv) { const h = String(servingText || "").toLowerCase().match(/(\d+\/\d+|\d*\.?\d+)\s*(cups?|tbsp|tablespoons?|tsp|teaspoons?)\b/);
+      if (h) { const q = /\//.test(h[1]) ? Number(h[1].split("/")[0]) / Number(h[1].split("/")[1]) : Number(h[1]); sv = { kind: "v", v: q * (/^c/.test(h[2]) ? 240 : /^(tbsp|table)/.test(h[2]) ? 15 : 5) }; } }
+    if (!sv || !(sv.v > 0)) return null;
+    const servings = size.v / sv.v;
+    return servings >= 0.5 && servings < 5000 ? { perServing: price / servings, servings } : null;
+  }
+
+  return { price, value, plateCost, money, shelfCost, meta: DATA.meta, has: n => !!DATA.foods[n] };
 });
