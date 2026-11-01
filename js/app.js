@@ -923,7 +923,10 @@
     updateCount(); renderBrowse();
   }
 
+  // A barcode number is a barcode, however it arrives (the suggestion row, a link, the Check button).
+  const isBarcode = text => /^\d{8,14}$/.test(String(text).replace(/[\s-]/g, ""));
   function openPackaged(text) {
+    if (isBarcode(text)) return barcodeLookup(String(text).replace(/[\s-]/g, ""));
     closestFor = null;
     const box = el("div", { class: "notice" }); $("out").replaceChildren(box);
     packagedSearch(text, box);
@@ -1549,14 +1552,15 @@
     if (PAGES) $("q").placeholder = "Try avocado, or a product like great value whole milk";
     $("scanBtn").hidden = !PAGES; $("usdaKeyWrap").hidden = !PAGES;
 
-    attachSuggest($("q"), $("suggest"), f => pick(f), PAGES ? text => ({ label: `Search packaged products for “${text}”`, run: () => openPackaged(text) }) : null);
+    attachSuggest($("q"), $("suggest"), f => pick(f), PAGES ? text => isBarcode(text) ? { label: `Look up barcode ${text.replace(/[\s-]/g, "")}`, run: () => barcodeLookup(text.replace(/[\s-]/g, "")) }
+      : { label: `Search packaged products for “${text}”`, run: () => openPackaged(text) } : null);
     $("shelf").addEventListener("scroll", shelfFade, { passive: true });
     window.addEventListener("resize", shelfFade);
     $("form").addEventListener("submit", e => {
       e.preventDefault();
       const text = $("q").value.trim(); if (!text) return;
       $("suggest").hidden = true;
-      if (/^\d{8,14}$/.test(text) && PAGES) return barcodeLookup(text);
+      if (isBarcode(text) && PAGES) return barcodeLookup(text.replace(/[\s-]/g, ""));
       // "great value whole milk", "marketside caesar kit": a store brand means a packaged product.
       if (PAGES && S.storeBrand(text) && !allFoods().some(f => Q.isExact(f, text))) return openPackaged(text);
       const r = Q.resolve(text, allFoods());
