@@ -11,9 +11,14 @@
   // own: { [food name]: { unit: number } }  — what the user pays per unit (lb, dozen, gal…), or
   //      { serving: number } for foods with no typical price.
   // Returns null when there's no price at all.
+  // Your prices are kept by barcode for scanned products ("upc:96619237432"), so two products with the same name don't
+  // share one; built-in foods and anything without a barcode go by name. Prices saved by name before still count.
+  const keyOf = f => { const c = String((f && (f.code || f.gtin)) || "").replace(/\D/g, "").replace(/^0+/, ""); return c.length >= 6 ? "upc:" + c : f ? f.n : ""; };
+  // A scanned product falls back to a price saved by its name only when no built-in food has that name.
+  const mineOf = (f, own) => { const k = keyOf(f); return own[k] || (k !== f.n && DATA.foods[f.n] ? undefined : own[f.n]); };
   function price(f, own = {}) {
     if (!f) return null;
-    const d = DATA.foods[f.n], mine = own[f.n];
+    const d = DATA.foods[f.n], mine = mineOf(f, own);
     const mult = f.mult || 1;
     if (mine && mine.serving > 0) return { cost: mine.serving * mult, perServing: mine.serving, mine: true, unitLabel: "serving", unitPrice: mine.serving, typical: d ? d[0] : null };
     if (!d) return null;
@@ -79,5 +84,5 @@
     return servings >= 0.5 && servings < 5000 ? { perServing: price / servings, servings } : null;
   }
 
-  return { price, value, plateCost, money, shelfCost, meta: DATA.meta, has: n => !!DATA.foods[n] };
+  return { price, value, plateCost, money, shelfCost, keyOf, mineOf, meta: DATA.meta, has: n => !!DATA.foods[n] };
 });

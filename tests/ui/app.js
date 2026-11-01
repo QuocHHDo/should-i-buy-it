@@ -117,19 +117,19 @@ const serve = () => new Promise(resolve => {
     // 6a. Two products side by side in the store (two milks): scan one, then the other, and see them compared.
     ({ ctx, page } = await open("?source=app", { permissions: ["camera"] }));
     const MILK = {
-      "0000000000017": { product_name: "Whole milk", serving_size: "1 cup (240 mL)", serving_quantity: 240, categories_tags: ["en:dairies", "en:milks", "en:whole-milks"],
+      "0096619100017": { product_name: "Whole milk", serving_size: "1 cup (240 mL)", serving_quantity: 240, categories_tags: ["en:dairies", "en:milks", "en:whole-milks"],
         nutriments: { "energy-kcal_serving": 150, fat_serving: 8, "saturated-fat_serving": 5, "trans-fat_serving": 0, cholesterol_serving: 0.035, sodium_serving: 0.12, carbohydrates_serving: 12, fiber_serving: 0, sugars_serving: 12, "added-sugars_serving": 0, proteins_serving: 8 } },
-      "0000000000024": { product_name: "Reduced fat 2% milk", serving_size: "1 cup (240 mL)", serving_quantity: 240, categories_tags: ["en:dairies", "en:milks", "en:semi-skimmed-milks"],
+      "0096619100024": { product_name: "Reduced fat 2% milk", serving_size: "1 cup (240 mL)", serving_quantity: 240, categories_tags: ["en:dairies", "en:milks", "en:semi-skimmed-milks"],
         nutriments: { "energy-kcal_serving": 120, fat_serving: 5, "saturated-fat_serving": 3, "trans-fat_serving": 0, cholesterol_serving: 0.02, sodium_serving: 0.12, carbohydrates_serving: 12, fiber_serving: 0, sugars_serving: 12, "added-sugars_serving": 0, proteins_serving: 8 } },
     };
     await page.route("**/world.openfoodfacts.org/**", r => { const c = (r.request().url().match(/product\/(\d+)/) || [])[1]; return r.fulfill({ contentType: "application/json", body: JSON.stringify(MILK[c] ? { code: c, status: 1, product: MILK[c] } : { status: 0 }) }); });
     ok(await visible(page, "#cmpBig"), "the home has 'Compare two products'");
     await page.click("#cmpBig");
     await page.waitForFunction(() => /first/.test(document.getElementById("scanMsg").textContent));
-    await page.fill("#code", "0000000000017"); await page.click("#codeForm button[type=submit]");
+    await page.fill("#code", "0096619100017"); await page.click("#codeForm button[type=submit]");
     await page.waitForFunction(() => /Whole milk/.test(document.querySelector("#out h2") && document.querySelector("#out h2").textContent) && !document.getElementById("scan").hidden && /second product to compare with Whole milk/.test(document.getElementById("scanMsg").textContent), null, { timeout: 15000 });
     ok(true, "after the first product, the scanner reopens and asks for the second");
-    await page.fill("#code", "0000000000024"); await page.click("#codeForm button[type=submit]");
+    await page.fill("#code", "0096619100024"); await page.click("#codeForm button[type=submit]");
     await page.waitForSelector("#out .compare .ctable", { timeout: 15000 });
     const cmp = await page.evaluate(() => {
       const t = document.querySelector("#out .compare .ctable"), side = document.querySelector("#out .side");
@@ -150,8 +150,13 @@ const serve = () => new Promise(resolve => {
     const priceRows = await page.evaluate(() => [...document.querySelectorAll("#out .ctable tr")].filter(r => /^(Price|Protein per \$1)$/.test(r.firstChild.textContent)).map(r => [...r.children].map(c => c.textContent + (c.classList.contains("win") ? "*" : "")).join(" | ")));
     ok(priceRows[0] === "Price | $0.25* | $0.54" && priceRows[1] === "Protein per $1 | 32 g* | 15 g", `shelf prices give the price of a serving and protein per $1, the better one marked (${priceRows.join(" ; ")})`);
     await page.fill("#q", "Avocado"); await page.press("#q", "Enter"); await page.waitForFunction(() => /Avocado/.test(document.querySelector("#out h2").textContent));
-    await page.fill("#q", "Whole milk"); await page.press("#q", "Enter"); await page.waitForFunction(() => /Whole milk/.test(document.querySelector("#out h2").textContent));
-    ok(/\$0\.25/.test(await page.textContent("#out")), "the shelf price is kept for the product's own page");
+    await page.fill("#q", "0096619100017"); await page.press("#q", "Enter"); await page.waitForFunction(() => /Whole milk/.test(document.querySelector("#out h2").textContent));
+    ok(/Your price: \$0\.25/.test(await page.textContent("#out")), "the shelf price is kept for the scanned product's own page");
+    await page.fill("#q", "Avocado"); await page.press("#q", "Enter"); await page.waitForFunction(() => /Avocado/.test(document.querySelector("#out h2").textContent));
+    await page.evaluate(() => { const q = document.getElementById("q"); q.value = "Whole milk"; document.getElementById("form").requestSubmit(); });
+    await page.waitForFunction(() => /Whole milk/.test(document.querySelector("#out h2").textContent) && /Typical values/.test(document.getElementById("out").textContent));
+    ok(!/Your price/.test(await page.textContent("#out")), "and the built-in 'Whole milk' keeps its typical price: prices go by barcode");
+    await page.fill("#q", "0096619100017"); await page.press("#q", "Enter"); await page.waitForFunction(() => /Whole milk/.test(document.querySelector("#out h2").textContent) && /Open Food Facts/.test(document.getElementById("out").textContent));
     await page.fill("#out .compare #cmpq", "Reduced fat 2% milk"); await page.press("#out .compare #cmpq", "Enter");
     await page.waitForSelector("#out .compare .ctable");
     if (SHOTS) await page.screenshot({ path: path.join(SHOTS, "app5-compare.png"), fullPage: true });

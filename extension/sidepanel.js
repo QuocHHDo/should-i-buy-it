@@ -297,7 +297,18 @@
         el("p", { text: "General nutrition guidance, not medical advice." })),
       el("div", { class: "links" },
         el("button", { class: "btn", type: "button", text: "Change your goals", onclick: () => chrome.runtime.openOptionsPage() }),
-        r.link ? el("a", { href: SITE + r.link, target: "_blank", rel: "noopener", text: "Open in the app ↗" }) : null));
+        r.link ? el("a", { href: SITE + r.link, target: "_blank", rel: "noopener", text: "Open in the app ↗" }) : null,
+        el("a", { href: reportUrl(f, prod, r), target: "_blank", rel: "noopener", title: "Opens a prefilled report on GitHub (needs a free account). Nothing is sent until you submit it.", text: "Wrong verdict? Report it ↗" })));
+  }
+  // A problem report on GitHub, prefilled with what's needed to check it: the product, its page and barcode, where the
+  // numbers came from, and the verdict. Nothing about you: no goals, no history. It's only sent if you submit it there.
+  const REPORT = "https://github.com/QuocHHDo/should-i-buy-it/issues/new";
+  function reportUrl(f, prod, r) {
+    const a = V.assess(f, V.DEFAULT_PROFILE), code = f.code || f.gtin || "";
+    const body = [`Product: ${prod.name || f.n}`, prod.store ? `Store: ${prod.store.name}` : "", prod.url ? `Page: ${String(prod.url).split("?")[0]}` : "", code ? `Barcode: ${code}` : "",
+      `Numbers from: ${r.detail}`, `Serving: ${f.s}`, `Verdict (standard goals): ${a.word}`, f.issues && f.issues.length ? `Flagged: ${f.issues.join("; ")}` : "",
+    ].filter(Boolean).concat(["", "What the package label says (a photo helps):", "", "What you expected:", ""]).join("\n");
+    return REPORT + "?" + new URLSearchParams({ title: `Wrong verdict or number: ${prod.name || f.n}`.slice(0, 120), body });
   }
 
   // ---------- staying current ----------

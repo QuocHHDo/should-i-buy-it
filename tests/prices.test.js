@@ -73,3 +73,18 @@ test("shelf prices: a price and a package size, as the shelf tag shows them, giv
   assert.equal(PR.shelfCost("free", "64 fl oz", "1 cup (240 mL)"), null);
   assert.equal(PR.shelfCost("5", "64 fl oz", "1 serving"), null);
 });
+
+test("your prices go by barcode for scanned products, so a scanned 'Whole milk' and the built-in one don't share", () => {
+  const scanned = { n: "Whole milk", code: "0096619100017", s: "1 cup (240 mL)", cal: 150 };
+  const builtin = { n: "Whole milk", s: "1 cup (244 g)", cal: 149 };
+  assert.equal(PR.keyOf(scanned), "upc:96619100017");
+  assert.equal(PR.keyOf({ n: "Oat", gtin: "096619237432" }), "upc:96619237432");
+  assert.equal(PR.keyOf(builtin), "Whole milk");
+  const own = { "upc:96619100017": { serving: 0.31 } };
+  assert.equal(PR.price(scanned, own).perServing, 0.31);
+  assert.ok(!PR.price(builtin, own).mine); // the built-in keeps its typical price
+  // A price you set for the built-in doesn't leak onto a scanned product of the same name (it gets the typical price).
+  assert.equal(PR.price(scanned, { "Whole milk": { unit: 2 } }).mine, false);
+  // Older prices saved by name still work for scanned products with a name of their own.
+  assert.equal(PR.price({ n: "Kirkland Signature Oat", code: "0096619237432", s: "240g" }, { "Kirkland Signature Oat": { serving: 0.4 } }).perServing, 0.4);
+});

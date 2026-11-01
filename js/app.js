@@ -322,7 +322,9 @@
     if (editing) {
       const input = el("input", { type: "number", min: "0", step: "0.01", inputmode: "decimal", id: "myPrice", "aria-label": `Your price per ${unitWord}`, value: p && p.mine ? String(p.unitPrice) : "" });
       const save = () => { const v = Number(input.value); if (!(v > 0)) { input.setAttribute("aria-invalid", "true"); return; }
-        myPrices = { ...myPrices, [f.n]: p && !(p.mine && p.unitLabel === "serving") && PR.has(f.n) ? { unit: v } : { serving: v } }; priceEditing = null; saveMyPrices(); };
+        const m = { ...myPrices }; delete m[f.n];
+        m[PR.keyOf(f)] = p && !(p.mine && p.unitLabel === "serving") && PR.has(f.n) ? { unit: v } : { serving: v };
+        myPrices = m; priceEditing = null; saveMyPrices(); };
       input.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); save(); } if (e.key === "Escape") { priceEditing = null; renderResult(current); } });
       sec.append(el("div", { class: "price-edit" }, el("label", { for: "myPrice", text: `What you pay, $ per ${PR.has(f.n) ? (p ? p.unitLabel : "serving") : "serving"}` }), input,
         el("button", { class: "btn small", type: "button", text: "Save", onclick: save }),
@@ -331,7 +333,7 @@
     } else {
       const row = el("div", { class: "chiprow", style: "margin:0" },
         el("button", { class: "linkish", type: "button", text: p && p.mine ? "Change my price" : PR.has(f.n) ? "Use my store's price" : "Add my price", onclick: () => { priceEditing = f.n; renderResult(current); } }));
-      if (p && p.mine) row.append(el("button", { class: "linkish", type: "button", text: "Use typical price", onclick: () => { const m = { ...myPrices }; delete m[f.n]; myPrices = m; saveMyPrices(); } }));
+      if (p && p.mine) row.append(el("button", { class: "linkish", type: "button", text: "Use typical price", onclick: () => { const m = { ...myPrices }; delete m[f.n]; delete m[PR.keyOf(f)]; myPrices = m; saveMyPrices(); } }));
       sec.append(row);
     }
     return sec;
@@ -355,7 +357,7 @@
   function shelfPrices(f, g) {
     if (!PR || !PR.shelfCost) return null;
     const item = (food, i) => {
-      const s = (myPrices[food.n] && myPrices[food.n].shelf) || {};
+      const s = (PR.mineOf(food, myPrices) || {}).shelf || {};
       return el("div", { class: "shelfrow" }, el("span", { class: "shelfname", text: food.n }),
         el("label", { class: "vh", for: `shp${i}`, text: `Price of ${food.n}` }), el("input", { id: `shp${i}`, name: `p${i}`, inputmode: "decimal", placeholder: "$ price", value: s.price || "" }),
         el("label", { class: "vh", for: `shs${i}`, text: `Package size of ${food.n}` }), el("input", { id: `shs${i}`, name: `s${i}`, placeholder: "64 fl oz", value: s.size || "" }));
@@ -368,12 +370,12 @@
         const price = form.elements[`p${i}`].value.trim(), size = form.elements[`s${i}`].value.trim();
         if (!price && !size) return;
         const c = PR.shelfCost(price, size, food.s);
-        if (c) next[food.n] = { serving: Math.round(c.perServing * 1000) / 1000, shelf: { price, size } }; else bad.push(food.n);
+        if (c) { delete next[food.n]; next[PR.keyOf(food)] = { serving: Math.round(c.perServing * 1000) / 1000, shelf: { price, size } }; } else bad.push(food.n);
       });
       if (bad.length) { msg.textContent = `Couldn't work out a serving's cost for ${bad.join(" and ")}. Type the price and the size, like 3.99 and 64 fl oz.`; return; }
       myPrices = next; saveMyPrices(); showCompare();
     } }, item(f, 0), item(g, 1), el("div", { class: "shelfbtns" }, el("button", { class: "btn small", type: "submit", text: "Use these prices" })), msg);
-    return el("details", { class: "shelf", open: [f, g].some(x => myPrices[x.n] && myPrices[x.n].shelf) ? null : true },
+    return el("details", { class: "shelf", open: [f, g].some(x => (PR.mineOf(x, myPrices) || {}).shelf) ? null : true },
       el("summary", { text: "Shelf prices" }), form);
   }
   function renderCompare(f) {
@@ -658,7 +660,7 @@
   const qtyOf = item => Math.max(1, Math.min(99, Math.round(item.qty || 1)));
   // Price of one purchase unit (a lb, a dozen, a gallon…), yours when you've set one.
   // A store product's own item price when it has one (what you'd pay), else the typical price per unit.
-  const unitCost = f => { const sp = storePriceOf(f); if (sp && sp.item > 0 && !(myPrices[f.n])) return { each: Number(sp.item), unit: "item", mine: false };
+  const unitCost = f => { const sp = storePriceOf(f); if (sp && sp.item > 0 && !PR.mineOf(f, myPrices)) return { each: Number(sp.item), unit: "item", mine: false };
     const p = f && PR ? PR.price(f, myPrices) : null; return p ? { each: p.unitPrice, unit: p.unitLabel, mine: p.mine } : null; };
   function listRow(item) {
     const f = byName(item.n), id = "g-" + V.slug(item.n), q = qtyOf(item), u = unitCost(f);

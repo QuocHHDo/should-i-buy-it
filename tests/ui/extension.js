@@ -271,6 +271,12 @@ const ok = (cond, msg) => { console.log((cond ? "PASS " : "FAIL ") + msg); if (!
     pt = await ptext(/Search Sam's Club/).catch(async () => { console.log("panel:", (await ptext()).slice(0, 600)); return ""; });
     const swapHref = await panel.evaluate(() => { const a = [...document.querySelectorAll("a")].find(x => /Search Sam's Club/.test(x.textContent)); return a && a.href; });
     ok(/^https:\/\/www\.samsclub\.com\/search\?q=/.test(swapHref || ""), `swaps search Sam's Club, not Walmart (${swapHref})`);
+    // A prefilled problem report: the product, its page, where the numbers came from and the verdict; nothing about you.
+    const rep = await panel.evaluate(() => { const a = [...document.querySelectorAll("a")].find(x => /Wrong verdict\? Report it/.test(x.textContent)); return a && a.href; });
+    const rq = rep ? new URL(rep) : null, rbody = rq ? rq.searchParams.get("body") : "";
+    ok(rq && rq.origin + rq.pathname === "https://github.com/QuocHHDo/should-i-buy-it/issues/new" && /^Wrong verdict or number: Cheerios/.test(rq.searchParams.get("title")) &&
+      /Store: Sam's Club/.test(rbody) && /Page: https:\/\/www\.samsclub\.com\/ip\//.test(rbody) && /Numbers from: The Nutrition Facts on this Sam's Club page/.test(rbody) && /Verdict \(standard goals\): /.test(rbody) && !/2000|goal/i.test(rbody.replace("standard goals", "")),
+      `the panel has a prefilled 'Wrong verdict? Report it' link (${(rbody || "").split("\n").slice(0, 4).join(" / ")})`);
     await sw.evaluate(() => chrome.storage.local.set({ profile: null }));
 
     // ---- 8d. Costco: no Nutrition Facts on the page, so the barcode; the badge right of the stars ----
