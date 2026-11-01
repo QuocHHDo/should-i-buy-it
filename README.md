@@ -48,16 +48,17 @@ Each serving gets a point score from about a dozen rules measured against your g
 ## Testing
 
 ```sh
-npm test            # 116 unit tests (node tests/run.js): data, verdict rules, swaps, search, API conversions, quiz, evals
+npm test            # 205 unit tests (node tests/run.js): data, verdict rules, swaps, search, API conversions, OCR parsing, prices, quiz, evals
+npm run typecheck   # TypeScript checks every js/ and extension/ file from JSDoc (tsconfig.json); nothing is built or emitted
 node tests/verdict-dump.js > verdicts.csv   # every built-in food's verdict and reasons, for eyeballing outliers
 node scripts/build-additives.mjs <openfoodfacts-server>/taxonomies   # regenerate js/additives-data.js from Open Food Facts
 BLS_CONTACT=you@example.com node scripts/fetch-prices.mjs /tmp/prices && node scripts/build-prices.mjs /tmp/prices   # rebuild js/prices-data.js (the Update prices workflow does this monthly)
 npm install && npm run test:ui   # click-through test of every feature in both versions + axe accessibility check
-npm run test:layout # Playwright: layout at 320/375/414/1280 px, plus a real barcode decode from a fake camera
+npm run test:layout # Playwright: layout at 320/375/414/1280 px, a real barcode decode from a fake camera, the phone app (compare, label photos, prices) and the extension in Chromium
 npm run snapshot    # after an intentional rule or data change: rewrite the verdict snapshot, then review the diff
 ```
 
-A snapshot of every food's verdict catches unintended scoring changes. Both suites run on every push. The UI test mocks USDA, Open Food Facts and Claude responses using their documented formats. Color contrast was checked separately against WCAG AA (4.5:1) in light and dark themes.
+A snapshot of every food's verdict catches unintended scoring changes. The **Tests** workflow runs everything on every push: unit tests and the type check, the jsdom click-through, and the real-browser tests in Chromium. The UI test mocks USDA, Open Food Facts and Claude responses using their documented formats. Color contrast was checked separately against WCAG AA (4.5:1) in light and dark themes.
 
 ## Accuracy evals
 
@@ -101,7 +102,14 @@ js/foods.js                built-in food data
 js/verdict.js              scoring, explanations, swaps, per-100-calorie view, plate totals (pure)
 js/sources.js              USDA, Open Food Facts and Claude conversions + the Claude prompt (pure)
 js/learn.js                quiz questions and spaced repetition (pure)
-js/app.js                  UI
+js/compare.js              what a comparison marks as better, price rows, the one-line answer (pure)
+js/prices.js               typical prices, your prices (by barcode), shelf-tag parsing (pure)
+js/labelocr.js             label text from OCR into numbers, with checks (pure); js/labelscan.js runs the OCR
+js/walmart.js, js/costco.js store page readers (pure)
+js/dom.js                  element helpers shared by the app and the extension's pages
+js/camera.js               camera barcode scanning
+js/app.js                  the app's screens and state
+types/globals.d.ts, tsconfig.json   type checking only
 sw.js, manifest.webmanifest, icons/   offline and install support
 vendor/html5-qrcode.min.js barcode scanner (Apache-2.0), loaded only when scanning
 tests/                     unit tests, fixtures, verdict snapshot; tests/ui/ click-through + accessibility

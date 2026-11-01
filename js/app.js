@@ -5,6 +5,7 @@
   const V = window.SelfCheckVerdict;
   const S = window.SelfCheckSources;
   const Q = window.SelfCheckSearch;
+  const CMP = window.SelfCheckCompare; // js/compare.js
   const CFG = Object.assign({ mode: "pages" }, window.SELF_CHECK_CONFIG || {});
   const PAGES = CFG.mode === "pages";
   const CAT_LABEL = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
@@ -34,19 +35,7 @@
   const byName = n => allFoods().find(f => f.n === n);
 
   // ---------- small helpers ----------
-  /** @type {(id: string) => any} */
-  const $ = id => document.getElementById(id);
-  const el = (tag, attrs = {}, ...kids) => {
-    const e = document.createElement(tag);
-    for (const [k, v] of Object.entries(attrs)) {
-      if (v == null || v === false) continue;
-      // "html" is only for the app's own fixed SVG icons, never for text from users or lookups.
-      if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k === "html") e.innerHTML = v; else if (k === "style") e.style.cssText = v;
-      else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v === true ? "" : v);
-    }
-    for (const c of kids) if (c != null && c !== false) e.append(c);
-    return e;
-  };
+  const { el, $ } = window.SelfCheckDom; // js/dom.js
   const fmt = V.fmt;
   const pct = (v, dv) => Math.round(v / dv * 100) + "%";
   // Amounts that respect missing data: "—" when the source didn't report it, "≥" when it's a plate's lower bound.
@@ -349,11 +338,6 @@
   }
 
   // ---------- compare ----------
-  const CMP_ROWS = [
-    ["Calories", "cal", "", null], ["Protein", "pro", " g", "more"], ["Fiber", "fib", " g", "more"],
-    ["Saturated fat", "sat", " g", "less"], ["Sodium", "na", " mg", "less"], ["Added sugar", "add", " g", "less"],
-    ["Total sugars", "sug", " g", null], ["Total carbs", "carb", " g", null], ["Total fat", "fat", " g", null], ["Cholesterol", "chol", " mg", null],
-  ];
   // Shelf prices for the two products being compared: the price and the package size, as the shelf tag shows them.
   // Saved like "Use my store's price", so the product's own page uses them too.
   function shelfPrices(f, g) {
@@ -406,35 +390,18 @@
       const thead = el("thead", {}, el("tr", {}, el("th", { text: a.s === "100 calories" ? "Per 100 calories" : "Per serving" }),
         el("th", {}, f.n, el("span", { class: "sv", text: a.s === "100 calories" ? "100 calories" : servingText(a) }), pill(va)),
         el("th", {}, compareWith.n, el("span", { class: "sv", text: b.s }), pill(vb))));
-      const tbody = el("tbody"), better = [[], []];
-      for (const [label, k, unit, dir] of CMP_ROWS) {
-        const x = a[k], y = b[k];
-        const unknown = V.isMissing(a, k) || V.isMissing(b, k) || V.isLowerBound(a, k) || V.isLowerBound(b, k);
-        // Highlight only a meaningful difference: at least 10% apart and at least 5% of the Daily Value.
-        const win = !unknown && dir && V.meaningfulDiff(k, x, y) ? ((dir === "more") === (x > y) ? 0 : 1) : -1;
-        if (win >= 0) better[win].push(`${dir === "more" ? "more" : "less"} ${label.toLowerCase()}`);
-        const cell = (food, i) => el("td", { class: win === i ? "win" : null, text: amt(food, k, unit) });
-        tbody.append(el("tr", {}, el("td", { text: label }), cell(a, 0), cell(b, 1)));
-      }
-      // Price per serving, when both have one (lower highlighted when at least 10% and 5¢ apart): the shelf prices
-      // typed below, or typical prices for built-in foods. Then protein per dollar, when both are real protein sources.
+      // What's better and by how much is decided in js/compare.js; this draws it.
+      const tbody = el("tbody"), cell = (text, mark) => el("td", { class: mark ? "win" : null, text });
+      const nutrientRows = CMP.rows(a, b);
+      for (const r of nutrientRows) tbody.append(el("tr", {}, el("td", { text: r.label }), cell(amt(a, r.k, r.unit), r.win === 0), cell(amt(b, r.k, r.unit), r.win === 1)));
+      // Price per serving when both have one (the shelf prices typed below, or typical prices), then protein per dollar.
       const pa = PR && PR.price({ ...f, mult }, myPrices), pb = PR && PR.price(compareWith, myPrices);
-      if (pa && pb) {
-        const x = cmpBasis === "kcal" && a !== f ? pa.perServing * 100 / f.cal : pa.cost, y = cmpBasis === "kcal" && b !== compareWith ? pb.perServing * 100 / compareWith.cal : pb.cost;
-        const win = Math.abs(x - y) >= Math.max(0.05, 0.1 * Math.max(x, y)) ? (x < y ? 0 : 1) : -1;
-        tbody.append(el("tr", {}, el("td", { text: pa.mine && pb.mine ? "Price" : "Typical price" }), el("td", { class: win === 0 ? "win" : null, text: PR.money(x) }), el("td", { class: win === 1 ? "win" : null, text: PR.money(y) })));
-        const va2 = PR.value(f, pa), vb2 = PR.value(compareWith, pb);
-        if (va2 && vb2 && va2.k === "pro" && vb2.k === "pro") {
-          const w2 = Math.abs(va2.v - vb2.v) >= 0.1 * Math.max(va2.v, vb2.v) ? (va2.v > vb2.v ? 0 : 1) : -1;
-          tbody.append(el("tr", {}, el("td", { text: "Protein per $1" }), el("td", { class: w2 === 0 ? "win" : null, text: `${Math.round(va2.v)} g` }), el("td", { class: w2 === 1 ? "win" : null, text: `${Math.round(vb2.v)} g` })));
-        }
-      }
-      // The answer in one line, for reading in the aisle: who has the meaningful advantages, and the verdicts.
-      const list = xs => xs.length < 2 ? xs.join("") : xs.slice(0, -1).join(", ") + " and " + xs[xs.length - 1];
-      const has = (name, xs) => xs.length ? `${name} has ${list(xs)}` : "";
-      const lines = [has(f.n, better[0]), has(compareWith.n, better[1])].filter(Boolean);
-      const verdicts = va.word === vb.word ? `Both: ${va.word}.` : `${f.n}: ${va.word}. ${compareWith.n}: ${vb.word}.`;
-      sec.append(el("p", { class: "cmpsum", role: "status" }, el("b", { text: lines.length ? lines.join("; ") + "." : "No meaningful difference in the nutrients that count." }), " " + verdicts));
+      const perKcal = cmpBasis === "kcal" && a !== f && b !== compareWith && pa && pb ? [pa.perServing * 100 / f.cal, pb.perServing * 100 / compareWith.cal] : null;
+      for (const r of CMP.priceRows(pa, pb, pa && PR.value(f, pa), pb && PR.value(compareWith, pb), perKcal))
+        tbody.append(el("tr", {}, el("td", { text: r.label }), ...r.values.map((v, i) => cell(r.kind === "money" ? PR.money(v) : `${Math.round(v)} g`, r.win === i))));
+      // The answer in one line, for reading in the aisle.
+      const sum = CMP.summary(f.n, compareWith.n, nutrientRows, va.word, vb.word);
+      sec.append(el("p", { class: "cmpsum", role: "status" }, el("b", { text: sum.lead }), " " + sum.verdicts));
       sec.append(el("div", { class: "ctable-wrap" }, el("table", { class: "ctable" }, thead, tbody)),
         el("p", { class: "legend", text: a.s === "100 calories" ? "Green marks a meaningful difference (at least 10% apart and 5% of the daily value). Per 100 calories shows nutrient density: what you get for the same calories." : "Green marks a meaningful difference (at least 10% apart and 5% of the daily value). Servings differ, so compare against how much you'd actually eat, or switch to per 100 calories." }),
         shelfPrices(f, compareWith),
@@ -1167,7 +1134,7 @@
   function startCompareFromHome() {
     compareScan = "first";
     // The installed app may already have the camera running: keep it, just change what the next scan does.
-    if (scanner && !$("scan").hidden) { showView("check", { history: false }); $("scanMsg").textContent = "Scan the first of the two products."; $("scan").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+    if (camera && camera.running()) { showView("check", { history: false }); $("scanMsg").textContent = "Scan the first of the two products."; $("scan").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
     startScanFromHome(); $("scanMsg").textContent = "Scan the first of the two products.";
   }
   function showCompare() {
@@ -1218,84 +1185,14 @@
     return null;
   }
 
-  // Camera scanning with the bundled html5-qrcode library, loaded only when needed.
-  // Every step has a way out: no camera API, a denied or unanswered permission prompt, a busy camera, or a
-  // scanner script that won't load all end in a clear message with the typed-barcode box focused.
-  let scanner = null, scanTry = 0;
-  function loadScript(src) {
-    return new Promise((ok, fail) => { if (window.Html5Qrcode) return ok(); const s = el("script", { src }); s.onload = ok; s.onerror = () => fail(Object.assign(new Error("script"), { name: "ScriptError" })); document.head.append(s); });
-  }
-  // html5-qrcode sometimes rejects with a plain string ("… NotAllowedError: Permission denied"), so read the name from either.
-  const CAMERA_ERRORS = /(NotAllowedError|PermissionDeniedError|SecurityError|NotFoundError|DevicesNotFoundError|OverconstrainedError|NotReadableError|TrackStartError|AbortError)/;
-  const errName = e => (e && e.name && e.name !== "Error" ? e.name : (String(e && (e.message || e)).match(CAMERA_ERRORS) || [])[1]);
-  function cameraMessage(e) {
-    switch (errName(e)) {
-      case "NoCameraApi": return "This browser can't use the camera here (it needs a secure https page). Type the barcode number below.";
-      case "NotAllowedError": case "PermissionDeniedError": case "SecurityError": return "Camera access is blocked for this site. Allow it in your browser's site settings (the icon left of the address), then tap Scan barcode again. Or type the number below.";
-      case "NotFoundError": case "OverconstrainedError": case "DevicesNotFoundError": return "No camera was found on this device. Type the barcode number below.";
-      case "NotReadableError": case "TrackStartError": case "AbortError": return "The camera is in use by another app or tab. Close it and tap Scan barcode again, or type the number below.";
-      case "TimeoutError": return "The camera didn't start. Tap Scan barcode to try again, or type the number below.";
-      case "ScriptError": return "The scanner couldn't load (are you offline?). Type the barcode number below.";
-      default: return "The camera couldn't start. Type the barcode number below.";
-    }
-  }
-  function scanFailed(e) {
-    scanTry++;
-    $("scanMsg").textContent = cameraMessage(e);
-    $("scanBtn").removeAttribute("aria-busy");
-    const s = scanner; scanner = null;
-    try { if (s) { if (s.isScanning) s.stop().catch(() => {}); s.clear(); } } catch {}
-    $("code").focus();
-  }
-  const CAMERA_WAIT_MS = CFG.cameraWaitMs || 3000, START_MS = CFG.cameraStartMs || 15000;
-  const stopStream = st => { try { (st && st.getTracks ? st.getTracks() : []).forEach(t => t.stop()); } catch {} };
-  async function openScan() {
-    const attempt = ++scanTry;
-    $("scan").hidden = false; $("scanMsg").textContent = "Starting the camera…";
-    $("scanBtn").setAttribute("aria-busy", "true");
-    $("code").focus();
-    if (!window.isSecureContext || !(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) return scanFailed({ name: "NoCameraApi" });
-    // Already blocked for this site: say so now instead of waiting on a prompt that won't appear.
-    try { const st = navigator.permissions && await navigator.permissions.query({ name: "camera" }); if (st && st.state === "denied") return scanFailed({ name: "NotAllowedError" }); } catch {}
-    if (attempt !== scanTry) return;
-    // While the browser's permission prompt is up, explain what we're waiting for.
-    const waiting = setTimeout(() => { if (attempt === scanTry) $("scanMsg").textContent = "Waiting for camera permission. Allow it in your browser, or type the number below."; }, CAMERA_WAIT_MS);
-    try {
-      // Ask for the camera ourselves first, so the browser's own error (NotAllowedError, NotFoundError,
-      // NotReadableError) comes back intact, and the wait for the prompt isn't cut short.
-      const gum = navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-      gum.then(st => { if (attempt !== scanTry) stopStream(st); }, () => {}); // answered after we gave up: release it
-      stopStream(await withTimeout(gum, CAMERA_MS));
-      clearTimeout(waiting);
-      if (attempt !== scanTry) return;
-      $("scanMsg").textContent = "Starting the camera…";
-      await withTimeout((async () => {
-        await loadScript("vendor/html5-qrcode.min.js");
-        const lib = window.__Html5QrcodeLibrary__ || {};
-        const F = window.Html5QrcodeSupportedFormats || lib.Html5QrcodeSupportedFormats;
-        const Scanner = window.Html5Qrcode || lib.Html5Qrcode;
-        // Decoding uses the browser's BarcodeDetector when it has one, and the bundled ZXing decoder otherwise
-        // (desktop Chrome on Windows/Linux, Firefox, older Safari).
-        const sc = new Scanner("reader", { verbose: false, formatsToSupport: [F.EAN_13, F.EAN_8, F.UPC_A, F.UPC_E], experimentalFeatures: { useBarCodeDetectorIfSupported: true } });
-        scanner = sc;
-        await sc.start({ facingMode: "environment" }, { fps: 10, qrbox: (w, h) => ({ width: Math.floor(w * 0.95), height: Math.floor(Math.max(h * 0.6, Math.min(h, 120))) }) },
-          async decoded => { await closeScan(); barcodeLookup(decoded); }, () => {});
-        // Started after we gave up (timeout) or the panel was closed: turn the camera back off.
-        if (attempt !== scanTry) { try { await sc.stop(); sc.clear(); } catch {} }
-      })(), START_MS);
-      if (attempt !== scanTry) return; // closed or restarted meanwhile
-      $("scanBtn").removeAttribute("aria-busy");
-      $("scanMsg").textContent = compareScan === "second" && current ? `Now scan the second product to compare with ${current.n}.` : compareScan === "first" ? "Scan the first of the two products." : "Point your camera at the barcode and move closer until it fills the box.";
-    } catch (e) {
-      clearTimeout(waiting);
-      if (attempt === scanTry) scanFailed(e);
-    }
-  }
-  async function closeScan() {
-    scanTry++;
-    try { if (scanner) { if (scanner.isScanning) await scanner.stop(); scanner.clear(); } } catch {}
-    scanner = null; $("scan").hidden = true; $("scanBtn").removeAttribute("aria-busy");
-  }
+  // Camera scanning (js/camera.js). Created on first use: the Claude version has no scanner.
+  let camera = null;
+  const cam = () => camera || (camera = window.SelfCheckCamera.create({
+    ui: { panel: $("scan"), message: $("scanMsg"), button: $("scanBtn"), code: $("code"), reader: "reader" },
+    onCode: code => barcodeLookup(code),
+    readyText: () => compareScan === "second" && current ? `Now scan the second product to compare with ${current.n}.` : compareScan === "first" ? "Scan the first of the two products." : "Point your camera at the barcode and move closer until it fills the box.",
+    timeouts: { wait: CFG.cameraWaitMs, permission: CAMERA_MS, start: CFG.cameraStartMs } }));
+  const openScan = () => cam().open(), closeScan = () => cam().close();
 
   // Claude lookup (Claude version only), via the page's `sample` capability.
   let sampleFn = null, sampleState = PAGES ? "none" : "pending";

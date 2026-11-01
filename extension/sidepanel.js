@@ -6,16 +6,9 @@
   const V = self.SelfCheckVerdict, C = self.SelfCheckCard, ADD = self.SelfCheckAdditives, ING = self.SelfCheckIngredients, B = self.SelfCheckBackup;
   const { FOODS } = self.SelfCheckData;
   const SITE = "https://quochhdo.github.io/should-i-buy-it/";
-  /** @type {(id: string) => any} */
-  const $ = id => document.getElementById(id);
+  const { el, $ } = self.SelfCheckDom; // lib/dom.js, shared with the app
   const get = keys => new Promise(r => chrome.storage.local.get(keys, v => r(v || {})));
   const set = obj => new Promise(r => chrome.storage.local.set(obj, r));
-  const el = (tag, attrs = {}, ...kids) => {
-    const e = document.createElement(tag);
-    for (const [k, v] of Object.entries(attrs)) { if (v == null || v === false) continue; if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k === "html") e.innerHTML = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); }
-    for (const c of kids) if (c != null && c !== false) e.append(c);
-    return e;
-  };
   const cap = s => s ? s[0].toUpperCase() + s.slice(1) : s;
   const ordinal = n => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
 

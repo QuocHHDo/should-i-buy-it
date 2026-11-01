@@ -2,7 +2,7 @@
 // Same-origin files are served from the cache and refreshed in the background,
 // so the app opens instantly in a store with no signal and still picks up updates.
 // The barcode library (375 KB) is not precached: scanning needs a connection anyway, and it is cached on first use.
-const CACHE = "self-check-v43";
+const CACHE = "self-check-v44";
 const SHELL = [
   "./",
   "index.html",
@@ -18,6 +18,9 @@ const SHELL = [
   "js/ingredients.js",
   "js/supplement.js",
   "js/labelocr.js",
+  "js/dom.js",
+  "js/compare.js",
+  "js/camera.js",
   "js/labelscan.js",
   "js/verdict.js",
   "js/sources.js",
