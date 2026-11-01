@@ -168,6 +168,18 @@ const serve = () => new Promise(resolve => {
       `a copy saved before the check is fixed on load, and the card says what was wrong (${oat.note})`);
     ok(/Sodium —/.test(oat.label) && !/240,000mg/.test(oat.label) && /Trans Fat —/.test(oat.label), "the label shows those lines as unknown, not the impossible numbers");
     if (SHOTS) await page.screenshot({ path: path.join(SHOTS, "app6-bad-record.png"), fullPage: false });
+    ok(await page.$$eval("#out .partial-note", n => n.length) === 1, "the impossible values aren't repeated as 'not reported'");
+    await ctx.close();
+    // A missing number gets a sentence only when it could change the verdict.
+    const cola = { n: "Test cola", a: [], s: "355 ml", c: "lookup", tags: [], src: "off", code: "1", cal: 140, fat: 0, sat: 0, trans: 0, chol: 0, na: 0, carb: 39, fib: 0, sug: 39, add: 39, pro: 0, missing: ["na", "fib"], checked: 1, addLikelyZero: false };
+    const oats = { n: "Test oats", a: [], s: "1 packet (40 g)", c: "lookup", tags: [], src: "off", code: "2", cal: 150, fat: 3, sat: 0.5, trans: 0, chol: 0, na: 0, carb: 27, fib: 4, sug: 1, add: 0, pro: 5, missing: ["na"], checked: 1, addLikelyZero: false };
+    ({ ctx, page } = await open("", { seed: { lookups: [cola, oats] } }));
+    await page.fill("#q", "Test cola"); await page.press("#q", "Enter"); await page.waitForFunction(() => /Test cola/.test(document.querySelector("#out h2").textContent));
+    const colaNote = await page.$$eval("#out .partial-note", n => n.map(x => x.textContent));
+    await page.fill("#q", "Test oats"); await page.press("#q", "Enter"); await page.waitForFunction(() => /Test oats/.test(document.querySelector("#out h2").textContent));
+    const oatsNote = await page.$$eval("#out .partial-note", n => n.map(x => x.textContent));
+    ok(colaNote.length === 0 && oatsNote.length === 1 && oatsNote[0] === "Sodium isn't listed for this product, so the verdict could change. Check the package.",
+      `missing sodium: no note on cola (Limit it either way); one plain sentence on oats, where it matters (${JSON.stringify(oatsNote)})`);
     await ctx.close();
 
     // 6b. A photo of the label (a real one: Skippy peanut butter, Open Food Facts, CC BY-SA 3.0), read on the phone,

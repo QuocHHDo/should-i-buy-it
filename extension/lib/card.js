@@ -148,8 +148,32 @@
   // cost a food a plus, so it doesn't make the verdict less certain on its own.
   // Missing added sugar doesn't count when total sugars are too low for it to matter: the same rule the verdict uses
   // (below the share of your limit where added sugar starts to count).
-  const uncertain = (f, p = V.DEFAULT_PROFILE) => ["cal", "pro", "sat", "na"].some(k => V.isMissing(f, k)) ||
-    (V.isMissing(f, "add") && !f.addLikelyZero && !(!V.isMissing(f, "sug") && !V.isLowerBound(f, "sug") && f.sug < p.add * V.CUT.add[0]));
+  // Could the nutrients that aren't on file change the verdict? Score the food twice, with each missing number at its
+  // best plausible value and at its worst, bounded by what the label does say (saturated fat can't exceed total fat,
+  // added sugar can't exceed total sugars, protein can't exceed calories / 4). Same verdict both ways: the gap can't
+  // matter, so nobody needs to hear about it. Missing calories always matter.
+  const BIG = { sat: 0.6, na: 0.6, add: 0.6 }; // of the daily limit: beyond "counts double" for any goals
+  function uncertain(f, p = V.DEFAULT_PROFILE) {
+    const miss = (f.missing || []).filter(k => k !== "trans" && k !== "chol");
+    if (!miss.length) return false;
+    if (miss.includes("cal")) return true;
+    const known = k => !miss.includes(k) && !V.isLowerBound(f, k);
+    const best = { ...f, missing: [] }, worst = { ...f, missing: [] };
+    for (const k of miss) {
+      if (k === "sat") { best.sat = 0; worst.sat = known("fat") ? f.fat : p.sat * BIG.sat; }
+      else if (k === "na") { best.na = 0; worst.na = p.na * BIG.na; }
+      else if (k === "add") { best.add = 0; worst.add = known("sug") ? f.sug : f.addLikelyZero ? 0 : p.add * BIG.add; }
+      else if (k === "sug") { best.sug = known("add") ? f.add : 0; worst.sug = known("carb") ? Math.max(best.sug, f.carb - (known("fib") ? f.fib : 0)) : best.sug + 30; }
+      else if (k === "fat") { best.fat = known("sat") ? f.sat : 0; worst.fat = Math.max(best.fat, f.cal / 9); }
+      else if (k === "pro") { best.pro = f.cal / 4; worst.pro = 0; }
+      else if (k === "fib") { best.fib = known("carb") ? Math.max(0, f.carb - (known("sug") ? f.sug : 0)) : 15; worst.fib = 0; }
+      else if (k === "carb") { best.carb = 0; worst.carb = f.cal / 4; }
+      else return true;
+    }
+    // The actual verdict too: a missing number can hold back a "Get it" on its own.
+    const t = V.assess(f, p).tier;
+    return V.assess(best, p).tier !== t || V.assess(worst, p).tier !== t;
+  }
 
   return { headline, limitBars, reasons, swap, searchName, walmartSearch, perDollar, money, badgeReason, shortNote, TIERS, icon, uncertain };
 });

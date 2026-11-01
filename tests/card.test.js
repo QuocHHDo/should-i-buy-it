@@ -150,3 +150,21 @@ test("badge reasons fit in 40 characters and notes in 12 words", () => {
   for (const t of Object.keys(C.TIERS)) assert.match(C.icon(t), /^<svg[^>]*aria-hidden="true"/);
   assert.notEqual(C.TIERS.good.shape, C.TIERS.bad.shape);
 });
+
+test("a missing number only counts as 'less certain' when it could change the verdict", () => {
+  const S = require("../js/sources.js"), P = V.DEFAULT_PROFILE;
+  // Cola without sodium: "Limit it" for its sugar, whatever the sodium.
+  const cola = S.makeFood("Cola", "355 ml", { cal: 140, fat: 0, sat: 0, carb: 39, sug: 39, add: 39, pro: 0 }, { missing: ["na", "fib", "chol", "trans"] });
+  assert.equal(C.uncertain(cola, P), false);
+  // Plain oats without sodium: could be anything from fine to salty, so it matters.
+  const oats = S.makeFood("Instant oats", "1 packet (40 g)", { cal: 150, fat: 3, sat: 0.5, carb: 27, fib: 4, sug: 1, add: 0, pro: 5 }, { missing: ["na"] });
+  assert.equal(C.uncertain(oats, P), true);
+  // Peanut butter without saturated fat: bounded by its 16 g of total fat, which could make it worse.
+  const pb = S.makeFood("PB", "32 g", { cal: 190, fat: 16, carb: 7, fib: 2, sug: 3, add: 2, pro: 7, na: 150 }, { missing: ["sat"] });
+  assert.equal(C.uncertain(pb, P), true);
+  // Water with no fiber listed: nothing missing can move it.
+  const water = S.makeFood("Sparkling water", "355 ml", { cal: 0, fat: 0, sat: 0, na: 0, carb: 0, sug: 0, add: 0, pro: 0 }, { missing: ["fib"] });
+  assert.equal(C.uncertain(water, P), false);
+  // Missing calories always matter.
+  assert.equal(C.uncertain(S.makeFood("X", "1", { fat: 1, carb: 1, pro: 1 }, { missing: ["cal"] }), P), true);
+});

@@ -135,10 +135,10 @@ const ok = (cond, msg) => { console.log((cond ? "PASS " : "FAIL ") + msg); if (!
     await page.keyboard.press("Tab");
     ok(await page.evaluate(async () => { const h = document.getElementById("should-i-buy-it-badge"); for (let i = 0; i < 12 && document.activeElement !== h; i++) await new Promise(r => setTimeout(r, 10)); return true; }), "the badge is a real button, so it's in the keyboard order");
 
-    // Missing data that could change the verdict does get a ⚠ on the badge.
+    // Missing data gets a ⚠ only when it could change the verdict: cola is "Limit it" for its sugar whatever its sodium.
     await page.goto("https://www.walmart.com/ip/Coca-Cola-Fridge-Pack/12166733");
     b = await badge(/Limit it/);
-    ok(/⚠$/.test(b.text) && /Warning: Some nutrients that decide the verdict aren't listed/.test(b.label), `missing sodium makes the verdict less certain: the badge shows ⚠ (${b.text})`);
+    ok(!/⚠/.test(b.text) && !/Warning/.test(b.label), `missing sodium that can't change the verdict: no ⚠ (${b.text})`);
     await page.goto("https://www.walmart.com/ip/Caffeine-Free-Diet-Coke-12-fl-oz-12-pack/12166734"); b = await badge(/Fine/);
 
     // ---- 2. The side panel: what the click opens ----

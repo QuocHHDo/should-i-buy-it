@@ -64,6 +64,7 @@
     if (!Array.isArray(f.missing)) f.missing = [];
     const issues = impossible(f, categories);
     for (const { k } of issues) { f[k] = 0; f.missing.push(k); }
+    if (issues.length) f.issueKeys = [...new Set([...(f.issueKeys || []), ...issues.map(x => x.k)])];
     const gap = energyGap(f);
     const all = [...new Set([...(f.issues || []), ...issues.map(x => x.text), ...(gap ? [gap] : [])])];
     if (all.length) f.issues = all;

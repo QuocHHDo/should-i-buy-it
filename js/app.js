@@ -461,8 +461,20 @@
       `${f.issues.join("; ").replace(/^./, c => c.toUpperCase())}. The impossible ones are left out; check the package.`,
       f.src === "off" && f.code ? " " : null,
       f.src === "off" && f.code ? el("a", { href: `https://world.openfoodfacts.org/product/${encodeURIComponent(f.code)}`, target: "_blank", rel: "noopener", text: "Fix it on Open Food Facts" }) : null) : null;
-    const missingNote = V.missingNote(scaled);
-    const partial = missingNote ? el("p", { class: "partial-note", role: "note" }, el("b", { text: "Partial data. " }), missingNote.replace(/^Partial data: /, "") + " Shown as “—” and not counted.") : null;
+    // A number that isn't on file is only worth a sentence when it could change the verdict (window.SelfCheckCard's
+    // uncertain(): the food scored with the missing numbers at their best and worst plausible values). Otherwise the
+    // label's "—" says enough. Plates keep their own note, since their totals can be minimums.
+    const C2 = window.SelfCheckCard;
+    let partial = null;
+    if (isPlate) { const mn = V.missingNote(scaled); if (mn) partial = el("p", { class: "partial-note", role: "note" }, mn.replace(/^Partial data: /, "") + " Shown as “—” and not counted."); }
+    else {
+      const NAMES = { cal: "calories", fat: "total fat", sat: "saturated fat", na: "sodium", carb: "carbohydrate", fib: "fiber", sug: "total sugars", add: "added sugar", pro: "protein" };
+      const keys = (f.missing || []).filter(k => NAMES[k] && !(f.issueKeys || []).includes(k));
+      if (keys.length && (!C2 || C2.uncertain(f, profile))) {
+        const words = keys.map(k => NAMES[k]), list = words.length < 2 ? words[0] : words.slice(0, -1).join(", ") + " and " + words[words.length - 1];
+        partial = el("p", { class: "partial-note", role: "note" }, `${list[0].toUpperCase() + list.slice(1)} ${keys.length > 1 ? "aren't" : "isn't"} listed for this product, so the verdict could change. Check the package.`);
+      }
+    }
     const ICON = { pos: "+", neg: "−", warn: "!", note: "i" };
     const reasons = el("ul", { class: "reasons" });
     for (const r of a.reasons) reasons.append(el("li", { class: r.k }, el("span", { class: "ic", "aria-hidden": "true", text: ICON[r.k] || "i" }), el("span", { text: r.t })));

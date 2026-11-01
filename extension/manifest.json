@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Should I Buy It? Shopping helper",
   "short_name": "Should I Buy It?",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "See whether a food fits your nutrition goals on Walmart, Sam's Club and Costco product pages. Free and private, all in your browser.",
   "icons": {
     "16": "icons/icon-16.png",
