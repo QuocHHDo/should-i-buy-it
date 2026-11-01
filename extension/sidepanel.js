@@ -290,7 +290,7 @@
     const listedAs = !r.typical && f.n && prod.name && !String(prod.name).toLowerCase().includes(String(f.n).toLowerCase()) && r.source !== "this page" ? ` It's listed there as “${f.n}”.` : "";
     return el("section", { class: "foot" },
       el("p", {}, el("b", { text: "Source: " }), `${r.detail}.${listedAs}${r.note ? " " + r.note : ""}`),
-      f.issues && f.issues.length ? el("p", { class: "banner", role: "note" }, el("b", { text: "Some numbers in that record can't be right: " }), `${f.issues.join("; ")}. The impossible ones are left out; check the package.`) : null,
+      f.issues && f.issues.length ? el("p", { class: "banner", role: "note", title: f.issues.join("; ") }, self.SelfCheckSources.issueSummary(f)) : null,
       disclosure("about", "About this verdict", null,
         el("p", { text: "It doesn't check allergens: read the label if you have a food allergy." }),
         el("p", { text: `Scored against your goals: ${profile.cal.toLocaleString("en-US")} cal, ${profile.pro} g protein, ≤${profile.sat} g saturated fat, ≤${profile.na.toLocaleString("en-US")} mg sodium, ≤${profile.add} g added sugar.` }),

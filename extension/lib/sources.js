@@ -73,6 +73,15 @@
     return f;
   }
 
+  // The one-line version of f.issues: "Some numbers look wrong (sodium, trans fat, cholesterol), so they aren't counted."
+  const ISSUE_NAMES = { na: "sodium", trans: "trans fat", sat: "saturated fat", chol: "cholesterol", fib: "fiber", sug: "sugars", add: "added sugar" };
+  function issueSummary(f) {
+    if (!f.issues || !f.issues.length) return null;
+    const names = (f.issueKeys || []).map(k => ISSUE_NAMES[k]).filter(Boolean);
+    if (names.length) return `Some numbers look wrong (${names.join(", ")}), so they aren't counted. Check the package.`;
+    return "The calories don't match the other numbers. Check the package.";
+  }
+
   function makeFood(name, serving, v, extra = {}) {
     const f = { n: String(name).slice(0, 70), a: [], s: String(serving || "1 serving").slice(0, 50), c: "lookup", tags: [] };
     for (const k of V.NUM_KEYS) f[k] = Math.round(num(v[k]) * 10) / 10;
@@ -304,5 +313,5 @@ If "${text}" is not a food, reply {"found":false}.`;
     return f;
   }
 
-  return { PROCESSED, makeFood, check, settleAddedSugar, fromUsda, fromOff, usdaSearchUrl, usdaFoodUrl, usdaUpcQueries, usdaUpcUrl, matchUpc, brandedSearchUrl, rankBranded, storeBrand, isWalmart, STORE_BRANDS, linkId, parseLinkId, titleCase, offProductUrl, claudePrompt, parseJsonReply, fromClaude };
+  return { PROCESSED, makeFood, check, issueSummary, settleAddedSugar, fromUsda, fromOff, usdaSearchUrl, usdaFoodUrl, usdaUpcQueries, usdaUpcUrl, matchUpc, brandedSearchUrl, rankBranded, storeBrand, isWalmart, STORE_BRANDS, linkId, parseLinkId, titleCase, offProductUrl, claudePrompt, parseJsonReply, fromClaude };
 });

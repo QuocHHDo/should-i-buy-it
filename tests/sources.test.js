@@ -77,6 +77,7 @@ test("a mistyped crowd-sourced record: Kirkland oat drink on Open Food Facts (Oc
   assert.ok(f.na === 0 && f.trans === 0 && f.chol === 0 && f.partial);
   assert.deepEqual(f.issues, ["sodium 240,000 mg in a 240 g serving", "trans fat 12 g, more than the 5 g of total fat", "cholesterol 41 mg in a plant-based drink",
     "fat, carbs and protein add up to about 211 calories, not the 120 listed"]);
+  assert.equal(S.issueSummary(f), "Some numbers look wrong (sodium, trans fat, cholesterol), so they aren't counted. Check the package.");
   // Real labels pass untouched: the Nutella and peanut butter records the tests already use.
   const nutella = S.fromOff("3017620422003", require("./fixtures/off-nutella.json").product);
   assert.equal(nutella.issues, undefined);

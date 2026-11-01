@@ -156,15 +156,15 @@ const serve = () => new Promise(resolve => {
     ({ ctx, page } = await open("", { seed: { lookups: [oldCopy] } }));
     await page.route("**/world.openfoodfacts.org/**", r => r.fulfill({ contentType: "application/json", body: JSON.stringify({ code: "0096619237432", status: 1, product: OAT }) }));
     await page.fill("#q", "Kirkland Signature Oat"); await page.press("#q", "Enter");
-    await page.waitForFunction(() => /can't be right/.test(document.getElementById("out").textContent));
+    await page.waitForFunction(() => /look wrong/.test(document.getElementById("out").textContent));
     // A barcode typed in the search box is looked up as a barcode, whether you press Check or tap the suggestion row.
     await page.fill("#q", ""); await page.type("#q", "0096619237432");
     const row = await page.textContent("#suggest li.action");
     await page.click("#suggest li.action");
-    await page.waitForFunction(() => /can't be right/.test(document.getElementById("out").textContent) && !/No packaged product/.test(document.getElementById("out").textContent));
+    await page.waitForFunction(() => /look wrong/.test(document.getElementById("out").textContent) && !/No packaged product/.test(document.getElementById("out").textContent));
     ok(/^Look up barcode 0096619237432$/.test(row.trim()), `typing a barcode offers 'Look up barcode', and it finds the product (${row.trim()})`);
-    const oat = await page.evaluate(() => ({ note: document.querySelector("#out .partial-note").textContent, label: document.querySelector("#out .leftcol").textContent.replace(/\s+/g, " ") }));
-    ok(/Sodium 240,000 mg in a 240 g serving; trans fat 12 g, more than the 5 g of total fat; cholesterol 41 mg in a plant-based drink; fat, carbs and protein add up to about 211 calories, not the 120 listed\. The impossible ones are left out; check the package\. Fix it on Open Food Facts/.test(oat.note),
+    const oat = await page.evaluate(() => ({ note: document.querySelector("#out .partial-note > span").textContent, more: document.querySelector("#out .issue-more").textContent.replace(/\s+/g, " "), open: document.querySelector("#out .issue-more").open, label: document.querySelector("#out .leftcol").textContent.replace(/\s+/g, " ") }));
+    ok(oat.note === "Some numbers look wrong (sodium, trans fat, cholesterol), so they aren't counted. Check the package." && !oat.open && /Sodium 240,000 mg in a 240 g serving/.test(oat.more) && /about 211 calories, not the 120 listed/.test(oat.more) && /Fix it on Open Food Facts/.test(oat.more),
       `a copy saved before the check is fixed on load, and the card says what was wrong (${oat.note})`);
     ok(/Sodium —/.test(oat.label) && !/240,000mg/.test(oat.label) && /Trans Fat —/.test(oat.label), "the label shows those lines as unknown, not the impossible numbers");
     if (SHOTS) await page.screenshot({ path: path.join(SHOTS, "app6-bad-record.png"), fullPage: false });

@@ -457,10 +457,11 @@
     else src.append("Typical values for this serving. Brands vary.");
 
     // Numbers the source has that no label can have (a mistyped crowd-sourced record): left out, and said so.
-    const issues = f.issues && f.issues.length ? el("p", { class: "partial-note", role: "note" }, el("b", { text: "Some numbers in this record can't be right. " }),
-      `${f.issues.join("; ").replace(/^./, c => c.toUpperCase())}. The impossible ones are left out; check the package.`,
-      f.src === "off" && f.code ? " " : null,
-      f.src === "off" && f.code ? el("a", { href: `https://world.openfoodfacts.org/product/${encodeURIComponent(f.code)}`, target: "_blank", rel: "noopener", text: "Fix it on Open Food Facts" }) : null) : null;
+    // One short line; what exactly is wrong, and where to fix it, behind "Details".
+    const issues = f.issues && f.issues.length ? el("div", { class: "partial-note", role: "note" }, el("span", { text: S.issueSummary(f) }),
+      el("details", { class: "issue-more" }, el("summary", { text: "Details" }),
+        el("ul", {}, ...f.issues.map(t => el("li", { text: t.replace(/^./, c => c.toUpperCase()) }))),
+        f.src === "off" && f.code ? el("a", { href: `https://world.openfoodfacts.org/product/${encodeURIComponent(f.code)}`, target: "_blank", rel: "noopener", text: "Fix it on Open Food Facts" }) : null)) : null;
     // A number that isn't on file is only worth a sentence when it could change the verdict (window.SelfCheckCard's
     // uncertain(): the food scored with the missing numbers at their best and worst plausible values). Otherwise the
     // label's "—" says enough. Plates keep their own note, since their totals can be minimums.
