@@ -3,7 +3,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./verdict.js"));
   else root.SelfCheckLearn = factory(root.SelfCheckVerdict);
-})(typeof self !== "undefined" ? self : this, function (V) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (V) {
   const NUTRIENTS = [
     { k: "sat", word: "saturated fat", unit: " g", gap: 1.5 },
     { k: "na", word: "sodium", unit: " mg", gap: 100 },

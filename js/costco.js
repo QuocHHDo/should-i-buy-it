@@ -7,7 +7,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./walmart.js"), require("./supplement.js"));
   else root.SelfCheckCostco = factory(root.SelfCheckWalmart, root.SelfCheckSupplement);
-})(typeof self !== "undefined" ? self : this, function (W, SUP) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (W, SUP) {
   // "/p/-/general-mills-cheerios-cereal-2035-oz-2-count/100381496" and the older "….product.100381496.html".
   const productId = url => { const m = String(url).match(/\/p\/-\/[^/?#]+\/(\d{4,15})(?:[/?#]|$)|\.product\.(\d{4,15})\.html/); return m ? m[1] || m[2] : null; };
 
@@ -45,7 +45,7 @@
     const ld = ldBlocks(src), p = ld.find(j => j["@type"] === "Product"), bc = ld.find(j => j["@type"] === "BreadcrumbList");
     if (!p || !p.name) return null;
     const sku = p.sku ? String(p.sku) : "";
-    const rec = itemRecord(inlineData(src), sku) || {};
+    const rec = /** @type {any} */ (itemRecord(inlineData(src), sku) || {});
     const crumbs = bc && Array.isArray(bc.itemListElement) ? bc.itemListElement.map(x => x && (x.name || (x.item && x.item.name))).filter(Boolean) : [];
     const offer = Array.isArray(p.offers) ? p.offers[0] : p.offers;
     const now = offer && Number(offer.price);

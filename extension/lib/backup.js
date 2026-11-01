@@ -4,7 +4,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
   else root.SelfCheckBackup = factory();
-})(typeof self !== "undefined" ? self : this, function () {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function () {
   const APP = "should-i-buy-it", VERSION = 1;
   const str = (v, max = 200) => typeof v === "string" && v.length <= max ? v : null;
   const num = (v, lo, hi) => typeof v === "number" && Number.isFinite(v) && v >= lo && v <= hi ? v : null;

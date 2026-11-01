@@ -1,18 +1,26 @@
 name: Tests
+# Every push and pull request: the unit tests and the type check (fast), the jsdom click-through and accessibility
+# check, and the real-browser tests (layout, camera scanning, the phone app, and the extension in Chromium).
 on:
   push:
     branches-ignore: [eval-results, eval-results-branded]
   pull_request:
 jobs:
   unit:
+    name: Unit tests and type check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
       - run: npm test
+      - name: Type check (JSDoc + @ts-check; nothing is built)
+        run: npm run typecheck
   ui:
+    name: Click-through and accessibility (jsdom)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,3 +31,25 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - name: Click-through UI test (both versions) and accessibility check
         run: npm run test:ui
+  browser:
+    name: Real-browser tests (Chromium)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Layout, camera scanning, phone app, and the extension
+        run: npm run test:layout
+      - name: Screenshots, when something failed
+        if: failure()
+        run: mkdir -p shots && SHOTS_DIR=shots node tests/ui/app.js || true
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: screenshots
+          path: shots/

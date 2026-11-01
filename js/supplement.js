@@ -5,7 +5,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./ingredients.js"));
   else root.SelfCheckSupplement = factory(root.SelfCheckIngredients);
-})(typeof self !== "undefined" ? self : this, function (ING) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (ING) {
   const CAFFEINE_DAY = 400; // mg: FDA, "Spilling the Beans: How Much Caffeine is Too Much?"
   const CAFFEINE_SRC = "https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much";
   const SUPP_CATEGORY = /supplement|vitamins?\b|sports nutrition|pre-?workout|nutrition & fitness|herbal|minerals?\b|probiotics?/i;

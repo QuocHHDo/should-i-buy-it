@@ -4,7 +4,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./verdict.js"), require("./prices.js"));
   else root.SelfCheckMeals = factory(root.SelfCheckVerdict, root.SelfCheckPrices);
-})(typeof self !== "undefined" ? self : this, function (V, PR) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (V, PR) {
   const PROTEIN_CATS = new Set(["meat", "seafood", "plant", "dairy", "protein"]);
   // Not a meal's main protein: drinks, spreads and toppings.
   const NOT_MAIN = /milk|cheese|butter|ice cream|yogurt, flavored|cream/i;

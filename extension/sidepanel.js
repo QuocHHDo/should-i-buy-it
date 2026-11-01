@@ -6,6 +6,7 @@
   const V = self.SelfCheckVerdict, C = self.SelfCheckCard, ADD = self.SelfCheckAdditives, ING = self.SelfCheckIngredients, B = self.SelfCheckBackup;
   const { FOODS } = self.SelfCheckData;
   const SITE = "https://quochhdo.github.io/should-i-buy-it/";
+  /** @type {(id: string) => any} */
   const $ = id => document.getElementById(id);
   const get = keys => new Promise(r => chrome.storage.local.get(keys, v => r(v || {})));
   const set = obj => new Promise(r => chrome.storage.local.set(obj, r));

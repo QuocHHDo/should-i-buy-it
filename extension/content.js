@@ -152,6 +152,7 @@
   // The app's mark, so the badge reads as the extension's and not as part of Walmart's page.
   const MARK = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect width="24" height="24" rx="6" fill="#2c6a3d"/><rect x="4" y="7" width="16" height="11" rx="2.5" fill="#fff"/><circle cx="7.4" cy="12.5" r="1.3" fill="#2c6a3d"/><path d="M10.5 12.6l2.2 2.2 4.3-4.6" fill="none" stroke="#2c6a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   let badgeState = null; // what the badge shows now: { tier, word, reason, warn, label }
+  /** @returns {HTMLElement | null} */
   const anchor = () => STORE.id === "costco" ? document.getElementById("CostcoBVReviewContainer") : document.querySelector('[data-testid="reviews-and-ratings"]');
   function hostEl() {
     let host = document.getElementById(HOST_ID);
@@ -236,7 +237,7 @@
   let corner = "left";
   function protectedRects() {
     const rects = [];
-    for (const b of document.querySelectorAll("button, a[role=button], [role=button], input[type=submit]")) {
+    for (const b of /** @type {NodeListOf<HTMLInputElement>} */ (document.querySelectorAll("button, a[role=button], [role=button], input[type=submit]"))) {
       const t = (b.innerText || b.value || b.getAttribute("aria-label") || "").trim();
       if (!t || t.length > 30 || !BUY.test(t)) continue;
       const r = b.getBoundingClientRect();

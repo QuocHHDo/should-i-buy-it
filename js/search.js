@@ -3,7 +3,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
   else root.SelfCheckSearch = factory();
-})(typeof self !== "undefined" ? self : this, function () {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function () {
   const norm = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9/ ]/g, "").replace(/\s+/g, " ").trim();
   const MINOR = new Set(["a", "an", "and", "the", "of", "with", "in", "or", "for"]);
   const words = s => norm(s).split(" ").filter(w => w && !MINOR.has(w));

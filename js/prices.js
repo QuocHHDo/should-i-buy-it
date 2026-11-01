@@ -3,7 +3,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./prices-data.js"));
   else root.SelfCheckPrices = factory(root.SelfCheckPricesData);
-})(typeof self !== "undefined" ? self : this, function (DATA) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (DATA) {
   const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const monthLabel = ym => ym ? `${MONTHS[Number(ym.slice(5)) - 1]} ${ym.slice(0, 4)}` : "";
   const money = v => v == null ? "" : v < 0.995 ? `$${v.toFixed(2)}` : `$${v.toFixed(2)}`;

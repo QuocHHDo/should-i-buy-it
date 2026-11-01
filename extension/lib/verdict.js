@@ -3,7 +3,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./additives.js"));
   else root.SelfCheckVerdict = factory(root.SelfCheckAdditives);
-})(typeof self !== "undefined" ? self : this, function (ADD) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (ADD) {
   const fmt = n => (Math.round(n * 10) / 10).toString();
   const NUM_KEYS = ["cal", "fat", "sat", "trans", "chol", "na", "carb", "fib", "sug", "add", "pro"];
   const RANK = { bad: 0, mid: 1, fine: 1.5, good: 2 };
@@ -452,6 +452,7 @@
   };
   // Open Food Facts categories_tags → a swap group or one of our categories. Checked in order, so specific
   // tags come before broad ones; a product matches the first rule any of its tags fits.
+  /** @type {Array<[RegExp, string]>} */
   const OFF_CATEGORY = [
     [/protein-bars|protein-powders|protein-shakes/, "protein"],
     [/hummus|salted-spreads/, "plant"],
@@ -474,6 +475,7 @@
     [/meals|pizzas|soups|sandwiches|prepared/, "prepared"],
   ];
   // USDA foodCategory (SR Legacy food groups like "Nut and Seed Products", or survey categories like "Soft drinks").
+  /** @type {Array<[RegExp, string]>} */
   const USDA_CATEGORY = [
     [/baby/i, null],
     [/breakfast cereal|ready-to-eat cereal|oatmeal/i, "group:cereal"],
@@ -493,6 +495,7 @@
     [/fats and oils|oil|spice|herb|sauce|gravy|condiment|dressing|sugar/i, "condiments"],
   ];
   // USDA Branded Foods categories (the brand's own, e.g. "Chips, Pretzels & Snacks", "Nut & Seed Butters").
+  /** @type {Array<[RegExp, string]>} */
   const BRANDED_CATEGORY = [
     [/protein|nutrition(al)? (drinks?|shakes?|powders?)|meal replacement/i, "protein"],
     [/soda|soft drink/i, "group:soda"],
@@ -577,6 +580,7 @@
     return null;
   }
   // A packaged product's own name can say more than its store category ("Frosted Flakes" filed under "Pantry meal essentials").
+  /** @type {Array<[RegExp, string]>} */
   const NAME_TARGET = [[/\b(?:cereal|frosted flakes|corn flakes|cheerios|bran flakes|muesli)\b(?!.*\bbars?\b)/i, "group:cereal"],
     // Baked sweets: "Honey Buns" are a pastry, not honey.
     [/\b(?:honey buns?|donuts?|doughnuts?|pastr(?:y|ies)|cinnamon rolls?|muffins?|danish|cupcakes?|snack cakes?|brownies?|cookies?|zebra cakes|swiss rolls?|oatmeal creme pies?)\b/i, "snacks"]];
@@ -635,6 +639,7 @@
   // A lighter version of the same kind of food: at least 40% less of calories, sodium, added sugar or saturated
   // fat per serving (each counted only where the original has a real amount), and not meaningfully more of any.
   // Used only when nothing of that kind earns a better verdict; most condiments sit at "In moderation" either way.
+  /** @type {Array<[string, string, number, number]>} */
   const LIGHTER = [["cal", "fewer calories", 40, 10], ["na", "less sodium", 140, 40], ["add", "less added sugar", 2, 1], ["sat", "less saturated fat", 1, 0.5]];
   // Compared at the same weight when both servings give grams (a teaspoon of sugar isn't "lighter" than a tablespoon
   // of jam). Cooking fats are judged on the kind of fat, not on being lighter, so they're left out.
@@ -779,7 +784,7 @@
     const a = assess(f, p);
     if (a.score == null) return null;
     const meal = f.c === "plate";
-    const pts = n => a.reasons.filter(r => r.n === n).reduce((t, r) => t + r.d, 0);
+    const pts = n => a.reasons.filter(r => r.n === n).reduce((t, /** @type {any} */ r) => t + r.d, 0);
     const pct = v => Math.round(v * 100);
     const num = (k, v) => k === "na" || k === "cal" ? Math.round(v).toLocaleString("en-US") : fmt(v);
     const rows = [];

@@ -3,7 +3,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./verdict.js"));
   else root.SelfCheckSources = factory(root.SelfCheckVerdict);
-})(typeof self !== "undefined" ? self : this, function (V) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (V) {
   const PROCESSED = /bacon|sausage|salami|pepperoni|\bham\b|hot dog|frankfurter|bologna|jerky|deli|cured|smoked|corned/i;
   const num = v => { const n = Number(v); return Number.isFinite(n) && n >= 0 ? n : 0; };
 

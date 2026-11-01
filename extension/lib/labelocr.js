@@ -8,7 +8,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
   else root.SelfCheckLabelOcr = factory();
-})(typeof self !== "undefined" ? self : this, function () {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function () {
   // FDA Daily Values (21 CFR 101.9), as used for the %DV column.
   const DV = { fat: 78, sat: 20, chol: 300, na: 2300, carb: 275, fib: 28, add: 50 };
   const UNIT = { cal: "", fat: "g", sat: "g", trans: "g", chol: "mg", na: "mg", carb: "g", fib: "g", sug: "g", add: "g", pro: "g" };

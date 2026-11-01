@@ -4,7 +4,7 @@
 (function (root, factory) {
   const api = factory();
   if (typeof module === "object" && module.exports) module.exports = api; else root.SelfCheckData = api;
-})(typeof self !== "undefined" ? self : this, function () {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function () {
   const F = (n, a, s, cal, fat, sat, trans, chol, na, carb, fib, sug, add, pro, tags = []) =>
     ({ n, a, s, cal, fat, sat, trans, chol, na, carb, fib, sug, add, pro, tags });
   const CATEGORIES = [{"id": "fruit", "label": "Fruit"}, {"id": "veg", "label": "Vegetables"}, {"id": "meat", "label": "Meat & poultry"}, {"id": "seafood", "label": "Seafood"}, {"id": "plant", "label": "Beans & plant protein"}, {"id": "dairy", "label": "Eggs & dairy"}, {"id": "grains", "label": "Grains, bread & cereal"}, {"id": "nuts", "label": "Nuts & seeds"}, {"id": "protein", "label": "Protein powders & bars"}, {"id": "snacks", "label": "Snacks & sweets"}, {"id": "drinks", "label": "Drinks"}, {"id": "prepared", "label": "Prepared & takeout"}, {"id": "condiments", "label": "Condiments & oils"}];

@@ -2,6 +2,7 @@
 (() => {
   "use strict";
   const V = self.SelfCheckVerdict, B = self.SelfCheckBackup;
+  /** @type {(id: string) => any} */
   const $ = id => document.getElementById(id);
   const NUM = ["cal", "pro", "sat", "na", "add", "fib"];
   const status = (text, ok = true) => { $("status").textContent = text; $("status").className = ok ? "ok" : "err"; };

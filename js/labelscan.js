@@ -8,7 +8,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./labelocr.js"));
   else root.SelfCheckLabelScan = factory(root.SelfCheckLabelOcr);
-})(typeof self !== "undefined" ? self : this, function (L) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (L) {
   // Big phone photos are scaled down first: OCR time grows with pixels, and label type is still large enough.
   const MAX_SIDE = 2000;
   // The passes: as-is in block mode; grayscale with its contrast stretched; the same at 1.5x in sparse mode.
@@ -54,7 +54,8 @@
 
   // Reads the photo. `base` is where the Tesseract files are; onStep(text) reports progress for a screen reader-friendly
   // status line. Returns the merged result from js/labelocr.js.
-  async function read(blob, { base, onStep = () => {} } = {}) {
+  /** @param {Blob} blob @param {{ base: string, onStep?: (text: string) => void }} opts */
+  async function read(blob, { base, onStep = () => {} }) {
     onStep("Loading the label reader…");
     await loadScript(base + "tesseract.min.js");
     const worker = await Tesseract.createWorker("eng", 1, {

@@ -5,7 +5,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./verdict.js"), require("./sources.js"), require("./search.js"), require("./supplement.js"));
   else root.SelfCheckWalmart = factory(root.SelfCheckVerdict, root.SelfCheckSources, root.SelfCheckSearch, root.SelfCheckSupplement);
-})(typeof self !== "undefined" ? self : this, function (V, S, Q, SUP) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (V, S, Q, SUP) {
   // The stores the extension works on. Sam's Club runs on Walmart's platform: the same /ip/ product URLs, page data,
   // title and rating row, so one reader serves both; only names and search links differ.
   const STORES = {
@@ -83,7 +83,7 @@
     if (!price || !price.perUnit || !price.unit || !PER[price.unit] || !f) return null;
     const m = [...String(f.s || "").matchAll(/(\d+(?:\.\d+)?)\s*(g|ml)\b/gi)].pop();
     if (!m) return null;
-    const amount = Number(m[1]) * (f.mult || 1), [kind, size] = PER[price.unit];
+    const amount = Number(m[1]) * (f.mult || 1), [, size] = PER[price.unit];
     // Liquids priced per fl oz with a serving in grams (or the reverse): close enough to count 1 g as 1 ml.
     const cost = price.perUnit * amount / size;
     return Number.isFinite(cost) && cost > 0 ? Math.round(cost * 1000) / 1000 : null;
@@ -99,6 +99,7 @@
     return { v: m[1] ? v / 2 : v, u: m[3] || "" };
   }
   // Nutrient names on Walmart's panel → the app's keys.
+  /** @type {Array<[RegExp, string]>} */
   const NAMES = [[/^calories?$/, "cal"], [/^total fat$/, "fat"], [/^sat(urated)? fat$/, "sat"], [/^trans fat$/, "trans"], [/^cholest(erol)?$/, "chol"],
     [/^sodium$/, "na"], [/^(total )?carb(ohydrate)?s?$/, "carb"], [/^(dietary )?fiber$/, "fib"], [/^(total )?sugars?$/, "sug"],
     [/^(incl(udes|\.)? )?added sugars?$/, "add"], [/^protein$/, "pro"]];

@@ -5,7 +5,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./additives-data.js"), require("./additive-notes.js"));
   else root.SelfCheckAdditives = factory(root.SelfCheckAdditivesData, root.SelfCheckAdditiveNotes);
-})(typeof self !== "undefined" ? self : this, function (DATA, NOTES_DATA) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (DATA, NOTES_DATA) {
   const { FUNCTION = {}, NOTES = {}, STATUS = {} } = NOTES_DATA || {};
   const SRC = {
     tio2: "https://fas.usda.gov/data/european-union-titanium-dioxide-banned-food-additive-eu",

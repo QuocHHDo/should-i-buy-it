@@ -4,7 +4,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
   else root.SelfCheckBookmarklet = factory();
-})(typeof self !== "undefined" ? self : this, function () {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function () {
   const SOURCE = `(async()=>{try{
 const R=s=>JSON.parse(s).props.pageProps.initialData.data;
 const id=(location.pathname.match(/\\/ip\\/(?:[^/]+\\/)?(\\d+)/)||[])[1];

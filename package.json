@@ -2,7 +2,7 @@
   "name": "self-check",
   "version": "1.0.0",
   "private": true,
-  "description": "Should I Buy It? \u2014 search or scan a food to see its nutrition label and whether it fits your goals.",
+  "description": "Should I Buy It? — search or scan a food to see its nutrition label and whether it fits your goals.",
   "scripts": {
     "test": "node tests/run.js",
     "snapshot": "node tests/update-snapshot.js",
@@ -10,7 +10,8 @@
     "eval:claude": "node eval/claude-vs-usda.mjs",
     "test:ui": "node tests/ui/smoke.js pages && node tests/ui/smoke.js claude && node tests/ui/a11y.js",
     "test:layout": "node tests/ui/layout.js && node tests/ui/scan.js && node tests/ui/app.js && node tests/ui/extension.js",
-    "sync:extension": "node scripts/sync-extension.mjs"
+    "sync:extension": "node scripts/sync-extension.mjs",
+    "typecheck": "tsc -p ."
   },
   "engines": {
     "node": ">=20"
@@ -18,6 +19,8 @@
   "license": "MIT",
   "devDependencies": {
     "axe-core": "4.10.3",
-    "jsdom": "24.1.3"
+    "jsdom": "24.1.3",
+    "playwright": "1.63.0",
+    "typescript": "6.0.3"
   }
 }

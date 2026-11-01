@@ -4,7 +4,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./verdict.js"));
   else root.SelfCheckCard = factory(root.SelfCheckVerdict);
-})(typeof self !== "undefined" ? self : this, function (V) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (V) {
   const pct = (x, t) => Math.round(x / t * 100);
   // Short labels for scored reasons (r.n from assess), for the headline.
   const PLUS = { pro: (f, p, r) => r.d >= 2 ? "high protein for the calories" : "decent protein", fib: "a good fiber source", whole: f => f.c === "fruit" ? "whole fruit" : "a whole vegetable",

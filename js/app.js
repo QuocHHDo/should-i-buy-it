@@ -34,6 +34,7 @@
   const byName = n => allFoods().find(f => f.n === n);
 
   // ---------- small helpers ----------
+  /** @type {(id: string) => any} */
   const $ = id => document.getElementById(id);
   const el = (tag, attrs = {}, ...kids) => {
     const e = document.createElement(tag);
@@ -60,7 +61,7 @@
     : el("span", { class: "vp " + a.tier, text: a.word });
   let toastTimer;
   function toast(msg) {
-    let t = document.querySelector(".toast");
+    let t = /** @type {HTMLElement} */ (document.querySelector(".toast"));
     if (!t) { t = el("div", { class: "toast", role: "status" }); document.body.append(t); }
     t.textContent = msg; t.hidden = false;
     clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 2200);
@@ -189,7 +190,8 @@
     const other = b.other.length ? el("div", { class: "why-other" }, el("span", { class: "lbl", text: "Also" }),
       ...b.other.map(o => el("span", { class: "why-chip " + (o.points > 0 ? "good" : "bad") }, el("b", { text: signed(o.points) }), " " + o.label))) : null;
     // Score line from −6 to +6: Limit it at −2 or lower, Get it at +2 or higher.
-    const pos = s => ((Math.max(-6, Math.min(6, s)) + 6) / 12 * 100).toFixed(1);
+    // Where a score sits on the -6…+6 scale, as a percentage (a number; formatted where it's used).
+    const pos = s => Math.round((Math.max(-6, Math.min(6, s)) + 6) / 12 * 1000) / 10;
     const scale = el("div", { class: "why-scale", "aria-hidden": "true" },
       el("div", { class: "zone bad", style: `width:${pos(-1.5)}%` }), el("div", { class: "zone mid", style: `width:${(pos(1.5) - pos(-1.5)).toFixed(1)}%` }), el("div", { class: "zone good" }),
       el("span", { class: "marker", style: `left:${pos(b.score)}%` }));
@@ -586,8 +588,8 @@
     const changed = v !== view;
     view = v;
     document.body.dataset.view = v;
-    document.querySelectorAll(".view").forEach(n => { n.hidden = n.dataset.view !== v; });
-    document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.view === v ? "page" : "false"));
+    document.querySelectorAll(".view").forEach((/** @type {HTMLElement} */ n) => { n.hidden = n.dataset.view !== v; });
+    document.querySelectorAll("#tabs button").forEach((/** @type {HTMLElement} */ b) => b.setAttribute("aria-current", b.dataset.view === v ? "page" : "false"));
     if (v === "browse") renderBrowse();
     if (v === "plate") renderMeals();
     if (v !== "check" && !$("scan").hidden) closeScan(); // don't leave the camera running behind another view
@@ -834,7 +836,7 @@
     quizQ.review = !!review;
     quizChosen = null;
     renderQuiz();
-    const first = document.querySelector("#quiz .qopt");
+    const first = /** @type {HTMLElement} */ (document.querySelector("#quiz .qopt"));
     if (first) first.focus();
   }
   function answerQuiz(i) {
@@ -897,6 +899,7 @@
       : "Ranked per serving by the same score behind each verdict (lower is less healthy), then by how much of your saturated fat, sodium and added-sugar limits one serving uses.";
 
     if (byValue) $("bsortNote").textContent = `Grams of protein a dollar buys, at typical prices (or yours). Only priced foods that are real protein sources (at least 5 g and 20% of calories from protein) are listed. Prices: BLS ${PR.meta.bls}, produce from USDA ERS adjusted to ${PR.meta.cpi}.`;
+    /** @type {any[]} */
     let rows = allFoods().filter(f => browseCat === "all" || f.c === browseCat).map(f => ({ f, v: V.assess(f, profile), h: V.health(f, profile, browseBasis) }));
     if (byValue) {
       rows = rows.map(r => { const p = PR.price(r.f, myPrices); const val = PR.value(r.f, p); return { ...r, p, val }; }).filter(r => r.val && r.val.k === "pro");
@@ -976,7 +979,7 @@
   // A barcode number is a barcode, however it arrives (the suggestion row, a link, the Check button).
   const isBarcode = text => /^\d{8,14}$/.test(String(text).replace(/[\s-]/g, ""));
   function openPackaged(text) {
-    if (isBarcode(text)) return barcodeLookup(String(text).replace(/[\s-]/g, ""));
+    if (isBarcode(text)) { barcodeLookup(String(text).replace(/[\s-]/g, "")); return; }
     closestFor = null;
     const box = el("div", { class: "notice" }); $("out").replaceChildren(box);
     packagedSearch(text, box);
@@ -1549,7 +1552,7 @@
   // On phones and in the installed app, the Check view opens with a big Scan button and the last products scanned.
   const SCANS_KEEP = 20, SCANS_SHOW = 6;
   let scans = store.get("scans", []).filter(x => x && x.n);
-  const standalone = () => { try { return matchMedia("(display-mode: standalone)").matches || navigator.standalone === true; } catch { return false; } };
+  const standalone = () => { try { return matchMedia("(display-mode: standalone)").matches || /** @type {any} */ (navigator).standalone === true; } catch { return false; } };
   const phone = () => { try { return matchMedia("(max-width: 720px)").matches; } catch { return false; } };
   const fromApp = PAGES && (new URLSearchParams(location.search).get("source") === "app" || standalone());
   // The scan home is the starting screen; it steps aside once a food is opened and comes back when you tap Check again.
@@ -1641,7 +1644,7 @@
     $("tabGoalsDot").hidden = !!(savedProfile || CFG.profile);
     renderChips(); renderBrowse(); renderList(); renderPlate(); renderQuiz();
     $("learnReset").addEventListener("click", () => { learn = { asked: 0, correct: 0, streak: 0, missed: [] }; store.set("learn", learn); quizQ = null; renderQuiz(); });
-    document.querySelectorAll("#tabs button").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("#tabs button").forEach((/** @type {HTMLElement} */ b) => b.addEventListener("click", () => {
       // Tapping Check while already there returns to the scan home (phones and the installed app).
       if (PAGES && b.dataset.view === "check" && view === "check" && !homeMode && (fromApp || phone())) return goHome();
       showView(b.dataset.view);

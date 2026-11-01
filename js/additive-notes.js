@@ -8,7 +8,7 @@
 (function (root, data) {
   if (typeof module === "object" && module.exports) module.exports = data;
   else root.SelfCheckAdditiveNotes = data;
-})(typeof self !== "undefined" ? self : this, (function () {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), (function () {
   const SRC = {
     aspartame: "https://www.who.int/news/item/14-07-2023-aspartame-hazard-and-risk-assessment-results-released",
     nss: "https://www.who.int/news/item/15-05-2023-who-advises-not-to-use-non-sugar-sweeteners-for-weight-control-in-newly-released-guideline",

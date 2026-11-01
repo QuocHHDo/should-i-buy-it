@@ -6,7 +6,7 @@
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./additives.js"));
   else root.SelfCheckIngredients = factory(root.SelfCheckAdditives);
-})(typeof self !== "undefined" ? self : this, function (A) {
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (A) {
   const ALLERGEN = "milk|eggs?|wheat|soy|soybeans?|peanuts?|tree nuts?|almonds?|cashews?|pecans?|walnuts?|hazelnuts?|pistachios?|macadamia(?: nuts?)?|brazil nuts?|coconut|fish|anchov(?:y|ies)|tuna|salmon|cod|pollock|tilapia|shellfish|crustacean shellfish|shrimp|crab|lobster|sesame";
   const ALLERGEN_RUN = new RegExp(`\\b(?:contains|allergens?)\\s*:?\\s*((?:${ALLERGEN})(?:\\s*(?:,|and|&|\\/)\\s*(?:${ALLERGEN}))*)\\b\\.?`, "i");
   const MAY = /\b(?:may contain|made (?:in|on) (?:a )?(?:facility|shared equipment|equipment)|processed in a facility)[^.]*\.?/gi;
@@ -105,6 +105,7 @@
   const SWEETENER = /\b(?:sucralose|aspartame|acesulfame|saccharin|stevia|rebaudioside|reb m|steviol|monk fruit|luo han guo|erythritol|xylitol|sorbitol|maltitol|allulose|isomalt|neotame|advantame)\b/i;
 
   // Common US label names the additive list doesn't match by itself (it skips short names like BHA and everyday words).
+  /** @type {Array<[RegExp, string]>} */
   const ALIAS = [
     [/^(?:soy|soya|sunflower|canola)? ?lecithin$/, "e322"], [/^(?:baking soda|sodium bicarbonate)$/, "e500"],
     [/^(?:distilled )?(?:mono ?-?(?:and|&) ?di-?glycerides|monoglycerides|diglycerides|mono and diglycerides)$/, "e471"],
@@ -117,6 +118,7 @@
     [/^gellan gum$/, "e418"], [/^locust bean gum$/, "e410"], [/^pectin$/, "e440"], [/^silicon dioxide$/, "e551"], [/^calcium sulfate$/, "e516"],
   ];
   // Entries that name a job, not a substance ("Leavening", "Artificial Color").
+  /** @type {Array<[RegExp, string, string]>} */
   const GENERIC = [
     [/^leavening(?: agents?)?$/, "Leavening", "Makes dough rise; the label doesn't say which ones."],
     [/^(?:artificial colou?rs?|colou?r added|colou?rs?|colou?ring|artificial colou?ring)$/, "Coloring", "Added color; the label doesn't say which."],
