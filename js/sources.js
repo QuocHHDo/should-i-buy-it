@@ -22,14 +22,65 @@
     return f;
   }
 
+  // Values no real label can have: crowd-sourced records get typed in wrong (Kirkland's oat drink on Open Food Facts,
+  // Oct 2026: sodium entered as 240 g a serving, trans fat 12 g in a drink with 5 g of fat, cholesterol in an oat drink).
+  // Each one found is left out (shown as "—", not scored) and described in f.issues. Small overshoots are rounding.
+  const NO_CHOLESTEROL = /^en:(dairy-substitutes|plant-based-milk-alternatives|plant-milks|plant-based-beverages|oat-based-drinks|soy-milks|almond-milks|non-dairy-milk)/;
+  function impossible(f, categories) {
+    const known = k => !f.missing.includes(k);
+    const grams = (String(f.s).match(/(\d+(?:\.\d+)?)\s*(g|ml)\b/i) || [])[1];
+    const out = [];
+    const bad = (k, text) => { if (known(k) && !out.some(x => x.k === k)) out.push({ k, text }); };
+    const fmt = x => Math.round(x).toLocaleString("en-US");
+    // Pure salt is 39% sodium, so a serving can't hold more sodium than 40% of its weight; nor, in practice, 8 g.
+    if (known("na") && (f.na > 8000 || (grams && f.na / 1000 > Number(grams) * 0.4))) bad("na", `sodium ${fmt(f.na)} mg${grams ? ` in a ${grams} g serving` : " a serving"}`);
+    if (known("fat")) {
+      if (f.trans > f.fat + 0.5) bad("trans", `trans fat ${V.fmt(f.trans)} g, more than the ${V.fmt(f.fat)} g of total fat`);
+      if (f.sat > f.fat + 0.5) bad("sat", `saturated fat ${V.fmt(f.sat)} g, more than the ${V.fmt(f.fat)} g of total fat`);
+    }
+    if (known("carb")) {
+      if (f.fib > f.carb + 0.5) bad("fib", `fiber ${V.fmt(f.fib)} g, more than the ${V.fmt(f.carb)} g of carbohydrate`);
+      if (f.sug > f.carb + 0.5) bad("sug", `sugars ${V.fmt(f.sug)} g, more than the ${V.fmt(f.carb)} g of carbohydrate`);
+    }
+    if (known("sug") && f.add > f.sug + 0.5) bad("add", `added sugar ${V.fmt(f.add)} g, more than the ${V.fmt(f.sug)} g of total sugars`);
+    // Cholesterol only comes from animal foods.
+    if (known("chol") && f.chol > 0 && (categories || []).some(c => NO_CHOLESTEROL.test(String(c)))) bad("chol", `cholesterol ${fmt(f.chol)} mg in a plant-based drink`);
+    return out;
+  }
+  // Fat, carbohydrate and protein must roughly add up to the calories (fiber counted at 2 kcal/g). When they don't,
+  // some number was entered wrong, but not which one, so nothing is left out: it's described for checking.
+  // Alcohol has calories of its own (7 kcal/g) that no label line shows, so drinks with it are left alone.
+  const ALCOHOL = /\b(beer|ale|lager|ipa|stout|wine|champagne|prosecco|sake|cider|vodka|whiske?y|bourbon|rum|gin|tequila|liquor|liqueur|brandy|cognac|seltzer|margarita|cocktail|sangria|mead|soju)\b/i;
+  function energyGap(f) {
+    if (["cal", "fat", "carb", "pro"].some(k => f.missing.includes(k)) || f.cal <= 0) return null;
+    if (ALCOHOL.test(f.n) || (f.categories || []).some(c => /alcoholic/.test(String(c)) && !/non-alcoholic/.test(String(c)))) return null;
+    const fib = f.missing.includes("fib") ? 0 : Math.min(f.fib, f.carb);
+    const est = 9 * f.fat + 4 * (f.carb - fib) + 2 * fib + 4 * f.pro;
+    return Math.abs(est - f.cal) > Math.max(50, 0.35 * Math.max(f.cal, est)) ? `fat, carbs and protein add up to about ${Math.round(est)} calories, not the ${Math.round(f.cal)} listed` : null;
+  }
+
+  // Leaves out impossible values and notes them in f.issues (also run on lookups saved before these checks existed).
+  function check(f, categories) {
+    if (!Array.isArray(f.missing)) f.missing = [];
+    const issues = impossible(f, categories);
+    for (const { k } of issues) { f[k] = 0; f.missing.push(k); }
+    const gap = energyGap(f);
+    const all = [...new Set([...(f.issues || []), ...issues.map(x => x.text), ...(gap ? [gap] : [])])];
+    if (all.length) f.issues = all;
+    f.checked = 1;
+    f.partial = f.missing.some(k => k !== "trans" && k !== "chol");
+    return f;
+  }
+
   function makeFood(name, serving, v, extra = {}) {
     const f = { n: String(name).slice(0, 70), a: [], s: String(serving || "1 serving").slice(0, 50), c: "lookup", tags: [] };
     for (const k of V.NUM_KEYS) f[k] = Math.round(num(v[k]) * 10) / 10;
-    f.sat = Math.min(f.sat, f.fat);
-    f.add = Math.min(f.add, f.sug);
     if (PROCESSED.test(f.n)) f.tags.push("processed");
     Object.assign(f, extra);
     f.missing = [...new Set(extra.missing || [])];
+    check(f, extra.categories);
+    f.sat = Math.min(f.sat, f.fat);
+    f.add = Math.min(f.add, f.sug);
     if (f.missing.includes("add") && !f.missing.includes("sug") && f.sug === 0 && !V.isLowerBound(f, "sug")) { f.add = 0; f.missing = f.missing.filter(k => k !== "add"); }
     // Trans fat and cholesterol are routinely absent from non-US labels: shown as "—" but not worth a partial-data warning.
     f.partial = f.missing.some(k => k !== "trans" && k !== "chol");
@@ -252,5 +303,5 @@ If "${text}" is not a food, reply {"found":false}.`;
     return f;
   }
 
-  return { PROCESSED, makeFood, settleAddedSugar, fromUsda, fromOff, usdaSearchUrl, usdaFoodUrl, usdaUpcQueries, usdaUpcUrl, matchUpc, brandedSearchUrl, rankBranded, storeBrand, isWalmart, STORE_BRANDS, linkId, parseLinkId, titleCase, offProductUrl, claudePrompt, parseJsonReply, fromClaude };
+  return { PROCESSED, makeFood, check, settleAddedSugar, fromUsda, fromOff, usdaSearchUrl, usdaFoodUrl, usdaUpcQueries, usdaUpcUrl, matchUpc, brandedSearchUrl, rankBranded, storeBrand, isWalmart, STORE_BRANDS, linkId, parseLinkId, titleCase, offProductUrl, claudePrompt, parseJsonReply, fromClaude };
 });

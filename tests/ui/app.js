@@ -148,6 +148,22 @@ const serve = () => new Promise(resolve => {
     ok(chips.includes("Reduced fat 2% milk") && await page.isVisible("#out .compare button:has-text('Scan to compare')"), `a product's Compare panel offers 'Scan to compare' and recent scans (${chips.join(", ")})`);
     await ctx.close();
 
+    // 6c. A mistyped crowd-sourced record (Kirkland's oat drink on Open Food Facts, Oct 31, 2026): impossible numbers
+    // are left out and the card says so, including for a copy saved on the phone before this check existed.
+    const OAT = { product_name: "Oat", brands: "Kirkland Signature", serving_size: "240g", serving_quantity: 240, categories_tags: ["en:beverages", "en:dairy-substitutes"],
+      nutriments: { "energy-kcal_serving": 120, fat_serving: 5, "saturated-fat_serving": 0.5, "trans-fat_serving": 12, cholesterol_serving: 0.0408, sodium_serving: 240, carbohydrates_serving: 40.8, fiber_serving: 4.8, sugars_serving: 16.8, "added-sugars_serving": 0, proteins_serving: 3 } };
+    const oldCopy = { n: "Kirkland Signature Oat", a: [], s: "240g", c: "lookup", tags: [], src: "off", code: "0096619237432", cal: 120, fat: 5, sat: 0.5, trans: 12, chol: 40.8, na: 240000, carb: 40.8, fib: 4.8, sug: 16.8, add: 0, pro: 3, missing: [], categories: ["en:dairy-substitutes"], addLikelyZero: false };
+    ({ ctx, page } = await open("", { seed: { lookups: [oldCopy] } }));
+    await page.route("**/world.openfoodfacts.org/**", r => r.fulfill({ contentType: "application/json", body: JSON.stringify({ code: "0096619237432", status: 1, product: OAT }) }));
+    await page.fill("#q", "Kirkland Signature Oat"); await page.press("#q", "Enter");
+    await page.waitForFunction(() => /can't be right/.test(document.getElementById("out").textContent));
+    const oat = await page.evaluate(() => ({ note: document.querySelector("#out .partial-note").textContent, label: document.querySelector("#out .leftcol").textContent.replace(/\s+/g, " ") }));
+    ok(/Sodium 240,000 mg in a 240 g serving; trans fat 12 g, more than the 5 g of total fat; cholesterol 41 mg in a plant-based drink; fat, carbs and protein add up to about 211 calories, not the 120 listed\. The impossible ones are left out; check the package\. Fix it on Open Food Facts/.test(oat.note),
+      `a copy saved before the check is fixed on load, and the card says what was wrong (${oat.note})`);
+    ok(/Sodium —/.test(oat.label) && !/240,000mg/.test(oat.label) && /Trans Fat —/.test(oat.label), "the label shows those lines as unknown, not the impossible numbers");
+    if (SHOTS) await page.screenshot({ path: path.join(SHOTS, "app6-bad-record.png"), fullPage: false });
+    await ctx.close();
+
     // 6b. A photo of the label (a real one: Skippy peanut butter, Open Food Facts, CC BY-SA 3.0), read on the phone,
     // checked, then scored. Tesseract loads from vendor/tesseract/ only now.
     ({ ctx, page } = await open("?source=app"));

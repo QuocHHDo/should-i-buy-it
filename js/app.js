@@ -26,6 +26,8 @@
     f.missing = Array.isArray(f.missing) ? f.missing : [];
     S.settleAddedSugar(f, f.src === "off" ? !f.missing.includes("add") : f.add > 0, /\braw\b/i.test(f.n));
   }
+  // Lookups saved before the impossible-value checks: run them now (a mistyped record keeps showing otherwise).
+  for (const f of lookups) if ((f.src === "usda" || f.src === "off" || f.src === "walmart") && !f.checked) { S.check(f, f.categories); f.checked = 1; }
   let recents = store.get("recents", []);
   let favs = store.get("favorites", []);
   const allFoods = () => [...FOODS, ...lookups];
@@ -454,6 +456,11 @@
     else if (isDish(f)) src.append(el("b", { text: "A typical recipe. " }), "Restaurant and homemade versions vary a lot, most of all in sodium and portion size, so treat these numbers as an estimate. If the restaurant posts nutrition, that wins.");
     else src.append("Typical values for this serving. Brands vary.");
 
+    // Numbers the source has that no label can have (a mistyped crowd-sourced record): left out, and said so.
+    const issues = f.issues && f.issues.length ? el("p", { class: "partial-note", role: "note" }, el("b", { text: "Some numbers in this record can't be right. " }),
+      `${f.issues.join("; ").replace(/^./, c => c.toUpperCase())}. The impossible ones are left out; check the package.`,
+      f.src === "off" && f.code ? " " : null,
+      f.src === "off" && f.code ? el("a", { href: `https://world.openfoodfacts.org/product/${encodeURIComponent(f.code)}`, target: "_blank", rel: "noopener", text: "Fix it on Open Food Facts" }) : null) : null;
     const missingNote = V.missingNote(scaled);
     const partial = missingNote ? el("p", { class: "partial-note", role: "note" }, el("b", { text: "Partial data. " }), missingNote.replace(/^Partial data: /, "") + " Shown as “—” and not counted.") : null;
     const ICON = { pos: "+", neg: "−", warn: "!", note: "i" };
@@ -464,7 +471,7 @@
       closestBanner(f),
       head,
       el("div", { class: "result" },
-        el("div", { class: "leftcol" }, seg, partial, label, box, src, PAGES && !isPlate ? el("p", { class: "report" }, el("a", { href: reportUrl(f, a), target: "_blank", rel: "noopener", text: "Wrong number or verdict? Report it" })) : null),
+        el("div", { class: "leftcol" }, seg, issues, partial, label, box, src, PAGES && !isPlate ? el("p", { class: "report" }, el("a", { href: reportUrl(f, a), target: "_blank", rel: "noopener", text: "Wrong number or verdict? Report it" })) : null),
         el("div", { class: "side" },
           el("div", { class: "tag " + a.tier }, el("div", { class: "for" }, goalsSet ? (isPlate ? "For you · whole meal" : "For you") : (isPlate ? "Standard goals · whole meal · " : "Standard goals · "),
             goalsSet ? null : el("button", { class: "linkbtn", type: "button", text: "Set yours", onclick: () => showView("goals") })), el("div", { class: "verdict", text: a.word }), a.spicy ? el("span", { class: "vp spicy flag", text: "Spicy" }) : null, el("p", { class: "why", text: a.why }),
