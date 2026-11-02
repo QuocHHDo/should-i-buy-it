@@ -68,6 +68,7 @@ The built-in values were written by Claude from general nutrition knowledge, not
 | --- | --- | --- |
 | [`eval/compare-usda.mjs`](eval/compare-usda.mjs) | Each built-in food against its USDA FoodData Central record, scaled to the serving: error per nutrient and whether the verdict would change | `USDA_API_KEY=… npm run eval` or the **USDA accuracy eval** workflow |
 | [`eval/claude-vs-usda.mjs`](eval/claude-vs-usda.mjs) | Fresh Claude lookups, using the app's exact prompt, against the same USDA records, side by side with the built-in values | `ANTHROPIC_API_KEY=… USDA_API_KEY=… npm run eval:claude` or the **Claude lookup eval** workflow |
+| [`llm-eval/`](llm-eval/README.md) | How accurately Claude models extract the numbers from nutrition-label text (60 synthetic labels), and how good their "should I buy it?" verdicts are, scored by an LLM judge. Self-contained TypeScript package with its own tests | `cd llm-eval && npm ci && npm run eval -- --limit 10` |
 
 The USDA eval also writes `eval/suggested-values.json`: confident matches that differ by more than 25%, with USDA's numbers scaled to the serving, for a person to review (raw vs cooked, brand vs generic) before updating `js/foods.js`. When USDA's top search result is the wrong food, pin the right record in `eval/usda-map.json`.
 
