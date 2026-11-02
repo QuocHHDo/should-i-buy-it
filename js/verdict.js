@@ -1,9 +1,9 @@
 // Scoring rules, label-line explanations, serving scaling and swap suggestions.
 // Pure functions: no DOM, so the same file runs in the browser and in Node tests.
 (function (root, factory) {
-  if (typeof module === "object" && module.exports) module.exports = factory(require("./additives.js"));
-  else root.SelfCheckVerdict = factory(root.SelfCheckAdditives);
-})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (ADD) {
+  if (typeof module === "object" && module.exports) module.exports = factory(require("./additives.js"), require("./allergens.js"));
+  else root.SelfCheckVerdict = factory(root.SelfCheckAdditives, root.SelfCheckAllergens);
+})(/** @type {any} */ (typeof self !== "undefined" ? self : this), function (ADD, AL) {
   const fmt = n => (Math.round(n * 10) / 10).toString();
   const NUM_KEYS = ["cal", "fat", "sat", "trans", "chol", "na", "carb", "fib", "sug", "add", "pro"];
   const RANK = { bad: 0, mid: 1, fine: 1.5, good: 2 };
@@ -95,7 +95,7 @@
   }
 
   // Generic starting goals (roughly FDA Daily Values on a 2,000-calorie diet).
-  const DEFAULT_PROFILE = { cal: 2000, pro: 100, sat: 20, na: 2300, add: 50, fib: 28, skip: "", mild: false };
+  const DEFAULT_PROFILE = { cal: 2000, pro: 100, sat: 20, na: 2300, add: 50, fib: 28, skip: "", mild: false, allergies: [], allergyOther: "" };
 
   // Skip-list matching on whole words with simple plurals: "egg" matches "Eggs" and "Breakfast sandwich, sausage and egg",
   // not "Eggplant" or "Veggie burger". Multi-word terms ("ground beef") must appear as that word sequence.
@@ -198,8 +198,17 @@
     return { tier, word, why, score: s, reasons: r, partial: !!note, spicy: !!p.mild && (f.tags || []).includes("spicy"), meal: true };
   }
 
-  // Score one serving against the viewer's goals. Returns tier, headline and reasons.
+  // Score one serving against the viewer's goals. Returns tier, headline and reasons, plus `allergy`: the viewer's
+  // allergens in this food (js/allergens.js), or null when they haven't set any. An allergen never changes the score;
+  // the app shows it as a flag beside the verdict.
   function assess(f, p) {
+    const a = score(f, p);
+    a.allergy = AL ? AL.check(f, p) : null;
+    return a;
+  }
+  // An allergen the food contains, or may contain: left out of swaps and meal ideas.
+  const allergyBlocks = a => !!(a && a.allergy && (a.allergy.status === "contains" || a.allergy.status === "may"));
+  function score(f, p) {
     if (f.c === "plate") return assessMeal(f, p);
     const skip = skipReason(f, p);
     if (skip) return { tier: "skip", word: "Skip", why: skip.why, score: null, reasons: [{ k: "note", t: skip.note }] };
@@ -687,7 +696,7 @@
       if (!hinted && HINT_ONLY.has(g.n)) continue;
       if (!hinted && !only && cat && (fKind || STRICT_KIND.has(cat)) && kindOf(g, cat) !== fKind) continue;
       const a = assess(g, p);
-      if (a.tier === "skip") continue;
+      if (a.tier === "skip" || allergyBlocks(a)) continue;
       const lighter = RANK[a.tier] === want && !hinted ? lighterBy(f, g) : null;
       if (RANK[a.tier] < want || (RANK[a.tier] === want && !lighter)) continue;
       let score = 0;
@@ -820,5 +829,5 @@
     return { rows, other, score: a.score, tier: a.tier, word: a.word, byScore, override, note, meal };
   }
 
-  return { breakdown, CUT, DENSITY, MEAL_CUT, NEGLIGIBLE_KCAL, RANK, DEFAULT_PROFILE, NUM_KEYS, NUTRIENT_WORD, skipMatch, healthyFatSource, servingGrams, isMissing, isLowerBound, missingNote, assess, explain, scale, findSwaps, kindOf, assessMeal, MEAL_SHARE, swapCategory, swapTarget, SWAP_GROUPS, swapDiffs, meaningfulDiff, FDA_DV, POS_FLOOR, HEAVY_SHARE, health, per100kcal, combine, KCAL_MIN, SWAP_HINTS, EVIDENCE, NOTES, slug, legacySlug, foldAccents, fmt };
+  return { allergyBlocks, breakdown, CUT, DENSITY, MEAL_CUT, NEGLIGIBLE_KCAL, RANK, DEFAULT_PROFILE, NUM_KEYS, NUTRIENT_WORD, skipMatch, healthyFatSource, servingGrams, isMissing, isLowerBound, missingNote, assess, explain, scale, findSwaps, kindOf, assessMeal, MEAL_SHARE, swapCategory, swapTarget, SWAP_GROUPS, swapDiffs, meaningfulDiff, FDA_DV, POS_FLOOR, HEAVY_SHARE, health, per100kcal, combine, KCAL_MIN, SWAP_HINTS, EVIDENCE, NOTES, slug, legacySlug, foldAccents, fmt };
 });

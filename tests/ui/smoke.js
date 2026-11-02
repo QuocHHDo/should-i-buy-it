@@ -401,7 +401,18 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
   // Public-site basics: allergen line, standard-goals hint, report link, footer links.
   if (MODE === "pages") {
     w.location.hash = "#greek-yogurt-plain-nonfat"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
-    ok(/Doesn't check allergens/.test(text(".allergy")), "every result says allergens aren't checked");
+    ok(/Allergens aren't checked until you add yours/.test(text(".allergy")), "with no allergies set, the result says they aren't checked");
+    // Allergies: tick Milk under Goals, and the yogurt gets a "Contains milk" flag; the verdict itself doesn't change.
+    const word = text(".tag .verdict");
+    const milk = $("#p-al-milk"); milk.checked = true; milk.dispatchEvent(new w.Event("change", { bubbles: true })); await tick(2);
+    ok(/Contains milk/.test(text(".alflag.contains")), "a milk allergy flags plain Greek yogurt", text(".alflag"));
+    ok(text(".tag .verdict") === word, "the allergen flag leaves the verdict alone");
+    ok(!/\bsafe\b/i.test(text(".alflag")), "the flag never says safe");
+    w.location.hash = "#apple"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
+    ok($(".alflag.clear") && /None of your allergens found/.test(text(".alflag")) && /read the label/.test(text(".alflag")), "a food without it still says to read the label", text(".alflag"));
+    milk.checked = false; milk.dispatchEvent(new w.Event("change", { bubbles: true })); await tick(2);
+    ok(!$(".alflag"), "unticking removes the flag");
+    w.location.hash = "#greek-yogurt-plain-nonfat"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
     const rep = $(".report a");
     ok(rep && /issues\/new\?title=Wrong\+verdict/.test(rep.href) && /Verdict%3A/.test(rep.href), "a prefilled report link sits under the label");
     ok($$("footer .footlinks a").map(a => a.getAttribute("href")).includes("about.html"), "footer links to How it works");

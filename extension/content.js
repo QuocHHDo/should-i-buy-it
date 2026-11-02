@@ -286,8 +286,10 @@
   function productBadge(r, p, warn) {
     const a = V.assess(r.food, p);
     const partial = C.uncertain(r.food, p) ? "Some nutrients that decide the verdict aren't listed, so it's less certain." : null;
-    const w = [warn && warn + ".", partial].filter(Boolean).join(" ") || null;
-    return { tier: a.tier, word: a.word, reason: C.badgeReason(r.food, p, a), warn: w, label: `${a.word}: ${C.headline(r.food, p, a).replace(/\.$/, "")}` };
+    // Your allergens come first: the badge's reason says so, and the ⚠ carries it ("Contains milk").
+    const al = a.allergy && (a.allergy.status === "contains" || a.allergy.status === "may") ? a.allergy : null;
+    const w = [al && al.title + ".", warn && warn + ".", partial].filter(Boolean).join(" ") || null;
+    return { tier: a.tier, word: a.word, reason: al ? al.title.toLowerCase() : C.badgeReason(r.food, p, a), warn: w, label: `${a.word}: ${C.headline(r.food, p, a).replace(/\.$/, "")}` };
   }
 
   // ---------- verdict badges on search and category pages (opt-in) ----------
@@ -298,7 +300,7 @@
   let badgeQueue = [], badgeBusy = false, badgeCount = 0, badgeObserver = null, badgeMutations = null, badgeProfile = null;
   const BADGE_CSS = `:host{all:initial} .b{${VARS}display:inline-flex;align-items:center;gap:5px;padding:3px 8px 3px 5px;border-radius:999px;background:#fff;
     box-shadow:0 1px 4px rgba(0,0,0,.18);font:700 11.5px system-ui,sans-serif;color:var(--ink);white-space:nowrap} .b svg{flex:none}
-    .good{color:var(--v-good-ink)}.mid{color:var(--v-mid-ink)}.bad,.skip{color:var(--v-bad-ink)}.wait{color:var(--muted);font-weight:600}`;
+    .good{color:var(--v-good-ink)}.mid{color:var(--v-mid-ink)}.bad,.skip{color:var(--v-bad-ink)}.wait{color:var(--muted);font-weight:600} .al{color:var(--v-bad-ink);margin-left:2px}`;
   const SHORT = { good: "Get it", mid: "In moderation", bad: "Limit it", fine: "Fine", skip: "Skip", supp: "Supplement" };
   function tileId(tile) { const a = tile.querySelector('a[href*="/ip/"]'); return a ? W.productId(new URL(a.getAttribute("href"), location.origin).href) : null; }
   function badgeFor(tile, state) {
@@ -314,9 +316,9 @@
     const b = host.shadowRoot.querySelector(".b");
     b.className = "b " + (state.tier || "wait");
     b.setAttribute("role", "img");
-    b.setAttribute("aria-label", state.tier ? `Should I Buy It? ${state.word}` : "Should I Buy It? checking");
+    b.setAttribute("aria-label", state.tier ? `Should I Buy It? ${state.word}${state.al ? `. ${state.al}` : ""}` : "Should I Buy It? checking");
     const ic = el("span", { class: "d" }); if (state.tier) ic.innerHTML = C.icon(state.tier, 14);
-    b.replaceChildren(ic, document.createTextNode(state.tier ? SHORT[state.tier] || state.word : "…"));
+    b.replaceChildren(ic, document.createTextNode(state.tier ? SHORT[state.tier] || state.word : "…"), state.al ? el("span", { class: "al", text: `⚠ ${state.al}` }) : "");
     host.title = state.headline || "";
   }
   async function badgeVerdict(id) {
@@ -329,7 +331,10 @@
     const r = prod ? await resolve(prod, badgeProfile) : null;
     if (r && r.supplement) { badgeCache[id] = { t: Date.now(), tier: r.skip ? "skip" : "supp", word: r.skip ? "Skip" : "Supplement", headline: r.supplement.reason }; }
     else if (!r || r.none) { badgeCache[id] = { t: Date.now(), tier: null }; }
-    else { const a = V.assess(r.food, badgeProfile); badgeCache[id] = { t: Date.now(), tier: a.tier, word: a.word, headline: C.headline(r.food, badgeProfile, a) }; }
+    else {
+      const a = V.assess(r.food, badgeProfile), al = a.allergy && (a.allergy.status === "contains" || a.allergy.status === "may") ? a.allergy : null;
+      badgeCache[id] = { t: Date.now(), tier: a.tier, word: a.word, headline: (al ? al.title + ". " : "") + C.headline(r.food, badgeProfile, a), al: al ? al.short : null };
+    }
     const keys = Object.keys(badgeCache);
     if (keys.length > 600) keys.sort((x, y) => badgeCache[x].t - badgeCache[y].t).slice(0, keys.length - 600).forEach(k => delete badgeCache[k]);
     save({ badgeCache });

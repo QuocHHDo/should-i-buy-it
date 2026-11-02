@@ -10,6 +10,7 @@ Live at **https://quochhdo.github.io/should-i-buy-it/**. It installs to your pho
 - **Nutrition label** in FDA format; tap any line to see what it means and how it compares with your daily target.
 - **Tab bar** for Check, Plate, List, Browse and Goals (at the bottom on phones), each with its own link (`#plate`, `#list`, `#browse`, `#goals`).
 - **Personal verdict** scored against your calorie, protein, saturated fat, sodium, added sugar and fiber goals, plus a skip list and a mild-food preference.
+- **Allergen flags**: tick the nine major US allergens (milk, egg, fish, shellfish, tree nuts, peanuts, wheat, soy, sesame) or type others under Goals. Every food then says **Contains**, **May contain**, **Couldn't check** (a lookup with no ingredient list) or **None of your allergens found**, never "safe". Sources, strongest first: Open Food Facts' allergen and traces lists, the label's ingredient list (with synonyms like whey, albumin, semolina, tahini, and "may contain" / shared-facility statements), the food's name, and a typical recipe for each built-in food. The flag sits above the verdict and on every pill (search, Browse, List, Plate, recent scans); swaps and cheap meal ideas leave those foods out. The extension's badge and side panel show it too (`js/allergens.js`).
 - **Healthier swaps** for anything below "Get it," with the difference spelled out ("5.3 g less saturated fat").
 - **Compare two foods** side by side, per serving or per 100 calories, with a one-line answer on top ("Reduced fat 2% milk has less saturated fat. Both: In moderation."). In the store, **Compare two products** (on the phone home, or "Scan to compare" on any product) scans one barcode, then the other; recent scans are one tap away. Prices you enter are kept by barcode for scanned products, so two products with the same name don't share one. Type the two **shelf prices** (price and package size, like "3.99" and "64 fl oz" or "2 x 64 fl oz") and the table adds the price of a serving and protein per dollar (`PR.shelfCost` in `js/prices.js`).
 - **Scanned products are remembered by barcode**: a barcode scanned before opens at once from the device, with no lookup (re-checked online after 30 days, and used at any age when the databases can't be reached).
@@ -38,6 +39,7 @@ Each serving gets a point score from about a dozen rules measured against your g
 
 ## Design decisions
 
+- **Allergens are a flag, not a score.** An allergen doesn't make a food less healthy, so it never changes the verdict; it gets its own box above it. Detection leans toward flagging: negations only rule out one word ("no added sugar, milk" still flags milk), look-alikes are listed explicitly (coconut milk, peanut butter, eggplant, buckwheat, nutmeg), and highly refined soybean oil, which US law exempts, is a "may" rather than a "contains". With nothing to check, it says so instead of guessing.
 - **The verdict is computed by code, never by a model.** Even in the Claude version, Claude only supplies label numbers; the page scores them with the same rules. The same numbers always get the same verdict, and every verdict can be traced to a rule.
 - **Label-based scoring, with a short evidence list.** Labels can't show polyphenols or omega-3 types, so a handful of foods with strong outcome research (extra virgin olive oil, fatty fish, nuts) get +1 with an explanation. A test caps that list at 12 so scoring doesn't drift into opinion.
 - **Cholesterol is a note, not a penalty.** For most people saturated fat drives blood cholesterol far more than dietary cholesterol, so eggs and shrimp aren't punished for it.
@@ -48,7 +50,7 @@ Each serving gets a point score from about a dozen rules measured against your g
 ## Testing
 
 ```sh
-npm test            # 205 unit tests (node tests/run.js): data, verdict rules, swaps, search, API conversions, OCR parsing, prices, quiz, evals
+npm test            # 217 unit tests (node tests/run.js): data, verdict rules, allergens, swaps, search, API conversions, OCR parsing, prices, quiz, evals
 npm run typecheck   # TypeScript checks every js/ and extension/ file from JSDoc (tsconfig.json); nothing is built or emitted
 node tests/verdict-dump.js > verdicts.csv   # every built-in food's verdict and reasons, for eyeballing outliers
 node scripts/build-additives.mjs <openfoodfacts-server>/taxonomies   # regenerate js/additives-data.js from Open Food Facts
@@ -185,7 +187,7 @@ Phones: Chrome on Android and iOS doesn't run extensions.
 
 ## About, data and license
 
-- `about.html` explains how verdicts are decided, where each kind of data comes from and its license, what the app doesn't check (allergens, medical needs), and what's new. `privacy.html` is the privacy policy.
-- Every result notes that allergens aren't checked, says whether it's using standard goals or yours, and links to a prefilled GitHub issue for reporting a wrong number or verdict.
+- `about.html` explains how verdicts are decided, where each kind of data comes from and its license, what the allergen flags check and miss, what the app doesn't check (medical needs), and what's new. `privacy.html` is the privacy policy.
+- Every result shows your allergen flag (or, with none set, a link to add them), says whether it's using standard goals or yours, and links to a prefilled GitHub issue for reporting a wrong number or verdict.
 - `icons/og.png` is the link-preview image (`node scripts/og-image.js` remakes it).
 - Code: MIT License (`LICENSE`). Data keeps its own license: USDA FoodData Central and BLS are public domain; Open Food Facts data, including the additive taxonomy, is ODbL 1.0, © Open Food Facts contributors.

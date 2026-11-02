@@ -10,6 +10,7 @@
   const num = (v, lo, hi) => typeof v === "number" && Number.isFinite(v) && v >= lo && v <= hi ? v : null;
   const list = (v, max, each) => Array.isArray(v) ? v.slice(0, max).map(each).filter(x => x != null) : null;
   // Same ranges as the goal inputs.
+  const ALLERGY_IDS = ["milk", "egg", "fish", "shellfish", "treenut", "peanut", "wheat", "soy", "sesame"];
   const GOALS = { cal: [800, 6000], pro: [20, 400], sat: [5, 40], na: [500, 5000], add: [0, 100], fib: [10, 70] };
   // A looked-up food: plain values only (strings, numbers, booleans, arrays of those), with a name and calories.
   function lookupFood(f) {
@@ -32,6 +33,10 @@
       for (const [k, [lo, hi]] of Object.entries(GOALS)) { const n = num(v[k], lo, hi); if (n != null) out[k] = n; }
       if (str(v.skip, 500) != null) out.skip = v.skip;
       if (typeof v.mild === "boolean") out.mild = v.mild;
+      // Allergens: the nine ids js/allergens.js knows, and the free-text "Other" line.
+      const ids = list(v.allergies, 9, x => ALLERGY_IDS.includes(x) ? x : null);
+      if (ids) out.allergies = [...new Set(ids)];
+      if (str(v.allergyOther, 200) != null) out.allergyOther = v.allergyOther;
       return Object.keys(out).length ? out : null;
     },
     favorites: v => list(v, 100, x => str(x)),

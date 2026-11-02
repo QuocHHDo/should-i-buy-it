@@ -14,6 +14,8 @@ section { background: var(--surface); border: 1px solid var(--line); border-radi
 p { margin: 0; } .muted { color: var(--muted); font-size: 13.5px; }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
 label { display: grid; gap: 4px; font-size: 13.5px; } .wide { grid-column: 1 / -1; } .check { display: flex; align-items: center; gap: 8px; }
+fieldset { border: 1px solid var(--line, #d8dccf); border-radius: 8px; padding: 8px 12px 12px; display: grid; gap: 8px; margin: 0; } legend { font-size: 13.5px; padding: 0 4px; }
+.alboxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 4px 12px; }
 input, textarea { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; box-sizing: border-box; width: 100%; }
 input[type=checkbox] { width: 18px; height: 18px; }
 textarea { font: 13px ui-monospace, monospace; min-height: 90px; }
@@ -33,7 +35,7 @@ a { color: var(--good); }
 
   <section aria-labelledby="hImport">
     <h2 id="hImport">Bring your goals from the app</h2>
-    <p class="muted">In the app, open <b>Goals → Your data</b> and choose <b>Copy as text</b> or <b>Copy transfer link</b>, then paste it here. Only your goals, skip list and mild-food setting are used.</p>
+    <p class="muted">In the app, open <b>Goals → Your data</b> and choose <b>Copy as text</b> or <b>Copy transfer link</b>, then paste it here. Only your goals, skip list, mild-food setting and allergies are used.</p>
     <label for="paste">Backup text or transfer link<textarea id="paste" spellcheck="false"></textarea></label>
     <div class="row"><button type="button" id="importBtn">Use these goals</button></div>
   </section>
@@ -49,6 +51,10 @@ a { color: var(--good); }
       <label>Fiber goal (g)<input id="fib" type="number" min="10" max="70" required></label>
       <label class="wide">Foods or additives you skip (comma separated)<input id="skip" type="text"></label>
       <label class="wide check"><input id="mild" type="checkbox"> I prefer mild food (flag spicy items)</label>
+      <fieldset class="wide" id="allergies"><legend>Food allergies (flagged on every product; always read the package)</legend>
+        <div class="alboxes" id="alBoxes"></div>
+        <label>Other allergens (comma separated)<input id="alOther" type="text" placeholder="e.g. coconut, mustard" maxlength="200"></label>
+      </fieldset>
       <label class="wide">USDA API key (optional; used for barcode lookups when a page has no nutrition facts)<input id="usdaKey" type="text" placeholder="DEMO_KEY" autocomplete="off" spellcheck="false"></label>
       <div class="row wide"><button type="submit">Save</button><button type="button" class="ghost" id="reset">Reset to defaults</button></div>
     </form>
@@ -78,6 +84,7 @@ a { color: var(--good); }
 
   <p class="muted">Verdicts are general nutrition guidance, not medical advice. Full app: <a href="https://quochhdo.github.io/should-i-buy-it/" target="_blank" rel="noopener">quochhdo.github.io/should-i-buy-it</a>.</p>
 </main>
+<script src="lib/allergens.js"></script>
 <script src="lib/verdict.js"></script>
 <script src="lib/backup.js"></script>
 <script src="options.js"></script>

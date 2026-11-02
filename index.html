@@ -93,6 +93,8 @@ button { font: inherit; color: inherit; }
 .vp.lite { background: var(--bar-track); color: var(--ink); }
 .vp.spicy { background: transparent; color: var(--bad); border: 1px solid currentColor; }
 .vp.spicy.flag { display: inline-block; margin: 0 0 6px; }
+.vp.al-contains { background: var(--bad); color: var(--paper); }
+.vp.al-may { background: transparent; color: var(--mid); border: 1px solid currentColor; }
 .pills { display: inline-flex; gap: 4px; align-items: center; flex-wrap: wrap; }
 
 /* result */
@@ -133,6 +135,7 @@ button { font: inherit; color: inherit; }
   /* Phones: the verdict comes first, then the label. .side's children join the .result grid so they can be reordered. */
   .result > .side { display: contents; }
   .result > .side > .tag { order: -1; }
+  .result > .side > .alflag.contains, .result > .side > .alflag.may { order: -2; }
   .leftcol { max-width: none; }
 }
 .leftcol { display: grid; gap: 10px; min-width: 0; max-width: 330px; }
@@ -203,6 +206,21 @@ button { font: inherit; color: inherit; }
 .ich .ipos { font: 700 11px var(--font-body); background: var(--bar-track); color: var(--muted); border-radius: 999px; min-width: 18px; height: 18px; display: inline-grid; place-items: center; padding: 0 4px; }
 .ich.st-mixed { border-color: var(--mid); } .ich.st-removed { border-color: var(--bad); color: var(--bad); }
 .allergy { margin: -4px 0 0; font-size: 12.5px; color: var(--muted); }
+/* allergen flag above the verdict: its own box, never mixed into the nutrition score */
+.alflag { border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px; display: grid; gap: 4px; }
+.alflag .alt { margin: 0; font: 800 16px var(--font-display); display: flex; align-items: center; gap: 8px; }
+.alflag .alt .alic { flex: none; width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; font: 800 14px var(--font-body); }
+.alflag p { margin: 0; font-size: 13.5px; }
+.alflag .alnote { color: var(--muted); font-size: 12.5px; }
+.alflag.contains { border-color: var(--bad); background: var(--bad-soft); } .alflag.contains .alt { color: var(--bad); } .alflag.contains .alic { background: var(--bad); color: var(--paper); }
+.alflag.may { border-color: var(--mid); background: var(--mid-soft); } .alflag.may .alt { color: var(--mid); } .alflag.may .alic { background: var(--mid); color: var(--paper); }
+.alflag.unknown .alic { background: var(--bar-track); color: var(--ink); }
+.alflag.clear { border-style: dashed; } .alflag.clear .alic { background: var(--good-soft); color: var(--good); }
+.alset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+.alset legend { font-size: 13px; color: var(--muted); padding: 0; margin-bottom: 6px; }
+.alboxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 4px 12px; }
+.pgrid .alboxes label { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 14px; min-height: 36px; }
+.alset .alhelp { margin: 0; font-size: 12.5px; color: var(--muted); }
 .tag .for .linkbtn { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
 .report { margin: 6px 0 0; font-size: 12.5px; } .report a { color: var(--muted); }
 .footlinks { margin: 8px 0 0; font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 14px; } .footlinks a { color: var(--muted); }
@@ -642,6 +660,12 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
         <label>Fiber goal (g)<input id="p-fib" type="number" min="10" max="70"></label>
         <label class="wide">Foods or additives you skip (comma separated)<input id="p-skip" type="text"></label>
         <label class="check wide"><input id="p-mild" type="checkbox"> I prefer mild food (flag spicy items)</label>
+        <fieldset class="wide alset" id="p-allergies">
+          <legend>Food allergies: flagged on every food you look up</legend>
+          <div class="alboxes" id="p-al-boxes"></div>
+          <label>Other allergens (comma separated)<input id="p-al-other" type="text" placeholder="e.g. coconut, mustard" maxlength="200"></label>
+          <p class="alhelp">Checked against the ingredient list and allergen statements when there is one, and a typical recipe for built-in foods. It can miss things: always read the package.</p>
+        </fieldset>
         <label class="wide" id="usdaKeyWrap" hidden>USDA API key (optional; the shared demo key allows only a few searches an hour)
           <input id="p-usda" type="text" placeholder="DEMO_KEY" autocomplete="off" spellcheck="false">
           <span>Get a free key at <a href="https://fdc.nal.usda.gov/api-key-signup.html" target="_blank" rel="noopener">fdc.nal.usda.gov</a>.</span>
@@ -707,6 +731,7 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
 <script src="js/additives.js"></script>
 <script src="js/ingredients.js"></script>
 <script src="js/supplement.js"></script>
+<script src="js/allergens.js"></script>
 <script src="js/verdict.js"></script>
 <script src="js/sources.js"></script>
 <script src="js/search.js"></script>

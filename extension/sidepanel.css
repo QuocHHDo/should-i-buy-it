@@ -144,3 +144,11 @@ input[type=file]:focus-visible + .linkish { outline: 2px solid var(--accent); ou
 .lbtns { display: flex; gap: var(--s2); }
 .lbtns button { padding: 6px 12px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--surface); cursor: pointer; }
 .lbtns .primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+
+/* Allergen flag: above the breakdown, its own box, never part of the score. */
+.alflag { margin: var(--s2) 0 0; border: 2px solid var(--line); border-radius: var(--r); padding: var(--s2) var(--s3); display: grid; gap: 2px; }
+.alflag p { margin: 0; font-size: var(--t-small); } .alflag .alt { font-size: var(--t-body); }
+.alflag .alnote { color: var(--muted); }
+.alflag.contains { border-color: var(--v-bad); background: var(--z-bad); } .alflag.contains .alt { color: var(--v-bad-ink); }
+.alflag.may { border-color: var(--v-mid); background: var(--z-warn); } .alflag.may .alt { color: var(--v-mid-ink); }
+.alflag.clear { border-style: dashed; }

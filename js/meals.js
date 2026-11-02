@@ -16,7 +16,7 @@
 
   // Foods split into roles. Exported for tests.
   function roles(foods, p, own = {}) {
-    const ok = f => PR.price(f, own) && V.assess(f, p).tier !== "skip" && !(p.mild && (f.tags || []).includes("spicy"));
+    const ok = f => { if (!PR.price(f, own)) return false; const a = V.assess(f, p); return a.tier !== "skip" && !V.allergyBlocks(a) && !(p.mild && (f.tags || []).includes("spicy")); };
     const usable = foods.filter(f => !f.src && ok(f));
     return {
       protein: usable.filter(f => PROTEIN_CATS.has(f.c) && !NOT_MAIN.test(f.n) && (f.pro || 0) >= 5),

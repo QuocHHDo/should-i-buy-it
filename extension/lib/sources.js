@@ -167,6 +167,7 @@
     const m = String(p.serving_size || "").match(/(\d+(?:[.,]\d+)?)\s*(g|ml)\b/i);
     return m ? Number(m[1].replace(",", ".")) : null;
   }
+  const offTags = t => Array.isArray(t) && t.length ? t.slice(0, 30).map(x => String(x).toLowerCase()).filter(x => /^[a-z]{2}:[a-z0-9-]{1,60}$/.test(x)) : undefined;
   function fromOff(code, p) {
     const n = p.nutriments || {};
     const hasServing = n["energy-kcal_serving"] != null || n["energy_serving"] != null;
@@ -196,6 +197,8 @@
       // Additives and processing level, when Open Food Facts has analyzed the ingredient list.
       additives: Array.isArray(p.additives_tags) ? p.additives_tags.slice(0, 40).map(String) : undefined,
       nova: [1, 2, 3, 4].includes(Number(p.nova_group)) ? Number(p.nova_group) : undefined,
+      // Open Food Facts' own allergen and "traces" (may contain) lists, read by js/allergens.js.
+      allergens: offTags(p.allergens_tags), traces: offTags(p.traces_tags),
       ingredients: ingredients || undefined });
     return settleAddedSugar(f, v.add != null, false);
   }
@@ -292,7 +295,7 @@
   // Same product, whatever the zeros in front: "0096619237432" and "96619237432".
   const sameCode = (a, b) => !!a && !!b && upcCore(a) === upcCore(b);
   const matchUpc = (foods, code) => (foods || []).find(f => f.gtinUpc && upcCore(f.gtinUpc) === upcCore(code)) || null;
-  const offProductUrl = code => `https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,generic_name,brands,nutriments,serving_size,serving_quantity,serving_quantity_unit,categories_tags,additives_tags,nova_group,ingredients_text,ingredients_text_en`;
+  const offProductUrl = code => `https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,generic_name,brands,nutriments,serving_size,serving_quantity,serving_quantity_unit,categories_tags,additives_tags,nova_group,ingredients_text,ingredients_text_en,allergens_tags,traces_tags`;
 
 
   // The exact prompt the Claude version uses to look up a food; the Claude-vs-USDA eval sends the same text.

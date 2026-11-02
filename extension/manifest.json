@@ -43,6 +43,7 @@
         "lib/additives.js",
         "lib/ingredients.js",
         "lib/supplement.js",
+        "lib/allergens.js",
         "lib/verdict.js",
         "lib/card.js",
         "lib/sources.js",
