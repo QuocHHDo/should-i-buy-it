@@ -41,6 +41,7 @@ function fieldTable(run: RunResult): string {
     const cells = run.models
       .map(m => {
         const v = run.extraction[m].metrics.perField[f];
+        if (v === undefined) return `<td class="num muted" title="${esc(m)} doesn't read ${f}">not graded</td>`;
         const step = v >= 0.95 ? 4 : v >= 0.85 ? 3 : v >= 0.7 ? 2 : v >= 0.5 ? 1 : 0;
         return `<td class="num heat h${step}" title="${esc(m)} · ${f}: ${pct(v)}">${pct(v)}</td>`;
       })
@@ -62,13 +63,19 @@ function categoryTable(run: RunResult): string {
     ["Missed values (printed, returned null)", (m: string) => String(run.extraction[m].metrics.missed)],
     ["Unit errors", (m: string) => String(run.extraction[m].metrics.unitErrors)],
     ["Failed or unparseable calls", (m: string) => String(run.extraction[m].metrics.failedCalls)],
+    ["Wrong, flagged for checking", (m: string) => (run.extraction[m].metrics.flags ? String(run.extraction[m].metrics.flags.wrongFlagged) : "—")],
+    ["Wrong and NOT flagged (silent)", (m: string) => (run.extraction[m].metrics.flags ? String(run.extraction[m].metrics.flags.wrongSilent) : "—")],
+    ["Right but flagged anyway", (m: string) => (run.extraction[m].metrics.flags ? String(run.extraction[m].metrics.flags.rightFlagged) : "—")],
   ] as const;
   const extraRows = extra.map(([label, fn]) => `<tr><th scope="row">${label}</th>${run.models.map(m => `<td class="num">${fn(m)}</td>`).join("")}</tr>`).join("");
   return `<table><thead><tr><th scope="col">Category</th>${head}</tr></thead><tbody>${rows}${extraRows}</tbody></table>`;
 }
 
 function verdictTable(run: RunResult): string {
-  if (!run.verdict) return `<p class="muted">Verdict stage was skipped for this run (--no-verdict).</p>`;
+  if (!run.verdict)
+    return run.mode === "local"
+      ? `<p class="muted">Not run for the app's parser: the app computes verdicts in code, not with a model.</p>`
+      : `<p class="muted">Verdict stage was skipped for this run (--no-verdict).</p>`;
   const v = run.verdict;
   const rows = run.models
     .map(m => {
@@ -88,7 +95,8 @@ function failedTable(run: RunResult): string {
         .filter(f => !f.correct)
         .map(f => {
           const tag = f.nullCheck === "invented" ? "invented" : f.nullCheck === "missed" ? "missed" : f.unitError ? "unit" : "wrong";
-          return `<tr data-model="${esc(m)}"><td><code>${esc(c.caseId)}</code></td><td>${esc(c.category)}</td><td>${esc(m)}</td><td><code>${f.field}</code></td><td><code>${esc(show(f.expected))}</code></td><td><code>${esc(show(f.actual))}</code></td><td><span class="tag ${tag}">${tag}</span></td></tr>`;
+          const flag = f.flagged === undefined || f.nullCheck === "missed" ? "" : f.flagged ? ` <span class="tag">flagged</span>` : ` <span class="tag silent">silent</span>`;
+          return `<tr data-model="${esc(m)}"><td><code>${esc(c.caseId)}</code></td><td>${esc(c.category)}</td><td>${esc(m)}</td><td><code>${f.field}</code></td><td><code>${esc(show(f.expected))}</code></td><td><code>${esc(show(f.actual))}</code></td><td><span class="tag ${tag}">${tag}</span>${flag}</td></tr>`;
         });
     }),
   );
@@ -126,7 +134,9 @@ export function renderDashboard(runs: RunResult[]): string {
   const modeNote =
     latest.mode === "mock"
       ? `<p class="banner mock"><strong>MOCK run.</strong> These numbers come from fake responses (a regex parser and a rule-based judge), not from Claude. They prove the pipeline works; they say nothing about model quality. Reason: ${esc(latest.modeReason)}.</p>`
-      : `<p class="banner real"><strong>REAL run</strong> against the Anthropic API.</p>`;
+      : latest.mode === "local"
+        ? `<p class="banner real"><strong>LOCAL run</strong> of the app's own label parser (<code>js/labelocr.js</code>) on the label text. Real results, no model, no cost. Servings per container isn't read by the parser, so it isn't graded. "Flagged" values are the ones the app shows with a "check it" note.</p>`
+        : `<p class="banner real"><strong>REAL run</strong> against the Anthropic API.</p>`;
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Label Extraction Eval</title>
@@ -145,8 +155,8 @@ table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:6px 10px;
 thead th{color:var(--text2);font-weight:600}td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .heat.h0{background:var(--h0)}.heat.h1{background:var(--h1)}.heat.h2{background:var(--h2)}.heat.h3{background:var(--h3)}.heat.h4{background:var(--h4);color:var(--h4text)}
 .scroll{overflow-x:auto;max-height:560px;overflow-y:auto}code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace}
-.tag{display:inline-block;padding:0 6px;border-radius:4px;background:var(--tag-bg);font-size:12px}
-.mode{font-size:12px;font-weight:600;padding:1px 6px;border-radius:4px}.mode.mock{background:var(--warn-bg);color:var(--warn-text)}.mode.real{background:var(--ok-bg);color:var(--ok-text)}
+.tag{display:inline-block;padding:0 6px;border-radius:4px;background:var(--tag-bg);font-size:12px}.tag.silent{background:var(--warn-bg);color:var(--warn-text);font-weight:600}
+.mode{font-size:12px;font-weight:600;padding:1px 6px;border-radius:4px}.mode.mock{background:var(--warn-bg);color:var(--warn-text)}.mode.real,.mode.local{background:var(--ok-bg);color:var(--ok-text)}
 .chart{width:100%;max-width:600px;height:auto}.chart .fill{fill:var(--series1)}.chart .lbl,.chart .val{fill:var(--text);font-size:13px}.chart .tick{fill:var(--muted);font-size:11px}
 .chart .grid{stroke:var(--grid);stroke-width:1}.chart .hit{fill:transparent}.chart .bar:hover .hit{fill:var(--grid)}
 .filters{margin-bottom:8px}select{font:inherit;background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:2px 6px}

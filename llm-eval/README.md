@@ -1,7 +1,48 @@
 # Nutrition-label extraction eval
 
-Measures how accurately Claude models pull structured numbers out of nutrition-label text, and how good their
-"should I buy it?" verdicts are.
+Measures how accurately nutrition numbers are pulled out of label text. Two kinds of extractor can be graded:
+
+- **The app's own label parser** (`js/labelocr.js`, the code behind label photos): free, no API key. This is the
+  default use, and CI runs it on every push as a regression gate.
+- **Claude models**, plus an LLM-judged "should I buy it?" verdict stage. This needs a paid Anthropic API key;
+  without one, runs fall back to MOCK mode, whose numbers are fake.
+
+## Grading the app's label parser (free)
+
+```bash
+npm run eval -- --extractor labelocr   # all 60 cases, about a second
+npm run dashboard                      # results/dashboard.html
+npm run check                          # fails if accuracy fell > 3 points since the last parser run
+```
+
+Each case's label text goes through `labelocr.parse()` and the result is graded field by field against the ground
+truth. Servings per container isn't graded, since the parser never reads it. The verdict stage doesn't run: the app
+computes verdicts in code, not with a model.
+
+Because the app never scores silently, the run also reports how the parser's "check it" flags line up with its
+mistakes. A value counts as **flagged** when the app would show it with a note (corrected, worked out from its %DV,
+or contradicted by the rest of the label), or leave it blank for the person to fill in:
+
+- **wrong, flagged**: the person would be asked to check it. Fine.
+- **wrong, NOT flagged (silent)**: shown as if it were right. These are the errors that matter most.
+- **right but flagged**: a false alarm.
+
+Baseline (November 2026, 60 cases): **92.2%** of graded values right, 47 of 60 cases perfect, no invented values,
+and 26 wrong values not flagged. Most of the silent errors come from labels whose first column is per container or
+per 100 g (every value read from the wrong column), amounts printed before nutrient names, a "LOW SODIUM, 25% less
+salt" banner read as 25 mg of sodium, and serving sizes with trailing OCR junk. One miss ("<1g" after very wide
+column padding) is an artifact of the synthetic layout rather than likely real OCR output.
+
+The label text here is typed, not real Tesseract output, so these numbers measure the parsing step, not OCR. The
+README's 17-photo test covers the two together.
+
+**CI gate.** The Tests workflow runs the parser eval and `npm run check` on every push. `check` compares the new run
+with the last *parser* run committed in `results/` (it skips mock and API runs). When you improve the parser on
+purpose, commit the new run so later pushes are compared with it:
+
+```bash
+npm run eval -- --extractor labelocr && git add results/
+```
 
 ## Setup
 
@@ -21,7 +62,7 @@ The key is read from the environment only. It is never printed, logged, cached o
 |---|---|
 | `npm run eval -- [flags]` | Runs extraction, grading, verdicts and judging; saves `results/run-<timestamp>.json` |
 | `npm run dashboard` | Builds `results/dashboard.html` from every saved run (one file, no CDNs; open it in a browser) |
-| `npm run check` | Regression gate: exits 1 if any model's overall accuracy fell by more than 3 points since the previous run (`-- --threshold N` to change) |
+| `npm run check` | Regression gate: exits 1 if any model's overall accuracy fell by more than 3 points since the previous run of the same kind (parser vs parser, API vs API) (`-- --threshold N` to change) |
 | `npm test` | Unit tests (Vitest), all on mock data |
 | `npm run typecheck` | `tsc` type check |
 | `npm run gen:cases` | Regenerates `cases/` from `scripts/generate-cases.ts` |
@@ -41,6 +82,7 @@ The key is read from the environment only. It is never printed, logged, cached o
 | `--judge-seed s` | `0` | Seed for the order verdicts are shown to the judge |
 | `--mock` | off | Force MOCK mode |
 | `--confirm-large` | off | Required for real runs over 60 case × model extractions |
+| `--extractor labelocr` | `claude` | Grade the app's parser instead of Claude (ignores the model, prompt and verdict flags) |
 
 Start small: `npm run eval -- --limit 10` with one model, then read the printed token count and cost before a larger run.
 
@@ -153,4 +195,6 @@ results/               saved runs and the dashboard
 - Exact match is strict: "2/3 cup (55 g)" passes but "2/3 cup, 55g" fails. Read failed serving sizes in the dashboard before concluding a model is wrong.
 - The judge is itself a model. Its scores are a signal, not ground truth; spot-check rationales in the results file. Using the same model family as judge and writer can flatter it.
 - MOCK mode ignores the prompt version, so v1 and v2 mock runs score the same.
+- The parser is graded on typed label text, not on what Tesseract reads from a photo, so its OCR-slip handling is only lightly exercised (the messy cases).
+- The regression gate needs a committed parser run to compare with; if `results/` has none, `check` passes with a note.
 - Prices in `src/pricing.ts` are list prices and must be updated by hand.

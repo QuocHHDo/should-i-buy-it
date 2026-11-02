@@ -1,5 +1,6 @@
-// CLI: regression gate. Compares the latest run with the one before it and exits 1 if any model's overall
-// extraction accuracy dropped by more than the threshold (default 3 percentage points).
+// CLI: regression gate. Compares the latest run with the previous comparable run (same mode, at least one model in
+// common) and exits 1 if any model's overall extraction accuracy dropped by more than the threshold (default 3
+// percentage points). So a parser run is checked against the last parser run, never against a mock or API run.
 //
 //   npm run check                 # latest vs previous
 //   npm run check -- --threshold 5
@@ -19,6 +20,16 @@ export interface Comparison {
   models: ModelComparison[];
   warnings: string[];
   passed: boolean;
+}
+
+/** The most recent run before the last one that has the same mode and shares a model with it, if any. */
+export function previousComparable(runs: RunResult[]): RunResult | undefined {
+  const latest = runs[runs.length - 1];
+  if (!latest) return undefined;
+  return runs
+    .slice(0, -1)
+    .reverse()
+    .find(r => r.mode === latest.mode && r.models.some(m => latest.models.includes(m)));
 }
 
 /** Compares overall accuracy for the models present in both runs. */
@@ -44,14 +55,13 @@ export function compareRuns(previous: RunResult, latest: RunResult, thresholdPoi
 if (import.meta.url === `file://${process.argv[1]}`) {
   const { values } = parseArgs({ options: { threshold: { type: "string", default: "3" } } });
   const threshold = Number(values.threshold);
-  const files = listRuns();
-  if (files.length < 2) {
-    console.log(`Only ${files.length} run(s) in results/; need two to compare. Passing.`);
+  const runs = listRuns().map(loadRun);
+  const latest = runs[runs.length - 1];
+  const previous = previousComparable(runs);
+  if (!latest || !previous) {
+    console.log(`No earlier ${latest?.mode ?? ""} run with the same model(s) in results/; nothing to compare. Passing.`);
     process.exit(0);
   }
-  const [prevFile, latestFile] = files.slice(-2);
-  const previous = loadRun(prevFile);
-  const latest = loadRun(latestFile);
   const result = compareRuns(previous, latest, threshold);
   console.log(`Regression check: ${latest.runId} (${latest.mode}) vs ${previous.runId} (${previous.mode}), threshold ${threshold} points`);
   for (const w of result.warnings) console.log(`  warning: ${w}`);

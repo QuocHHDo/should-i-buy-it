@@ -1,0 +1,6201 @@
+{
+  "runId": "2026-11-02T08-27-17-729Z",
+  "startedAt": "2026-11-02T08:27:17.729Z",
+  "finishedAt": "2026-11-02T08:27:17.743Z",
+  "mode": "local",
+  "modeReason": "the app's own label parser, js/labelocr.js; no model and no API calls",
+  "models": [
+    "labelocr"
+  ],
+  "promptVersion": "labelocr",
+  "caseIds": [
+    "clean-01",
+    "clean-02",
+    "clean-03",
+    "clean-04",
+    "clean-05",
+    "clean-06",
+    "clean-07",
+    "clean-08",
+    "clean-09",
+    "clean-10",
+    "clean-11",
+    "clean-12",
+    "clean-13",
+    "clean-14",
+    "clean-15",
+    "clean-16",
+    "clean-17",
+    "clean-18",
+    "clean-19",
+    "clean-20",
+    "messy-01",
+    "messy-02",
+    "messy-03",
+    "messy-04",
+    "messy-05",
+    "messy-06",
+    "messy-07",
+    "messy-08",
+    "messy-09",
+    "messy-10",
+    "messy-11",
+    "messy-12",
+    "messy-13",
+    "messy-14",
+    "messy-15",
+    "missing-01",
+    "missing-02",
+    "missing-03",
+    "missing-04",
+    "missing-05",
+    "missing-06",
+    "missing-07",
+    "missing-08",
+    "missing-09",
+    "missing-10",
+    "tricky-01",
+    "tricky-02",
+    "tricky-03",
+    "tricky-04",
+    "tricky-05",
+    "tricky-06",
+    "tricky-07",
+    "tricky-08",
+    "tricky-09",
+    "tricky-10",
+    "adversarial-01",
+    "adversarial-02",
+    "adversarial-03",
+    "adversarial-04",
+    "adversarial-05"
+  ],
+  "extraction": {
+    "labelocr": {
+      "metrics": {
+        "cases": 60,
+        "overall": 0.9216666666666666,
+        "perField": {
+          "servingSize": 0.9,
+          "calories": 0.8666666666666667,
+          "totalFat_g": 0.95,
+          "satFat_g": 0.9,
+          "sodium_mg": 0.9,
+          "totalCarbs_g": 0.9166666666666666,
+          "fiber_g": 0.95,
+          "sugars_g": 0.95,
+          "addedSugars_g": 0.9833333333333333,
+          "protein_g": 0.9
+        },
+        "perCategory": {
+          "clean": 1,
+          "messy": 0.8133333333333334,
+          "missing": 1,
+          "tricky": 0.82,
+          "adversarial": 0.98
+        },
+        "perfectCases": 47,
+        "invented": {
+          "count": 0,
+          "of": 18,
+          "rate": 0
+        },
+        "missed": 20,
+        "unitErrors": 0,
+        "schemaErrorCases": 0,
+        "failedCalls": 0,
+        "flags": {
+          "wrongFlagged": 21,
+          "wrongSilent": 26,
+          "rightFlagged": 0
+        }
+      },
+      "cases": [
+        {
+          "caseId": "clean-01",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "3/4 cup (30g)",
+              "actual": "3/4 cup (30 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 120,
+              "actual": 120,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 1.5,
+              "actual": 1.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 160,
+              "actual": 160,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 25,
+              "actual": 25,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 9,
+              "actual": 9,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 8,
+              "actual": 8,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":120,\"fat\":1.5,\"sat\":0,\"trans\":0,\"chol\":0,\"na\":160,\"carb\":25,\"fib\":2,\"sug\":9,\"pro\":2,\"add\":8},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":16},\"serving\":\"3/4 cup (30 g)\"}"
+        },
+        {
+          "caseId": "clean-02",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "3/4 cup (170g)",
+              "actual": "3/4 cup (170 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 100,
+              "actual": 100,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 65,
+              "actual": 65,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 18,
+              "actual": 18,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":100,\"fat\":0,\"sat\":0,\"trans\":0,\"chol\":10,\"na\":65,\"carb\":6,\"fib\":0,\"sug\":5,\"pro\":18,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"3/4 cup (170 g)\"}"
+        },
+        {
+          "caseId": "clean-03",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup (245g)",
+              "actual": "1 cup (245 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 130,
+              "actual": 130,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1.5,
+              "actual": 1.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 720,
+              "actual": 720,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 22,
+              "actual": 22,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":130,\"fat\":3,\"sat\":1.5,\"trans\":0,\"chol\":5,\"na\":720,\"carb\":22,\"fib\":3,\"sug\":14,\"pro\":3,\"add\":6},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":12},\"serving\":\"1 cup (245 g)\"}"
+        },
+        {
+          "caseId": "clean-04",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 slice (43g)",
+              "actual": "1 slice (43 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 110,
+              "actual": 110,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 1.5,
+              "actual": 1.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 170,
+              "actual": 170,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 20,
+              "actual": 20,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":110,\"fat\":1.5,\"sat\":0,\"trans\":0,\"chol\":0,\"na\":170,\"carb\":20,\"fib\":3,\"sug\":3,\"pro\":5,\"add\":2},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":4},\"serving\":\"1 slice (43 g)\"}"
+        },
+        {
+          "caseId": "clean-05",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "3 cookies (34g)",
+              "actual": "3 cookies (34 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 160,
+              "actual": 160,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 135,
+              "actual": 135,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 25,
+              "actual": 25,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 13,
+              "actual": 13,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":160,\"fat\":7,\"sat\":2,\"trans\":0,\"chol\":0,\"na\":135,\"carb\":25,\"fib\":1,\"sug\":14,\"pro\":1,\"add\":13},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":26},\"serving\":\"3 cookies (34 g)\"}"
+        },
+        {
+          "caseId": "clean-06",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/4 cup (28g)",
+              "actual": "1/4 cup (28 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 170,
+              "actual": 170,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 15,
+              "actual": 15,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 85,
+              "actual": 85,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":170,\"fat\":15,\"sat\":1,\"trans\":0,\"chol\":0,\"na\":85,\"carb\":6,\"fib\":3,\"sug\":1,\"pro\":6,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1/4 cup (28 g)\"}"
+        },
+        {
+          "caseId": "clean-07",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/4 pizza (120g)",
+              "actual": "1/4 pizza (120 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 310,
+              "actual": 310,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 12,
+              "actual": 12,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 640,
+              "actual": 640,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 36,
+              "actual": 36,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":310,\"fat\":12,\"sat\":6,\"trans\":0,\"chol\":25,\"na\":640,\"carb\":36,\"fib\":2,\"sug\":4,\"pro\":14,\"add\":1},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":2},\"serving\":\"1/4 pizza (120 g)\"}"
+        },
+        {
+          "caseId": "clean-08",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/2 cup (130g)",
+              "actual": "1/2 cup (130 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 110,
+              "actual": 110,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 400,
+              "actual": 400,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 20,
+              "actual": 20,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":110,\"fat\":0,\"sat\":0,\"trans\":0,\"chol\":0,\"na\":400,\"carb\":20,\"fib\":7,\"sug\":0,\"pro\":7,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1/2 cup (130 g)\"}"
+        },
+        {
+          "caseId": "clean-09",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 bar (60g)",
+              "actual": "1 bar (60 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 230,
+              "actual": 230,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 8,
+              "actual": 8,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 3.5,
+              "actual": 3.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 210,
+              "actual": 210,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 24,
+              "actual": 24,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 20,
+              "actual": 20,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":230,\"fat\":8,\"sat\":3.5,\"trans\":0,\"chol\":10,\"na\":210,\"carb\":24,\"fib\":5,\"sug\":6,\"pro\":20,\"add\":4},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":8},\"serving\":\"1 bar (60 g)\"}"
+        },
+        {
+          "caseId": "clean-10",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "8 fl oz (240mL)",
+              "actual": "8 fl oz (240mL)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 110,
+              "actual": 110,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 26,
+              "actual": 26,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 22,
+              "actual": 22,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":110,\"fat\":0,\"sat\":0,\"trans\":0,\"chol\":0,\"na\":0,\"carb\":26,\"fib\":0,\"sug\":22,\"pro\":2,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"8 fl oz (240mL)\"}"
+        },
+        {
+          "caseId": "clean-11",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 slice (21g)",
+              "actual": "1 slice (21 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 80,
+              "actual": 80,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 3.5,
+              "actual": 3.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 135,
+              "actual": 135,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":80,\"fat\":6,\"sat\":3.5,\"trans\":0,\"chol\":20,\"na\":135,\"carb\":0,\"fib\":0,\"sug\":0,\"pro\":5,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1 slice (21 g)\"}"
+        },
+        {
+          "caseId": "clean-12",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 package (85g)",
+              "actual": "1 package (85 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 380,
+              "actual": 380,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 1580,
+              "actual": 1580,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 52,
+              "actual": 52,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 8,
+              "actual": 8,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":380,\"fat\":14,\"sat\":7,\"trans\":0,\"chol\":0,\"na\":1580,\"carb\":52,\"fib\":2,\"sug\":2,\"pro\":8,\"add\":1},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":2},\"serving\":\"1 package (85 g)\"}"
+        },
+        {
+          "caseId": "clean-13",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "2 tbsp (32g)",
+              "actual": "2 tbsp (32 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 190,
+              "actual": 190,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 16,
+              "actual": 16,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 140,
+              "actual": 140,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":190,\"fat\":16,\"sat\":3,\"trans\":0,\"chol\":0,\"na\":140,\"carb\":7,\"fib\":2,\"sug\":3,\"pro\":7,\"add\":2},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":4},\"serving\":\"2 tbsp (32 g)\"}"
+        },
+        {
+          "caseId": "clean-14",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup (142g)",
+              "actual": "1 cup (142 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 230,
+              "actual": 230,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 10,
+              "actual": 10,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 48,
+              "actual": 48,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":230,\"fat\":2,\"sat\":0,\"trans\":0,\"chol\":0,\"na\":10,\"carb\":48,\"fib\":3,\"sug\":0,\"pro\":5,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1 cup (142 g)\"}"
+        },
+        {
+          "caseId": "clean-15",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "2 oz (56g)",
+              "actual": "2 oz (56 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 60,
+              "actual": 60,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 480,
+              "actual": 480,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 12,
+              "actual": 12,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":60,\"fat\":1,\"sat\":0,\"trans\":0,\"chol\":25,\"na\":480,\"carb\":1,\"fib\":0,\"sug\":1,\"pro\":12,\"add\":1},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":2},\"serving\":\"2 oz (56 g)\"}"
+        },
+        {
+          "caseId": "clean-16",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 bar (35g)",
+              "actual": "1 bar (35 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 140,
+              "actual": 140,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 4.5,
+              "actual": 4.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 95,
+              "actual": 95,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 24,
+              "actual": 24,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 11,
+              "actual": 11,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 10,
+              "actual": 10,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":140,\"fat\":4.5,\"sat\":0.5,\"trans\":0,\"chol\":0,\"na\":95,\"carb\":24,\"fib\":2,\"sug\":11,\"pro\":2,\"add\":10},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":20},\"serving\":\"1 bar (35 g)\"}"
+        },
+        {
+          "caseId": "clean-17",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup (240mL)",
+              "actual": "1 cup (240mL)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 30,
+              "actual": 30,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 2.5,
+              "actual": 2.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 170,
+              "actual": 170,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":30,\"fat\":2.5,\"sat\":0,\"trans\":0,\"chol\":0,\"na\":170,\"carb\":1,\"fib\":0.5,\"sug\":0,\"pro\":1,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1 cup (240mL)\"}"
+        },
+        {
+          "caseId": "clean-18",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 oz (28g)",
+              "actual": "1 oz (28 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 140,
+              "actual": 140,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 115,
+              "actual": 115,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 18,
+              "actual": 18,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":140,\"fat\":7,\"sat\":1,\"trans\":0,\"chol\":0,\"na\":115,\"carb\":18,\"fib\":1,\"sug\":0,\"pro\":2,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1 oz (28 g)\"}"
+        },
+        {
+          "caseId": "clean-19",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup (245g)",
+              "actual": "1 cup (245 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 90,
+              "actual": 90,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 2.5,
+              "actual": 2.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 890,
+              "actual": 890,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 12,
+              "actual": 12,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":90,\"fat\":2.5,\"sat\":0.5,\"trans\":0,\"chol\":15,\"na\":890,\"carb\":12,\"fib\":0.5,\"sug\":1,\"pro\":6,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1 cup (245 g)\"}"
+        },
+        {
+          "caseId": "clean-20",
+          "category": "clean",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "2/3 cup (85g)",
+              "actual": "2/3 cup (85 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 50,
+              "actual": 50,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 35,
+              "actual": 35,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 10,
+              "actual": 10,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":50,\"fat\":0,\"sat\":0,\"trans\":0,\"chol\":0,\"na\":35,\"carb\":10,\"fib\":3,\"sug\":3,\"pro\":2,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"2/3 cup (85 g)\"}"
+        },
+        {
+          "caseId": "messy-01",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 can (355mL)",
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 140,
+              "actual": 140,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 45,
+              "actual": 45,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 39,
+              "actual": 39,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 39,
+              "actual": 39,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 39,
+              "actual": 39,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 9,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":140,\"fat\":0,\"sat\":0,\"trans\":0,\"na\":45,\"carb\":39,\"fib\":0,\"sug\":39,\"pro\":0,\"add\":39},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"fat%\":0,\"sat\":\"read\",\"sat%\":0,\"trans\":\"read\",\"na\":\"read\",\"na%\":2,\"carb\":\"read\",\"carb%\":14,\"fib\":\"read\",\"fib%\":0,\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":78},\"serving\":\"\"}"
+        },
+        {
+          "caseId": "messy-02",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 package (85g)",
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 380,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 1580,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 52,
+              "actual": 52,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 8,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 5,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"fat\":14,\"sat\":7,\"trans\":0,\"carb\":52,\"sug\":2,\"add\":1},\"how\":{\"fat\":\"read\",\"fat%\":18,\"sat\":\"read\",\"sat%\":35,\"trans\":\"read\",\"carb\":\"read\",\"carb%\":19,\"sug\":\"read\",\"add\":\"read\",\"add%\":2},\"serving\":\"\"}"
+        },
+        {
+          "caseId": "messy-03",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup (240mL)",
+              "actual": "1 cup (240mL)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 30,
+              "actual": 30,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 2.5,
+              "actual": 2.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 170,
+              "actual": 170,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":30,\"fat\":2.5,\"sat\":0,\"na\":170,\"carb\":1,\"fib\":0.5,\"sug\":0,\"pro\":1,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"fat%\":3,\"sat\":\"read\",\"sat%\":0,\"na\":\"read\",\"na%\":7,\"carb\":\"read\",\"carb%\":0,\"fib\":\"read\",\"fib%\":2,\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1 cup (240mL)\"}"
+        },
+        {
+          "caseId": "messy-04",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 oz (28g)",
+              "actual": "1 oz (28 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 80,
+              "actual": 80,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 590,
+              "actual": 590,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 11,
+              "actual": 11,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":80,\"fat\":1,\"sat\":0,\"na\":590,\"carb\":7,\"fib\":0,\"sug\":6,\"pro\":11,\"add\":5},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\"},\"serving\":\"1 oz (28 g)\"}"
+        },
+        {
+          "caseId": "messy-05",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup prepared (70g dry)",
+              "actual": "1 cup prepared (70 g dry)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 350,
+              "actual": 13,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 13,
+              "actual": 17,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 4.5,
+              "actual": 23,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": true
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 720,
+              "actual": 31,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 47,
+              "actual": 17,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 7,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 7,
+              "actual": 0,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 11,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 2,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":13,\"fat\":17,\"sat\":23,\"na\":31,\"carb\":17,\"fib\":7,\"sug\":0,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"doubt\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"add\":\"read\"},\"serving\":\"1 cup prepared (70 g dry)\"}"
+        },
+        {
+          "caseId": "messy-06",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "2 tbsp (28g)",
+              "actual": "2 tbsp (28 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 70,
+              "actual": 70,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 130,
+              "actual": 130,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":70,\"fat\":5,\"sat\":0.5,\"na\":130,\"carb\":4,\"fib\":1,\"sug\":0,\"pro\":2,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\"},\"serving\":\"2 tbsp (28 g)\"}"
+        },
+        {
+          "caseId": "messy-07",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/2 cup (113g)",
+              "actual": "1/2 cup (113 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 90,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 2.5,
+              "actual": 2.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1.5,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 360,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 5,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 12,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 5,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"fat\":2.5,\"fib\":0,\"sug\":4,\"add\":0},\"how\":{\"fat\":\"read\",\"fat%\":3,\"fib\":\"read\",\"fib%\":0,\"sug\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1/2 cup (113 g)\"}"
+        },
+        {
+          "caseId": "messy-08",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "3/4 cup (30g)",
+              "actual": "3/4 cup (30 g) / 12",
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 120,
+              "actual": 120,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 1.5,
+              "actual": 1.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 160,
+              "actual": 160,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 25,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 9,
+              "actual": 9,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 8,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 6,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":120,\"fat\":1.5,\"na\":160,\"fib\":2,\"sug\":9,\"pro\":2},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"na\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\"},\"serving\":\"3/4 cup (30 g) / 12\"}"
+        },
+        {
+          "caseId": "messy-09",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/4 cup (28g)",
+              "actual": "1/4 cup (28 g);",
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 170,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 15,
+              "actual": 15,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 85,
+              "actual": 85,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 8,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"fat\":15,\"sat\":1,\"na\":85,\"carb\":6,\"fib\":3,\"sug\":1,\"pro\":6,\"add\":0},\"how\":{\"fat\":\"read\",\"sat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\"},\"serving\":\"1/4 cup (28 g);\"}"
+        },
+        {
+          "caseId": "messy-10",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/4 pizza (120g)",
+              "actual": "l/4 pizza (120 g)",
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 310,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 12,
+              "actual": 12,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 640,
+              "actual": 640,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 36,
+              "actual": 36,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 8,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"fat\":12,\"sat\":6,\"na\":640,\"carb\":36,\"fib\":2,\"sug\":4,\"pro\":14,\"add\":1},\"how\":{\"fat\":\"read\",\"fat%\":15,\"sat\":\"read\",\"sat%\":30,\"na\":\"read\",\"na%\":28,\"carb\":\"read\",\"carb%\":13,\"fib\":\"read\",\"fib%\":7,\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":2},\"serving\":\"l/4 pizza (120 g)\"}"
+        },
+        {
+          "caseId": "messy-11",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 bar (60g)",
+              "actual": "1 bar (60 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 230,
+              "actual": 230,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 8,
+              "actual": 8,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 3.5,
+              "actual": 3.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 210,
+              "actual": 210,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 24,
+              "actual": 24,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 20,
+              "actual": 20,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":230,\"fat\":8,\"sat\":3.5,\"na\":210,\"carb\":24,\"fib\":5,\"sug\":6,\"pro\":20,\"add\":4},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"fat%\":10,\"sat\":\"read\",\"sat%\":18,\"na\":\"read\",\"na%\":9,\"carb\":\"read\",\"carb%\":9,\"fib\":\"read\",\"fib%\":18,\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":8},\"serving\":\"1 bar (60 g)\"}"
+        },
+        {
+          "caseId": "messy-12",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "2 oz (56g)",
+              "actual": "2 oz (56 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 60,
+              "actual": 60,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 480,
+              "actual": 480,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 12,
+              "actual": 12,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":60,\"fat\":1,\"sat\":0,\"na\":480,\"carb\":1,\"fib\":0,\"sug\":1,\"pro\":12,\"add\":1},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\"},\"serving\":\"2 oz (56 g)\"}"
+        },
+        {
+          "caseId": "messy-13",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "8 fl oz (240mL)",
+              "actual": "8 fl oz (240mL)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 110,
+              "actual": 110,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 26,
+              "actual": 26,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 22,
+              "actual": 22,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":110,\"fat\":0,\"sat\":0,\"na\":0,\"carb\":26,\"fib\":0,\"sug\":22,\"pro\":2,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"fat%\":0,\"sat\":\"read\",\"sat%\":0,\"na\":\"read\",\"na%\":0,\"carb\":\"read\",\"carb%\":9,\"fib\":\"read\",\"fib%\":0,\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"8 fl oz (240mL)\"}"
+        },
+        {
+          "caseId": "messy-14",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 slice (43g)",
+              "actual": "1 slice (43 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 110,
+              "actual": 110,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 1.5,
+              "actual": 1.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 170,
+              "actual": 170,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 20,
+              "actual": 20,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":110,\"fat\":1.5,\"sat\":0,\"na\":170,\"carb\":20,\"fib\":3,\"sug\":3,\"pro\":5,\"add\":2},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"fat%\":2,\"sat\":\"read\",\"sat%\":0,\"na\":\"read\",\"na%\":7,\"carb\":\"read\",\"carb%\":7,\"fib\":\"read\",\"fib%\":11,\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":4},\"serving\":\"1 slice (43 g)\"}"
+        },
+        {
+          "caseId": "messy-15",
+          "category": "messy",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "2 tbsp (32g)",
+              "actual": "2 tbsp (32 g);",
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 190,
+              "actual": 190,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 16,
+              "actual": 16,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 140,
+              "actual": 140,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 9,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":190,\"fat\":16,\"sat\":3,\"na\":140,\"carb\":7,\"fib\":2,\"sug\":3,\"pro\":7,\"add\":2},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"fat%\":21,\"sat\":\"read\",\"sat%\":15,\"na\":\"read\",\"na%\":6,\"carb\":\"read\",\"carb%\":3,\"fib\":\"read\",\"fib%\":7,\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":4},\"serving\":\"2 tbsp (32 g);\"}"
+        },
+        {
+          "caseId": "missing-01",
+          "category": "missing",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup (245g)",
+              "actual": "1 cup (245 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 130,
+              "actual": 130,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1.5,
+              "actual": 1.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 720,
+              "actual": 720,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 22,
+              "actual": 22,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":130,\"fat\":3,\"sat\":1.5,\"trans\":0,\"chol\":5,\"na\":720,\"carb\":22,\"fib\":3,\"sug\":14,\"pro\":3},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\"},\"serving\":\"1 cup (245 g)\"}"
+        },
+        {
+          "caseId": "missing-02",
+          "category": "missing",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "3 cookies (34g)",
+              "actual": "3 cookies (34 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 160,
+              "actual": 160,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 135,
+              "actual": 135,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 25,
+              "actual": 25,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 13,
+              "actual": 13,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":160,\"fat\":7,\"sat\":2,\"trans\":0,\"chol\":0,\"na\":135,\"carb\":25,\"fib\":1,\"sug\":14,\"pro\":1,\"add\":13},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":26},\"serving\":\"3 cookies (34 g)\"}"
+        },
+        {
+          "caseId": "missing-03",
+          "category": "missing",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 slice (21g)",
+              "actual": "1 slice (21 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 80,
+              "actual": 80,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 3.5,
+              "actual": 3.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 135,
+              "actual": 135,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":80,\"fat\":6,\"sat\":3.5,\"trans\":0,\"chol\":20,\"na\":135,\"carb\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\"},\"serving\":\"1 slice (21 g)\"}"
+        },
+        {
+          "caseId": "missing-04",
+          "category": "missing",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 230,
+              "actual": 230,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 10,
+              "actual": 10,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 48,
+              "actual": 48,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":230,\"fat\":2,\"sat\":0,\"trans\":0,\"chol\":0,\"na\":10,\"carb\":48,\"fib\":3,\"sug\":0,\"pro\":5,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"\"}"
+        },
+        {
+          "caseId": "missing-05",
+          "category": "missing",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 bar (35g)",
+              "actual": "1 bar (35 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 140,
+              "actual": 140,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 4.5,
+              "actual": 4.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 24,
+              "actual": 24,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 11,
+              "actual": 11,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 10,
+              "actual": 10,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":140,\"fat\":4.5,\"trans\":0,\"chol\":0,\"carb\":24,\"fib\":2,\"sug\":11,\"pro\":2,\"add\":10},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":20},\"serving\":\"1 bar (35 g)\"}"
+        },
+        {
+          "caseId": "missing-06",
+          "category": "missing",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 oz (28g)",
+              "actual": "1 oz (28 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 140,
+              "actual": 140,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 115,
+              "actual": 115,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 18,
+              "actual": 18,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":140,\"fat\":7,\"sat\":1,\"trans\":0,\"chol\":0,\"na\":115,\"carb\":18,\"fib\":1,\"sug\":0,\"pro\":2,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1 oz (28 g)\"}"
+        },
+        {
+          "caseId": "missing-07",
+          "category": "missing",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup (245g)",
+              "actual": "1 cup (245 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 90,
+              "actual": 90,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 2.5,
+              "actual": 2.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":90,\"fat\":2.5,\"sat\":0.5},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"fat%\":3,\"sat\":\"read\",\"sat%\":3},\"serving\":\"1 cup (245 g)\"}"
+        },
+        {
+          "caseId": "missing-08",
+          "category": "missing",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "2/3 cup (85g)",
+              "actual": "2/3 cup (85 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 35,
+              "actual": 35,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 10,
+              "actual": 10,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"fat\":0,\"sat\":0,\"trans\":0,\"chol\":0,\"na\":35,\"carb\":10,\"fib\":3,\"sug\":3,\"pro\":2,\"add\":0},\"how\":{\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"2/3 cup (85 g)\"}"
+        },
+        {
+          "caseId": "missing-09",
+          "category": "missing",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/2 cup (130g)",
+              "actual": "1/2 cup (130 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 110,
+              "actual": 110,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 400,
+              "actual": 400,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 20,
+              "actual": 20,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":110,\"fat\":0,\"sat\":0,\"trans\":0,\"chol\":0,\"na\":400,\"carb\":20,\"fib\":7,\"sug\":0,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1/2 cup (130 g)\"}"
+        },
+        {
+          "caseId": "missing-10",
+          "category": "missing",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "3/4 cup (170g)",
+              "actual": "3/4 cup (170 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 100,
+              "actual": 100,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 65,
+              "actual": 65,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": null,
+              "actual": null,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 18,
+              "actual": 18,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":100,\"fat\":0,\"sat\":0,\"trans\":0,\"chol\":10,\"na\":65,\"carb\":6,\"sug\":5,\"pro\":18},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"sug\":\"read\",\"pro\":\"read\"},\"serving\":\"3/4 cup (170 g)\"}"
+        },
+        {
+          "caseId": "tricky-01",
+          "category": "tricky",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup (245g)",
+              "actual": "1 cup (245 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 130,
+              "actual": 130,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1.5,
+              "actual": 1.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 720,
+              "actual": 720,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 22,
+              "actual": 22,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":130,\"fat\":3,\"sat\":1.5,\"na\":720,\"carb\":22,\"fib\":3,\"sug\":14,\"pro\":3,\"add\":6},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\"},\"serving\":\"1 cup (245 g)\"}"
+        },
+        {
+          "caseId": "tricky-02",
+          "category": "tricky",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/2 cup (113g)",
+              "actual": "1/2 cup (113 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 90,
+              "actual": 360,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 2.5,
+              "actual": 10,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1.5,
+              "actual": 6,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 360,
+              "actual": 1440,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 5,
+              "actual": 20,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 4,
+              "actual": 16,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 12,
+              "actual": 48,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 3,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":360,\"fat\":10,\"sat\":6,\"na\":1440,\"carb\":20,\"fib\":0,\"sug\":16,\"pro\":48,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\"},\"serving\":\"1/2 cup (113 g)\"}"
+        },
+        {
+          "caseId": "tricky-03",
+          "category": "tricky",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/2 cup (130g)",
+              "actual": "1/2 cup (130 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 110,
+              "actual": 110,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 400,
+              "actual": 400,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 20,
+              "actual": 20,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":110,\"fat\":0,\"sat\":0,\"na\":400,\"carb\":20,\"fib\":7,\"sug\":0,\"pro\":7,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\"},\"serving\":\"1/2 cup (130 g)\"}"
+        },
+        {
+          "caseId": "tricky-04",
+          "category": "tricky",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup (245g)",
+              "actual": "1 cup (245 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 90,
+              "actual": 90,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 2.5,
+              "actual": 2.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 890,
+              "actual": 890,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 12,
+              "actual": 12,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":90,\"fat\":2.5,\"sat\":0.5,\"na\":890,\"carb\":12,\"fib\":0.5,\"sug\":1,\"pro\":6,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\"},\"serving\":\"1 cup (245 g)\"}"
+        },
+        {
+          "caseId": "tricky-05",
+          "category": "tricky",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup prepared (70g dry)",
+              "actual": "1 cup prepared (70 g dry)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 350,
+              "actual": 350,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 13,
+              "actual": 13,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 4.5,
+              "actual": 4.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 720,
+              "actual": 720,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 47,
+              "actual": 47,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 11,
+              "actual": 11,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":350,\"fat\":13,\"sat\":4.5,\"na\":720,\"carb\":47,\"fib\":2,\"sug\":7,\"pro\":11,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\"},\"serving\":\"1 cup prepared (70 g dry)\"}"
+        },
+        {
+          "caseId": "tricky-06",
+          "category": "tricky",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/4 cup (28g)",
+              "actual": "1/4 cup (28 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 170,
+              "actual": 607,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 15,
+              "actual": 54,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1,
+              "actual": 3.6,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 85,
+              "actual": 304,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 6,
+              "actual": 21,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 11,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 1,
+              "actual": 3.6,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 6,
+              "actual": 21,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 2,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":607,\"fat\":54,\"sat\":3.6,\"na\":304,\"carb\":21,\"fib\":11,\"sug\":3.6,\"pro\":21,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\"},\"serving\":\"1/4 cup (28 g)\"}"
+        },
+        {
+          "caseId": "tricky-07",
+          "category": "tricky",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 can (355mL)",
+              "actual": "1 can (355mL)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 140,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 45,
+              "actual": 45,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 39,
+              "actual": 39,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 39,
+              "actual": 39,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 39,
+              "actual": 39,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 8,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"fat\":0,\"na\":45,\"carb\":39,\"fib\":0,\"sug\":39,\"pro\":0,\"add\":39},\"how\":{\"fat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\"},\"serving\":\"1 can (355mL)\"}"
+        },
+        {
+          "caseId": "tricky-08",
+          "category": "tricky",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "4 oz raw (112g)",
+              "actual": "4 oz raw (112 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 170,
+              "actual": 170,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 9,
+              "actual": 9,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 2.5,
+              "actual": 2.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 75,
+              "actual": 75,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 21,
+              "actual": 21,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":170,\"fat\":9,\"sat\":2.5,\"trans\":0,\"chol\":80,\"na\":75,\"carb\":0,\"fib\":0,\"sug\":0,\"pro\":21,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"4 oz raw (112 g)\"}"
+        },
+        {
+          "caseId": "tricky-09",
+          "category": "tricky",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/3 cup mix (40g) makes 3 pancakes",
+              "actual": "1/3 cup mix (40 g) makes 3 pancakes",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 150,
+              "actual": 150,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 470,
+              "actual": 470,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 31,
+              "actual": 31,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":150,\"fat\":1,\"sat\":0,\"trans\":0,\"chol\":0,\"na\":470,\"carb\":31,\"fib\":1,\"sug\":5,\"pro\":4,\"add\":5},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":10},\"serving\":\"1/3 cup mix (40 g) makes 3 pancakes\"}"
+        },
+        {
+          "caseId": "tricky-10",
+          "category": "tricky",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 pouch (25.5g)",
+              "actual": "1 pouch (25.5 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 80,
+              "actual": 80,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 15,
+              "actual": 15,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 19,
+              "actual": 19,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 11,
+              "actual": 11,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 11,
+              "actual": 11,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 0.5,
+              "actual": null,
+              "correct": false,
+              "nullCheck": "missed",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 9,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":80,\"fat\":0,\"sat\":0,\"na\":15,\"carb\":19,\"fib\":0,\"sug\":11,\"add\":11},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"add\":\"read\"},\"serving\":\"1 pouch (25.5 g)\"}"
+        },
+        {
+          "caseId": "adversarial-01",
+          "category": "adversarial",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 bar (35g)",
+              "actual": "1 bar (35 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 140,
+              "actual": 140,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 4.5,
+              "actual": 4.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 95,
+              "actual": 95,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 24,
+              "actual": 24,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 11,
+              "actual": 11,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 10,
+              "actual": 10,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":140,\"fat\":4.5,\"sat\":0.5,\"trans\":0,\"chol\":0,\"na\":95,\"carb\":24,\"fib\":2,\"sug\":11,\"pro\":2,\"add\":10},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":20},\"serving\":\"1 bar (35 g)\"}"
+        },
+        {
+          "caseId": "adversarial-02",
+          "category": "adversarial",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 bar (60g)",
+              "actual": "1 bar (60 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 230,
+              "actual": 230,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 8,
+              "actual": 8,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 3.5,
+              "actual": 3.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 210,
+              "actual": 210,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 24,
+              "actual": 24,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 20,
+              "actual": 20,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":230,\"fat\":8,\"sat\":3.5,\"trans\":0,\"chol\":10,\"na\":210,\"carb\":24,\"fib\":5,\"sug\":6,\"pro\":20,\"add\":4},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":8},\"serving\":\"1 bar (60 g)\"}"
+        },
+        {
+          "caseId": "adversarial-03",
+          "category": "adversarial",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup (245g)",
+              "actual": "1 cup (245 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 90,
+              "actual": 90,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 2.5,
+              "actual": 2.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 890,
+              "actual": 25,
+              "correct": false,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 12,
+              "actual": 12,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0.5,
+              "actual": 0.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 9,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":90,\"fat\":2.5,\"sat\":0.5,\"trans\":0,\"chol\":15,\"na\":25,\"carb\":12,\"fib\":0.5,\"sug\":1,\"pro\":6,\"add\":0},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":0},\"serving\":\"1 cup (245 g)\"}"
+        },
+        {
+          "caseId": "adversarial-04",
+          "category": "adversarial",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "3 cookies (34g)",
+              "actual": "3 cookies (34 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 160,
+              "actual": 160,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 135,
+              "actual": 135,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 25,
+              "actual": 25,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 13,
+              "actual": 13,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":160,\"fat\":7,\"sat\":2,\"trans\":0,\"chol\":0,\"na\":135,\"carb\":25,\"fib\":1,\"sug\":14,\"pro\":1,\"add\":13},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":26},\"serving\":\"3 cookies (34 g)\"}"
+        },
+        {
+          "caseId": "adversarial-05",
+          "category": "adversarial",
+          "model": "labelocr",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 oz (28g)",
+              "actual": "1 oz (28 g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "calories",
+              "expected": 80,
+              "actual": 80,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 590,
+              "actual": 590,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 11,
+              "actual": 11,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false,
+              "flagged": false
+            }
+          ],
+          "correct": 10,
+          "total": 10,
+          "schemaErrors": [],
+          "raw": "{\"values\":{\"cal\":80,\"fat\":1,\"sat\":0,\"trans\":0,\"chol\":20,\"na\":590,\"carb\":7,\"fib\":0,\"sug\":6,\"pro\":11,\"add\":5},\"how\":{\"cal\":\"read\",\"fat\":\"read\",\"sat\":\"read\",\"trans\":\"read\",\"chol\":\"read\",\"na\":\"read\",\"carb\":\"read\",\"fib\":\"read\",\"sug\":\"read\",\"pro\":\"read\",\"add\":\"read\",\"add%\":10},\"serving\":\"1 oz (28 g)\"}"
+        }
+      ]
+    }
+  },
+  "verdict": null,
+  "usage": {
+    "extract": {
+      "labelocr": {
+        "calls": 0,
+        "cacheHits": 0,
+        "errors": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "costUSD": 0,
+        "fullCostUSD": 0
+      }
+    },
+    "verdict": {},
+    "judge": {}
+  },
+  "totals": {
+    "calls": 0,
+    "cacheHits": 0,
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "costUSD": 0,
+    "fullCostUSD": 0
+  }
+}

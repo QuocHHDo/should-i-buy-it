@@ -12,9 +12,11 @@ import { summarizeVerdicts } from "./graders/verdict.ts";
 import { decideMode, MockClient, RealClient, type Effort } from "./llm.ts";
 import { PRICES, costUSD } from "./pricing.ts";
 import { getPrompt } from "./prompts.ts";
-import { pct, RESULTS_DIR, sumUsage, usd, type RunResult } from "./results.ts";
+import { pct, RESULTS_DIR, sumUsage, usd, type RunMode, type RunResult } from "./results.ts";
 import { runExtraction, runVerdicts } from "./runner.ts";
-import { FIELDS } from "./schema.ts";
+import { labelocrExtract, LABELOCR_FIELDS } from "./labelocr.ts";
+import { emptyUsage, type ExtractionOutput } from "./runner.ts";
+import { FIELDS, type Field } from "./schema.ts";
 
 /** Real runs above this many (case × model) extractions need --confirm-large. */
 export const MAX_UNCONFIRMED = 60;
@@ -32,27 +34,35 @@ const { values: args } = parseArgs({
     "verdict-input": { type: "string", default: "expected" },
     "judge-seed": { type: "string", default: "0" },
     "confirm-large": { type: "boolean", default: false },
+    extractor: { type: "string", default: "claude" },
   },
 });
 
-const models = [...new Set(args.models.split(",").map(s => s.trim()).filter(Boolean))];
+if (!["claude", "labelocr"].includes(args.extractor)) throw new Error("--extractor must be claude or labelocr");
+/** --extractor labelocr: grade the app's own parser (js/labelocr.js). Free, no API key, no verdict stage. */
+const local = args.extractor === "labelocr";
+const models = local ? ["labelocr"] : [...new Set(args.models.split(",").map(s => s.trim()).filter(Boolean))];
 if (!models.length) throw new Error("--models needs at least one model id");
 const prompt = getPrompt(args.prompt);
 const limit = args.limit === undefined ? undefined : Number(args.limit);
 if (limit !== undefined && (!Number.isInteger(limit) || limit < 1)) throw new Error("--limit must be a positive integer");
 if (!["expected", "extracted"].includes(args["verdict-input"])) throw new Error("--verdict-input must be expected or extracted");
 const verdictInput = args["verdict-input"] as "expected" | "extracted";
-const withVerdict = !args["no-verdict"];
+const withVerdict = !args["no-verdict"] && !local;
 const judgeModel = args["judge-model"];
 const concurrency = Number(args.concurrency);
 const cases = loadCases().slice(0, limit);
-for (const m of [...models, ...(withVerdict ? [judgeModel] : [])]) if (!PRICES[m]) console.warn(`warning: no price entry for ${m}; its cost will show as unknown`);
+if (!local) for (const m of [...models, ...(withVerdict ? [judgeModel] : [])]) if (!PRICES[m]) console.warn(`warning: no price entry for ${m}; its cost will show as unknown`);
 
-const decision = await decideMode({ forceMock: args.mock, probeModel: models[0] });
+const decision: { mode: RunMode; reason: string } = local
+  ? { mode: "local", reason: "the app's own label parser, js/labelocr.js; no model and no API calls" }
+  : await decideMode({ forceMock: args.mock, probeModel: models[0] });
 const client = decision.mode === "real" ? new RealClient() : new MockClient();
-const banner = decision.mode === "real" ? "REAL mode — calling the Anthropic API" : "MOCK mode — fake responses, no API calls";
+const banner =
+  decision.mode === "real" ? "REAL mode — calling the Anthropic API" : decision.mode === "local" ? "LOCAL mode — grading js/labelocr.js" : "MOCK mode — fake responses, no API calls";
+const promptVersion = local ? "labelocr" : args.prompt;
 console.log(`\n=== ${banner} (${decision.reason}) ===`);
-console.log(`models: ${models.join(", ")} | prompt: ${args.prompt} | cases: ${cases.length} | concurrency: ${concurrency}`);
+console.log(`models: ${models.join(", ")} | prompt: ${promptVersion} | cases: ${cases.length}${local ? "" : ` | concurrency: ${concurrency}`}`);
 if (withVerdict) console.log(`verdicts: on (input: ${verdictInput}, judge: ${judgeModel})`);
 console.log("");
 
@@ -83,7 +93,17 @@ const progress = (stage: string, d: number, t: number) => {
   else if (d === t) console.log(`${stage} ${d}/${t}`);
 };
 const startedAt = new Date();
-const ext = await runExtraction({
+const flags = new Map<string, Partial<Record<Field, boolean>>>();
+const ext = local
+  ? {
+      outputs: cases.map((c): ExtractionOutput => {
+        const r = labelocrExtract(c.labelText);
+        flags.set(c.id, r.flagged);
+        return { caseId: c.id, model: "labelocr", raw: r.raw, extracted: r.extracted, schemaErrors: [], cached: false, inputTokens: 0, outputTokens: 0 };
+      }),
+      usage: { labelocr: emptyUsage() },
+    }
+  : await runExtraction({
   models,
   promptVersion: args.prompt,
   cases,
@@ -98,7 +118,10 @@ const extraction: RunResult["extraction"] = {};
 for (const m of models) {
   const graded = ext.outputs
     .filter(o => o.model === m)
-    .map(o => ({ ...gradeCase(byId.get(o.caseId)!, m, o.extracted, o.schemaErrors, o.error), raw: o.raw }));
+    .map(o => {
+      const opts = local ? { fields: LABELOCR_FIELDS, flagged: flags.get(o.caseId) } : {};
+      return { ...gradeCase(byId.get(o.caseId)!, m, o.extracted, o.schemaErrors, o.error, opts), raw: o.raw };
+    });
   extraction[m] = { metrics: summarizeExtraction(graded), cases: graded };
 }
 
@@ -125,7 +148,7 @@ const run: RunResult = {
   mode: decision.mode,
   modeReason: decision.reason,
   models,
-  promptVersion: args.prompt,
+  promptVersion,
   caseIds: cases.map(c => c.id),
   extraction,
   verdict,
@@ -141,7 +164,8 @@ console.log("\nExtraction accuracy");
 for (const m of models) {
   const x = extraction[m].metrics;
   console.log(`  ${m}: overall ${pct(x.overall)} | perfect cases ${x.perfectCases}/${x.cases} | invented ${x.invented.count}/${x.invented.of} | unit errors ${x.unitErrors} | failed calls ${x.failedCalls}`);
-  console.log(`    ${FIELDS.map(f => `${f} ${pct(x.perField[f])}`).join(", ")}`);
+  console.log(`    ${FIELDS.map(f => `${f} ${x.perField[f] === undefined ? "not graded" : pct(x.perField[f])}`).join(", ")}`);
+  if (x.flags) console.log(`    wrong values flagged for checking ${x.flags.wrongFlagged}, wrong and NOT flagged ${x.flags.wrongSilent}, right but flagged ${x.flags.rightFlagged}`);
 }
 if (verdict) {
   console.log(`\nVerdict quality (judge ${judgeModel}, 1-5)`);
@@ -157,6 +181,6 @@ for (const [stage, group] of Object.entries(usage)) {
   }
 }
 const t = run.totals;
-const costNote = decision.mode === "mock" ? " (simulated: token counts are estimates and no money was spent)" : "";
+const costNote = decision.mode === "local" ? " (local parser: free)" : decision.mode === "mock" ? " (simulated: token counts are estimates and no money was spent)" : "";
 console.log(`  total    ${t.calls} calls, ${t.cacheHits} cached, ${t.inputTokens} in / ${t.outputTokens} out tokens, ${usd(t.costUSD)} this run${costNote}`);
 console.log(`\nMode: ${decision.mode.toUpperCase()}. Saved ${path.relative(process.cwd(), file)}`);
