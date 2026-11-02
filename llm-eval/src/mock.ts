@@ -73,8 +73,8 @@ export function heuristicExtract(labelText: string): Extraction {
   if (added) out.addedSugars_g = Number(added[1]);
   const servings = /(\d+(?:\.\d+)?)\s*servings?\s*per/.exec(text) ?? /servings?(?: per (?:container|package))?[:\s]*(?:about\s*)?(\d+(?:\.\d+)?)/.exec(text);
   if (servings) out.servingsPerContainer = Number(servings[1]);
-  const serving = /serv(?:ing|\.)\s*size[:\s]*([^\n;|/]+)/i.exec(labelText.replace(/-\n/g, ""));
-  if (serving) out.servingSize = serving[1].replace(/\s+servings?.*$/i, "").trim().replace(/[;:]$/, "") || null;
+  const serving = /serv(?:ing|\.)\s*size[:\s]*([^\n;|]+)/i.exec(labelText.replace(/-\n/g, ""));
+  if (serving) out.servingSize = serving[1].split(/\s+[/—]\s+|\s{2,}/)[0].replace(/\s+servings?.*$/i, "").trim().replace(/[;:]$/, "") || null;
   return out;
 }
 
