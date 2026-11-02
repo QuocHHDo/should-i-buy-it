@@ -35,6 +35,10 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm test
       - run: npm run typecheck
+      # Grades the app's label parser (js/labelocr.js) on the 60 cases (free, no API key) and fails if overall
+      # accuracy fell more than 3 points below the last parser run committed in llm-eval/results/.
+      - name: Label parser accuracy gate
+        run: npm run eval -- --extractor labelocr && npm run check
   ui:
     name: Click-through and accessibility (jsdom)
     runs-on: ubuntu-latest

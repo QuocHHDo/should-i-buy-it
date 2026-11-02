@@ -8,12 +8,15 @@ import { ROOT } from "./schema.ts";
 
 export const RESULTS_DIR = path.join(ROOT, "results");
 
+/** "local" = the app's own parser (js/labelocr.js) was graded; no model was called. */
+export type RunMode = Mode | "local";
+
 /** One saved run: results/run-<runId>.json. */
 export interface RunResult {
   runId: string;
   startedAt: string;
   finishedAt: string;
-  mode: Mode;
+  mode: RunMode;
   modeReason: string;
   models: string[];
   promptVersion: string;

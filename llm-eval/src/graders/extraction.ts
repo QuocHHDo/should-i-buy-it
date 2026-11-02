@@ -16,6 +16,8 @@ export interface FieldResult {
   nullCheck: NullCheck;
   /** True when a wrong value looks like a unit slip: mg vs g (×1000), kJ for kcal (×4.184), different serving units. */
   unitError: boolean;
+  /** For extractors that mark doubtful values for a person to check (the app's label parser): was this one marked? */
+  flagged?: boolean;
 }
 
 export interface CaseGrade {
@@ -83,10 +85,18 @@ export function gradeField(field: Field, expected: string | number | null, actua
 }
 
 /** Grades one model's output on one case. A failed or unparseable call scores every field wrong. */
-export function gradeCase(c: TestCase, model: string, extracted: Extraction | null, schemaErrors: string[] = [], error?: string): CaseGrade {
-  const fields = FIELDS.map(f => {
-    if (!extracted) return { field: f, expected: c.expected[f], actual: null, correct: false, nullCheck: "ok" as const, unitError: false };
-    return gradeField(f, c.expected[f], extracted[f]);
+export interface GradeOptions {
+  /** Only grade these fields (an extractor that never reads a field shouldn't be scored on it). Default: all. */
+  fields?: readonly Field[];
+  /** Which values the extractor marked for checking. */
+  flagged?: Partial<Record<Field, boolean>>;
+}
+
+export function gradeCase(c: TestCase, model: string, extracted: Extraction | null, schemaErrors: string[] = [], error?: string, opts: GradeOptions = {}): CaseGrade {
+  const fields = (opts.fields ?? FIELDS).map((f): FieldResult => {
+    if (!extracted) return { field: f, expected: c.expected[f], actual: null, correct: false, nullCheck: "ok", unitError: false };
+    const r = gradeField(f, c.expected[f], extracted[f]);
+    return opts.flagged ? { ...r, flagged: opts.flagged[f] === true } : r;
   });
   const correct = fields.filter(f => f.correct).length;
   return { caseId: c.id, category: c.category, model, fields, correct, total: fields.length, schemaErrors, ...(error ? { error } : {}) };
@@ -96,7 +106,8 @@ export interface ExtractionMetrics {
   cases: number;
   /** Share of all (case, field) pairs that were exactly right, 0–1. */
   overall: number;
-  perField: Record<Field, number>;
+  /** Fields that weren't graded (not read by this extractor) are absent. */
+  perField: Partial<Record<Field, number>>;
   perCategory: Partial<Record<Category, number>>;
   /** Cases where every field was right. */
   perfectCases: number;
@@ -106,12 +117,19 @@ export interface ExtractionMetrics {
   unitErrors: number;
   schemaErrorCases: number;
   failedCalls: number;
+  /**
+   * Only for extractors that flag values. Wrong values split by whether they were flagged (a person would check
+   * them) or silent (shown as if right), plus right values flagged anyway. A null for a printed value counts as
+   * flagged, since the app lists it as missing.
+   */
+  flags?: { wrongFlagged: number; wrongSilent: number; rightFlagged: number };
 }
 
 export function summarizeExtraction(grades: CaseGrade[]): ExtractionMetrics {
   const all = grades.flatMap(g => g.fields);
   const rate = (rs: FieldResult[]) => (rs.length ? rs.filter(r => r.correct).length / rs.length : 0);
-  const perField = Object.fromEntries(FIELDS.map(f => [f, rate(all.filter(r => r.field === f))])) as Record<Field, number>;
+  const graded = FIELDS.filter(f => all.some(r => r.field === f));
+  const perField = Object.fromEntries(graded.map(f => [f, rate(all.filter(r => r.field === f))])) as Partial<Record<Field, number>>;
   const perCategory: Partial<Record<Category, number>> = {};
   for (const cat of CATEGORIES) {
     const gs = grades.filter(g => g.category === cat);
@@ -130,5 +148,14 @@ export function summarizeExtraction(grades: CaseGrade[]): ExtractionMetrics {
     unitErrors: all.filter(r => r.unitError).length,
     schemaErrorCases: grades.filter(g => g.schemaErrors.length > 0).length,
     failedCalls: grades.filter(g => g.error).length,
+    ...(all.some(r => r.flagged !== undefined)
+      ? {
+          flags: {
+            wrongFlagged: all.filter(r => !r.correct && (r.flagged || r.nullCheck === "missed")).length,
+            wrongSilent: all.filter(r => !r.correct && !r.flagged && r.nullCheck !== "missed").length,
+            rightFlagged: all.filter(r => r.correct && r.flagged).length,
+          },
+        }
+      : {}),
   };
 }
