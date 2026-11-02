@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Label Extraction Eval</title>
+<style>
+:root{color-scheme:light;--surface:#fcfcfb;--panel:#ffffff;--border:#e4e3df;--text:#0b0b0b;--text2:#52514e;--muted:#6f6e69;--series1:#2a78d6;--grid:#ecebe7;
+--h0:#eef4fc;--h1:#d3e3f8;--h2:#a9c8f0;--h3:#6fa3e3;--h4:#2a78d6;--h4text:#ffffff;--warn-bg:#fff4dc;--warn-text:#6b4a00;--ok-bg:#e3f4ea;--ok-text:#14532d;--tag-bg:#f1f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--surface:#1a1a19;--panel:#222221;--border:#3a3a37;--text:#f0efec;--text2:#c3c2b7;--muted:#9c9b93;--series1:#3987e5;--grid:#2e2e2b;
+--h0:#1f2a38;--h1:#22406a;--h2:#2a5a96;--h3:#3473c2;--h4:#5b9cf0;--h4text:#0b0b0b;--warn-bg:#3d3112;--warn-text:#f5d68a;--ok-bg:#16301f;--ok-text:#a7e3bd;--tag-bg:#2e2e2b}}
+:root[data-theme="dark"]{color-scheme:dark;--surface:#1a1a19;--panel:#222221;--border:#3a3a37;--text:#f0efec;--text2:#c3c2b7;--muted:#9c9b93;--series1:#3987e5;--grid:#2e2e2b;
+--h0:#1f2a38;--h1:#22406a;--h2:#2a5a96;--h3:#3473c2;--h4:#5b9cf0;--h4text:#0b0b0b;--warn-bg:#3d3112;--warn-text:#f5d68a;--ok-bg:#16301f;--ok-text:#a7e3bd;--tag-bg:#2e2e2b}
+*{box-sizing:border-box}body{margin:0;background:var(--surface);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1040px;margin:0 auto;padding:24px 16px 64px}h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:32px 0 8px}
+.muted{color:var(--muted)}section{min-width:0;overflow-x:auto;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:16px}
+section h2{margin-top:0}.banner{padding:10px 14px;border-radius:8px}.banner.mock{background:var(--warn-bg);color:var(--warn-text)}.banner.real{background:var(--ok-bg);color:var(--ok-text)}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+thead th{color:var(--text2);font-weight:600}td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.heat.h0{background:var(--h0)}.heat.h1{background:var(--h1)}.heat.h2{background:var(--h2)}.heat.h3{background:var(--h3)}.heat.h4{background:var(--h4);color:var(--h4text)}
+.scroll{overflow-x:auto;max-height:560px;overflow-y:auto}code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace}
+.tag{display:inline-block;padding:0 6px;border-radius:4px;background:var(--tag-bg);font-size:12px}
+.mode{font-size:12px;font-weight:600;padding:1px 6px;border-radius:4px}.mode.mock{background:var(--warn-bg);color:var(--warn-text)}.mode.real{background:var(--ok-bg);color:var(--ok-text)}
+.chart{width:100%;max-width:600px;height:auto}.chart .fill{fill:var(--series1)}.chart .lbl,.chart .val{fill:var(--text);font-size:13px}.chart .tick{fill:var(--muted);font-size:11px}
+.chart .grid{stroke:var(--grid);stroke-width:1}.chart .hit{fill:transparent}.chart .bar:hover .hit{fill:var(--grid)}
+.filters{margin-bottom:8px}select{font:inherit;background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:2px 6px}
+.grid2{display:grid;grid-template-columns:1fr;gap:16px}@media(min-width:860px){.grid2{grid-template-columns:1fr 1fr}}
+</style></head><body><main>
+<h1>Nutrition-label extraction eval</h1>
+<p class="muted">Latest run <code>2026-11-02T07-28-39-228Z</code> · prompt <code>v1</code> · 10 cases · 1 run(s) on file · generated 2026-11-02T07:28:39.565Z</p>
+<p class="banner mock"><strong>MOCK run.</strong> These numbers come from fake responses (a regex parser and a rule-based judge), not from Claude. They prove the pipeline works; they say nothing about model quality. Reason: ANTHROPIC_API_KEY is not set.</p>
+<section><h2>Overall extraction accuracy by model</h2>
+<p class="muted">Share of all case × field values that exactly match the ground truth.</p>
+<svg class="chart" viewBox="0 0 600 54" role="img" aria-label="Accuracy by model"><line class="grid" x1="170" x2="170" y1="0" y2="34" /><text class="tick" x="170" y="48" text-anchor="middle">0%</text><line class="grid" x1="260" x2="260" y1="0" y2="34" /><text class="tick" x="260" y="48" text-anchor="middle">25%</text><line class="grid" x1="350" x2="350" y1="0" y2="34" /><text class="tick" x="350" y="48" text-anchor="middle">50%</text><line class="grid" x1="440" x2="440" y1="0" y2="34" /><text class="tick" x="440" y="48" text-anchor="middle">75%</text><line class="grid" x1="530" x2="530" y1="0" y2="34" /><text class="tick" x="530" y="48" text-anchor="middle">100%</text><g class="bar"><title>claude-opus-5-5: 100.0% — 10/10 perfect cases</title>
+        <rect class="hit" x="0" y="1" width="600" height="30" />
+        <text class="lbl" x="162" y="19" text-anchor="end">claude-opus-5-5</text>
+        <rect class="fill" x="170" y="8" width="360" height="16" rx="4" />
+        <text class="val" x="536" y="21">100.0%</text></g></svg>
+</section>
+<div class="grid2">
+<section><h2>Per-field accuracy</h2><table><thead><tr><th scope="col">Field</th><th scope="col">claude-opus-5-5</th></tr></thead><tbody><tr><th scope="row"><code>servingSize</code></th><td class="num heat h4" title="claude-opus-5-5 · servingSize: 100.0%">100.0%</td></tr><tr><th scope="row"><code>servingsPerContainer</code></th><td class="num heat h4" title="claude-opus-5-5 · servingsPerContainer: 100.0%">100.0%</td></tr><tr><th scope="row"><code>calories</code></th><td class="num heat h4" title="claude-opus-5-5 · calories: 100.0%">100.0%</td></tr><tr><th scope="row"><code>totalFat_g</code></th><td class="num heat h4" title="claude-opus-5-5 · totalFat_g: 100.0%">100.0%</td></tr><tr><th scope="row"><code>satFat_g</code></th><td class="num heat h4" title="claude-opus-5-5 · satFat_g: 100.0%">100.0%</td></tr><tr><th scope="row"><code>sodium_mg</code></th><td class="num heat h4" title="claude-opus-5-5 · sodium_mg: 100.0%">100.0%</td></tr><tr><th scope="row"><code>totalCarbs_g</code></th><td class="num heat h4" title="claude-opus-5-5 · totalCarbs_g: 100.0%">100.0%</td></tr><tr><th scope="row"><code>fiber_g</code></th><td class="num heat h4" title="claude-opus-5-5 · fiber_g: 100.0%">100.0%</td></tr><tr><th scope="row"><code>sugars_g</code></th><td class="num heat h4" title="claude-opus-5-5 · sugars_g: 100.0%">100.0%</td></tr><tr><th scope="row"><code>addedSugars_g</code></th><td class="num heat h4" title="claude-opus-5-5 · addedSugars_g: 100.0%">100.0%</td></tr><tr><th scope="row"><code>protein_g</code></th><td class="num heat h4" title="claude-opus-5-5 · protein_g: 100.0%">100.0%</td></tr></tbody></table></section>
+<section><h2>By category, and error types</h2><table><thead><tr><th scope="col">Category</th><th scope="col">claude-opus-5-5</th></tr></thead><tbody><tr><th scope="row">clean</th><td class="num">100.0%</td></tr><tr><th scope="row">Perfect cases</th><td class="num">10/10</td></tr><tr><th scope="row">Invented values (should be null)</th><td class="num">0/0</td></tr><tr><th scope="row">Missed values (printed, returned null)</th><td class="num">0</td></tr><tr><th scope="row">Unit errors</th><td class="num">0</td></tr><tr><th scope="row">Failed or unparseable calls</th><td class="num">0</td></tr></tbody></table></section>
+</div>
+<section><h2>Verdict quality (LLM judge, 1–5)</h2><p class="muted">Judge: <code>claude-opus-5-5</code> · verdicts written from the ground-truth data · responses shuffled per case (seed 0).</p>
+  <table><thead><tr><th scope="col">Model</th><th scope="col">Overall</th><th scope="col">Grounded</th><th scope="col">No invented facts</th><th scope="col">Criteria</th><th scope="col">Clarity</th><th scope="col">2–3 sentences</th><th scope="col">Judged</th><th scope="col">Errors</th></tr></thead><tbody><tr><th scope="row">claude-opus-5-5</th><td class="num">4.90</td><td class="num">5.00</td><td class="num">4.70</td><td class="num">5.00</td><td class="num">5.00</td><td class="num">100.0%</td><td class="num">10</td><td class="num">0</td></tr></tbody></table></section>
+<section><h2>Failed cases — expected vs actual</h2><p class="muted">No failed fields in this run.</p></section>
+<section><h2>Tokens and cost, latest run</h2><table><thead><tr><th scope="col">Stage</th><th scope="col">Model</th><th scope="col">Calls</th><th scope="col">Cached</th><th scope="col">Tokens in</th><th scope="col">Tokens out</th><th scope="col">Cost this run</th><th scope="col">Cost uncached</th></tr></thead><tbody><tr><td>extract</td><td>claude-opus-5-5</td><td class="num">10</td><td class="num">0</td><td class="num">4,038</td><td class="num">485</td><td class="num">$0.0259</td><td class="num">$0.0259</td></tr><tr><td>verdict</td><td>claude-opus-5-5</td><td class="num">10</td><td class="num">0</td><td class="num">2,060</td><td class="num">332</td><td class="num">$0.0149</td><td class="num">$0.0149</td></tr><tr><td>judge</td><td>claude-opus-5-5</td><td class="num">10</td><td class="num">0</td><td class="num">5,357</td><td class="num">360</td><td class="num">$0.0286</td><td class="num">$0.0286</td></tr></tbody></table></section>
+<section><h2>All runs</h2><div class="scroll"><table><thead><tr><th scope="col">Run</th><th scope="col">Mode</th><th scope="col">Prompt</th><th scope="col">Cases</th><th scope="col">Overall accuracy</th><th scope="col">Calls / cached</th><th scope="col">Tokens in / out</th><th scope="col">Cost this run</th></tr></thead><tbody><tr><td><code>2026-11-02T07-28-39-228Z</code></td><td><span class="mode mock">MOCK</span></td><td>v1</td><td class="num">10</td><td>claude-opus-5-5 100.0%</td><td class="num">30 / 0</td><td class="num">11,455 / 1,177</td><td class="num">$0.0694 <span class="muted">(simulated)</span></td></tr></tbody></table></div></section>
+</main>
+<script>
+const sel = document.getElementById("modelFilter");
+if (sel) sel.addEventListener("change", () => {
+  let n = 0;
+  for (const tr of document.querySelectorAll("#failed tbody tr")) {
+    const show = !sel.value || tr.dataset.model === sel.value;
+    tr.hidden = !show; if (show) n++;
+  }
+  document.getElementById("failCount").textContent = n + " failed fields";
+});
+</script>
+</body></html>
