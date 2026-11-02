@@ -91,8 +91,14 @@ const serve = () => new Promise(resolve => {
     ok(/Nutella/i.test(await page.textContent("#out h2")), "tapping a recent scan opens it");
     await ctx.close();
 
-    // 5. Android: the browser offers installing → a real Install button; Not now hides it for 30 days.
+    // 4b. A first visit: no install banner before the app has shown any value.
     ({ ctx, page } = await open(""));
+    await page.evaluate(() => { const e = new Event("beforeinstallprompt"); e.prompt = () => {}; dispatchEvent(e); });
+    ok(!(await visible(page, "#installBar")), "first visit: no install banner yet");
+    await ctx.close();
+
+    // 5. Android: the browser offers installing → a real Install button; Not now hides it for 30 days.
+    ({ ctx, page } = await open("", { seed: { recents: ["Avocado"] } }));
     await page.evaluate(() => { const e = new Event("beforeinstallprompt"); e.prompt = () => { window.__prompted = true; }; e.userChoice = Promise.resolve({ outcome: "accepted" }); dispatchEvent(e); });
     ok(await visible(page, "#installBar") && await visible(page, "#installBtn"), "Android: an install banner with an Install button");
     await page.click("#installBtn");
@@ -106,7 +112,7 @@ const serve = () => new Promise(resolve => {
     await ctx.close();
 
     // 6. iPhone Safari: no install button exists there, so the banner shows the Share steps.
-    ({ ctx, page } = await open("", { userAgent: IPHONE_UA }));
+    ({ ctx, page } = await open("", { userAgent: IPHONE_UA, seed: { recents: ["Avocado"] } }));
     const t = await page.evaluate(() => document.getElementById("installBar").hidden ? "" : document.getElementById("installTxt").textContent);
     ok(/Add it to your home screen: tap\s+Share, then Add to Home Screen\./.test(t) && !(await visible(page, "#installBtn")), `iPhone: the banner shows the Share → Add to Home Screen steps (${t})`);
     if (SHOTS) await page.screenshot({ path: path.join(SHOTS, "app3-iphone-banner.png") });

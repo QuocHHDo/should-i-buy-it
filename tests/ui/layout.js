@@ -77,7 +77,9 @@ async function openFood(page, name) {
       const st = await page.evaluate(() => ({ v: document.getElementById("p-cal").value, inv: document.getElementById("p-cal").getAttribute("aria-invalid"), msg: document.getElementById("p-cal-err").textContent }));
       ok(st.v === "-500" && st.inv === "true" && /Still using 2,000/.test(st.msg), `${width}px: -500 + Tab keeps the typed value with its error (${st.v} · ${st.msg})`);
       const g1 = await goalBoxes();
-      ok(JSON.stringify(g0) === JSON.stringify(g1), `${width}px: goal inputs keep their size and position with an error showing (${JSON.stringify(g0)} → ${JSON.stringify(g1)})`);
+      // Empty error slots take no room (no blank gaps between rows), so only rows below the error may move down to make room for it.
+      const row0 = g0[0][0], same = (a, b) => JSON.stringify(a.filter(x => x[0] <= row0)) === JSON.stringify(b.filter(x => x[0] <= row0));
+      ok(same(g0, g1) && g1.every((x, i) => x[1] === g0[i][1]), `${width}px: the field with the error and its row don't move, and no input changes size (${JSON.stringify(g0)} → ${JSON.stringify(g1)})`);
       await page.locator("#p-cal").scrollIntoViewIfNeeded(); await shot(page, `r2-6-goal-error-${width}`);
       await page.fill("#p-cal", "2000"); await page.press("#p-cal", "Tab");
       await page.click('#tabs [data-view="check"]');
