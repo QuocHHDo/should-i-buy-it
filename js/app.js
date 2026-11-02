@@ -49,11 +49,13 @@
   const pill = a => a.spicy ? el("span", { class: "pills" }, el("span", { class: "vp " + a.tier, text: a.word }), el("span", { class: "vp spicy", text: "Spicy" }))
     : el("span", { class: "vp " + a.tier, text: a.word });
   let toastTimer;
-  function toast(msg) {
+  function toast(msg, action) {
     let t = /** @type {HTMLElement} */ (document.querySelector(".toast"));
     if (!t) { t = el("div", { class: "toast", role: "status" }); document.body.append(t); }
-    t.textContent = msg; t.hidden = false;
-    clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 2200);
+    t.replaceChildren(el("span", { text: msg }), action ? el("button", { class: "toast-act", type: "button", text: action.label,
+      onclick: () => { t.hidden = true; clearTimeout(toastTimer); action.run(); } }) : "");
+    t.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, action ? 4500 : 2200);
   }
   const svgIcon = d => { const s = document.createElementNS("http://www.w3.org/2000/svg", "svg"); s.setAttribute("viewBox", "0 0 24 24"); s.setAttribute("aria-hidden", "true"); s.innerHTML = d; return s; };
   const STAR = '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>';
@@ -61,7 +63,7 @@
   const LINK = '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>';
 
   // ---------- state ----------
-  let current = null, mult = 1, explainKey = null, compareWith = null, cmpBasis = "serving";
+  let labelOpen = false, current = null, mult = 1, explainKey = null, compareWith = null, cmpBasis = "serving";
   let glist = store.get("grocery", []).filter(x => x && x.n);
   let plate = store.get("plate", []).filter(x => x && x.n);
 
@@ -219,7 +221,7 @@
         el("span", { class: "sn", text: s.food.n }), s.lighter ? el("span", { class: "vp lite", text: "Lighter" }) : pill(s.verdict),
         el("span", { class: "sd", text: s.lighter ? `${s.lighter[0].toUpperCase() + s.lighter.slice(1)} (${s.food.s}). Same verdict, but it goes further on your limits.` : swapReason(f, s.food) })));
     }
-    return el("section", { class: "panel" }, el("h3", { text: "Try instead" }), list);
+    return el("section", { class: "panel tryinstead" }, el("h3", { text: "Try instead" }), list);
   }
 
   // ---------- additives (scanned products) ----------
@@ -489,10 +491,13 @@
       closestBanner(f),
       head,
       el("div", { class: "result" },
-        el("div", { class: "leftcol" }, seg, issues, partial, label, box, src, PAGES && !isPlate ? el("p", { class: "report" }, el("a", { href: reportUrl(f, a), target: "_blank", rel: "noopener", text: "Wrong number or verdict? Report it" })) : null),
+        el("div", { class: "leftcol" + (labelOpen ? "" : " fold") }, seg, issues, partial, label,
+          el("button", { class: "btn small ghost label-more", type: "button", "aria-expanded": labelOpen ? "true" : "false",
+            text: labelOpen ? "Show less of the label" : "Show the full label", onclick: () => { labelOpen = !labelOpen; renderResult(current); } }),
+          box, src, PAGES && !isPlate ? el("p", { class: "report" }, el("a", { href: reportUrl(f, a), target: "_blank", rel: "noopener", text: "Wrong number or verdict? Report it" })) : null),
         el("div", { class: "side" },
           el("div", { class: "tag " + a.tier }, el("div", { class: "for" }, goalsSet ? (isPlate ? "For you · whole meal" : "For you") : (isPlate ? "Standard goals · whole meal · " : "Standard goals · "),
-            goalsSet ? null : el("button", { class: "linkbtn", type: "button", text: "Set yours", onclick: () => showView("goals") })), el("div", { class: "verdict", text: a.word }), a.spicy ? el("span", { class: "vp spicy flag", text: "Spicy" }) : null, el("p", { class: "why", text: a.why }),
+            goalsSet ? null : el("button", { class: "linkbtn", type: "button", text: "Set yours", onclick: () => showView("goals") })), el("div", { class: "verdict" }, C2 ? el("span", { class: "vicon", "aria-hidden": "true", html: C2.icon(a.tier, 34) }) : null, a.word), a.spicy ? el("span", { class: "vp spicy flag", text: "Spicy" }) : null, el("p", { class: "why", text: a.why }),
             mult !== 1 ? el("p", { class: "per", text: "The verdict is for one standard serving; the label and bars show your amount." }) : null),
           el("p", { class: "allergy", text: "Doesn't check allergens: read the label if you have a food allergy." }),
           !isPlate && compareWith && compareWith.n !== f.n ? renderCompare(f) : null,
@@ -532,6 +537,7 @@
     const fromOther = view !== "check" && !opts.stay;
     if (fromOther) showView("check", { history: false });
     if (!opts.stay && homeMode) { homeMode = false; renderAppHome(); }
+    if (!opts.stay) document.body.classList.add("picked");
     renderResult(f);
     if (!opts.noRecent) addRecent(f);
     if (PAGES && !opts.noHash) { try { history[fromOther ? "pushState" : "replaceState"](null, "", "#" + S.linkId(f, V.slug)); } catch {} }
@@ -614,7 +620,7 @@
     glist = had ? glist.filter(x => x.n !== f.n) : [...glist, { n: f.n, done: false }];
     saveList();
     if (current && current.c !== "plate") renderResult(current);
-    toast(had ? "Removed from grocery list" : "Added to grocery list");
+    toast(had ? "Removed from grocery list" : "Added to grocery list", { label: "Undo", run: () => toggleList(f) });
   }
   // Store sections in a typical walking order. Canned and dried goods go to Pantry, frozen to Frozen.
   const SECTIONS = ["Produce", "Meat & seafood", "Dairy & eggs", "Bakery & grains", "Pantry", "Frozen", "Deli & prepared", "Drinks", "Other"];
@@ -683,7 +689,7 @@
         : el("p", { class: "muted", style: "margin:0", text: "None of these items has a typical price yet." }),
         priced ? el("p", { class: "fine", style: "margin:4px 0 0", text: "One unit of each (a lb, a dozen, a gallon…) times your quantity, at typical South-region or U.S. prices, or your own where you've set one. Your store may differ." }) : null));
     }
-    $("glistCopy").disabled = !glist.length; $("glistClear").disabled = !glist.some(x => x.done);
+    $("glistCopy").disabled = !glist.length; $("glistClear").disabled = $("glistClear").hidden = !glist.some(x => x.done);
   }
   async function copyList() {
     const lines = [];
@@ -735,7 +741,13 @@
     $("plateCount").textContent = pf ? `${pf.s} · ${V.isLowerBound(pf, "cal") ? "at least " : ""}${Math.round(pf.cal)} cal` : "empty";
     $("plateView").disabled = !pf; $("plateClear").disabled = !pf;
     $("plateView").parentElement.hidden = !pf; // nothing to do with an empty plate; keeps the meal ideas in view
-    if (!pf) { box.append(el("p", { class: "muted", text: "Build a meal: open any food, pick the servings, and choose “Add to plate”." })); return; }
+    if (!pf) {
+      box.append(el("p", { class: "muted", text: "Build a meal: open any food, pick the servings, and choose “Add to plate”." }),
+        el("div", { class: "empty-acts" },
+          el("button", { class: "btn small", type: "button", text: "Search a food", onclick: () => { showView("check"); $("q").focus(); } }),
+          el("button", { class: "btn small ghost", type: "button", text: "Browse foods", onclick: () => showView("browse") })));
+      return;
+    }
     for (const item of plate) {
       const f = byName(item.n);
       if (!f) continue;
@@ -1459,6 +1471,7 @@
     if (!PAGES) return;
     $("appHome").hidden = !(homeMode && (fromApp || phone()));
     document.body.classList.toggle("home", !$("appHome").hidden);
+    renderInstall();
     const C = window.SelfCheckCard;
     const items = scans.map(x => byName(x.n)).filter(Boolean).slice(0, SCANS_SHOW);
     $("scanRecentBox").hidden = !items.length;
@@ -1469,7 +1482,7 @@
     }));
   }
   function startScanFromHome() { showView("check", { history: false }); openScan(); $("scan").scrollIntoView({ behavior: "smooth", block: "start" }); }
-  function goHome() { homeMode = true; renderAppHome(); scrollTo({ top: 0, behavior: "smooth" }); }
+  function goHome() { homeMode = true; document.body.classList.remove("picked"); renderAppHome(); scrollTo({ top: 0, behavior: "smooth" }); }
 
   // Installing: a real Install button where the browser offers one (Chrome, Edge, Samsung Internet on Android, and
   // desktop Chrome); on iPhone and iPad, the Share → Add to Home Screen steps. The banner shows on phones only, can be
@@ -1487,7 +1500,9 @@
     if (!PAGES) return;
     const dismissed = Date.now() - (store.get("installDismissed", 0) || 0) < 30 * 864e5;
     const can = !!installEvent, iosHow = ios() && !standalone();
-    $("installBar").hidden = standalone() || dismissed || !phone() || !(can || iosHow);
+    // Not on a first visit (it would push the app's own content down before it has shown any value), and not over a result.
+    const used = recents.length > 0 || scans.length > 0;
+    $("installBar").hidden = standalone() || dismissed || !phone() || !(can || iosHow) || !used || !homeMode;
     $("installBtn").hidden = !can;
     $("installTxt").replaceChildren(...(can ? ["Install the app to scan from your home screen."]
       : [el("span", { text: "Add it to your home screen: tap " }), el("span", { html: SHARE_ICON }), el("span", { text: " Share, then " }), el("b", { text: "Add to Home Screen" }), el("span", { text: "." })]));
