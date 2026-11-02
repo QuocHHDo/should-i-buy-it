@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nutrition-label-extraction",
+  "title": "NutritionExtraction",
+  "description": "Per-serving values read from a nutrition label. A value that is not printed on the label MUST be null; never estimate or infer it. Gram and milligram fields hold plain numbers in the unit named by the suffix.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["servingSize", "servingsPerContainer", "calories", "totalFat_g", "satFat_g", "sodium_mg", "totalCarbs_g", "fiber_g", "sugars_g", "addedSugars_g", "protein_g"],
+  "properties": {
+    "servingSize": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Serving size as printed, e.g. \"2/3 cup (55g)\"." },
+    "servingsPerContainer": { "anyOf": [{ "type": "number" }, { "type": "null" }], "description": "\"About 8\" -> 8. Null if not printed or printed as \"varies\"." },
+    "calories": { "anyOf": [{ "type": "number" }, { "type": "null" }], "description": "kcal per serving." },
+    "totalFat_g": { "anyOf": [{ "type": "number" }, { "type": "null" }] },
+    "satFat_g": { "anyOf": [{ "type": "number" }, { "type": "null" }] },
+    "sodium_mg": { "anyOf": [{ "type": "number" }, { "type": "null" }] },
+    "totalCarbs_g": { "anyOf": [{ "type": "number" }, { "type": "null" }] },
+    "fiber_g": { "anyOf": [{ "type": "number" }, { "type": "null" }] },
+    "sugars_g": { "anyOf": [{ "type": "number" }, { "type": "null" }], "description": "Total sugars." },
+    "addedSugars_g": { "anyOf": [{ "type": "number" }, { "type": "null" }] },
+    "protein_g": { "anyOf": [{ "type": "number" }, { "type": "null" }] }
+  }
+}

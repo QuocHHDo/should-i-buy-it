@@ -1,0 +1,19 @@
+{
+  "id": "messy-03",
+  "category": "messy",
+  "description": "Unsweetened almond milk: \"<1g\" fiber and \"0g\" lines with irregular spacing",
+  "labelText": "Nutrition   Facts\n8   servings per container\nServing size   1 cup (240mL)\nCalories     30\nTotal Fat  2.5 g   3%\n  Saturated Fat   0 g  0%\nSodium   170 mg   7%\nTotal Carbohydrate   1 g   0%\n  Dietary Fiber   <1 g   2%\n  Total Sugars   0 g\n    Includes  0 g  Added Sugars  0%\nProtein   1 g",
+  "expected": {
+    "servingSize": "1 cup (240mL)",
+    "servingsPerContainer": 8,
+    "calories": 30,
+    "totalFat_g": 2.5,
+    "satFat_g": 0,
+    "sodium_mg": 170,
+    "totalCarbs_g": 1,
+    "fiber_g": 0.5,
+    "sugars_g": 0,
+    "addedSugars_g": 0,
+    "protein_g": 1
+  }
+}

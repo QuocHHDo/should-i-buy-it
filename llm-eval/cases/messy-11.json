@@ -1,0 +1,19 @@
+{
+  "id": "messy-11",
+  "category": "messy",
+  "description": "Vanilla protein bar: two-column table flattened into a grid",
+  "labelText": "Nutrition Facts         Serving size 1 bar (60g)   Servings 1\nCalories 230       Total Carb. 24g 9%\nTotal Fat 8g 10%  Dietary Fiber 5g 18%\nSat. Fat 3.5g 18%  Total Sugars 6g\nSodium 210mg 9%  Incl. 4g Added Sugars 8%\n                       Protein 20g",
+  "expected": {
+    "servingSize": "1 bar (60g)",
+    "servingsPerContainer": 1,
+    "calories": 230,
+    "totalFat_g": 8,
+    "satFat_g": 3.5,
+    "sodium_mg": 210,
+    "totalCarbs_g": 24,
+    "fiber_g": 5,
+    "sugars_g": 6,
+    "addedSugars_g": 4,
+    "protein_g": 20
+  }
+}

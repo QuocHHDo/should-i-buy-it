@@ -1,0 +1,19 @@
+{
+  "id": "messy-06",
+  "category": "messy",
+  "description": "Hummus, classic: \"less than 1g\" spelled out",
+  "labelText": "NUTRITION FACTS\nServings per container 10\nServing Size 2 tbsp (28g)\nCalories 70\nTotal Fat 5g\nSaturated Fat less than 1g\nSodium 130mg\nTotal Carbohydrate 4g\nDietary Fiber 1g\nTotal Sugars 0g\nAdded Sugars 0g\nProtein 2g",
+  "expected": {
+    "servingSize": "2 tbsp (28g)",
+    "servingsPerContainer": 10,
+    "calories": 70,
+    "totalFat_g": 5,
+    "satFat_g": 0.5,
+    "sodium_mg": 130,
+    "totalCarbs_g": 4,
+    "fiber_g": 1,
+    "sugars_g": 0,
+    "addedSugars_g": 0,
+    "protein_g": 2
+  }
+}

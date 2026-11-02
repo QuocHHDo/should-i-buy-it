@@ -1,0 +1,19 @@
+{
+  "id": "tricky-06",
+  "category": "tricky",
+  "description": "Almonds: per 100g column next to per serving",
+  "labelText": "Nutrition Facts\n16 servings per container\nServing size 1/4 cup (28g)\n                     Per 100g      Per serving (28g)\nCalories             607           170\nTotal Fat            54g           15g\n  Saturated Fat      3.6g          1g\nSodium               304mg         85mg\nTotal Carbohydrate   21g           6g\n  Dietary Fiber      11g           3g\n  Total Sugars       3.6g          1g\n    Added Sugars     0g            0g\nProtein              21g           6g",
+  "expected": {
+    "servingSize": "1/4 cup (28g)",
+    "servingsPerContainer": 16,
+    "calories": 170,
+    "totalFat_g": 15,
+    "satFat_g": 1,
+    "sodium_mg": 85,
+    "totalCarbs_g": 6,
+    "fiber_g": 3,
+    "sugars_g": 1,
+    "addedSugars_g": 0,
+    "protein_g": 6
+  }
+}

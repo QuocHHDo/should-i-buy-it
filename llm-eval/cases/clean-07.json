@@ -1,0 +1,19 @@
+{
+  "id": "clean-07",
+  "category": "clean",
+  "description": "Frozen cheese pizza: standard panel",
+  "labelText": "Nutrition Facts\n4 servings per container\nServing size        1/4 pizza (120g)\n\nAmount per serving\nCalories            310\n                          % Daily Value*\nTotal Fat 12g                  15%\n  Saturated Fat 6g            30%\n  Trans Fat 0g\nCholesterol 25mg              8%\nSodium 640mg                  28%\nTotal Carbohydrate 36g         13%\n  Dietary Fiber 2g            7%\n  Total Sugars 4g\n    Includes 1g Added Sugars     2%\nProtein 14g\n\nVitamin D 0mcg 0% • Calcium 20mg 2% • Iron 1mg 6% • Potassium 140mg 2%\n*The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",
+  "expected": {
+    "servingSize": "1/4 pizza (120g)",
+    "servingsPerContainer": 4,
+    "calories": 310,
+    "totalFat_g": 12,
+    "satFat_g": 6,
+    "sodium_mg": 640,
+    "totalCarbs_g": 36,
+    "fiber_g": 2,
+    "sugars_g": 4,
+    "addedSugars_g": 1,
+    "protein_g": 14
+  }
+}

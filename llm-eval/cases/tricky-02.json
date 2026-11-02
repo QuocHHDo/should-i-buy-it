@@ -1,0 +1,19 @@
+{
+  "id": "tricky-02",
+  "category": "tricky",
+  "description": "Cottage cheese, 2%: per container column printed first",
+  "labelText": "Nutrition Facts\n4 servings per container\nServing size 1/2 cup (113g)\n\n                        Per container Per serving\nCalories                360           90\nTotal Fat               10g           2.5g\n  Saturated Fat         6g            1.5g\nSodium                  1440mg        360mg\nTotal Carbohydrate      20g           5g\n  Dietary Fiber         0g            0g\n  Total Sugars          16g           4g\n    Incl. Added Sugars  0g            0g\nProtein                 48g           12g",
+  "expected": {
+    "servingSize": "1/2 cup (113g)",
+    "servingsPerContainer": 4,
+    "calories": 90,
+    "totalFat_g": 2.5,
+    "satFat_g": 1.5,
+    "sodium_mg": 360,
+    "totalCarbs_g": 5,
+    "fiber_g": 0,
+    "sugars_g": 4,
+    "addedSugars_g": 0,
+    "protein_g": 12
+  }
+}

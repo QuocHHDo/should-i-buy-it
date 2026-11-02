@@ -1,0 +1,19 @@
+{
+  "id": "clean-05",
+  "category": "clean",
+  "description": "Chocolate sandwich cookies: standard panel",
+  "labelText": "Nutrition Facts\n13 servings per container\nServing size        3 cookies (34g)\n\nAmount per serving\nCalories            160\n                          % Daily Value*\nTotal Fat 7g                  9%\n  Saturated Fat 2g            10%\n  Trans Fat 0g\nCholesterol 0mg              0%\nSodium 135mg                  6%\nTotal Carbohydrate 25g         9%\n  Dietary Fiber 1g            4%\n  Total Sugars 14g\n    Includes 13g Added Sugars     26%\nProtein 1g\n\nVitamin D 0mcg 0% • Calcium 20mg 2% • Iron 1mg 6% • Potassium 140mg 2%\n*The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",
+  "expected": {
+    "servingSize": "3 cookies (34g)",
+    "servingsPerContainer": 13,
+    "calories": 160,
+    "totalFat_g": 7,
+    "satFat_g": 2,
+    "sodium_mg": 135,
+    "totalCarbs_g": 25,
+    "fiber_g": 1,
+    "sugars_g": 14,
+    "addedSugars_g": 13,
+    "protein_g": 1
+  }
+}

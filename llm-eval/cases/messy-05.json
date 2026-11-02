@@ -1,0 +1,19 @@
+{
+  "id": "messy-05",
+  "category": "messy",
+  "description": "Macaroni and cheese: amounts before the nutrient names",
+  "labelText": "Nutrition Facts — 3 servings per container — Serving size 1 cup prepared (70g dry)\n350 Calories\n13g Total Fat (17%)\n4.5g Saturated Fat (23%)\n720mg Sodium (31%)\n47g Total Carbohydrate (17%)\n2g Dietary Fiber (7%)\n7g Total Sugars\n0g Added Sugars (0%)\n11g Protein",
+  "expected": {
+    "servingSize": "1 cup prepared (70g dry)",
+    "servingsPerContainer": 3,
+    "calories": 350,
+    "totalFat_g": 13,
+    "satFat_g": 4.5,
+    "sodium_mg": 720,
+    "totalCarbs_g": 47,
+    "fiber_g": 2,
+    "sugars_g": 7,
+    "addedSugars_g": 0,
+    "protein_g": 11
+  }
+}

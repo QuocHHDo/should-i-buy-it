@@ -1,0 +1,19 @@
+{
+  "id": "tricky-04",
+  "category": "tricky",
+  "description": "Chicken noodle soup: about 2.5 servings, dual column",
+  "labelText": "Nutrition Facts\nAbout 2.5 servings per container\nServing size 1 cup (245g)\n\n                        Per serving   Per container\nCalories                90            225\nTotal Fat               2.5g          6.3g\n  Saturated Fat         <1g           1.3g\nSodium                  890mg         2225mg\nTotal Carbohydrate      12g           30g\n  Dietary Fiber         <1g           1.3g\n  Total Sugars          1g            2.5g\n    Incl. Added Sugars  0g            0g\nProtein                 6g            15g",
+  "expected": {
+    "servingSize": "1 cup (245g)",
+    "servingsPerContainer": 2.5,
+    "calories": 90,
+    "totalFat_g": 2.5,
+    "satFat_g": 0.5,
+    "sodium_mg": 890,
+    "totalCarbs_g": 12,
+    "fiber_g": 0.5,
+    "sugars_g": 1,
+    "addedSugars_g": 0,
+    "protein_g": 6
+  }
+}

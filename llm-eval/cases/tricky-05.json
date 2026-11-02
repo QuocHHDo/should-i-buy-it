@@ -1,0 +1,19 @@
+{
+  "id": "tricky-05",
+  "category": "tricky",
+  "description": "Macaroni and cheese: \"as packaged\" and \"as prepared\" columns",
+  "labelText": "Nutrition Facts\n3 servings per container\nServing size 1 cup prepared (70g dry)\n                     As packaged   As prepared\nCalories             350           450\nTotal Fat            13g           22g\n  Saturated Fat      4.5g          9g\nSodium               720mg         820mg\nTotal Carbohydrate   47g           48g\n  Dietary Fiber      2g            2g\n  Total Sugars       7g            8g\n    Incl. Added Sugars 0g          0g\nProtein              11g           14g\n\nPrepared with 2 tbsp butter and 1/4 cup 2% milk.",
+  "expected": {
+    "servingSize": "1 cup prepared (70g dry)",
+    "servingsPerContainer": 3,
+    "calories": 350,
+    "totalFat_g": 13,
+    "satFat_g": 4.5,
+    "sodium_mg": 720,
+    "totalCarbs_g": 47,
+    "fiber_g": 2,
+    "sugars_g": 7,
+    "addedSugars_g": 0,
+    "protein_g": 11
+  }
+}

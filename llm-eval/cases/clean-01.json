@@ -1,0 +1,19 @@
+{
+  "id": "clean-01",
+  "category": "clean",
+  "description": "Honey oat cereal: standard panel",
+  "labelText": "Nutrition Facts\n12 servings per container\nServing size        3/4 cup (30g)\n\nAmount per serving\nCalories            120\n                          % Daily Value*\nTotal Fat 1.5g                  2%\n  Saturated Fat 0g            0%\n  Trans Fat 0g\nCholesterol 0mg              0%\nSodium 160mg                  7%\nTotal Carbohydrate 25g         9%\n  Dietary Fiber 2g            7%\n  Total Sugars 9g\n    Includes 8g Added Sugars     16%\nProtein 2g\n\nVitamin D 0mcg 0% • Calcium 20mg 2% • Iron 1mg 6% • Potassium 140mg 2%\n*The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",
+  "expected": {
+    "servingSize": "3/4 cup (30g)",
+    "servingsPerContainer": 12,
+    "calories": 120,
+    "totalFat_g": 1.5,
+    "satFat_g": 0,
+    "sodium_mg": 160,
+    "totalCarbs_g": 25,
+    "fiber_g": 2,
+    "sugars_g": 9,
+    "addedSugars_g": 8,
+    "protein_g": 2
+  }
+}

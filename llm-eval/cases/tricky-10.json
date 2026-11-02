@@ -1,0 +1,19 @@
+{
+  "id": "tricky-10",
+  "category": "tricky",
+  "description": "Fruit snacks: decimal grams in serving, \"<1g\" protein, dual column",
+  "labelText": "Nutrition Facts\n10 servings per container\nServing size 1 pouch (25.5g)\n\n                        Per serving   Per container\nCalories                80            800\nTotal Fat               0g            0g\n  Saturated Fat         0g            0g\nSodium                  15mg          150mg\nTotal Carbohydrate      19g           190g\n  Dietary Fiber         0g            0g\n  Total Sugars          11g           110g\n    Incl. Added Sugars  11g           110g\nProtein                 <1g           5g",
+  "expected": {
+    "servingSize": "1 pouch (25.5g)",
+    "servingsPerContainer": 10,
+    "calories": 80,
+    "totalFat_g": 0,
+    "satFat_g": 0,
+    "sodium_mg": 15,
+    "totalCarbs_g": 19,
+    "fiber_g": 0,
+    "sugars_g": 11,
+    "addedSugars_g": 11,
+    "protein_g": 0.5
+  }
+}

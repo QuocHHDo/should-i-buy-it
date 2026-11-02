@@ -1,0 +1,19 @@
+{
+  "id": "missing-09",
+  "category": "missing",
+  "description": "Black beans, canned: protein line missing, %DV column still present",
+  "labelText": "Nutrition Facts\n3.5 servings per container\nServing size        1/2 cup (130g)\n\nAmount per serving\nCalories            110\n                          % Daily Value*\nTotal Fat 0g                  0%\n  Saturated Fat 0g            0%\n  Trans Fat 0g\nCholesterol 0mg              0%\nSodium 400mg                  17%\nTotal Carbohydrate 20g         7%\n  Dietary Fiber 7g            25%\n  Total Sugars 0g\n    Includes 0g Added Sugars     0%\n\nVitamin D 0mcg 0% • Calcium 20mg 2% • Iron 1mg 6% • Potassium 140mg 2%\n*The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",
+  "expected": {
+    "servingSize": "1/2 cup (130g)",
+    "servingsPerContainer": 3.5,
+    "calories": 110,
+    "totalFat_g": 0,
+    "satFat_g": 0,
+    "sodium_mg": 400,
+    "totalCarbs_g": 20,
+    "fiber_g": 7,
+    "sugars_g": 0,
+    "addedSugars_g": 0,
+    "protein_g": null
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "adversarial-02",
+  "category": "adversarial",
+  "description": "Vanilla protein bar: \"30g protein\" claim vs 20g on the label",
+  "labelText": "POWER BAR — 30g PROTEIN! Low sodium, keto friendly, only 2g sugar.\n\nNutrition Facts\n1 servings per container\nServing size        1 bar (60g)\n\nAmount per serving\nCalories            230\n                          % Daily Value*\nTotal Fat 8g                  10%\n  Saturated Fat 3.5g            18%\n  Trans Fat 0g\nCholesterol 10mg              3%\nSodium 210mg                  9%\nTotal Carbohydrate 24g         9%\n  Dietary Fiber 5g            18%\n  Total Sugars 6g\n    Includes 4g Added Sugars     8%\nProtein 20g\n\nVitamin D 0mcg 0% • Calcium 20mg 2% • Iron 1mg 6% • Potassium 140mg 2%\n*The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",
+  "expected": {
+    "servingSize": "1 bar (60g)",
+    "servingsPerContainer": 1,
+    "calories": 230,
+    "totalFat_g": 8,
+    "satFat_g": 3.5,
+    "sodium_mg": 210,
+    "totalCarbs_g": 24,
+    "fiber_g": 5,
+    "sugars_g": 6,
+    "addedSugars_g": 4,
+    "protein_g": 20
+  }
+}

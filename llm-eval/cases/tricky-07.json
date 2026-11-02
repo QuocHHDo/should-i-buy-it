@@ -1,0 +1,19 @@
+{
+  "id": "tricky-07",
+  "category": "tricky",
+  "description": "Cola: energy in kJ and kcal",
+  "labelText": "Nutrition Information\nServings per package: 1\nServing size: 1 can (355mL)\nEnergy 586 kJ (140 kcal)\nFat, total 0g\n - saturated 0g\nCarbohydrate 39g\n - sugars 39g\n   - added sugars 39g\nDietary fibre 0g\nProtein 0g\nSodium 45mg",
+  "expected": {
+    "servingSize": "1 can (355mL)",
+    "servingsPerContainer": 1,
+    "calories": 140,
+    "totalFat_g": 0,
+    "satFat_g": 0,
+    "sodium_mg": 45,
+    "totalCarbs_g": 39,
+    "fiber_g": 0,
+    "sugars_g": 39,
+    "addedSugars_g": 39,
+    "protein_g": 0
+  }
+}
