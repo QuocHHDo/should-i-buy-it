@@ -1,0 +1,19 @@
+{
+  "id": "messy-02",
+  "category": "messy",
+  "description": "Instant ramen, chicken: OCR typos and a thousands separator in sodium",
+  "labelText": "Nutrltion Facts\n1 servlng per contalner\nServlng slze 1 package (85g)\nAmount per servlng\nCalorles 380\nTotal Fat 14g 18%\n Saturated Fat 7g 35%\n Trans Fat 0g\nSodlum 1,580mg 69%\nTotal Carbohydrate 52g 19%\n Dietary Flber 2g 7%\n Total Sugars 2g\n  Includes 1g Added Sugars 2%\nProtien 8g",
+  "expected": {
+    "servingSize": "1 package (85g)",
+    "servingsPerContainer": 1,
+    "calories": 380,
+    "totalFat_g": 14,
+    "satFat_g": 7,
+    "sodium_mg": 1580,
+    "totalCarbs_g": 52,
+    "fiber_g": 2,
+    "sugars_g": 2,
+    "addedSugars_g": 1,
+    "protein_g": 8
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "messy-13",
+  "category": "messy",
+  "description": "Orange juice: \"0g\" everywhere plus a vitamin line that looks like a nutrient",
+  "labelText": "Nutrition Facts\nAbout 7 servings per container\nServing size 8 fl oz (240mL)\nCalories 110\nTotal Fat 0g 0%\nSaturated Fat 0g 0%\nSodium 0mg 0%\nPotassium 450mg 10%\nTotal Carbohydrate 26g 9%\nDietary Fiber 0g 0%\nTotal Sugars 22g\nIncludes 0g Added Sugars 0%\nProtein 2g\nVitamin C 72mg 80%",
+  "expected": {
+    "servingSize": "8 fl oz (240mL)",
+    "servingsPerContainer": 7,
+    "calories": 110,
+    "totalFat_g": 0,
+    "satFat_g": 0,
+    "sodium_mg": 0,
+    "totalCarbs_g": 26,
+    "fiber_g": 0,
+    "sugars_g": 22,
+    "addedSugars_g": 0,
+    "protein_g": 2
+  }
+}

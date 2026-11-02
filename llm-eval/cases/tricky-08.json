@@ -1,0 +1,19 @@
+{
+  "id": "tricky-08",
+  "category": "tricky",
+  "description": "Ground turkey: weight serving in ounces, \"4 oz raw\"",
+  "labelText": "Nutrition Facts\n4 servings per container\nServing size        4 oz raw (112g)\n\nAmount per serving\nCalories            170\n                          % Daily Value*\nTotal Fat 9g                  12%\n  Saturated Fat 2.5g            13%\n  Trans Fat 0g\nCholesterol 80mg              27%\nSodium 75mg                  3%\nTotal Carbohydrate 0g         0%\n  Dietary Fiber 0g            0%\n  Total Sugars 0g\n    Includes 0g Added Sugars     0%\nProtein 21g\n\nVitamin D 0mcg 0% • Calcium 20mg 2% • Iron 1mg 6% • Potassium 140mg 2%\n*The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",
+  "expected": {
+    "servingSize": "4 oz raw (112g)",
+    "servingsPerContainer": 4,
+    "calories": 170,
+    "totalFat_g": 9,
+    "satFat_g": 2.5,
+    "sodium_mg": 75,
+    "totalCarbs_g": 0,
+    "fiber_g": 0,
+    "sugars_g": 0,
+    "addedSugars_g": 0,
+    "protein_g": 21
+  }
+}

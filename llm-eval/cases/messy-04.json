@@ -1,0 +1,19 @@
+{
+  "id": "messy-04",
+  "category": "messy",
+  "description": "Beef jerky, teriyaki: all lowercase, tab separated, %DV first",
+  "labelText": "nutrition facts\nabout 3 servings per container\nserving size\t1 oz (28g)\ncalories\t80\n2%\ttotal fat\t1g\n0%\tsaturated fat\t0g\n26%\tsodium\t590mg\n3%\ttotal carbohydrate\t7g\n0%\tdietary fiber\t0g\n\ttotal sugars\t6g\n10%\tincludes 5g added sugars\n\tprotein\t11g",
+  "expected": {
+    "servingSize": "1 oz (28g)",
+    "servingsPerContainer": 3,
+    "calories": 80,
+    "totalFat_g": 1,
+    "satFat_g": 0,
+    "sodium_mg": 590,
+    "totalCarbs_g": 7,
+    "fiber_g": 0,
+    "sugars_g": 6,
+    "addedSugars_g": 5,
+    "protein_g": 11
+  }
+}

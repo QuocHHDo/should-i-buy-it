@@ -1,0 +1,19 @@
+{
+  "id": "messy-12",
+  "category": "messy",
+  "description": "Turkey breast, deli sliced: mixed case and units glued to numbers",
+  "labelText": "NUTRITION facts\n8SERVINGS PER CONTAINER\nserving SIZE 2 oz (56g)\nCALORIES60\ntotal FAT1G\nSATURATED fat0G\nsodium480MG\ntotal CARBOHYDRATE1G\ndietary FIBER0G\ntotal SUGARS1G\nincludes1G added SUGARS\nPROTEIN12G",
+  "expected": {
+    "servingSize": "2 oz (56g)",
+    "servingsPerContainer": 8,
+    "calories": 60,
+    "totalFat_g": 1,
+    "satFat_g": 0,
+    "sodium_mg": 480,
+    "totalCarbs_g": 1,
+    "fiber_g": 0,
+    "sugars_g": 1,
+    "addedSugars_g": 1,
+    "protein_g": 12
+  }
+}

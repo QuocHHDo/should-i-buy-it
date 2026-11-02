@@ -1,0 +1,19 @@
+{
+  "id": "clean-20",
+  "category": "clean",
+  "description": "Frozen mixed vegetables: standard panel",
+  "labelText": "Nutrition Facts\n5 servings per container\nServing size        2/3 cup (85g)\n\nAmount per serving\nCalories            50\n                          % Daily Value*\nTotal Fat 0g                  0%\n  Saturated Fat 0g            0%\n  Trans Fat 0g\nCholesterol 0mg              0%\nSodium 35mg                  2%\nTotal Carbohydrate 10g         4%\n  Dietary Fiber 3g            11%\n  Total Sugars 3g\n    Includes 0g Added Sugars     0%\nProtein 2g\n\nVitamin D 0mcg 0% • Calcium 20mg 2% • Iron 1mg 6% • Potassium 140mg 2%\n*The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",
+  "expected": {
+    "servingSize": "2/3 cup (85g)",
+    "servingsPerContainer": 5,
+    "calories": 50,
+    "totalFat_g": 0,
+    "satFat_g": 0,
+    "sodium_mg": 35,
+    "totalCarbs_g": 10,
+    "fiber_g": 3,
+    "sugars_g": 3,
+    "addedSugars_g": 0,
+    "protein_g": 2
+  }
+}

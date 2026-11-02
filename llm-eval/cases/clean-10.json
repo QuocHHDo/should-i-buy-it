@@ -1,0 +1,19 @@
+{
+  "id": "clean-10",
+  "category": "clean",
+  "description": "Orange juice: standard panel",
+  "labelText": "Nutrition Facts\n7 servings per container\nServing size        8 fl oz (240mL)\n\nAmount per serving\nCalories            110\n                          % Daily Value*\nTotal Fat 0g                  0%\n  Saturated Fat 0g            0%\n  Trans Fat 0g\nCholesterol 0mg              0%\nSodium 0mg                  0%\nTotal Carbohydrate 26g         9%\n  Dietary Fiber 0g            0%\n  Total Sugars 22g\n    Includes 0g Added Sugars     0%\nProtein 2g\n\nVitamin D 0mcg 0% • Calcium 20mg 2% • Iron 1mg 6% • Potassium 140mg 2%\n*The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",
+  "expected": {
+    "servingSize": "8 fl oz (240mL)",
+    "servingsPerContainer": 7,
+    "calories": 110,
+    "totalFat_g": 0,
+    "satFat_g": 0,
+    "sodium_mg": 0,
+    "totalCarbs_g": 26,
+    "fiber_g": 0,
+    "sugars_g": 22,
+    "addedSugars_g": 0,
+    "protein_g": 2
+  }
+}

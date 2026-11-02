@@ -1,0 +1,19 @@
+{
+  "id": "missing-06",
+  "category": "missing",
+  "description": "Tortilla chips: servings per container \"varies\"",
+  "labelText": "Nutrition Facts\nServings per container: varies\nServing size        1 oz (28g)\n\nAmount per serving\nCalories            140\n                          % Daily Value*\nTotal Fat 7g                  9%\n  Saturated Fat 1g            5%\n  Trans Fat 0g\nCholesterol 0mg              0%\nSodium 115mg                  5%\nTotal Carbohydrate 18g         7%\n  Dietary Fiber 1g            4%\n  Total Sugars 0g\n    Includes 0g Added Sugars     0%\nProtein 2g\n\nVitamin D 0mcg 0% • Calcium 20mg 2% • Iron 1mg 6% • Potassium 140mg 2%\n*The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",
+  "expected": {
+    "servingSize": "1 oz (28g)",
+    "servingsPerContainer": null,
+    "calories": 140,
+    "totalFat_g": 7,
+    "satFat_g": 1,
+    "sodium_mg": 115,
+    "totalCarbs_g": 18,
+    "fiber_g": 1,
+    "sugars_g": 0,
+    "addedSugars_g": 0,
+    "protein_g": 2
+  }
+}

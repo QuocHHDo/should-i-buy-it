@@ -1,0 +1,19 @@
+{
+  "id": "tricky-03",
+  "category": "tricky",
+  "description": "Black beans, canned: fractional servings per container (3.5)",
+  "labelText": "Nutrition Facts\n3.5 servings per container\nServing size 1/2 cup (130g)\n\n                        Per serving   Per container\nCalories                110           385\nTotal Fat               0g            0g\n  Saturated Fat         0g            0g\nSodium                  400mg         1400mg\nTotal Carbohydrate      20g           70g\n  Dietary Fiber         7g            24.5g\n  Total Sugars          0g            0g\n    Incl. Added Sugars  0g            0g\nProtein                 7g            24.5g",
+  "expected": {
+    "servingSize": "1/2 cup (130g)",
+    "servingsPerContainer": 3.5,
+    "calories": 110,
+    "totalFat_g": 0,
+    "satFat_g": 0,
+    "sodium_mg": 400,
+    "totalCarbs_g": 20,
+    "fiber_g": 7,
+    "sugars_g": 0,
+    "addedSugars_g": 0,
+    "protein_g": 7
+  }
+}

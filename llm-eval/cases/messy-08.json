@@ -1,0 +1,19 @@
+{
+  "id": "messy-08",
+  "category": "messy",
+  "description": "Honey oat cereal: added sugars folded into the sugars line",
+  "labelText": "Nutrition Facts / Serving size 3/4 cup (30g) / 12 servings\nCalories 120\nFat 1.5g (sat 0g)\nSodium 160mg\nCarbs 25g (fiber 2g)\nSugars 9g (incl. 8g added)\nProtein 2g",
+  "expected": {
+    "servingSize": "3/4 cup (30g)",
+    "servingsPerContainer": 12,
+    "calories": 120,
+    "totalFat_g": 1.5,
+    "satFat_g": 0,
+    "sodium_mg": 160,
+    "totalCarbs_g": 25,
+    "fiber_g": 2,
+    "sugars_g": 9,
+    "addedSugars_g": 8,
+    "protein_g": 2
+  }
+}

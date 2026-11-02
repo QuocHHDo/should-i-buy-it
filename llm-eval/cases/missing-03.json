@@ -1,0 +1,19 @@
+{
+  "id": "missing-03",
+  "category": "missing",
+  "description": "Cheddar cheese slices: fiber and sugar lines cut off the photo",
+  "labelText": "Nutrition Facts\n10 servings per container\nServing size        1 slice (21g)\n\nAmount per serving\nCalories            80\n                          % Daily Value*\nTotal Fat 6g                  8%\n  Saturated Fat 3.5g            18%\n  Trans Fat 0g\nCholesterol 20mg              7%\nSodium 135mg                  6%\nTotal Carbohydrate 0g         0%\n\nVitamin D 0mcg 0% • Calcium 20mg 2% • Iron 1mg 6% • Potassium 140mg 2%\n*The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.\n[image cropped]",
+  "expected": {
+    "servingSize": "1 slice (21g)",
+    "servingsPerContainer": 10,
+    "calories": 80,
+    "totalFat_g": 6,
+    "satFat_g": 3.5,
+    "sodium_mg": 135,
+    "totalCarbs_g": 0,
+    "fiber_g": null,
+    "sugars_g": null,
+    "addedSugars_g": null,
+    "protein_g": null
+  }
+}

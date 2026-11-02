@@ -1,0 +1,19 @@
+{
+  "id": "messy-15",
+  "category": "messy",
+  "description": "Peanut butter, creamy: semicolon list as printed on a small jar",
+  "labelText": "NUTRITION FACTS: serving size 2 tbsp (32g); servings per container about 15; calories 190; total fat 16g (21% DV); sat. fat 3g (15% DV); sodium 140mg (6% DV); total carb. 7g (3% DV); fiber 2g (7% DV); total sugars 3g (incl. 2g added sugars, 4% DV); protein 7g.",
+  "expected": {
+    "servingSize": "2 tbsp (32g)",
+    "servingsPerContainer": 15,
+    "calories": 190,
+    "totalFat_g": 16,
+    "satFat_g": 3,
+    "sodium_mg": 140,
+    "totalCarbs_g": 7,
+    "fiber_g": 2,
+    "sugars_g": 3,
+    "addedSugars_g": 2,
+    "protein_g": 7
+  }
+}

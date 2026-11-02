@@ -1,0 +1,19 @@
+{
+  "id": "messy-01",
+  "category": "messy",
+  "description": "Cola: everything on one line, pipe separated",
+  "labelText": "NUTRITION FACTS | Serv. size: 1 can (355mL) | Servings Per Container: 1 | Calories 140 | Total Fat 0g 0% | Sat. Fat 0g 0% | Trans Fat 0g | Sodium 45mg 2% | Total Carb. 39g 14% | Fiber 0g 0% | Total Sugars 39g | Incl. 39g Added Sugars 78% | Protein 0g",
+  "expected": {
+    "servingSize": "1 can (355mL)",
+    "servingsPerContainer": 1,
+    "calories": 140,
+    "totalFat_g": 0,
+    "satFat_g": 0,
+    "sodium_mg": 45,
+    "totalCarbs_g": 39,
+    "fiber_g": 0,
+    "sugars_g": 39,
+    "addedSugars_g": 39,
+    "protein_g": 0
+  }
+}

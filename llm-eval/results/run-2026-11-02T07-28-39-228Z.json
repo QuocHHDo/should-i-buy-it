@@ -1,0 +1,1285 @@
+{
+  "runId": "2026-11-02T07-28-39-228Z",
+  "startedAt": "2026-11-02T07:28:39.228Z",
+  "finishedAt": "2026-11-02T07:28:39.246Z",
+  "mode": "mock",
+  "modeReason": "ANTHROPIC_API_KEY is not set",
+  "models": [
+    "claude-opus-5-5"
+  ],
+  "promptVersion": "v1",
+  "caseIds": [
+    "clean-01",
+    "clean-02",
+    "clean-03",
+    "clean-04",
+    "clean-05",
+    "clean-06",
+    "clean-07",
+    "clean-08",
+    "clean-09",
+    "clean-10"
+  ],
+  "extraction": {
+    "claude-opus-5-5": {
+      "metrics": {
+        "cases": 10,
+        "overall": 1,
+        "perField": {
+          "servingSize": 1,
+          "servingsPerContainer": 1,
+          "calories": 1,
+          "totalFat_g": 1,
+          "satFat_g": 1,
+          "sodium_mg": 1,
+          "totalCarbs_g": 1,
+          "fiber_g": 1,
+          "sugars_g": 1,
+          "addedSugars_g": 1,
+          "protein_g": 1
+        },
+        "perCategory": {
+          "clean": 1
+        },
+        "perfectCases": 10,
+        "invented": {
+          "count": 0,
+          "of": 0,
+          "rate": 0
+        },
+        "missed": 0,
+        "unitErrors": 0,
+        "schemaErrorCases": 0,
+        "failedCalls": 0
+      },
+      "cases": [
+        {
+          "caseId": "clean-01",
+          "category": "clean",
+          "model": "claude-opus-5-5",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "3/4 cup (30g)",
+              "actual": "3/4 cup (30g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "servingsPerContainer",
+              "expected": 12,
+              "actual": 12,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "calories",
+              "expected": 120,
+              "actual": 120,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 1.5,
+              "actual": 1.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 160,
+              "actual": 160,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 25,
+              "actual": 25,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 9,
+              "actual": 9,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 8,
+              "actual": 8,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            }
+          ],
+          "correct": 11,
+          "total": 11,
+          "schemaErrors": [],
+          "raw": "{\"servingSize\":\"3/4 cup (30g)\",\"servingsPerContainer\":12,\"calories\":120,\"totalFat_g\":1.5,\"satFat_g\":0,\"sodium_mg\":160,\"totalCarbs_g\":25,\"fiber_g\":2,\"sugars_g\":9,\"addedSugars_g\":8,\"protein_g\":2}"
+        },
+        {
+          "caseId": "clean-02",
+          "category": "clean",
+          "model": "claude-opus-5-5",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "3/4 cup (170g)",
+              "actual": "3/4 cup (170g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "servingsPerContainer",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "calories",
+              "expected": 100,
+              "actual": 100,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 65,
+              "actual": 65,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 18,
+              "actual": 18,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            }
+          ],
+          "correct": 11,
+          "total": 11,
+          "schemaErrors": [],
+          "raw": "{\"servingSize\":\"3/4 cup (170g)\",\"servingsPerContainer\":4,\"calories\":100,\"totalFat_g\":0,\"satFat_g\":0,\"sodium_mg\":65,\"totalCarbs_g\":6,\"fiber_g\":0,\"sugars_g\":5,\"addedSugars_g\":0,\"protein_g\":18}"
+        },
+        {
+          "caseId": "clean-03",
+          "category": "clean",
+          "model": "claude-opus-5-5",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 cup (245g)",
+              "actual": "1 cup (245g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "servingsPerContainer",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "calories",
+              "expected": 130,
+              "actual": 130,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1.5,
+              "actual": 1.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 720,
+              "actual": 720,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 22,
+              "actual": 22,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            }
+          ],
+          "correct": 11,
+          "total": 11,
+          "schemaErrors": [],
+          "raw": "{\"servingSize\":\"1 cup (245g)\",\"servingsPerContainer\":2,\"calories\":130,\"totalFat_g\":3,\"satFat_g\":1.5,\"sodium_mg\":720,\"totalCarbs_g\":22,\"fiber_g\":3,\"sugars_g\":14,\"addedSugars_g\":6,\"protein_g\":3}"
+        },
+        {
+          "caseId": "clean-04",
+          "category": "clean",
+          "model": "claude-opus-5-5",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 slice (43g)",
+              "actual": "1 slice (43g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "servingsPerContainer",
+              "expected": 16,
+              "actual": 16,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "calories",
+              "expected": 110,
+              "actual": 110,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 1.5,
+              "actual": 1.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 170,
+              "actual": 170,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 20,
+              "actual": 20,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            }
+          ],
+          "correct": 11,
+          "total": 11,
+          "schemaErrors": [],
+          "raw": "{\"servingSize\":\"1 slice (43g)\",\"servingsPerContainer\":16,\"calories\":110,\"totalFat_g\":1.5,\"satFat_g\":0,\"sodium_mg\":170,\"totalCarbs_g\":20,\"fiber_g\":3,\"sugars_g\":3,\"addedSugars_g\":2,\"protein_g\":5}"
+        },
+        {
+          "caseId": "clean-05",
+          "category": "clean",
+          "model": "claude-opus-5-5",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "3 cookies (34g)",
+              "actual": "3 cookies (34g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "servingsPerContainer",
+              "expected": 13,
+              "actual": 13,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "calories",
+              "expected": 160,
+              "actual": 160,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 135,
+              "actual": 135,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 25,
+              "actual": 25,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 13,
+              "actual": 13,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            }
+          ],
+          "correct": 11,
+          "total": 11,
+          "schemaErrors": [],
+          "raw": "{\"servingSize\":\"3 cookies (34g)\",\"servingsPerContainer\":13,\"calories\":160,\"totalFat_g\":7,\"satFat_g\":2,\"sodium_mg\":135,\"totalCarbs_g\":25,\"fiber_g\":1,\"sugars_g\":14,\"addedSugars_g\":13,\"protein_g\":1}"
+        },
+        {
+          "caseId": "clean-06",
+          "category": "clean",
+          "model": "claude-opus-5-5",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/4 cup (28g)",
+              "actual": "1/4 cup (28g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "servingsPerContainer",
+              "expected": 16,
+              "actual": 16,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "calories",
+              "expected": 170,
+              "actual": 170,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 15,
+              "actual": 15,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 85,
+              "actual": 85,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 3,
+              "actual": 3,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            }
+          ],
+          "correct": 11,
+          "total": 11,
+          "schemaErrors": [],
+          "raw": "{\"servingSize\":\"1/4 cup (28g)\",\"servingsPerContainer\":16,\"calories\":170,\"totalFat_g\":15,\"satFat_g\":1,\"sodium_mg\":85,\"totalCarbs_g\":6,\"fiber_g\":3,\"sugars_g\":1,\"addedSugars_g\":0,\"protein_g\":6}"
+        },
+        {
+          "caseId": "clean-07",
+          "category": "clean",
+          "model": "claude-opus-5-5",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/4 pizza (120g)",
+              "actual": "1/4 pizza (120g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "servingsPerContainer",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "calories",
+              "expected": 310,
+              "actual": 310,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 12,
+              "actual": 12,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 640,
+              "actual": 640,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 36,
+              "actual": 36,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 14,
+              "actual": 14,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            }
+          ],
+          "correct": 11,
+          "total": 11,
+          "schemaErrors": [],
+          "raw": "{\"servingSize\":\"1/4 pizza (120g)\",\"servingsPerContainer\":4,\"calories\":310,\"totalFat_g\":12,\"satFat_g\":6,\"sodium_mg\":640,\"totalCarbs_g\":36,\"fiber_g\":2,\"sugars_g\":4,\"addedSugars_g\":1,\"protein_g\":14}"
+        },
+        {
+          "caseId": "clean-08",
+          "category": "clean",
+          "model": "claude-opus-5-5",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1/2 cup (130g)",
+              "actual": "1/2 cup (130g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "servingsPerContainer",
+              "expected": 3.5,
+              "actual": 3.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "calories",
+              "expected": 110,
+              "actual": 110,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 400,
+              "actual": 400,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 20,
+              "actual": 20,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            }
+          ],
+          "correct": 11,
+          "total": 11,
+          "schemaErrors": [],
+          "raw": "{\"servingSize\":\"1/2 cup (130g)\",\"servingsPerContainer\":3.5,\"calories\":110,\"totalFat_g\":0,\"satFat_g\":0,\"sodium_mg\":400,\"totalCarbs_g\":20,\"fiber_g\":7,\"sugars_g\":0,\"addedSugars_g\":0,\"protein_g\":7}"
+        },
+        {
+          "caseId": "clean-09",
+          "category": "clean",
+          "model": "claude-opus-5-5",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "1 bar (60g)",
+              "actual": "1 bar (60g)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "servingsPerContainer",
+              "expected": 1,
+              "actual": 1,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "calories",
+              "expected": 230,
+              "actual": 230,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 8,
+              "actual": 8,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 3.5,
+              "actual": 3.5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 210,
+              "actual": 210,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 24,
+              "actual": 24,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 5,
+              "actual": 5,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 6,
+              "actual": 6,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 4,
+              "actual": 4,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 20,
+              "actual": 20,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            }
+          ],
+          "correct": 11,
+          "total": 11,
+          "schemaErrors": [],
+          "raw": "{\"servingSize\":\"1 bar (60g)\",\"servingsPerContainer\":1,\"calories\":230,\"totalFat_g\":8,\"satFat_g\":3.5,\"sodium_mg\":210,\"totalCarbs_g\":24,\"fiber_g\":5,\"sugars_g\":6,\"addedSugars_g\":4,\"protein_g\":20}"
+        },
+        {
+          "caseId": "clean-10",
+          "category": "clean",
+          "model": "claude-opus-5-5",
+          "fields": [
+            {
+              "field": "servingSize",
+              "expected": "8 fl oz (240mL)",
+              "actual": "8 fl oz (240mL)",
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "servingsPerContainer",
+              "expected": 7,
+              "actual": 7,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "calories",
+              "expected": 110,
+              "actual": 110,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "satFat_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sodium_mg",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "totalCarbs_g",
+              "expected": 26,
+              "actual": 26,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "fiber_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "sugars_g",
+              "expected": 22,
+              "actual": 22,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "addedSugars_g",
+              "expected": 0,
+              "actual": 0,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            },
+            {
+              "field": "protein_g",
+              "expected": 2,
+              "actual": 2,
+              "correct": true,
+              "nullCheck": "ok",
+              "unitError": false
+            }
+          ],
+          "correct": 11,
+          "total": 11,
+          "schemaErrors": [],
+          "raw": "{\"servingSize\":\"8 fl oz (240mL)\",\"servingsPerContainer\":7,\"calories\":110,\"totalFat_g\":0,\"satFat_g\":0,\"sodium_mg\":0,\"totalCarbs_g\":26,\"fiber_g\":0,\"sugars_g\":22,\"addedSugars_g\":0,\"protein_g\":2}"
+        }
+      ]
+    }
+  },
+  "verdict": {
+    "judgeModel": "claude-opus-5-5",
+    "verdictInput": "expected",
+    "judgeSeed": "0",
+    "byModel": {
+      "claude-opus-5-5": {
+        "metrics": {
+          "judged": 10,
+          "meanOverall": 4.9,
+          "meanBy": {
+            "grounded": 5,
+            "noInventedFacts": 4.7,
+            "criteriaConsistent": 5,
+            "clarity": 5
+          },
+          "lengthOk": 1,
+          "errors": 0
+        },
+        "cases": [
+          {
+            "caseId": "clean-01",
+            "text": "Skip it: it meets 1 of the 3 criteria. Per serving, added sugar is 8g (not met), sodium is 160mg (met), protein is 2g (not met).",
+            "sentences": 2,
+            "score": {
+              "grounded": 5,
+              "noInventedFacts": 5,
+              "criteriaConsistent": 5,
+              "clarity": 5,
+              "overall": 5,
+              "rationale": "mock judge (rule-based)"
+            },
+            "position": {
+              "slot": 1,
+              "of": 1
+            }
+          },
+          {
+            "caseId": "clean-02",
+            "text": "Buy it: it meets 3 of the 3 criteria. Per serving, added sugar is 0g (met), sodium is 65mg (met), protein is 18g (met).",
+            "sentences": 2,
+            "score": {
+              "grounded": 5,
+              "noInventedFacts": 5,
+              "criteriaConsistent": 5,
+              "clarity": 5,
+              "overall": 5,
+              "rationale": "mock judge (rule-based)"
+            },
+            "position": {
+              "slot": 1,
+              "of": 1
+            }
+          },
+          {
+            "caseId": "clean-03",
+            "text": "Skip it: it meets 0 of the 3 criteria. Per serving, added sugar is 6g (not met), sodium is 720mg (not met), protein is 3g (not met).",
+            "sentences": 2,
+            "score": {
+              "grounded": 5,
+              "noInventedFacts": 5,
+              "criteriaConsistent": 5,
+              "clarity": 5,
+              "overall": 5,
+              "rationale": "mock judge (rule-based)"
+            },
+            "position": {
+              "slot": 1,
+              "of": 1
+            }
+          },
+          {
+            "caseId": "clean-04",
+            "text": "Probably fine: it meets 2 of the 3 criteria. Per serving, added sugar is 2g (met), sodium is 170mg (met), protein is 5g (not met).",
+            "sentences": 2,
+            "score": {
+              "grounded": 5,
+              "noInventedFacts": 5,
+              "criteriaConsistent": 5,
+              "clarity": 5,
+              "overall": 5,
+              "rationale": "mock judge (rule-based)"
+            },
+            "position": {
+              "slot": 1,
+              "of": 1
+            }
+          },
+          {
+            "caseId": "clean-05",
+            "text": "Skip it: it meets 1 of the 3 criteria. Per serving, added sugar is 13g (not met), sodium is 135mg (met), protein is 1g (not met).",
+            "sentences": 2,
+            "score": {
+              "grounded": 5,
+              "noInventedFacts": 5,
+              "criteriaConsistent": 5,
+              "clarity": 5,
+              "overall": 5,
+              "rationale": "mock judge (rule-based)"
+            },
+            "position": {
+              "slot": 1,
+              "of": 1
+            }
+          },
+          {
+            "caseId": "clean-06",
+            "text": "Probably fine: it meets 2 of the 3 criteria. Per serving, added sugar is 0g (met), sodium is 85mg (met), protein is 6g (not met).",
+            "sentences": 2,
+            "score": {
+              "grounded": 5,
+              "noInventedFacts": 5,
+              "criteriaConsistent": 5,
+              "clarity": 5,
+              "overall": 5,
+              "rationale": "mock judge (rule-based)"
+            },
+            "position": {
+              "slot": 1,
+              "of": 1
+            }
+          },
+          {
+            "caseId": "clean-07",
+            "text": "Probably fine: it meets 2 of the 3 criteria. Per serving, added sugar is 1g (met), sodium is 640mg (not met), protein is 14g (met). It is also a great source of vitamins.",
+            "sentences": 3,
+            "score": {
+              "grounded": 5,
+              "noInventedFacts": 2,
+              "criteriaConsistent": 5,
+              "clarity": 5,
+              "overall": 4,
+              "rationale": "mock judge (rule-based)"
+            },
+            "position": {
+              "slot": 1,
+              "of": 1
+            }
+          },
+          {
+            "caseId": "clean-08",
+            "text": "Probably fine: it meets 2 of the 3 criteria. Per serving, added sugar is 0g (met), sodium is 400mg (met), protein is 7g (not met).",
+            "sentences": 2,
+            "score": {
+              "grounded": 5,
+              "noInventedFacts": 5,
+              "criteriaConsistent": 5,
+              "clarity": 5,
+              "overall": 5,
+              "rationale": "mock judge (rule-based)"
+            },
+            "position": {
+              "slot": 1,
+              "of": 1
+            }
+          },
+          {
+            "caseId": "clean-09",
+            "text": "Buy it: it meets 3 of the 3 criteria. Per serving, added sugar is 4g (met), sodium is 210mg (met), protein is 20g (met).",
+            "sentences": 2,
+            "score": {
+              "grounded": 5,
+              "noInventedFacts": 5,
+              "criteriaConsistent": 5,
+              "clarity": 5,
+              "overall": 5,
+              "rationale": "mock judge (rule-based)"
+            },
+            "position": {
+              "slot": 1,
+              "of": 1
+            }
+          },
+          {
+            "caseId": "clean-10",
+            "text": "Probably fine: it meets 2 of the 3 criteria. Per serving, added sugar is 0g (met), sodium is 0mg (met), protein is 2g (not met).",
+            "sentences": 2,
+            "score": {
+              "grounded": 5,
+              "noInventedFacts": 5,
+              "criteriaConsistent": 5,
+              "clarity": 5,
+              "overall": 5,
+              "rationale": "mock judge (rule-based)"
+            },
+            "position": {
+              "slot": 1,
+              "of": 1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "usage": {
+    "extract": {
+      "claude-opus-5-5": {
+        "calls": 10,
+        "cacheHits": 0,
+        "errors": 0,
+        "inputTokens": 4038,
+        "outputTokens": 485,
+        "costUSD": 0.025852000000000003,
+        "fullCostUSD": 0.025852000000000003
+      }
+    },
+    "verdict": {
+      "claude-opus-5-5": {
+        "calls": 10,
+        "cacheHits": 0,
+        "errors": 0,
+        "inputTokens": 2060,
+        "outputTokens": 332,
+        "costUSD": 0.014879999999999999,
+        "fullCostUSD": 0.014879999999999999
+      }
+    },
+    "judge": {
+      "claude-opus-5-5": {
+        "calls": 10,
+        "cacheHits": 0,
+        "errors": 0,
+        "inputTokens": 5357,
+        "outputTokens": 360,
+        "costUSD": 0.028628,
+        "fullCostUSD": 0.028628
+      }
+    }
+  },
+  "totals": {
+    "calls": 30,
+    "cacheHits": 0,
+    "inputTokens": 11455,
+    "outputTokens": 1177,
+    "costUSD": 0.06936,
+    "fullCostUSD": 0.06936
+  }
+}

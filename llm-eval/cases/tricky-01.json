@@ -1,0 +1,19 @@
+{
+  "id": "tricky-01",
+  "category": "tricky",
+  "description": "Tomato basil soup: per serving and per container columns",
+  "labelText": "Nutrition Facts\n2 servings per container\nServing size 1 cup (245g)\n\n                        Per serving   Per container\nCalories                130           260\nTotal Fat               3g            6g\n  Saturated Fat         1.5g          3g\nSodium                  720mg         1440mg\nTotal Carbohydrate      22g           44g\n  Dietary Fiber         3g            6g\n  Total Sugars          14g           28g\n    Incl. Added Sugars  6g            12g\nProtein                 3g            6g",
+  "expected": {
+    "servingSize": "1 cup (245g)",
+    "servingsPerContainer": 2,
+    "calories": 130,
+    "totalFat_g": 3,
+    "satFat_g": 1.5,
+    "sodium_mg": 720,
+    "totalCarbs_g": 22,
+    "fiber_g": 3,
+    "sugars_g": 14,
+    "addedSugars_g": 6,
+    "protein_g": 3
+  }
+}

@@ -19,6 +19,22 @@ jobs:
       - run: npm test
       - name: Type check (JSDoc + @ts-check; nothing is built)
         run: npm run typecheck
+  llm-eval:
+    name: LLM eval harness (unit tests and type check)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: llm-eval
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: llm-eval/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm test
+      - run: npm run typecheck
   ui:
     name: Click-through and accessibility (jsdom)
     runs-on: ubuntu-latest

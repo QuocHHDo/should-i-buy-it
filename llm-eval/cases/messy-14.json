@@ -1,0 +1,19 @@
+{
+  "id": "messy-14",
+  "category": "messy",
+  "description": "Whole wheat bread: trailing footnote markers on values",
+  "labelText": "Nutrition Facts\n16 servings per container\nServing size 1 slice (43g)\nCalories 110†\nTotal Fat 1.5g* 2%\nSaturated Fat 0g 0%\nSodium 170mg‡ 7%\nTotal Carbohydrate 20g 7%\nDietary Fiber 3g 11%\nTotal Sugars 3g\nIncludes 2g Added Sugars 4%\nProtein 5g\n† Calorie value rounded. * Contains naturally occurring fat. ‡ From sea salt.",
+  "expected": {
+    "servingSize": "1 slice (43g)",
+    "servingsPerContainer": 16,
+    "calories": 110,
+    "totalFat_g": 1.5,
+    "satFat_g": 0,
+    "sodium_mg": 170,
+    "totalCarbs_g": 20,
+    "fiber_g": 3,
+    "sugars_g": 3,
+    "addedSugars_g": 2,
+    "protein_g": 5
+  }
+}

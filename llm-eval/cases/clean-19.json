@@ -1,0 +1,19 @@
+{
+  "id": "clean-19",
+  "category": "clean",
+  "description": "Chicken noodle soup: standard panel",
+  "labelText": "Nutrition Facts\n2.5 servings per container\nServing size        1 cup (245g)\n\nAmount per serving\nCalories            90\n                          % Daily Value*\nTotal Fat 2.5g                  3%\n  Saturated Fat <1g            3%\n  Trans Fat 0g\nCholesterol 15mg              5%\nSodium 890mg                  39%\nTotal Carbohydrate 12g         4%\n  Dietary Fiber <1g            2%\n  Total Sugars 1g\n    Includes 0g Added Sugars     0%\nProtein 6g\n\nVitamin D 0mcg 0% • Calcium 20mg 2% • Iron 1mg 6% • Potassium 140mg 2%\n*The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",
+  "expected": {
+    "servingSize": "1 cup (245g)",
+    "servingsPerContainer": 2.5,
+    "calories": 90,
+    "totalFat_g": 2.5,
+    "satFat_g": 0.5,
+    "sodium_mg": 890,
+    "totalCarbs_g": 12,
+    "fiber_g": 0.5,
+    "sugars_g": 1,
+    "addedSugars_g": 0,
+    "protein_g": 6
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "messy-09",
+  "category": "messy",
+  "description": "Roasted salted almonds: stray symbols and doubled characters",
+  "labelText": "**Nutrition Facts**\n~16 servings per container~\nServing size: 1/4 cup (28g);\nCalories:: 170\nTotal Fat .... 15g ..... 19%\nSaturated Fat .... 1g ..... 5%\nSodium .... 85mg ..... 4%\nTotal Carbohydrate .... 6g ..... 2%\nDietary Fiber .... 3g ..... 11%\nTotal Sugars .... 1g\nAdded Sugars .... 0g ..... 0%\nProtein .... 6g",
+  "expected": {
+    "servingSize": "1/4 cup (28g)",
+    "servingsPerContainer": 16,
+    "calories": 170,
+    "totalFat_g": 15,
+    "satFat_g": 1,
+    "sodium_mg": 85,
+    "totalCarbs_g": 6,
+    "fiber_g": 3,
+    "sugars_g": 1,
+    "addedSugars_g": 0,
+    "protein_g": 6
+  }
+}
