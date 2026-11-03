@@ -24,6 +24,7 @@ async function getJson(url, opts = {}) {
       const res = await fetch(url, { ...opts, headers: { "user-agent": UA, ...(opts.headers || {}) } });
       if (res.ok) return await res.json();
       if (res.status === 404) return null;
+      if (res.status === 429 && i >= 1) { console.error("Rate limited; skipping."); return null; }
       console.error(`HTTP ${res.status} ${url.replace(/api_key=[^&]+/, "api_key=…")}`);
     } catch (e) { console.error(String(e)); }
     await sleep(3000 * (i + 1));
@@ -32,16 +33,18 @@ async function getJson(url, opts = {}) {
 }
 const norm = s => String(s || "").toLowerCase().replace(/[^a-z]+/g, " ").trim();
 
-// Open Food Facts: the most-scanned US products with an English ingredient list. Their search API allows about
-// 10 requests a minute, so pages are spaced out.
+// Open Food Facts: the most-scanned US products with an English ingredient list. Uses the older /cgi/search.pl
+// endpoint: /api/v2/search answered 503 for days in Nov 2026 while this one worked. Searches are limited to about
+// 10 a minute, so pages are spaced out.
 async function fromOff(want) {
   const out = [];
-  for (let page = 1; out.length < want && page <= 12; page++) {
-    const url = `https://world.openfoodfacts.org/api/v2/search?countries_tags_en=united-states&fields=code,product_name,brands,ingredients_text_en,ingredients_text,allergens_tags,traces_tags&sort_by=unique_scans_n&page_size=100&page=${page}`;
+  for (let page = 1; out.length < want && page <= 20; page++) {
+    const url = `https://world.openfoodfacts.org/cgi/search.pl?action=process&tagtype_0=countries&tag_contains_0=contains&tag_0=united-states&sort_by=unique_scans_n&page_size=100&page=${page}&json=1&fields=code,product_name,brands,ingredients_text_en,ingredients_text,allergens_tags,traces_tags`;
     const r = await getJson(url);
     if (!r || !Array.isArray(r.products)) break;
     for (const p of r.products) {
-      const ing = String(p.ingredients_text_en || p.ingredients_text || "").trim();
+      // English only: the text in ingredients_text can be in any language.
+      const ing = String(p.ingredients_text_en || "").trim();
       if (ing.length < 20 || !/[a-z]/i.test(ing) || /[Ѐ-ӿ؀-ۿ぀-ヿ一-鿿]/.test(ing)) continue;
       out.push({ source: "off", id: String(p.code), name: [p.brands && String(p.brands).split(",")[0], p.product_name].filter(Boolean).join(" ").slice(0, 100),
         ingredients: ing.slice(0, 3000), offAllergens: Array.isArray(p.allergens_tags) ? p.allergens_tags : [], offTraces: Array.isArray(p.traces_tags) ? p.traces_tags : [] });
