@@ -162,6 +162,8 @@
   // ---------- the breakdown ----------
   function ready(r, prod) {
     const f = r.food, a = V.assess(f, profile);
+    // The page's own ingredient list counts for allergens even when the numbers came from elsewhere.
+    if (prod.ingredients && !f.ingredients) a.allergy = V.assess({ ...f, ingredients: prod.ingredients }, profile).allergy;
     const ingr = ING ? ING.analyze(prod.ingredients || f.ingredients, [prod.name, f.n].filter(Boolean).join(" | ")) : null;
     const adds = ADD && ADD.analyze(f);
     const offerPhoto = r.source !== "this page" && r.source !== "photo" && !r.typical && (prod.images || []).length;
@@ -174,8 +176,19 @@
       el("div", { class: "vrow" }, el("span", { html: C.icon(a.tier, 30) }), el("span", { class: "vword", text: a.word })),
       el("p", { class: "headline", text: C.headline(f, profile, a) }),
       el("p", { class: "pname", text: prod.name || f.n }),
+      allergyBox(a),
       // Only something that changes how far to trust the verdict itself gets a banner.
       missing ? el("p", { class: "banner", role: "note" }, el("b", { text: "⚠ " }), "Some nutrients that decide the verdict aren't listed, so it's less certain.") : null);
+  }
+
+  // Your allergens, above everything else. Never "safe": at best, none found in what was checked.
+  function allergyBox(a) {
+    const al = a.allergy;
+    if (!al) return null;
+    const lead = { contains: "⚠ ", may: "⚠ ", unknown: "? ", clear: "✓ " }[al.status];
+    return el("div", { class: "alflag " + al.status, role: al.status === "contains" ? "alert" : "note" },
+      el("p", { class: "alt" }, el("b", { text: lead + al.title })), el("p", { text: al.text }),
+      el("p", { class: "alnote", text: "Always read the package." }));
   }
 
   function bars(f) {

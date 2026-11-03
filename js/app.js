@@ -6,6 +6,7 @@
   const S = window.SelfCheckSources;
   const Q = window.SelfCheckSearch;
   const CMP = window.SelfCheckCompare; // js/compare.js
+  const AL = window.SelfCheckAllergens; // js/allergens.js
   const CFG = Object.assign({ mode: "pages" }, window.SELF_CHECK_CONFIG || {});
   const PAGES = CFG.mode === "pages";
   const CAT_LABEL = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
@@ -46,8 +47,28 @@
     return (V.isLowerBound(f, k) ? "≥" : "") + n + unit;
   }
   const dvText = (f, k) => (V.isMissing(f, k) ? "—" : (V.isLowerBound(f, k) ? "≥" : "") + pct(f[k], DV[k]));
-  const pill = a => a.spicy ? el("span", { class: "pills" }, el("span", { class: "vp " + a.tier, text: a.word }), el("span", { class: "vp spicy", text: "Spicy" }))
-    : el("span", { class: "vp " + a.tier, text: a.word });
+  // The verdict pill, plus a flag for the viewer's allergens (contains / may contain) and the mild-food preference.
+  const alPill = a => {
+    const al = a && a.allergy;
+    if (!al || (al.status !== "contains" && al.status !== "may")) return null;
+    return el("span", { class: "vp al-" + al.status, title: al.title, text: al.status === "contains" ? `⚠ ${al.short}` : al.short });
+  };
+  const pill = a => {
+    const extra = [alPill(a), a.spicy ? el("span", { class: "vp spicy", text: "Spicy" }) : null].filter(Boolean);
+    const main = el("span", { class: "vp " + a.tier, text: a.word });
+    return extra.length ? el("span", { class: "pills" }, main, ...extra) : main;
+  };
+  // The allergen box above the verdict. With no allergens set, a one-line pointer to set them.
+  function renderAllergy(a) {
+    const al = a.allergy;
+    if (!al) return el("p", { class: "allergy" }, "Allergens aren't checked until you add yours. ",
+      el("button", { class: "linkbtn", type: "button", text: "Add allergies", onclick: () => { showView("goals"); const b = $("p-allergies"); if (b) b.scrollIntoView({ block: "center" }); } }));
+    const ICON = { contains: "!", may: "?", unknown: "?", clear: "✓" };
+    return el("section", { class: "alflag " + al.status, role: al.status === "contains" ? "alert" : "note", "aria-label": "Your allergens" },
+      el("p", { class: "alt" }, el("span", { class: "alic", "aria-hidden": "true", text: ICON[al.status] }), al.title),
+      el("p", { text: al.text }),
+      el("p", { class: "alnote", text: al.status === "clear" ? "Not a guarantee. Ingredients change and cross-contact isn't always listed." : "Always read the package, and ask your allergist what to avoid." }));
+  }
   let toastTimer;
   function toast(msg, action) {
     let t = /** @type {HTMLElement} */ (document.querySelector(".toast"));
@@ -487,6 +508,7 @@
     const reasons = el("ul", { class: "reasons" });
     for (const r of a.reasons) reasons.append(el("li", { class: r.k }, el("span", { class: "ic", "aria-hidden": "true", text: ICON[r.k] || "i" }), el("span", { text: r.t })));
 
+    const alFirst = !!(a.allergy && (a.allergy.status === "contains" || a.allergy.status === "may"));
     $("out").replaceChildren(...[
       closestBanner(f),
       head,
@@ -496,10 +518,12 @@
             text: labelOpen ? "Show less of the label" : "Show the full label", onclick: () => { labelOpen = !labelOpen; renderResult(current); } }),
           box, src, PAGES && !isPlate ? el("p", { class: "report" }, el("a", { href: reportUrl(f, a), target: "_blank", rel: "noopener", text: "Wrong number or verdict? Report it" })) : null),
         el("div", { class: "side" },
+          // Your allergens come before the verdict when one is (or may be) in the food; otherwise just after it.
+          alFirst ? renderAllergy(a) : null,
           el("div", { class: "tag " + a.tier }, el("div", { class: "for" }, goalsSet ? (isPlate ? "For you · whole meal" : "For you") : (isPlate ? "Standard goals · whole meal · " : "Standard goals · "),
             goalsSet ? null : el("button", { class: "linkbtn", type: "button", text: "Set yours", onclick: () => showView("goals") })), el("div", { class: "verdict" }, C2 ? el("span", { class: "vicon", "aria-hidden": "true", html: C2.icon(a.tier, 34) }) : null, a.word), a.spicy ? el("span", { class: "vp spicy flag", text: "Spicy" }) : null, el("p", { class: "why", text: a.why }),
             mult !== 1 ? el("p", { class: "per", text: "The verdict is for one standard serving; the label and bars show your amount." }) : null),
-          el("p", { class: "allergy", text: "Doesn't check allergens: read the label if you have a food allergy." }),
+          alFirst ? null : renderAllergy(a),
           !isPlate && compareWith && compareWith.n !== f.n ? renderCompare(f) : null,
           isPlate ? renderPlatePrice() : renderPrice(f),
           renderWhy(f),
@@ -754,7 +778,7 @@
       const sel = el("select", { "aria-label": `Servings of ${item.n}`, onchange: e => { item.mult = Number(e.target.value); afterPlateChange(); } },
         ...MULTS.map(m => el("option", { value: String(m), selected: m === item.mult ? true : null, text: `${multLabel(m)} serving${m === 1 ? "" : "s"}` })));
       box.append(el("div", { class: "lrow" },
-        el("span", { class: "pname" }, item.n, el("small", { class: "muted", text: ` · ${f.s}` })),
+        el("span", { class: "pname" }, item.n, el("small", { class: "muted", text: ` · ${f.s}` }), alPill(V.assess(f, profile)) ? " " : null, alPill(V.assess(f, profile))),
         sel,
         el("button", { class: "linkish", type: "button", text: "Remove", "aria-label": `Remove ${item.n} from plate`, onclick: () => { plate = plate.filter(x => x !== item); afterPlateChange(); } })));
     }
@@ -1237,12 +1261,14 @@
     // A field showing an error keeps what the user typed until they fix it; only valid fields are refreshed.
     for (const [k, id] of Object.entries(PF)) if ($(id).getAttribute("aria-invalid") !== "true") $(id).value = profile[k];
     $("p-skip").value = profile.skip || ""; $("p-mild").checked = !!profile.mild; $("p-usda").value = profile.usdaKey || "";
+    if (AL) { for (const x of AL.LIST) { const b = /** @type {HTMLInputElement} */ ($("p-al-" + x.id)); if (b) b.checked = (profile.allergies || []).includes(x.id); } $("p-al-other").value = profile.allergyOther || ""; }
     $("profSummary").textContent = `${profile.cal.toLocaleString("en-US")} cal · ${profile.pro} g protein · ≤${profile.sat} g sat fat`;
   }
   function readProfile() {
     // Only valid numbers are saved; an invalid field keeps its last good value and shows why next to it.
     for (const [k, id] of Object.entries(PF)) if (checkGoal($(id))) profile[k] = Number($(id).value);
     profile.skip = $("p-skip").value; profile.mild = $("p-mild").checked; profile.usdaKey = $("p-usda").value.trim();
+    if (AL) { profile.allergies = AL.LIST.filter(x => /** @type {HTMLInputElement} */ ($("p-al-" + x.id)).checked).map(x => x.id); profile.allergyOther = $("p-al-other").value.slice(0, 200); }
     store.set("profile", profile); goalsSet = true; $("tabGoalsDot").hidden = true; if (current) renderResult(current); syncProfileUI(); renderBrowse(); renderMeals(); renderChips(); renderList(); renderPlate();
     if (current) renderResult(current);
   }
@@ -1477,8 +1503,9 @@
     $("scanRecentBox").hidden = !items.length;
     $("scanRecent").replaceChildren(...items.map(f => {
       const a = V.assess(f, profile);
-      return el("li", {}, el("button", { type: "button", "aria-label": `${f.n}: ${a.word}`, onclick: () => pick(f, { scroll: true }) },
-        el("span", { "aria-hidden": "true", html: C ? C.icon(a.tier, 20) : "" }), el("span", { class: "sn", text: f.n }), el("span", { class: "sv", text: a.word })));
+      const al = a.allergy && (a.allergy.status === "contains" || a.allergy.status === "may") ? a.allergy : null;
+      return el("li", {}, el("button", { type: "button", "aria-label": `${f.n}: ${a.word}${al ? `. ${al.title}` : ""}`, onclick: () => pick(f, { scroll: true }) },
+        el("span", { "aria-hidden": "true", html: C ? C.icon(a.tier, 20) : "" }), el("span", { class: "sn", text: f.n }), al ? alPill(a) : null, el("span", { class: "sv", text: a.word })));
     }));
   }
   function startScanFromHome() { showView("check", { history: false }); openScan(); $("scan").scrollIntoView({ behavior: "smooth", block: "start" }); }
@@ -1548,6 +1575,9 @@
     $("scanClose").addEventListener("click", () => { compareScan = null; closeScan(); });
     $("codeForm").addEventListener("submit", async e => { e.preventDefault(); const c = $("code").value; await closeScan(); barcodeLookup(c); });
 
+    // One checkbox per allergen, built from js/allergens.js so the list can't drift from what's detected.
+    if (AL) $("p-al-boxes").replaceChildren(...AL.LIST.map(x => el("label", { title: x.hint }, el("input", { type: "checkbox", id: "p-al-" + x.id }), x.label)));
+    else $("p-allergies").hidden = true;
     document.querySelectorAll("#profile input").forEach(i => i.addEventListener("change", readProfile));
     Object.values(PF).forEach(id => $(id).addEventListener("input", () => checkGoal($(id))));
     syncProfileUI();

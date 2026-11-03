@@ -2,3 +2,5 @@ node_modules/
 eval/results.json
 eval/claude-results.json
 .DS_Store
+eval/allergen-report.md
+eval/allergen-report.json

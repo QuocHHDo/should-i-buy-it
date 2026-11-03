@@ -1,7 +1,7 @@
 // Settings: goals for the product-page card, typed in or brought over from the app's backup or transfer link.
 (() => {
   "use strict";
-  const V = self.SelfCheckVerdict, B = self.SelfCheckBackup;
+  const V = self.SelfCheckVerdict, B = self.SelfCheckBackup, AL = self.SelfCheckAllergens;
   /** @type {(id: string) => any} */
   const $ = id => document.getElementById(id);
   const NUM = ["cal", "pro", "sat", "na", "add", "fib"];
@@ -12,7 +12,12 @@
   function fill(p, usdaKey) {
     for (const k of NUM) $(k).value = p[k];
     $("skip").value = p.skip || ""; $("mild").checked = !!p.mild; $("usdaKey").value = usdaKey || "";
+    for (const x of AL.LIST) $("al-" + x.id).checked = (p.allergies || []).includes(x.id);
+    $("alOther").value = p.allergyOther || "";
   }
+  // One checkbox per allergen, from js/allergens.js.
+  $("alBoxes").replaceChildren(...AL.LIST.map(x => { const l = document.createElement("label"); l.className = "check"; l.title = x.hint;
+    const i = Object.assign(document.createElement("input"), { type: "checkbox", id: "al-" + x.id }); l.append(i, " " + x.label); return l; }));
   async function load() { const s = await get(["profile", "usdaKey"]); fill({ ...V.DEFAULT_PROFILE, ...(s.profile || {}) }, s.usdaKey); }
 
   $("goals").addEventListener("submit", async e => {
@@ -20,7 +25,8 @@
     if (!$("goals").reportValidity()) return;
     const p = Object.fromEntries(NUM.map(k => [k, Number($(k).value)]));
     // The same checks a restored backup gets.
-    const checked = B.KEYS.profile({ ...p, skip: $("skip").value.slice(0, 500), mild: $("mild").checked });
+    const checked = B.KEYS.profile({ ...p, skip: $("skip").value.slice(0, 500), mild: $("mild").checked,
+      allergies: AL.LIST.filter(x => $("al-" + x.id).checked).map(x => x.id), allergyOther: $("alOther").value.slice(0, 200) });
     await set({ profile: checked, usdaKey: $("usdaKey").value.trim().slice(0, 100) });
     status("Saved. Open product pages update right away.");
   });
