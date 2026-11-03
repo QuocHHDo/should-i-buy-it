@@ -11,7 +11,11 @@
     "en:banana",
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -19,7 +23,11 @@
    "name": "Sidi Ali Sidi Ali",
    "ingredients": "sodium, calcium, magnesium, potassium, bicarbonates, sulfates, chlorides,",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -29,7 +37,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:maybe-vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -39,7 +51,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -51,6 +67,10 @@
    ],
    "offTraces": [
     "en:none"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -59,7 +79,11 @@
    "name": "COCA-COLA SERVICES SA/NV Coca-Cola Original Taste",
    "ingredients": "Water, fructose - glucose syrup, carbon dioxide, colorant: e150d, acid: phosphoric acid, natural flavorings (including caffeine).",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -71,6 +95,10 @@
    ],
    "offTraces": [
     "en:milk"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -83,7 +111,11 @@
     "en:nuts",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -91,7 +123,11 @@
    "name": "Les eaux minérales d'Oulmès S.A. Oulmes natural carbonated water",
    "ingredients": "Natural carbonated water 100%",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -101,6 +137,10 @@
    "offAllergens": [],
    "offTraces": [
     "en:gluten"
+   ],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -117,6 +157,10 @@
     "en:milk",
     "en:mustard",
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -127,7 +171,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:maybe-vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -135,7 +183,11 @@
    "name": "Danone Ain Saiss Eau Minerale Naturelle",
    "ingredients": "calcium : 63,5\r\nmagnésium : 35,5\r\nnitratex : 7\r\nsodium 8\r\nchlorures : 19,8\r\nsulfate : 3,8\r\nbicarbonate : 372\r\npotassium : 1",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -143,7 +195,11 @@
    "name": "COCA-COLA SERVICES SA/NV Coca-Cola sans sucres",
    "ingredients": "carbonated water, colouring (e150d), acidifier (phosphoric acid), sweeteners (aspartame, acesulfame-k), natural flavors, caffeine aroma, acidity regulator (sodium citrates)",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -151,7 +207,11 @@
    "name": "lilia Tartine & Cuisine",
    "ingredients": "Filtered vegetable oils, non-hydrogenated ml tayeb individual starch mustahabbat (2471) and (478) soy analgesic (1222) syrian acid (200) citric (2300) antioxidants potassium soria (1202) chocoferrols mixture), mink colored (1600) wafina, au : store in a cool place terr all frans : tents",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -159,7 +219,11 @@
    "name": "Aïn lfrane Eau",
    "ingredients": "natural mineral water",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -167,7 +231,11 @@
    "name": "COCA-COLA SERVICES SA/NV Coca-Cola Original",
    "ingredients": "carbonated water, sugar, colour (caramel e150d), acid (phosphoric acid), natural flavourings, caffeine flavouring,",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -183,6 +251,10 @@
     "en:nuts",
     "en:peanuts",
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -198,6 +270,10 @@
    ],
    "offTraces": [
     "en:mustard"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -206,7 +282,11 @@
    "name": "Coca-Cola Coca Cola Original taste",
    "ingredients": "carbonated water, sugar, colour (caramel e150), acid (phosphoric acid), natural flavourings (including caffeine)",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:maybe-vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -218,7 +298,11 @@
     "en:nuts",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -228,7 +312,11 @@
    "offAllergens": [
     "en:celery"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -242,6 +330,10 @@
    ],
    "offTraces": [
     "en:nuts"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:maybe-vegetarian"
    ]
   },
   {
@@ -252,7 +344,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -263,7 +359,11 @@
     "en:gluten",
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -273,7 +373,11 @@
    "offAllergens": [
     "en:gluten"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -288,6 +392,10 @@
    "offTraces": [
     "en:nuts",
     "en:peanuts"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -296,7 +404,11 @@
    "name": "Coca-Cola Coca Cola",
    "ingredients": "water, sugar, carbonic acid, e150d, e338, natural flavors including caffeine",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -312,6 +424,10 @@
     "en:milk",
     "en:nuts",
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:maybe-vegetarian"
    ]
   },
   {
@@ -320,7 +436,11 @@
    "name": "Sidi ali Eau minerale",
    "ingredients": "Magnesium, Potassium, Bicarbonates, Sodium, Sulfates, Chlorides, Nitrates",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -328,7 +448,11 @@
    "name": "Asta Asta",
    "ingredients": "r•ee z=CagStzaca - TéL: OS 22 621212",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -341,6 +465,10 @@
    ],
    "offTraces": [
     "en:milk"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -349,7 +477,11 @@
    "name": "Sidi Harazem",
    "ingredients": "Calcium, Magnesium, Potassium, Sulfate, Nitrate, Chlorures, Sodium, Bicarbonate",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -357,7 +489,11 @@
    "name": "TERRA DELYSSA EXTRA VIRGIN OLIVE OIL",
    "ingredients": "EXTRA VIRGIN OLIVE OIL",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -365,7 +501,11 @@
    "name": "Nestlé Perrier",
    "ingredients": "mineral water natural enhanced gas",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -380,6 +520,10 @@
     "en:milk",
     "en:nuts",
     "en:peanuts"
+   ],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -394,6 +538,10 @@
    ],
    "offTraces": [
     "en:sesame-seeds"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -411,6 +559,10 @@
     "en:nuts",
     "en:sesame-seeds",
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:maybe-vegetarian"
    ]
   },
   {
@@ -424,7 +576,11 @@
     "en:nuts",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -434,7 +590,11 @@
    "offAllergens": [
     "en:gluten"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -444,7 +604,11 @@
    "offAllergens": [
     "en:gluten"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -452,7 +616,11 @@
    "name": "Red Bull Red Bull Energy Drink",
    "ingredients": "Water, Sucrose, Glucose, Acidifier (Citric Acid), Carbon Dioxide, Taurine (0.4%), Acidity Regulators (Sodium Bicarbonate, Magnesium Carbonate), Flavourings, Colours (Caramel, Riboflavin), Caffeine (0.03%), Vitamins (Niacin, Pantothenic Acid, B6, B12).",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -466,6 +634,10 @@
     "en:eggs",
     "en:mustard",
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -481,6 +653,10 @@
    ],
    "offTraces": [
     "en:eggs"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:maybe-vegetarian"
    ]
   },
   {
@@ -498,6 +674,10 @@
     "en:eggs",
     "en:gluten",
     "en:milk"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -513,6 +693,10 @@
     "en:nuts",
     "en:Grains",
     "en:Seeds"
+   ],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -523,7 +707,11 @@
    "offAllergens": [
     "en:gluten"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -535,7 +723,11 @@
     "en:milk",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -551,6 +743,10 @@
     "en:milk",
     "en:mustard",
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -568,6 +764,10 @@
     "en:milk",
     "en:nuts",
     "en:peanuts"
+   ],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -576,7 +776,11 @@
    "name": "The Vita Coco Company Inc. Coconut Water",
    "ingredients": "coconut water, less than 1% sugar, ascorbic acid (vitamin C)",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -588,7 +792,11 @@
     "en:milk",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -603,6 +811,10 @@
    "offTraces": [
     "en:gluten",
     "en:milk"
+   ],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian"
    ]
   },
   {
@@ -611,7 +823,11 @@
    "name": "Terra Delyssa Huile d'olive vierge extra (Biologique)",
    "ingredients": "( First Cold Press ) Organic Extra Virgin Olive Oil",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -621,7 +837,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -635,6 +855,10 @@
     "en:mustard",
     "en:soybeans",
     "de:Moutarde"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -646,7 +870,11 @@
     "en:mustard",
     "en:Metabisulphite"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -654,7 +882,11 @@
    "name": "Kirkland Signature Purified Drinking Water",
    "ingredients": "Purified Water, Potassium Bicarbonate, Sodium Bicarbonate, Calcium Citrate, Sodium Chloride, Magnesium Oxide",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -664,7 +896,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -681,6 +917,10 @@
     "en:nuts",
     "en:peanuts",
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -703,6 +943,10 @@
     "en:mustard",
     "en:nuts",
     "en:peanuts"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -720,6 +964,10 @@
     "en:nuts",
     "en:sesame-seeds",
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:maybe-vegetarian"
    ]
   },
   {
@@ -733,6 +981,10 @@
    ],
    "offTraces": [
     "en:none"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -746,6 +998,10 @@
    "offTraces": [
     "en:gluten",
     "en:nuts"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -757,7 +1013,11 @@
     "en:milk",
     "en:cultured nonfat milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -771,6 +1031,10 @@
     "en:nuts",
     "en:soybeans",
     "en:coconut"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -791,6 +1055,10 @@
     "en:soybeans",
     "en:sulphur-dioxide-and-sulphites",
     "en:Shells"
+   ],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -806,6 +1074,10 @@
     "en:nuts",
     "en:peanuts",
     "en:3520367101"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -817,7 +1089,11 @@
     "en:peanuts",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -831,6 +1107,10 @@
     "en:gluten",
     "en:milk",
     "en:nuts"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -844,6 +1124,10 @@
    "offTraces": [
     "en:milk",
     "en:nuts"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:non-vegetarian"
    ]
   },
   {
@@ -852,7 +1136,11 @@
    "name": "Tajin Krydder m/Lime og Chili",
    "ingredients": "chili peppers, sea salt, citric acid, dehydrated lime juice, silicon dioxide",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -869,6 +1157,10 @@
     "en:gluten",
     "en:nuts",
     "en:peanuts"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -879,7 +1171,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -890,7 +1186,11 @@
     "en:eggs",
     "en:nuts"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -900,7 +1200,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -910,7 +1214,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -918,7 +1226,11 @@
    "name": "Bluetriton Brands Pure Life",
    "ingredients": "PURIFIED WATER. LESS THAN 0.5% OF CALCIUM CHLORIDE, SODIUM BICARBONATE, MAGNESIUM SULFATE.",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -926,7 +1238,11 @@
    "name": "Coke Coke Original Taste",
    "ingredients": "carbonated water, high fructose corn syrup, caramel color, phosphoric acid, natural flavors, caffeine",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:maybe-vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -936,7 +1252,11 @@
    "offAllergens": [
     "en:gluten"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -946,7 +1266,11 @@
    "offAllergens": [
     "en:gluten"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -954,7 +1278,11 @@
    "name": "Vita Coco Coconut Water",
    "ingredients": "Coconut Water (99%), Fructose (&lt;1%), Vitamin C.",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -974,7 +1302,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -982,7 +1314,11 @@
    "name": "Coca Cola Coca-Cola Zero",
    "ingredients": "water, carbon dioxide, caramel coloring E-150d, acidulant phosphoric acid, sweeteners (sodium cyclamate, acesulfame K, aspartame and enzymatically produced steviol glycosides), natural flavors, caffeine flavoring, and acidity regulator (sodium citrates). Contains a source of phenylalanine.",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -996,6 +1332,10 @@
     "en:milk",
     "en:nuts",
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
    ]
   },
   {
@@ -1006,7 +1346,11 @@
    "offAllergens": [
     "en:gluten"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1017,7 +1361,11 @@
     "en:gluten",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1030,6 +1378,10 @@
    ],
    "offTraces": [
     "en:sesame-seeds"
+   ],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -1055,6 +1407,10 @@
     "en:fish",
     "en:nuts",
     "en:peanuts"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -1067,7 +1423,11 @@
     "en:milk",
     "en:wholewheat"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1075,7 +1435,11 @@
    "name": "Maribel Raspberry conserve",
    "ingredients": "Sugar, 50% raspberries, citric acid, pectins.",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1088,6 +1452,10 @@
    ],
    "offTraces": [
     "en:nuts"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -1096,7 +1464,11 @@
    "name": "Vita coco Coconut Water",
    "ingredients": "coconut water, sugar, ascorbic acid (vitamin C)",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1106,7 +1478,11 @@
    "offAllergens": [
     "en:mustard"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1117,7 +1493,11 @@
     "en:gluten",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1127,7 +1507,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1139,6 +1523,10 @@
     "en:fish",
     "en:milk",
     "en:nuts"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -1155,6 +1543,10 @@
     "en:eggs",
     "en:nuts",
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -1163,7 +1555,11 @@
    "name": "Salsa Tamazula S.A. De C.V. Mexican hot sauce",
    "ingredients": "Water, Chili Pepper, Vinegar, Salt, Spice, Sodium Benzoate (Preservative).",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1171,7 +1567,11 @@
    "name": "Geeta’s Foods Ltd Geeta's Mango Chutney imp",
    "ingredients": "Mangoes (56%), Sugar, salt, Acidity Regulator : Acetic Acid, Whole Baby Garlic Cloves, Cumin Seeds, Mixed Spices, Fenugreek Seeds, Nigella Seeds, Black Peppercorns, cardamom pods, Whole clove, herb.",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1179,7 +1579,11 @@
    "name": "Rao's Homemade Marinara",
    "ingredients": "Italian Whole Peeled Tomatoes, Olive Oil, Onions, Salt, Garlic, Basil, Black Pepper, Oregano.",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1190,7 +1594,11 @@
     "en:eggs",
     "en:nuts"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:maybe-vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1201,7 +1609,11 @@
     "en:peanuts",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -1212,7 +1624,11 @@
     "en:peanuts",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:maybe-vegan",
+    "en:maybe-vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1225,6 +1641,10 @@
    ],
    "offTraces": [
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:maybe-vegetarian"
    ]
   },
   {
@@ -1233,7 +1653,11 @@
    "name": "General Mills Cheerios",
    "ingredients": "Whole Grain Oats. Corn Starch, Sugar, Salt, Tripotassium Phosphate. Vitamin E (mixed tocopherols) Added to Preserve Freshness. Vitamins and Minerals: Calcium Carbonate, Iron and Zinc (mineral nutrients), Vitamin C (sodium ascorbate), A B Vitamin (niacinamide), Vitamin B6 (pyridoxine hydrochloride), Vitamin A (palmitate), Vitamin B₁ (thiamin mononitrate), A B Vitamin (folic acid), Vitamin B12, Vitamin D3.",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -1248,6 +1672,10 @@
     "en:milk",
     "en:nuts",
     "en:soybeans"
+   ],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -1260,6 +1688,10 @@
    ],
    "offTraces": [
     "en:fish"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:non-vegetarian"
    ]
   },
   {
@@ -1270,7 +1702,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -1281,7 +1717,11 @@
     "en:peanuts",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -1297,6 +1737,10 @@
    "offTraces": [
     "en:eggs",
     "en:milk"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -1305,7 +1749,11 @@
    "name": "General Mills Cheerios",
    "ingredients": "Whole Grain Oats, Corn Starch, Sugar, Salt, Tripotassium Phosphate. Vitamin E (mixed tocopherols) (added for freshness). Vitamins and Minerals: Calcium Carbonate, Iron and Zinc (mineral nutrients), Vitamin C (sodium ascorbate), A B Vitamin (niacinamide), Vitamin B6 (pyridoxine hydrochloride), Vitamin A (palmitate), Vitamin B₁ (thiamin mononitrate), A B Vitamin (folic acid), Vitamin B12, Vitamin D3.",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -1313,7 +1761,11 @@
    "name": "Member's Mark PURIFIED WATER",
    "ingredients": "PURIFIED WATER, CALCIUM CHLORIDE, SODIUM BICARBONATE.",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1321,7 +1773,11 @@
    "name": "Sappe Public Company Limited Mogu lychee",
    "ingredients": "water, lychee juice from concentrate 25%, coconut 25%, fructose, sucrose, acidifiers (citric acid, calcium lactate), lychee flavor, preservative e211, gelling agent: gellan gum, color: e129 - 0.0001% (this dye may have adverse effects on activity and attention in children),",
    "offAllergens": [],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -1331,7 +1787,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -1341,7 +1801,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:non-vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1352,7 +1816,11 @@
     "en:gluten",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1362,7 +1830,11 @@
    "offAllergens": [
     "en:gluten"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -1372,7 +1844,11 @@
    "offAllergens": [
     "en:milk"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1385,6 +1861,10 @@
    "offTraces": [
     "en:celery",
     "en:mustard"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:maybe-vegetarian"
    ]
   },
   {
@@ -1402,6 +1882,10 @@
     "en:nuts",
     "en:soybeans",
     "en:Seeds"
+   ],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
    ]
   },
   {
@@ -1413,7 +1897,11 @@
     "en:peanuts",
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
@@ -1424,7 +1912,11 @@
     "en:eggs",
     "en:mustard"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:non-vegan",
+    "en:vegetarian"
+   ]
   },
   {
    "source": "off",
@@ -1434,7 +1926,11 @@
    "offAllergens": [
     "en:soybeans"
    ],
-   "offTraces": []
+   "offTraces": [],
+   "offAnalysis": [
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ]
   },
   {
    "source": "off",
