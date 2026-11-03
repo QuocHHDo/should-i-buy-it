@@ -51,7 +51,7 @@ Each serving gets a point score from about a dozen rules measured against your g
 ## Testing
 
 ```sh
-npm test            # 220 unit tests (node tests/run.js): data, verdict rules, allergens, swaps, search, API conversions, OCR parsing, prices, quiz, evals
+npm test            # 229 unit tests (node tests/run.js): data, verdict rules, allergens, swaps, search, API conversions, OCR parsing, prices, quiz, evals
 npm run typecheck   # TypeScript checks every js/ and extension/ file from JSDoc (tsconfig.json); nothing is built or emitted
 node tests/verdict-dump.js > verdicts.csv   # every built-in food's verdict and reasons, for eyeballing outliers
 node scripts/build-additives.mjs <openfoodfacts-server>/taxonomies   # regenerate js/additives-data.js from Open Food Facts

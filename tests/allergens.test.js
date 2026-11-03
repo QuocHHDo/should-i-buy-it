@@ -201,6 +201,15 @@ test("diets: the flag's wording, Open Food Facts tags, and swaps leave them out"
   for (const s of V.findSwaps(FOODS.find(f => f.n === "Bacon"), FOODS, prof, 10)) assert.ok(!["meat", "seafood"].includes(s.food.c), s.food.n);
 });
 
+test("real-label false flags found by the diet eval: a brand name, butter flavor", () => {
+  assert.equal(A.detect(food("Cape Cod Kettle Cooked Potato Chips", { ingredients: "Potatoes, Vegetable Oils (Canola, Sunflower), Sea Salt." })).contains.has("fish"), false);
+  assert.equal(A.detect(food("Cod fillets", { ingredients: "Cod" })).contains.has("fish"), true);
+  const pop = A.fromText("Popcorn, coconut oil, salt, butter flavor.");
+  assert.ok(!pop.contains.has("milk") && pop.may.has("milk"));
+  assert.equal(flagOf("Popcorn, coconut oil, salt, butter flavor.", "vegan"), "may");
+  assert.ok(A.fromText("Popcorn, butter (cream, salt)").contains.has("milk"), "real butter is still milk");
+});
+
 test("backups keep valid diets", () => {
   assert.deepEqual(B.KEYS.profile({ cal: 2000, diets: ["vegan", "keto", "vegan", "gluten"] }).diets, ["vegan", "gluten"]);
 });

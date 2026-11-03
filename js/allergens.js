@@ -16,13 +16,16 @@
   const LIST = [
     { id: "milk", label: "Milk", hint: "dairy, whey, casein, butter, cheese",
       words: ["milk", "milks", "milkfat", "milk fat", "buttermilk", "butter", "butterfat", "butter oil", "cream", "creams", "cheese", "cheeses", "whey", "casein", "caseinate", "caseinates", "lactose", "lactalbumin", "lactoglobulin", "lactoferrin", "ghee", "yogurt", "yoghurt", "curd", "curds", "kefir", "custard", "paneer", "ricotta", "mozzarella", "cheddar", "parmesan", "half and half", "half-and-half", "dairy", "nougat"],
+      // "Butter flavor" is often artificial and dairy-free (Lesser Evil popcorn); milk in it must be declared, so a "may".
+      soft: ["butter flavor", "butter flavour", "butter flavoring", "butter flavouring", "natural butter flavor", "artificial butter flavor"],
       not: ["coconut milk", "coconut cream", "cream of coconut", "almond milk", "oat milk", "oatmilk", "soy milk", "soymilk", "rice milk", "cashew milk", "pea milk", "hemp milk", "flax milk", "macadamia milk", "milk thistle", "peanut butter", "almond butter", "cashew butter", "nut butter", "seed butter", "sunflower butter", "sunbutter", "cocoa butter", "cacao butter", "shea butter", "apple butter", "pumpkin butter", "cream of tartar", "cream of wheat", "cream of rice", "non-dairy", "nondairy", "vegan cheese", "vegan butter", "plant-based butter", "plant-based cheese", "dairy-free cheese", "dairy-free butter", "cream soda"] },
     { id: "egg", label: "Egg", hint: "egg whites, albumin, mayonnaise",
       words: ["egg", "eggs", "egg white", "egg whites", "egg yolk", "yolk", "yolks", "albumen", "albumin", "ovalbumin", "ovomucoid", "lysozyme", "mayonnaise", "mayo", "meringue", "aioli"],
       not: ["eggplant", "eggplants"] },
     { id: "fish", label: "Fish", hint: "salmon, tuna, cod, anchovy, fish sauce",
       words: ["fish", "anchovy", "anchovies", "cod", "salmon", "tuna", "pollock", "tilapia", "sardine", "sardines", "mackerel", "haddock", "halibut", "trout", "catfish", "swordfish", "herring", "mahi", "mahi-mahi", "snapper", "flounder", "pike", "perch", "bonito", "surimi", "worcestershire", "nuoc mam", "fish sauce", "fish oil", "fish gelatin"],
-      not: ["shellfish"] },
+      // "Cape Cod" potato chips (found by eval/allergen-eval.mjs).
+      not: ["shellfish", "cape cod", "codfish-free"] },
     { id: "shellfish", label: "Shellfish", hint: "shrimp, crab, lobster; also clams, scallops, mussels",
       words: ["shellfish", "shrimp", "shrimps", "prawn", "prawns", "crab", "crabs", "lobster", "lobsters", "crawfish", "crayfish", "langoustine", "krill", "scallop", "scallops", "clam", "clams", "mussel", "mussels", "oyster", "oysters", "squid", "calamari", "octopus", "crustacean", "crustaceans", "mollusk", "mollusks", "mollusc", "molluscs", "oyster sauce"],
       not: ["oyster mushroom", "oyster mushrooms", "crab apple", "crab apples"] },
@@ -136,7 +139,7 @@
   // Open Food Facts' own reading of the ingredient list (ingredients_analysis_tags).
   const OFF_ANALYSIS = { "en:non-vegan": ["vegan", 1], "en:maybe-vegan": ["vegan", 0], "en:non-vegetarian": ["vegetarian", 1], "en:maybe-vegetarian": ["vegetarian", 0] };
   // Why a weaker mention is only a "may".
-  const SOFT_WHY = { soy: "refined soybean oil is usually tolerated, and unnamed lecithin is usually but not always soy", peanut: "highly refined peanut oil is usually tolerated; ask your allergist",
+  const SOFT_WHY = { milk: "butter flavor is often made without milk; the label's Contains line will say if it has any", soy: "refined soybean oil is usually tolerated, and unnamed lecithin is usually but not always soy", peanut: "highly refined peanut oil is usually tolerated; ask your allergist",
     gluten: "oats are often cross-contaminated with wheat unless certified gluten-free", vegetarian: "flavorings, rennet and carmine can be animal or not", vegan: "vitamin D3 is usually from lanolin unless it says lichen" };
 
   // Built-in foods: what a typical version contains, by name. "?x" means it often may (shared equipment, or common
