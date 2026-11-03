@@ -114,5 +114,6 @@ const from = fs.existsSync(DATA) ? "eval/allergen-labels.json" : "the real label
 const s = S.score(records);
 fs.writeFileSync(path.join(ROOT, "eval/allergen-report.md"), S.report(s) + `\nLabels from ${from}.\n`);
 fs.writeFileSync(path.join(ROOT, "eval/allergen-report.json"), JSON.stringify(s, null, 1) + "\n");
-console.log(`${s.records} labels, ${s.withStatement} with an allergen statement · recall ${s.recall == null ? "—" : (s.recall * 100).toFixed(1) + "%"} · missed ${s.truth - s.found} · extra flags ${s.extras.length} · whole-label misses ${s.full.length}`);
+const p = x => x == null ? "—" : (x * 100).toFixed(1) + "%";
+console.log(`${s.records} labels, ${s.withStatement} with an allergen statement (${s.truth} allergens) · warned ${p(s.warnedRate)} · contains ${p(s.recall)} · missed with no flag ${s.misses.length} · extra flags ${s.extras.length} · whole-label misses ${s.full.length}`);
 console.log("Report: eval/allergen-report.md");

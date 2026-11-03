@@ -1,0 +1,2167 @@
+{
+ "collected": "2026-11-03T04:03:41.801Z",
+ "note": "Real label text from Open Food Facts (ODbL) and USDA FoodData Central Branded Foods (public domain), for eval/allergen-eval.mjs.",
+ "labels": [
+  {
+   "source": "off",
+   "id": "6111242100992",
+   "name": "COOPERATIVE AGRICOLE COPAG Perly",
+   "ingredients": "milk cream, cream, sugar, banana, bacteria",
+   "offAllergens": [
+    "en:banana",
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6111035002175",
+   "name": "Sidi Ali Sidi Ali",
+   "ingredients": "sodium, calcium, magnesium, potassium, bicarbonates, sulfates, chlorides,",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6111266962187",
+   "name": "Jaouda Lait frais naturel demi écrémé",
+   "ingredients": "fresh pasteurised semi-skimmed milk with 15g/l of fat",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6111242106949",
+   "name": "Jaouda Jben",
+   "ingredients": "whole fresh milk, cream, stabilizers, starch, carrageenan, salt, lactic ferments\nfat 21%",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3274080005003",
+   "name": "Cristaline isabelle",
+   "ingredients": "Eau de source Noemie\r\n\r\nCalcium Ca2+ 113 mg/l\r\nMagnesium Mg2+ 228 mg/l\r\nSodium Na 7 mg/l\r\nPotassium K 2 mg/l\r\nSilice SiOz 15 mg/l\r\nBicarbonates HCO3 - 447 mg/l\r\nSulfates SO42 - 53 mg/l\r\nChlorure Cl - 8 mg/l\r\nNitrates NO3 - &lt;2 mg/l\r\nFluor F - &lt;1 mg/l\r\npH 7.3",
+   "offAllergens": [
+    "en:none"
+   ],
+   "offTraces": [
+    "en:none"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "5449000054227",
+   "name": "COCA-COLA SERVICES SA/NV Coca-Cola Original Taste",
+   "ingredients": "Water, fructose - glucose syrup, carbon dioxide, colorant: e150d, acid: phosphoric acid, natural flavorings (including caffeine).",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6111242100206",
+   "name": "Jaouda Le nature",
+   "ingredients": "whole fresh milk, skimmed milk powder, starch, selected lactic ferment",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": [
+    "en:milk"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "3017620425035",
+   "name": "Nutella Nutella",
+   "ingredients": "UARE ALLE CAD be nutella FERRERO Da co 2252 336 KALE",
+   "offAllergens": [
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6111035003035",
+   "name": "Les eaux minérales d'Oulmès S.A. Oulmes natural carbonated water",
+   "ingredients": "Natural carbonated water 100%",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "5449000147417",
+   "name": "Cappy Cappy PULPY",
+   "ingredients": "Water, sugar or fructose-glucose syrup, orange pulp (5%), orange juice concentrate, acidity regulators (citric acid, sodium citrate), thickening agents (acacia gum, glycerol esters of wood rosins), flavourings, antioxidant (ascorbic acid), colour (beta-carotene).",
+   "offAllergens": [],
+   "offTraces": [
+    "en:gluten"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "7300400481588",
+   "name": "wasa Fibres",
+   "ingredients": "whole rye flour (57 g), wheat bran (27 g), oatmeal (13 g), sesame seeds (7.9 g), wheat germ, salt.",
+   "offAllergens": [
+    "en:gluten",
+    "en:sesame-seeds"
+   ],
+   "offTraces": [
+    "en:lupin",
+    "en:milk",
+    "en:mustard",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "6111242100305",
+   "name": "jaouda jaouda Cremy",
+   "ingredients": "fresh milk, sugar, skimmed milk powder, texturizer: starch, cream, flavouring, selected lactic ferments, 3% fat",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6111128000163",
+   "name": "Danone Ain Saiss Eau Minerale Naturelle",
+   "ingredients": "calcium : 63,5\r\nmagnésium : 35,5\r\nnitratex : 7\r\nsodium 8\r\nchlorures : 19,8\r\nsulfate : 3,8\r\nbicarbonate : 372\r\npotassium : 1",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "5449000214799",
+   "name": "COCA-COLA SERVICES SA/NV Coca-Cola sans sucres",
+   "ingredients": "carbonated water, colouring (e150d), acidifier (phosphoric acid), sweeteners (aspartame, acesulfame-k), natural flavors, caffeine aroma, acidity regulator (sodium citrates)",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6111099003897",
+   "name": "lilia Tartine & Cuisine",
+   "ingredients": "Filtered vegetable oils, non-hydrogenated ml tayeb individual starch mustahabbat (2471) and (478) soy analgesic (1222) syrian acid (200) citric (2300) antioxidants potassium soria (1202) chocoferrols mixture), mink colored (1600) wafina, au : store in a cool place terr all frans : tents",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6111251420166",
+   "name": "Aïn lfrane Eau",
+   "ingredients": "natural mineral water",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "5449000000996",
+   "name": "COCA-COLA SERVICES SA/NV Coca-Cola Original",
+   "ingredients": "carbonated water, sugar, colour (caramel e150d), acid (phosphoric acid), natural flavourings, caffeine flavouring,",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3256540000698",
+   "name": "Brioche Pasquier Pains au lait",
+   "ingredients": "wheat flour 43%, sourdough 21%, wheat flour 11%, water, salt, fresh eggs 11%, sugar, pastry butter, rapeseed oil, yeast, skimmed milk powder equivalent to 10% reconstituted skimmed milk, emulsifier: mono and diglycerides of fatty acids, salt, wheat protein, wheat gluten, carrot extract, flavourings, antioxidant: ascorbic acid, milk protein",
+   "offAllergens": [
+    "en:eggs",
+    "en:gluten",
+    "en:milk"
+   ],
+   "offTraces": [
+    "en:nuts",
+    "en:peanuts",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "8000500310427",
+   "name": "Ferrero Technical Services Srl Biscuits NUTELLA Biscuits Noisettes et Cacao x22 - 304g",
+   "ingredients": "Crema alle nocciole e al cacao 81,5% (zucchero, olio di palma, nocciole 13%, latte scremato in polvere 8,7%, cacao magro 7,4%, emulsionanti: lecitine (soia); vanillina), cialda 16% (farina di frumento, lievito di birra, estratto di malto d'orzo, sale, latte scremato in polvere, emulsionanti: lecitine (soia), proteine di frumento, proteine del latte), chicchi di soia 2,5%.",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:mustard"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "5449000000439",
+   "name": "Coca-Cola Coca Cola Original taste",
+   "ingredients": "carbonated water, sugar, colour (caramel e150), acid (phosphoric acid), natural flavourings (including caffeine)",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "8425197712024",
+   "name": "CHOCOLATES MARUJA S.L. Chocolate con leche y almendras",
+   "ingredients": "sugar, cocoa butter, whole milk powder, cocoa mass, almonds, emulsifier (soya lecithin), flavoring",
+   "offAllergens": [
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "8715700407760",
+   "name": "H.J. Heinz B.V. Tomato Ketchup BIO",
+   "ingredients": "tomatoes (180 g per 100 g of ketchup), sugar, vinegar, salt, spices (contain celery), onion powder, garlic powder,",
+   "offAllergens": [
+    "en:celery"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "7622210601988",
+   "name": "LU Granola L'Original",
+   "ingredients": "wheat flour 48%, milk chocolate 27% sugar, cocoa mass, cocoa butter, whey powder (from milk), skimmed milk powder, vegetable fats (palm, shea in varying proportions), concentrated butter, emulsifiers (soy lecithins, e476), lactose (milk), aromamel, vegetable oils (palm, copra), sugar, sugar syrup, wheat bran, baking powder (sodium carbonates,  ammonium carbonates), salt, wheat germ, acidity regulator (citric acid), may contain eggs, nuts, sesame,",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:nuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "3451790988677",
+   "name": "Elle&Vire Le Beurre Tendre",
+   "ingredients": "cream (origin france), milk fat , lactic ferments,",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6111032002208",
+   "name": "Danone Activia Céréales",
+   "ingredients": "cream-free milk, dairy product mixes, cereal preparations, cream, sugar, cream-free powdered milk, modified starch, flavourings, helba yeast, for yoghurt, bifid and bacteria, contains gluten and is manufactured in a line that may contain almonds,\n\nnet weight: 110 g",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "5025125000006",
+   "name": "Jason's Sourdough White Ciabattin",
+   "ingredients": "Wheat Flour (Wheat Flour, Calcium Carbonate, Iron, Niacin, Thiamin), Water, Salt, Fermented Wheat Flour.",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6111259347861",
+   "name": "pauz Pauz",
+   "ingredients": "Sugar, Wheat flour, Skimmed Cow milk powder, Vegetable fats (palm kernel, palm, sunflower), Cocoa powder, Whole Cow milk powder, Emulsifiers of vegetable origin (Soy lecithin E322, polyglycerol polyricinoleate E476), Raising powder (Bicarbonate of sodium E500ii), Salt and Flavor (vanillin). Contains: Wheat (cereals containing gluten), milk and soy; may contain traces of nuts and peanuts.",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:nuts",
+    "en:peanuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "42105220",
+   "name": "Coca-Cola Coca Cola",
+   "ingredients": "water, sugar, carbonic acid, e150d, e338, natural flavors including caffeine",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3175681134904",
+   "name": "Gerblé Sablé Nature sans sucres",
+   "ingredients": "wheat flour 58.5%, sweetener: maltitols of vegetable origin, rapeseed oil, wheat starch, wheat fiber, natural flavour, sea salt, emulsifiers: rapeseed lecithins, baking powder: ammonium carbonates,",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": [
+    "en:eggs",
+    "en:lupin",
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "6111035001383",
+   "name": "Sidi ali Eau minerale",
+   "ingredients": "Magnesium, Potassium, Bicarbonates, Sodium, Sulfates, Chlorides, Nitrates",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6111101001361",
+   "name": "Asta Asta",
+   "ingredients": "r•ee z=CagStzaca - TéL: OS 22 621212",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3161711000622",
+   "name": "Caprice des dieux Caprice des Dieux",
+   "ingredients": "pasteurized cow's milk of france, salt, lactic ferments (milk),",
+   "offAllergens": [
+    "en:milk",
+    "nl:Koemelk"
+   ],
+   "offTraces": [
+    "en:milk"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "6111128000026",
+   "name": "Sidi Harazem",
+   "ingredients": "Calcium, Magnesium, Potassium, Sulfate, Nitrate, Chlorures, Sodium, Bicarbonate",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "6191509900671",
+   "name": "TERRA DELYSSA EXTRA VIRGIN OLIVE OIL",
+   "ingredients": "EXTRA VIRGIN OLIVE OIL",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "7613035833272",
+   "name": "Nestlé Perrier",
+   "ingredients": "mineral water natural enhanced gas",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "20005832",
+   "name": "Fin Carré Dark chocolate 50% Cocoa",
+   "ingredients": "sugar, cocoa mass, cocoa butter, emulsifier (sunflower lecithins), vanilla extract",
+   "offAllergens": [
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:milk",
+    "en:nuts",
+    "en:peanuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "13356194",
+   "name": "SPORTYFEEL SPICY CHICKEN & 'NDUJA PIZZA",
+   "ingredients": "Maltodextrin, Sugar, 10% Green Tea Powder, Vegetable Oils (Coconut, Rapeseed), Natural Flavouring.",
+   "offAllergens": [
+    "en:eggs",
+    "en:gluten",
+    "en:milk"
+   ],
+   "offTraces": [
+    "en:sesame-seeds"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "3228850006035",
+   "name": "Harrys Pain de mie longue conservation",
+   "ingredients": "wheat flour 66.5%, water, rapeseed oil, sugar, wheat gluten, yeast, flavoring (contains alcohol), salt, vinegar, preservative: calcium propionate, bean flour, aceerula extract, may contain traces of egg, soy, milk, nuts, sesame seeds,",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": [
+    "en:eggs",
+    "en:milk",
+    "en:mustard",
+    "en:nuts",
+    "en:sesame-seeds",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "8000500037560",
+   "name": "Kinder bueno",
+   "ingredients": "milk chocolate 31,5 % (sugar, cocoa butter, cocoa mass, skimmed milk powder, concentrated butter, emulsifiers: lecithins [soya], vanillin), sugar, palm oil, wheat flour, ground hazelnuts 10,8%, skimmed milk powder, milk powder, dark chocolate (sugar, cocoa mass, cocoa butter, emulsifiers: lecithins [soya], vanillin), lean cocoa, emulsifiers: lecithins [soya], raising agents (sodium acid carbonate, ammonium acid carbonate), salt, vanillin,",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "5025125000129",
+   "name": "JASON'S SOURDOUGH JASON'S SOURDOUGH",
+   "ingredients": "Wheat Flour (Wheat Flour, Calcium Carbonate, Iron, Niacin, Thiamin), Water, Wholemeal Spelt (Wheat) Flour, Sprouted Spelt (Wheat) Grains (5%), Rye Flour, Salt, Fermented Wheat Flour.",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0013764027053",
+   "name": "Dave's Killer Bread Organic Bread 21 Whole Grains and Seeds",
+   "ingredients": "organic whole wheat (organic whole wheat flour, organic cracked whole wheat), water, organic cane sugar, organic whole grains and seeds mix (organic whole flax seeds, organic sunflower seeds, organic tri-color quinoa (organic black quinoa, organic red quinoa, organic white quinoa), organic ground whole flax seeds, organic triticale, organic pumpkin seeds, organic rolled barley, organic rolled oats, organic rolled rye, organic blue cornmeal, organic millet, organic yellow cornmeal, organic kamut khorasan wheat, organic sorghum flour, organic buckwheat flour, organic quinoa, organic poppy seeds), organic wheat gluten, organic oat fiber, yeast, organic molasses, sea salt, organic cultured wheat flour, organic vinegar, organic acerola cherry powder, enzymes",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "90162602",
+   "name": "Red Bull Red Bull Energy Drink",
+   "ingredients": "Water, Sucrose, Glucose, Acidifier (Citric Acid), Carbon Dioxide, Taurine (0.4%), Acidity Regulators (Sodium Bicarbonate, Magnesium Carbonate), Flavourings, Colours (Caramel, Riboflavin), Caffeine (0.03%), Vitamins (Niacin, Pantothenic Acid, B6, B12).",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "8076809523509",
+   "name": "Barilla Pâtes linguine collezione 500g",
+   "ingredients": "durum wheat semolina, water, may contain traces of soya,",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": [
+    "en:eggs",
+    "en:mustard",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "7622210450098",
+   "name": "LU Prince Prince goût tout Choco au blé complet",
+   "ingredients": "cereal 45,7 % (wheat flour 29,7 %, whole ble flour 16 %), sugar, vegetable oils (palm, rapeseed), lean cocoa powder 8,2 %, skimmed milk powder, ble starch leavening powders (ammonium carbonates, sodium carbonates), emulsifier (soy lecithins), salt, glucose syrup, whey (milk) permeate), flavourings, may contain egg, e 300g",
+   "offAllergens": [
+    "en:eggs",
+    "en:gluten",
+    "en:milk",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:eggs"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "3036811460259",
+   "name": "Liebig Velouté de légumes",
+   "ingredients": "water, carrot 26%, leek 10%, onion 5.7%, potato 5.7%, tomato puree 2.1%, pumpkin, celeriac, cooking butter, fresh cream, salt, natural pepper extract,",
+   "offAllergens": [
+    "en:celery",
+    "en:gluten",
+    "en:milk"
+   ],
+   "offTraces": [
+    "en:celery",
+    "en:eggs",
+    "en:gluten",
+    "en:milk"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0013764027138",
+   "name": "Dave’s Killer Bread THIN-SLICED",
+   "ingredients": "organic whole wheat (organic whole wheat flour, organic cracked whole wheat), water, organic cane sugar, organic 21 whole grains and seeds mix (organic whole flax seeds, organic sunflower seeds, organic tri-color quinoa (organic black quinoa, organic red quinoa, organic white quinoa), organic ground whole flax seeds, organic triticale, organic pumpkin seeds, organic rolled barley, organic rolled oats, organic rolled rye, organic blue cornmeal, organic millet, organic rolled spelt, organic brown rice flour, organic amaranth flour, organic yellow cornmeal, organic kamut® khorasan wheat, organic quinoa, organic sorghum flour, organic buckwheat flour, organic poppy seeds), organic oat fiber, organic wheat gluten, contains 2% or less of each of the following: organic molasses, yeast, sea salt, organic cultured wheat flour, organic vinegar, organic acerola cherry powder, enzymes",
+   "offAllergens": [
+    "en:gluten",
+    "en:sesame-seeds"
+   ],
+   "offTraces": [
+    "en:nuts",
+    "en:Grains",
+    "en:Seeds"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "8710637105390",
+   "name": "Gruma Netherlands B.V. Wraps Multigrains",
+   "ingredients": "wheat flour 66%, water, seed mixture 2.6% (brown flaxseed, golden flaxseed), rapeseed oil, stabilizers (glycerol, guar gum, e466), sugar, fermented wheat, salt, baking powders (e500, e450), acidifier (citric acid), emulsifiers (e471, e472e), natural flavour",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0811620022118",
+   "name": "Fairlife High Quality Protein",
+   "ingredients": "Filtered water, grade A milk protein concentrate, less than 1% of: alkalized cocoa, natural flavors, cellulose gel, cellulose gum, salt, acesulfame potassium, sucralose, lactase enzyme, soy lecithin, vitamin A palmitate, vitamin D3.",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3165440006702",
+   "name": "Tipiak Couscous sachet cuisson",
+   "ingredients": "100% durum wheat semolina (gluten), possible traces of milk, soy, celery, mustard and lupine,",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": [
+    "en:celery",
+    "en:lupin",
+    "en:milk",
+    "en:mustard",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "20621483",
+   "name": "Crownfield Special Flakes Bran Flakes",
+   "ingredients": "80% Shredded Wholegrain Wheat, 16% Wheat Bran, Sugar, Barley Malt Extract, Salt, Honey.",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:peanuts"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:milk",
+    "en:nuts",
+    "en:peanuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0898999000503",
+   "name": "The Vita Coco Company Inc. Coconut Water",
+   "ingredients": "coconut water, less than 1% sugar, ascorbic acid (vitamin C)",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3245550078674",
+   "name": "TOO GOOD SNACK POPPÉ",
+   "ingredients": "SOYA flour (30%), tapioca starch, dehydrated potato (13%), sunflower oil, potato starch (5%), rice flour, lactose (MILK), sugar, onions, salt, natural flavouring (MILK), yeast extract, tomatoes, colour: paprika extract, acid: malic acid.",
+   "offAllergens": [
+    "en:celery",
+    "en:milk",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "7622202225512",
+   "name": "Cadbury Original Oreo",
+   "ingredients": "Refined Wheat Flour (Maida), Sugar, Fractionated Fat, Palmolein, Invert Sugar, Cocoa Solids (2%), Leavening Agents (500)(ii), 503 (ii)), Starch, lodised Salt, Emulsifier (322), Nature Identical Flavouring Substances. Allergen Information: Contains Wheat, Sulphite, Soy. \nMay Contain Milk and Barley.",
+   "offAllergens": [
+    "en:gluten",
+    "en:soybeans",
+    "en:sulphur-dioxide-and-sulphites"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:milk"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "6191509905058",
+   "name": "Terra Delyssa Huile d'olive vierge extra (Biologique)",
+   "ingredients": "( First Cold Press ) Organic Extra Virgin Olive Oil",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3073781141429",
+   "name": "Kiri Kiri 7.5g protein creamy cheese with fresh yogurt greek style",
+   "ingredients": "cow's milk, cream, water, yoghurt, lactic acid bacteria, skimmed cow's milk powder, cow's milk proteins powder, stabilizers: E452, E440, milk minerals concentrate, acidity regulator: E330, cow's milk fat, salt",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "8076800195019",
+   "name": "Barilla 2 x Capellini Nr. 1",
+   "ingredients": "durum wheat semolina, water, may contain traces of eggs if produced in the plant indicated with letter (a),",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": [
+    "en:mustard",
+    "en:soybeans",
+    "de:Moutarde"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "8712566134144",
+   "name": "MAILLE Dijon Originale",
+   "ingredients": "water, mustard seeds, spirit vinegar, salt, acid (citric acid), preservative (potassium  metabisulphite).",
+   "offAllergens": [
+    "en:mustard",
+    "en:Metabisulphite"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0096619756803",
+   "name": "Kirkland Signature Purified Drinking Water",
+   "ingredients": "Purified Water, Potassium Bicarbonate, Sodium Bicarbonate, Calcium Citrate, Sodium Chloride, Magnesium Oxide",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0096619483556",
+   "name": "KIRKLAND Signature organic GREEK YOGURT plain",
+   "ingredients": "nonfat milk, active cultures (streptococcus thermophilus, lactobacillus bulgaricus, l. acidophilus, lactobacillus acidophilus, bifidus, lactobacillus casei).",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0096619194261",
+   "name": "Kirkland Signature Ancient Grains Probiotic Granola",
+   "ingredients": "Whole grain rolled oats, cane sugar, soy oil, khorasan wheat, rolled spelt, almonds, inulin, rice starch, rolled quinoa, rolled amaranth, sea salt, molasses, cinnamon, vanilla flavor, probiotics (Bacillus coagulans GBI-30 6086), tocopherols (vitamin E)",
+   "offAllergens": [
+    "en:gluten",
+    "en:nuts",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:nuts",
+    "en:peanuts",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "8801073110502",
+   "name": "Samyang Buldak Ramen",
+   "ingredients": "Noodle(76.7%): Wheat flour, Thickener: (E1420, E412), Palm oil, Wheat gluten, Salt, Emulsifier: [E422, E322(Contains: Soy)], Soybean oil, Acidity regulator: (E501, E500, E339, E330), Water, Tocopherol powder (Contains: Soy), Green tea extract, Colour: E101/ Soup(22.7%): Water, Artificial chicken flavour(Contains: Gluten, Soy, Celery), Soy sauce, Sugar, Habanero pepper, Chili pepper, Soybean oil, Onion, Chili pepper seed oil, Garlic, Thickener:E1420, Chili pepper oleoresin, Colour: E160c, Black pepper, Curry seasoning (Contains: Celery) / Flake (0.6%) : Roasted sesame, Roasted laver",
+   "offAllergens": [
+    "en:celery",
+    "en:gluten",
+    "en:sesame-seeds",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:crustaceans",
+    "en:eggs",
+    "en:fish",
+    "en:milk",
+    "en:molluscs",
+    "en:mustard",
+    "en:nuts",
+    "en:peanuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "3228857001491",
+   "name": "Harrys Harrys pain de mie extra moelleux complet sans sucres ajoutés 500g",
+   "ingredients": "Farine complète de _blé_ (44 %), eau, farine de blé, huile de colza, levure, arôme (contient alcool), sel, vinaigre, gluten de _blé_, extrait d'acérioa",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": [
+    "en:eggs",
+    "en:gluten",
+    "en:milk",
+    "en:nuts",
+    "en:sesame-seeds",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "80177616",
+   "name": "Kinder FILLED MILK CHOCOLATE WITH A MILKY FILLING",
+   "ingredients": "fine  milk  chocolate 40% (sugar,  milk  powder, cocoa butter, cocoa mass, emulsifier (lecithins ( soya )), vanillin), sugar, skimmed  milk  powder, palm oil, concentrated  butter , emulsifier (lecithins ( soya )), vanillin,",
+   "offAllergens": [
+    "en:milk",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:none"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "3168930007340",
+   "name": "Bénénuts Bénénuts cacahuètes grillées & salées",
+   "ingredients": "peanuts, sunflower oil, salt,",
+   "offAllergens": [
+    "en:peanuts"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:nuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0894700010137",
+   "name": "chobani Greek Yogurt Nonfat Plain",
+   "ingredients": "_cultured nonfat milk_, S. Thermophilus, L. Bulgaricus, L. Acidophilus, Bifidus, L. Casei, L. Rhamnosus",
+   "offAllergens": [
+    "en:milk",
+    "en:cultured nonfat milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0096619555505",
+   "name": "Kirkland Organic Creamy Peanut Butter",
+   "ingredients": "Dry roasted organic peanuts, sea salt",
+   "offAllergens": [
+    "en:peanuts"
+   ],
+   "offTraces": [
+    "en:nuts",
+    "en:soybeans",
+    "en:coconut"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0096619885718",
+   "name": "KIRKLAND signature UNSALTED MIXED NUTS",
+   "ingredients": "Cashews, Almonds, Pistachios, Pecans, Highly refined peanut oil. May contain: Peanuts, Other tree nuts, Milk, Sesame, Soy, Wheat, Mustard, Sulfites.",
+   "offAllergens": [
+    "en:nuts"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:milk",
+    "en:mustard",
+    "en:nuts",
+    "en:peanuts",
+    "en:sesame-seeds",
+    "en:soybeans",
+    "en:sulphur-dioxide-and-sulphites",
+    "en:Shells"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0016000264694",
+   "name": "Nature Valley Oats 'N Honey Granola Bars",
+   "ingredients": "Whole Grain Oats, Sugar, Canola Oil, Rice Flour, Honey, Salt, Brown Sugar Syrup, Baking Soda, Soy Lecithin, Natural Flavor. CONTAINS SOY; MAY CONTAIN PEANUT, ALMOND AND PECAN INGREDIENTS",
+   "offAllergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:nuts",
+    "en:peanuts",
+    "en:3520367101"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0051500255162",
+   "name": "Jif Creamy Peanut Butter",
+   "ingredients": "MADE FROM ROASTED PEANUTS AND SUGAR, CONTAINS 2% OR LESS OF: MOLASSES, FULLY HYDROGENATED VEGETABLE OILS (RAPESEED AND SOYBEAN), MONO AND DIGLYCERIDES, SALT.",
+   "offAllergens": [
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0612322000202",
+   "name": "Nairn's Fruit & Seed Oatcakes",
+   "ingredients": "Wholegrain _Oats_ (68%), Currants (12%) (Currants, Sunflower Oil), Brown Sugar, Sustainable Palm Fruit Oil, Brown Flaxseeds (6%), Raising Agent: Sodium Bicarbonate, Sea Salt.",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:milk",
+    "en:nuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "3449865367250",
+   "name": "Aoste Viande des GRISONS",
+   "ingredients": "Viande des Grisons: Ingrédients : Viande de bœuf origine U.E. ou hors UE, sel, épices et plantes aromatiques, extrait d'épices, dextrose, sucre, conservateurs: ascorbate de sodium, citrates de sodium, nitrate de potassium. Présence possible de fruits à coques et de lait.",
+   "offAllergens": [
+    "en:none"
+   ],
+   "offTraces": [
+    "en:milk",
+    "en:nuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0633148100013",
+   "name": "Tajin Krydder m/Lime og Chili",
+   "ingredients": "chili peppers, sea salt, citric acid, dehydrated lime juice, silicon dioxide",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0058449770565",
+   "name": "Nature's Path Organic Pumpkin Seed + Flax Granola",
+   "ingredients": "Whole grain rolled oats*, cane sugar, soy oil*, brown rice flour pumpkin seeds, flax seeds* oat syrup solids* [oat syrup solids*, tocopherols (added to enhance freshness)], sea salt, molasses*, cinnamon*. *Organic. Contains soy. Produced in a facility that uses wheat, peanuts and tree nuts",
+   "offAllergens": [
+    "en:gluten",
+    "en:nuts",
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:nuts",
+    "en:peanuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "8901262010016",
+   "name": "Amul Amul Pasteurized Butter",
+   "ingredients": "Butter, common salt. CONTAINS PERMITTED NATURAL COLOUR [ANNATTO]",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0857777004232",
+   "name": "RXBAR Chocolate Sea Salt RXBAR",
+   "ingredients": "Egg whites, almonds, cashews, dates",
+   "offAllergens": [
+    "en:eggs",
+    "en:nuts"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "8901262200196",
+   "name": "Amul Amul Masti Spiced Buttermilk 200ml",
+   "ingredients": "Milk solids, water, iodised salt, spices & condiments (1%), stabilizer [460(i)]. Allergen Information: Contains milk.",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3033491917066",
+   "name": "Danone Hipro façon stracciatella",
+   "ingredients": "skimmed milk (origin: france), skimmed milk fat/vetten (g) 5, 10 concentrate (origin: eu), water, cocoa shavings (0,5%) (butter of which saturated fatty acids/cocoa, cocoa powder, defatted cocoa powder), waarvan verzadigd (g) thickeners (modified starch, fruit pectin), ferments carbohydrates/koolhydraten (g) acidity (lactic acid, (g) sodium cate, calcium citrate),  sweeteners (acesulfame-k, protein/ewitten (0) sacralose), vitamin d,/ingredienten: afgeroomde melk eines (dorsprong: frankrijk), geconcentreerde afgeroomde melk sel/zout (g) (oorsprong: eu), water, cocoavlokjes (0,5%) (cocoaboter, calcium (mg)(a/r) 100725) caraupoeder, magere cacaopoeder), verdikkingsmiddelen vitamin d (g/0,5) 01 (gemodificeerd zetmeel, pectin), melkfermenten, aroma, &quot;ar/ri, reference intake for urteregelaars (melkzuur, natriumcitraat, calciumcitraat),  referentie-inname van ee stoffen (acesullaam-k, sucralose), vitamin d, volwassene (8400 kj/2000) nuteregelaars (melkzuur, natriumcitraat, calciumcitraat), referentie-inname va toffen (acesullaam-k, sucralose), vitamin d, volwassene (8400) poe amuze 100g 257156 3919 spedaute dairy with cocoa shavings, with sweeteners, 0% nutritional values m,s,, enriched with vitamin d,/ melkspecialiteit met calovlorjes en zoetstoffen, 0% vet, verrijkt met vitamin d,  yoedingswaarden energy (kj/kcal) ingredients: skimmed milk (origin: france), skimmed milk fat/vetter () 15 u centre (origin: eu), water, cocoa shavings (0,5%) (butter of which saturated fatty acids cara, cocoa powder, defatted cocoa powder), waarvan verzadigd (9) grazing (modified starch, fruit pectin), ferments carbohydrates/koolhydraten (g) 155 milk (milk), ardme, acidity regulators (lactic acid,  of which sugars/waarvan suikers sodium ctrale, calcium citrate), sweeteners (acesulfame-k, sanse), vitamin d,/ingredienten: afgeroomde melk protein/erwitten (a) 90 11 1,0 nes usprang: frankrijk), geconcentreerde afgeroomde melk salt/zout (g) morsprong: eu), water, cocoavlokjes (0,5%) (cocoaboter, calcium (mg)(sar) 1002) poeder, magere cacaopoeder), verdikkingsmiddelen vitamin d (49)ar/03) (gemodificeerd zetmeel, pectin), melkfermenten,  aroma, ar/ri: reference intake for ovet dairy speciality with cocoa shavings, with sweeteners, 0% nutritional values een vitamin d, /melkspecialiteit met voedingswaarden ro cacaovlokjes en zoetstoffen, 0% vet, verrijkt met vitamined, energy ( ingredients: skimmed milk (origin: france), skimmed milk fat and concentrate (origin: eu), water, cocoa shavings (0,5%) ( butter of which cocoa fatty acids,  cocoa powder, defatted cocoa powder), waarvan verad thickeners (modified starch, fruit pectin), ferments carbohydrates o steines (dorsprong: frankrijk), geconcentreerde afgeroomde melk lactic (milk), aroma, acidity regulators (lactic acid, including anal sugars sodium citrate, calcium citrate), sweeteners (acesulfame-k, sucralose), vitamin d,/ingredienten: afgeroomde melk proteines/ele sel/zood () (oorsprong: eu), water, cocoaviokjes (0,5 %) (cocoa",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "06827465",
+   "name": "Bluetriton Brands Pure Life",
+   "ingredients": "PURIFIED WATER. LESS THAN 0.5% OF CALCIUM CHLORIDE, SODIUM BICARBONATE, MAGNESIUM SULFATE.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "04963406",
+   "name": "Coke Coke Original Taste",
+   "ingredients": "carbonated water, high fructose corn syrup, caramel color, phosphoric acid, natural flavors, caffeine",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0044000050986",
+   "name": "Triscuit original made with sea salt",
+   "ingredients": "whole grain wheat, canola oil, sea salt.",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0884912004710",
+   "name": "Post grape-nuts cereal",
+   "ingredients": "whole grain wheat flour, malted barley flour, salt, dried yeast, vitamins and minerals: reduced iron, niacinamide, zinc oxide (source of zinc), vitamin b6, thiamin mononitrate (vitamin b1), folic acid.",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0898999010007",
+   "name": "Vita Coco Coconut Water",
+   "ingredients": "Coconut Water (99%), Fructose (&lt;1%), Vitamin C.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "8906010502119",
+   "name": "Balaji Chataka pataka",
+   "ingredients": "Rice meal (43%), edible vegetable oil (palmolein, rice bran), corn meal (13%), chickpea flour, edible common salt, chilli powder, black salt, maltodextrin, dehydrated vegetable powder (garlic, onion, lemon), hydrolyzed vegetable protein (soya), acidity regulator (INS 330), flavour enhancer (INS 627, INS 631), yeast extract, oregano, anticaking agent (INS 551), natural & nature identical flavouring substances (chilli, lemon), paprika extract (INS 160c).",
+   "offAllergens": [
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0689544083016",
+   "name": "Fage Total 0% Milkfat",
+   "ingredients": "grade A pasteurized skimmed milk, live active yogurt cultures (L. bulgaricus, S. thermophilus, L. acidophilus, bifidus, L. casei)",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "5000112519945",
+   "name": "Coca Cola Coca-Cola Zero",
+   "ingredients": "water, carbon dioxide, caramel coloring E-150d, acidulant phosphoric acid, sweeteners (sodium cyclamate, acesulfame K, aspartame and enzymatically produced steviol glycosides), natural flavors, caffeine flavoring, and acidity regulator (sodium citrates). Contains a source of phenylalanine.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0810032300463",
+   "name": "Go Raw Organic Sprouted Pumpkin Seeds Sea Salt",
+   "ingredients": "Organic Sprouted Pumpkin Seeds, Sea Salt",
+   "offAllergens": [],
+   "offTraces": [
+    "en:eggs",
+    "en:gluten",
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "7394376620157",
+   "name": "Oatly Barista edition oat drink",
+   "ingredients": "water, oats 10%, rapeseed oil, acidity regulator (dipotassium phosphate), minerals (calcium carbonate, potassium iodide), salt, vitamins (d2, riboflavin, b12),",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0078895126396",
+   "name": "Lee Kum Kee Premium Soy Sauce",
+   "ingredients": "Water, Soybeans 17.5%, Salt, Sugar, Wheat Flour.",
+   "offAllergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0072250037129",
+   "name": "Nature's Own 100% Whole Wheat Bread",
+   "ingredients": "WHOLE WHEAT FLOWER, WATER, YEAST, BROWN SUGAR, WHEAT GLUTEN, 2% OR LESS: SALT, EXPELLER PRESSED CANOLA OIL, CULTURED WHEAT FLOUR, VINEGAR, FLAX SEAD MEAL, ENZYMES, ACEROLA CHERRY POWDER, *MAY BE TOPPED WITH WHEAT BRAN*",
+   "offAllergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:sesame-seeds"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "8801073113893",
+   "name": "Samyang Carboana Buldak Spicy Ramen",
+   "ingredients": "noodle (77,5%) { wheat flour , modified tapioca starch, refined palm oil, modified potato starch, refined salt, emulsifier [lecithin(e322(i))], acidity regulator [potassium carbonate(e501(i)), sodium carbonate(e500), sodium phosphate dibasic(e339(ii)), citric acid(e330)], thickener [guar gum (e412)], green tea flavor oil,}\r\n\r\nsoup (12,7%) {water, artificial chicken flavor powder, soy sauce, white sugar, red pepper powder, chili pepper powder, soybean oil, onion, red pepper seed oil, garlic, modified potato starch, paprika extract, decolorized chilli extract, black pepper powder, curry powder,}\r\n\r\npowder (9,8%) {whole milk powder, white sugar, milk powder, salt, mozzarella cheese powder, butter powder, modified potato starch, curly parsley, pepper powder, garlic powder, soybean oil,}",
+   "offAllergens": [
+    "en:celery",
+    "en:eggs",
+    "en:fish",
+    "en:gluten",
+    "en:milk",
+    "en:molluscs",
+    "en:mustard",
+    "en:nuts",
+    "en:peanuts",
+    "en:sesame-seeds",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:crustaceans",
+    "en:fish",
+    "en:nuts",
+    "en:peanuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "5060198820052",
+   "name": "Peter's Yard Peter's Yard Original Sourdough Crackers",
+   "ingredients": "_Milk_, _rye_ flour, _wheat_ flour, sourdough 11.5% (_rye_ flour, water), _wholewheat_ flour, honey, salt, yeast.",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:wholewheat"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "20000691",
+   "name": "Maribel Raspberry conserve",
+   "ingredients": "Sugar, 50% raspberries, citric acid, pectins.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "20333737",
+   "name": "Alesto Roasted Cashew-Peanut-Mix Honey & Salt",
+   "ingredients": "33% cashews , 32% peanut kernels , sugar, 3% honey, vegetable oils (sunflower, oil palm), gelling agent: gum arabic, 0,8% table salt, glucose syrup, dye: ammonia sugar caramel,",
+   "offAllergens": [
+    "en:nuts",
+    "en:peanuts"
+   ],
+   "offTraces": [
+    "en:nuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0898999000022",
+   "name": "Vita coco Coconut Water",
+   "ingredients": "coconut water, sugar, ascorbic acid (vitamin C)",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3270190136880",
+   "name": "Carrefour BIO Moutarde de Dijon",
+   "ingredients": "water, organic mustard seeds 30%, organic alcohol vinegar, salt,",
+   "offAllergens": [
+    "en:mustard"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0073472001202",
+   "name": "Food For Life Baking Co Inc EZEKIEL 4:9 FLOURLESS SPROUTED GRAIN BREAD",
+   "ingredients": "organic sprouted wheat, filtered water, organic sprouted barley, organic sprouted millet, organic malted barley, organic sprouted lentils, organic sprouted soybeans, organic sprouted spelt, fresh yeast,organic wheat gluten, sea salt,",
+   "offAllergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "5000354800931",
+   "name": "Ambrosia Rice Pudding",
+   "ingredients": "Full Cream Milk, Skimmed Milk, Whey (Milk), Rice (9%), Sugar.",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0857273008666",
+   "name": "Vital Proteins Collagen Peptides",
+   "ingredients": "Bovine collagen peptides",
+   "offAllergens": [],
+   "offTraces": [
+    "en:fish",
+    "en:milk",
+    "en:nuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0731216103987",
+   "name": "Universal Bakery Aussie Bites",
+   "ingredients": "Organic Rolled Oats, Organic Oat Flour, Organic Unsalted Butter, Organic Canola Oil, Organic Dried Apricots, Organic Sugar, Organic Cane and Invert Sugar, Organic Raisins, Organic Flax Seeds, Organic Sunflower Seeds, Organic Honey, Organic Shredded Coconut, Organic Quinoa, Organic Chia Seeds, Sea Salt, Baking Soda, Organic Vanilla, Organic Rice Flour.",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:peanuts"
+   ],
+   "offTraces": [
+    "en:eggs",
+    "en:nuts",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0097339000054",
+   "name": "Salsa Tamazula S.A. De C.V. Mexican hot sauce",
+   "ingredients": "Water, Chili Pepper, Vinegar, Salt, Spice, Sodium Benzoate (Preservative).",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "5021185201223",
+   "name": "Geeta’s Foods Ltd Geeta's Mango Chutney imp",
+   "ingredients": "Mangoes (56%), Sugar, salt, Acidity Regulator : Acetic Acid, Whole Baby Garlic Cloves, Cumin Seeds, Mixed Spices, Fenugreek Seeds, Nigella Seeds, Black Peppercorns, cardamom pods, Whole clove, herb.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0747479000413",
+   "name": "Rao's Homemade Marinara",
+   "ingredients": "Italian Whole Peeled Tomatoes, Olive Oil, Onions, Salt, Garlic, Basil, Black Pepper, Oregano.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0857777004195",
+   "name": "RXBAR Blueberry RXBAR",
+   "ingredients": "Dates, egg whites, almonds, cashews, blueberries, natural blueberry flavor.",
+   "offAllergens": [
+    "en:eggs",
+    "en:nuts"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0037600110754",
+   "name": "Skippy Creamy Peanut Butter",
+   "ingredients": "roasted peanuts, sugar, hydrogenated vegetable oil (cottonseed, soybean and rapeseed oil) to prevent separation, salt.",
+   "offAllergens": [
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0051500240946",
+   "name": "Jif CREAMY PEANUT BUTTER",
+   "ingredients": "roasted peanuts, sugar, molasses, fully hydrogenated vegetable oils (rapeseed and soybean), mono and diglycerides, salt",
+   "offAllergens": [
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "5053990175888",
+   "name": "Pringles Pringles hot cheese",
+   "ingredients": "Dehydrated Potatoes, Sunflower Oil, Wheat Flour, Corn Flour, Rice Flour, Cheese-Chilli-Seasoning (Lactose (Milk), Buttermilk Powder (Milk), Flavourings, (Monosodium Glutamate, Disodium 5'-Ribonucleotides), Potassium Chloride, Dextrose, Cheese Powder (Milk), Sugar, Spices (Chilli, White Pepper), Garlic Powder, Acid (Lactic Acid), Yeast Extract, Acidity Regulator (Calcium Lactate), Maltodextrin, Sunflower Oil, Corn Starch, Colour (Paprika Extract)), Maltodextrin, Emulsifier (E471), Colour (Annatto Norbixin)",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk"
+   ],
+   "offTraces": [
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0016000275263",
+   "name": "General Mills Cheerios",
+   "ingredients": "Whole Grain Oats. Corn Starch, Sugar, Salt, Tripotassium Phosphate. Vitamin E (mixed tocopherols) Added to Preserve Freshness. Vitamins and Minerals: Calcium Carbonate, Iron and Zinc (mineral nutrients), Vitamin C (sodium ascorbate), A B Vitamin (niacinamide), Vitamin B6 (pyridoxine hydrochloride), Vitamin A (palmitate), Vitamin B₁ (thiamin mononitrate), A B Vitamin (folic acid), Vitamin B12, Vitamin D3.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0013764027121",
+   "name": "DAVE'S KILLER BREAD ORGANIC BREAD GOOD SEED THIN-SLICED",
+   "ingredients": "organic whole wheat (organic whole wheat flour, organic cracked whole wheat), water, organic good seed grain and seed mix (organic whole flax seeds, organic sunflower seeds, organic tri-color quinoa [organic black quinoa, organic red quinoa, organic white quinoa] organic steel cut oats, organic ground whole flax seeds), organic cane sugar, organic wheat gluten, organic oat fiber, contains 2% or less of each of the following: organic molasses, sea salt, yeast, organic vinegar, organic cultured wheat flour, enzymes, organic acerola cherry powder.",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0070303022160",
+   "name": "Season Season Boneless Sardines in 100% Olive Oil",
+   "ingredients": "Sardines (Fish), Olive Oil, Salt",
+   "offAllergens": [
+    "en:fish"
+   ],
+   "offTraces": [
+    "en:fish"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0017077102322",
+   "name": "Lifeway Kefir",
+   "ingredients": "Pasteurized lowfat milk, nonfat milk, pectin, vitamin a palmitate, vitamin d3, live and active cultures.",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "8906010500863",
+   "name": "Balaji Wafers Shing Bhujiya - Nimbu Chatka",
+   "ingredients": "Peanut (70%), chickpea flour (13%), edible vegetable oil (contains one or more of the followings: palmolein, rice bran, corn, cottonseed), corn flour, black gram flour, seasoning (edible common salt, spices & condiments (chilli, cumin, black pepper, carom seed), dehydrated vegetable powder (garlic, onion, lemon (0.3%)), maltodextrin, hydrolyzed vegetable protein (soya), acidity regulator (INS 330), yeast extract, flavour enhancer (INS 627, INS 631), anticaking agent (INS 551), flavour (natural & nature identical flavouring substances)).",
+   "offAllergens": [
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "20005573",
+   "name": "Tower Gate Jaffa Cakes",
+   "ingredients": "sugar, glucose-fructose syrup, 15% orange juice from concentrated orange juice, wheat flour, cocoa mass, 6% liquid whole egg, palm oil, cocoa butter, stabiliser: sorbitols, gelling agent: pectins, acid: citric acid, raising agents: sodium carbonates, diphosphates, whey powder (milk), emulsifiers: lecithins, mono - and diglycerides of fatty acids, natural orange flavouring, natural vanilla flavouring with other natural flavourings,   salt, wheat starch,",
+   "offAllergens": [
+    "en:eggs",
+    "en:gluten",
+    "en:milk",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:eggs",
+    "en:milk"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0016000170032",
+   "name": "General Mills Cheerios",
+   "ingredients": "Whole Grain Oats, Corn Starch, Sugar, Salt, Tripotassium Phosphate. Vitamin E (mixed tocopherols) (added for freshness). Vitamins and Minerals: Calcium Carbonate, Iron and Zinc (mineral nutrients), Vitamin C (sodium ascorbate), A B Vitamin (niacinamide), Vitamin B6 (pyridoxine hydrochloride), Vitamin A (palmitate), Vitamin B₁ (thiamin mononitrate), A B Vitamin (folic acid), Vitamin B12, Vitamin D3.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0078742051451",
+   "name": "Member's Mark PURIFIED WATER",
+   "ingredients": "PURIFIED WATER, CALCIUM CHLORIDE, SODIUM BICARBONATE.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "8850389100684",
+   "name": "Sappe Public Company Limited Mogu lychee",
+   "ingredients": "water, lychee juice from concentrate 25%, coconut 25%, fructose, sucrose, acidifiers (citric acid, calcium lactate), lychee flavor, preservative e211, gelling agent: gellan gum, color: e129 - 0.0001% (this dye may have adverse effects on activity and attention in children),",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0811620021951",
+   "name": "fairlife Core Power High Protein Milk Shake Chocolate",
+   "ingredients": "FILTERED LOW FAT GRADE A MILK, ALKALIZED COCOA, NATURAL FLAVORS, MONK FRUIT JUICE CONCENTRATE, STEVIA LEAF EXTRACT, CARRAGEENAN, CELLULOSE GEL, CELLULOSE GUM, ACESULFAME POTASSIUM, SUCRALOSE, LACTASE ENZYME, VITAMIN A PALMITATE, VITAMIN D3.",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3023290009055",
+   "name": "Nestlé Secret de mousse",
+   "ingredients": "foam milk with milk chocolate (92,0 %) : whole milk (60,6 %), sugar, milk chocolate (7,4 %) (sugar, whole milk powder, cocoa butter, cocoa mass, whey powder ( milk ), emulsifier (sunflower lecithin), natural flavouring of vanilla), cream ( milk ), cocoa powder, skinny, caramel [sugar, glucose syrup, water), cocoa powder, skim milk powder, lactose ( milk ), salt, bovine gelatin, emulsifier (e471), thickener (flour of carob seeds),   flavour, \r\n\r\nchocolate sauce (8,0 %) : skim milk, sugar, chocolate (0,6 %) [cocoa mass, sugar, emulsifier (sunflower lecithin), natural flavour vanilla], powder-lean cocoa, corn starch, thickener (flour of carob seeds),",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0123456789012",
+   "name": "Fleischer Peanut Butter Crunch",
+   "ingredients": "Unbleached enriched wheat flour [flour, barley malt, niacin (vitamin b3), iron, thiamin mononitrate (vitamin b1), riboflavin (vitamin b2), folic acid (vitamin b9)], water, sugar, yeast, wheat gluten, soybean oil, contains 2% or less of the following: salt, dough conditioners (mono - and diglycerides, sodium stearoyl lactylate, ethoxylated mono - and diglycerides, ascorbic acid), calcium propionate and sorbic acid (to retain freshness), yeast nutrients (calcium carbonate, calcium sulfate, monocalcium phosphate, ammonium sulfate), hydrogenated cottonseed oil, ground turmeric, soy lecithin.",
+   "offAllergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0058449770206",
+   "name": "Nature's Path Organic Heritage Flakes",
+   "ingredients": "Kamut khorasan wheat flour*, wheat bran*, whole wheat meal*, cane sugar*, whole oat flour*, spelt flour*, barley flour*, whole millet*, barley malt extract*, quinoa*, sea salt, honey*.",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0689544083023",
+   "name": "FAGE Total 2% Milkfat",
+   "ingredients": "grade a pasteurized skimmed milk and cream, live active yogurt cultures (l. bulgaricus, s. thermophilus, l. acidophilus, bifidus, l. casei).",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3497911123350",
+   "name": "Brets Chips Pizza 125G Bret's",
+   "ingredients": "potatoes (france) (61.9%), sunflower oil (31%), salt, tomato powder, sugar, cream powder, cheese powder, flavor, parsley, onion powder, oregano, milk powder, color: paprika extract, garlic powder, cayenne pepper,",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": [
+    "en:celery",
+    "en:mustard"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0819562022791",
+   "name": "Snacks Generation LLC nut granola blueberry cinnamon sweet & crunchy",
+   "ingredients": "sunflower seeds, pumpkin seeds, coconut, almonds, pecans, erythritol, butter (pasteurized cream, natural flavor), dried blueberries, cinnamon, salt, monkfruit extract",
+   "offAllergens": [
+    "en:milk",
+    "en:nuts"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:milk",
+    "en:nuts",
+    "en:soybeans",
+    "en:Seeds"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0034000400126",
+   "name": "Reese's Reeses Creamy Peanut Butter",
+   "ingredients": "Peanuts; Sugar; hydrogenated Vegetable Oil [rapeseed Oil; Cottonseed Oil; Soybean Oil]; Salt; Peanut Oil; Monoglycerides; Molasses; Cornstarch.",
+   "offAllergens": [
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0815074022809",
+   "name": "Chosen Foods Classic Mayo",
+   "ingredients": "AVOCADO OIL, FILTERED WATER, EGG YOLKS, WHOLE EGGS, DISTILLED VINEGAR, MUSTARD (WATER, MUSTARD SEEDS, DISTILLED VINEGAR, SALT), SALT, ROSEMARY EXTRACT",
+   "offAllergens": [
+    "en:eggs",
+    "en:mustard"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0716270001660",
+   "name": "Chocolove Ginger Crystallized In Dark Chocolate",
+   "ingredients": "dark chocolate (cocoa liquor*, sugar, cocoa butter*, soy lecithin, vanilla), crystallized ginger (ginger, sugar)",
+   "offAllergens": [
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "7622210249661",
+   "name": "Cadbury Bournville Dark Chocolate",
+   "ingredients": "sugar, cocoa butter, cocoa mass, palm oil, emulsifiers (soya lecithin, e476),skimmed milk powder",
+   "offAllergens": [
+    "en:milk",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:milk",
+    "en:nuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0851770007566",
+   "name": "Orgain Organic Protein",
+   "ingredients": "ORGAIN ORGANIC PROTEIN BLEND (PEA PROTEIN, BROWN RICE PROTEIN, CHIA SEED), ORGAIN ORGANIC CREAMER BASE ACACA HIGH OLEIC SUNFLOWER OIL, RICE DEXTRIN, SUNFLOWER LECITHIN, ROSEMARY EXTRACT), ERYTHRITOL, NATURAL FLAVORS, ACACIA ORCAIN ORGANIC 50 SUPERFOODS BLEND MILLET, AMARANTH, BUCKWHEAT, QUINOA CHIA, KALE POWDER, APPLE PULP, CINNAMON, ORGANIC SPROUTS BLEND (AMARANTH SPROUT, QUINOA SPROUT, MILLET SPROUT, BUCKWHEAT SPROUT, GARBANZO BEAN SPROUT, LENTIL SPROUT, ADZUKI SPROUT FLAX SPROUT, SUNFLOWER SPROUT, PUMPKIN SPROUT, CHIA SPROUT, SESAME SPROUT), ORGANIC SUPER VEGGIES, SUPER BERRIES SUPER GRASSES AND SUPER FOODS BLEND (ACAI&quot;, CRANBERRY, WHEAT GRASS, BARLEY GRASS, OAT GRASS, BANANA, MANGO, BEET, CARROT, SPINACH, BROCCOL TOMATO, KALE, CABBAGE, PARSLEY LEAF, BRUSSELS SPROUT, GREEN BELL PEPPER, CUCUMBER, CELERY, GARLIC, GINGER ROOT, GREEN ONION CAULIFLOWER, ASPARAGUS, PINEAPPLE, TURMERIC, STRAWBERRY&quot;, TART CHERRY, BLACKBERRY, BLUEBERRY, RASPBERRY REBA STEVIA EXTRACT, SEA SALT, GUAR GUM, XANTHAN GUM, NATURAL FLAVOR, ORGANIC FOOD BASED VITAMIN C (AMLA FRUIT EXTRACT ORGANIC FOOD BASED VITAMIN BLEND (GUAVA, HOLY BASIL, LEMON EXTRACT), PROBIOTIC (BACILLUS COAGULANS)",
+   "offAllergens": [
+    "en:banana",
+    "en:celery",
+    "en:sesame-seeds"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0009800895007",
+   "name": "Nutella Nutella",
+   "ingredients": "sugar, palm oil, hazelnuts, skim milk, cocoa, lecithin as emulsifier (soy), vanillin: an artificial flavor,",
+   "offAllergens": [
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0047495112900",
+   "name": "Nature's Bakery Fig Bar Blueberry",
+   "ingredients": "Whole Wheat Flour, Fig Paste, Cane Sugar, Brown Rice Syrup, Blueberry Filling (Cane Sugar, Naturally Milled Sugar, Rice Starch, Glycerin, Blueberries, Apple Powder, Natural Flavors, Pectin, Citric Acid, Locust Bean Gum), Canola Oil, Whole Grain Oats, Glycerin, Fruit Juice (for color), Sea Salt, Natural Flavor, Citric Acid, Baking Soda",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0096619225798",
+   "name": "Kirkland beurre de noix mélangées avec graines",
+   "ingredients": "Almonds, Cashews, Pumpkin Seeds, Chia Seeds, and Flax Seeds.",
+   "offAllergens": [
+    "en:nuts"
+   ],
+   "offTraces": [
+    "en:nuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0009800800056",
+   "name": "Nutella nutella & GO! with Breadsticks",
+   "ingredients": "NUTELLA: SUGAR, PALM OIL, HAZELNUTS, COCOA, SKIM MILK, WHEY (MILK), LECITHIN AS EMULSIFIER (SOY), VANILLIN: AN ARTIFICIAL FLAVOR. BREADSTICKS: WHEAT FLOUR, PALM OIL, SALT, BAKER'S YEAST, MALT EXTRACT.",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:75235356"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0041789002113",
+   "name": "Maruchan Ramen Noodle Soup Chicken Flavor",
+   "ingredients": "ENRICHED WHEAT FLOUR (WHEAT FLOUR, NIACIN, REDUCED IRON, THIAMINE MONONITRAT RIBOFLAVIN, FOLIC ACID), VEGETABLE OIL (CONTAINS ONE OR MORE OF THE FOLLOWING: CANOLA PRESERVED BY TBHQ, CONTAINS LESS THAN 1% OF: SALT, POTASSIUM CARBONATE, SOY SAUCE (WATER, WHEAT, SOYBEAN, SALT), SODIUM CARBONATE, SODIUM HEXAMETAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, SOUP BASE INGREDIENTS: SALT, SUGAR, CONTAINS LESS THAN 1% OF: MONOSODIUM GLUTAMATE, MALTODEXTRIN, SPICES (CELERY SEED), HYDROLYZED CORN PROTEIN, HYDROLYZED WHEAT PROTEIN, HYDROLYZED SO NATURAL FLAVORS, DEHYDRATED VEGETABLES (CHIVE, GARLIC, ONION), DISODIUM GUANYLATE, DISOCIUM KNOSINATE YEAST EXTRACT. VEGETABLE OIL (PALM), LACTOSE, POWDERED COCKED CHICKEN CONTAINS WHEAT, SOY AND EILE INGREDIENTS. MANUFACTURED IN A FACILITY THAT AI SO PROCESSES CRUSTACEAN SHELLFISH AND SESAME PRODUCTS. CONTAINS A BIOENGINEERED FOOD INGRED ially",
+   "offAllergens": [
+    "en:celery",
+    "en:gluten",
+    "en:milk",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:sesame-seeds",
+    "fr:shellfish"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "8901491101844",
+   "name": "Lay's Lay's Potato Chips",
+   "ingredients": "potato, edible vegetable oil (sunflower oil, corn oil, and/or canola oil), spices and condiments (onion powder, chilli powder, dry mango powder, coriander powder, ginger powder, garlic powder, black pepper powder, turmeric powder, cumin powder, salt, black salt, sugar, tomato powder, citric acid, tartaric acid, natural flavors (e160b)",
+   "offAllergens": [],
+   "offTraces": [
+    "en:gluten",
+    "en:milk",
+    "en:nuts",
+    "en:peanuts",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0036632019448",
+   "name": "Oikos Oikos Triple Zero Blended Greek Yogurt Vanilla",
+   "ingredients": "Cultured grade A non fat milk, water, natural flavors, contains less than 1% of tapioca starch, stevia leaf extract, lemon juice concentrate, sea salt, vitamin D3, yogurt cultures: S. Thermophilus & L. Bulgaricus.",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0048121102081",
+   "name": "Thomas English Muffins",
+   "ingredients": "enriched wheat flour (flour, malted barley flour, reduced iron, niacin, thiamin mononitrate [vitamin B1], riboflavin [vitamin B2], folic acid), water, farina, yeast, salt, sugar, calcium propionate, sorbic acid, vegetable oil (soybean), wheat gluten, grain vinegar, soy lecithin, soy, whey",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:nuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0851770008631",
+   "name": "Orgain Organic Protein",
+   "ingredients": "ORGAIN ORGANIC PROTEIN BLENDT : PEA PROTEIN*, BROWN RICE PROTEIN*, CHIA SEED*, \r\n\r\nORGAIN ORGANIC CREAMER BASE : ACACIA HIGH OLEIC SUNFLOWER OIL*, RICE DEXTRIN*, SUNFLOWER LECITHIN*, ROSEMARY EXTRACT), ERYTHRITOL, ACACIA, ALKALIZED COCOA ONNAMON, NATURAL FLAVOR\r\n\r\nORGAIN ORGANIC 50 SUPERFOODS BLEND [MILLET, AMARANTH*, BUCKWHEAT, QUINOA CHIA, KALE POWDER APPLE PULP, CINNAMON*, ORGANIC SPROUTS BLEND (AMARANTH SPROUT*, QUINOA SPROUT*, MILLET SPROUT*, BUCKWHEAT SPROUT*, GARBANZO BEAN SPROUT*, LENTILS SPROUT*, ADZUKI SPROUT*, FLAX SPROUT*, SUNFLOWER SPROUT*, PUMPKIN SPROUT*, CHIA SPROUT*, SESAME SPROUT*\r\n\r\nORGANIC SUPER VEGGIES SUPER BERRIES, SUPER GRASSES AND SUPER FOODS BLEND (ACAI*, CRANBERRY*, WHEAT GRASS, BARLEY GRASS, OAT GRASS, BANANA MANGO, BEET CARROT, SPINACH, BROCCOLI, TOMATO, KALE, CABBAGE, PARSLEY LEAF, BRUSSELS SPROUT, GREEN BELL PEPPER, CUCUMBER, CELERY, GARLIC, GINGER ROOT, GREEN ONION, CAULIFLOWER*, ASPARAGUS*, PINEAPPLE, TURMERIC, STRAWBERRY, TART CHERRY, BLACKBERRY, BLUEBERRY, RASPBERRY, REBAUDIOSIDE A (STEVIA EXTRACT), SEA SALT, GUAR GUM*, NATURAL FLAVOR, XANTHAN GUM, ORGANIC FOOD BASED VITAMIN C (FRUIT EXTRACT), ORGANIC FOOD BASED B VITAMIN BLEND (GUAVA, HOLY BASIL, LEMON EXTRACT), PROBIOTIC (BACILLUS COACULANS)",
+   "offAllergens": [
+    "en:celery",
+    "en:gluten",
+    "en:sesame-seeds"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3076820002064",
+   "name": "Crespo Pitted Ripe Olives",
+   "ingredients": "Olives, water, salt, ferrous gluconate.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0021000658831",
+   "name": "Kraft mac & cheese",
+   "ingredients": "ENRICHED MACARONI (WHEAT FLOUR, DURUM FLOUR, NIACIN, FERROUS SULFATE [IRON], THIAMIN MONONITRATE [VITAMIN B1], RIBOFLAVIN [VITAMIN B2], FOLIC ACID), CHEESE SAUCE MIX (WHEY, MILKFAT, SALT, MILK PROTEIN CONCENTRATE, SODIUM TRIPHOSPHATE, TAPIOCA FLOUR, CITRIC ACID, CALCIUM PHOSPHATE, SODIUM PHOSPHATE, LACTIC ACID, PAPRIKA, TURMERIC, ANNATTO, CHEESE CULTURE, ENZYMES)",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:Lactic"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:milk"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0044000031930",
+   "name": "Belvita Crunchy Breakfast Biscuits",
+   "ingredients": "Whole grain blend (rolled oats, rye flakes), enriched flour [wheat flour, niacin, reduced iron, thiamin mononitrate (vitamin b1), riboflavin (vitamin b2), folic acid], canola oil, sugar, whole grain wheat flour, brown sugar, malt syrup (from corn and barley), invert sugar, baking soda, salt, soy lecithin, disodium pyrophosphate, cinnamon, datem, natural flavor, ferric orthophosphate (iron), niacinamide, molasses, pyridoxine hydrochloride (vitamin b6), riboflavin (vitamin b2), thiamin mononitrate (vitamin b1).",
+   "offAllergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0898999011288",
+   "name": "Bamboo Tree Coconut Water",
+   "ingredients": "Coconut Water (96%), Coconut Cream (2%), Fructose (1%), Vitamin C, Stabiliser: Gellan Gum.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "4061459332896",
+   "name": "Acti Leaf Almond No Sugars",
+   "ingredients": "Water, _Almond_ (2.3%), Minerals (Calcium Citrate), Sea Salt, Stabiliser: Gellan Gum; Vitamins (Riboflavin, Vitamin B12, Vitamin D, Vitamin E).",
+   "offAllergens": [
+    "en:nuts"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:nuts",
+    "en:peanuts",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0051500243213",
+   "name": "Jif Peanut Butter Spread",
+   "ingredients": "PEANUTS, SUGAR, PALM OIL, SALT, MOLASSES",
+   "offAllergens": [
+    "en:gluten",
+    "en:nuts",
+    "en:peanuts"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:nuts",
+    "en:peanuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0025293600232",
+   "name": "Silk Organic Unsweetened Soymilk",
+   "ingredients": "Organic Soymilk (Filtered Water, Organic Soybeans), Contains 2% or Less of: Vitamin and Mineral Blend (Calcium Carbonate, Vitamin A Palmitate, Vitamin D2, Riboflavin [B2], Vitamin B12), Sea Salt, Gellan Gum, Ascorbic Acid (Vitamin C To Protect Freshness), Natural Flavor.",
+   "offAllergens": [
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0096619336753",
+   "name": "Kirkland Signature Peanut Butter Pretzels",
+   "ingredients": "Enriched Wheat Flour (Wheat Flour, Niacin, Reduced Iron, Thiamin Mononitrate, Riboflavin, Folic Acid), Peanut Butter (Valencia Peanuts, Molasses, Mono - and diglycerides), Salt, Soybean Oil, Corn Syrup, Barley Malt Extract.",
+   "offAllergens": [
+    "en:gluten",
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:peanuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "04965802",
+   "name": "Coca-Cola Diet Coke",
+   "ingredients": "CARBONATED WATER, CARAMEL COLOR, ASPARTAME, PHOSPHORIC ACID, POTASSIUM BENZOATE (TO PROTECT TASTE), NATURAL FLAVORS, CITRIC ACID, CAFFEINE.\r\n\r\nPHENYLKETONURICS: CONTAINS PHENYLALANINE\r\n\r\nNO CALORIES, NO SUGAR",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0016000435094",
+   "name": "Cheerios Toasted Whole Grain Oat Cereal",
+   "ingredients": "Whole Grain Oats, Corn Starch, Sugar, Salt, Tripotassium Phosphate. Vitamin E (mixed tocopherols) (Added to Preserve Freshness). Vitamins and Minerals [Calcium Carbonate, Iron (mineral), Zinc (mineral), Vitamin C (sodium ascorbate), niacinamide, Vitamin B6 (pyridoxine hydrochloride), Vitamin A (palmitate), Vitamin B1 (thiamin mononitrate), folic acid, Vitamin B12, Vitamin D3].",
+   "offAllergens": [
+    "en:none"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0675625371189",
+   "name": "One Degree Organic Foods Sprouted Rolled Oats",
+   "ingredients": "sprouted organic gluten-free oats",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0074305001161",
+   "name": "Bragg Apple Cider Vinegar",
+   "ingredients": "Organic apple cider vinegar, water.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0016000147652",
+   "name": "Morning Summit Lightly Sweetened Maple Berry Blend Cereal",
+   "ingredients": "Almonds, Whole Grain Wheat, Organic Maple Syrup, Whole Grain Oats, Sugar, Dried Coconut, Pumpkin Seeds, Organic Coconut Oil, Dried Sweetened Cranberries (cranberries, sugar, glycerin), Dried Sweetened Cherries (cherries, sugar, glycerin), Corn Bran, Brown Sugar Syrup, Salt, Vanilla Extract. Vitamin E (mixed tocopherols). CONTAINS ALMOND, WHEAT, AND COCONUT; MAY CONTAIN SOY AND SESAME.",
+   "offAllergens": [
+    "en:gluten",
+    "en:nuts"
+   ],
+   "offTraces": [
+    "en:sesame-seeds",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0030000010402",
+   "name": "Quaker Oats Old Fashioned Oats",
+   "ingredients": "whole grain rolled oats",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0051500255650",
+   "name": "Jif PEANUT BUTTER SPREAD",
+   "ingredients": "% DV* Amount/Serving Amount/Serving % DV O Total Fat 16g 20% Total Carb 8g 3% 17% Sat Fat 3.5g Fiber 3g 9% Trans Fat Og Total Sugars 4g Cholest Omg 0% Incl 2g Added Sugars 4% Sodium 80mg 3% Protein 7g 7% 90 Vit D 0mcg 0% 150025565 Vit E 1mg 10% Calcium 18mg 2% Iron 1mg 4% Potas 193mg 4% Niacin 5mg 30% The % Daily Value tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. HOR LESS OF SALT, MOLASSES. MINIMAL OIL SEPARATION DE FROM PEANUTS, SUGAR, PALM NATURAL INGREDIENTS, CKER COMPANY TUSA IS NATURAL. 0 JAN LOOK FOR THE FLAVOR SEAL CONTAINS NO PRESERVATIVES BEST IF USED NO REFRIGERATION REQUIRED THIS PACKAGE IS RECYCLABLE. HOWEVER, RECYCLING PROGRAMS FOR THIS PACKAGE MAY NOT EXIST IN YOUR AREA. 69568007 1005",
+   "offAllergens": [
+    "en:gluten",
+    "en:nuts",
+    "en:peanuts"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:peanuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "8901719117183",
+   "name": "Parle Hide & Seek",
+   "ingredients": "REFINED WHEAT FLOUR (MAIDA), SUGAR, CHOCO CHIPS (17.3%) [SUGAR, EDIBLE VEGETABLE FAT (HYDROGENATED OILS), COCOA SOLIDS DEXTROSE, EMULSIFIER (SOY LECITHIN) AND ARTIFICIAL FLAVOURING SUBSTANCES (VANILLA), REFINED PALM OIL, CHOCOLATE (5.8%) [SUGAR, COCOA SOLIDS COCOA BUTTER, DEXTROSE, EMULSIFIER (SOY LECITHIN) AND ARTIFICIAL FLAVOURING SUBSTANCES - (VANILLA)], INVERT SUGAR SYRUP, RAISING AGENTS [503(ii), 500(ii)], COCOA SOLIDS, IODISED SALT, ARTIFICIAL (VANILLA) FLAVOURING SUBSTANCES AND EMULSIFIER OF VEGETABLE ORIGIN [472e]. \n\nCONTAINS: WHEAT, SOY",
+   "offAllergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "offTraces": [
+    "en:gluten",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0049000042566",
+   "name": "Coca-Cola Coca-Cola Zero Sugar",
+   "ingredients": "Carbonated water, caramel color, phosphoric acid, aspartame, potassium benzoate (to protect taste), natural flavors, potassium citrate, acesulfame potassium, caffeine.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0811620020633",
+   "name": "rlife CORE POWER High Protein Milk Shake Chocolate",
+   "ingredients": "filtered lowfat grade a milk, alkalized cocoa, natural flavors, lactase enzyme, sea salt, acesulfame potassium, carrageenan, cellulose gel, cellulose gum, stevia leaf extract, sucralose, vitamin a palmitate, vitamin d3",
+   "offAllergens": [
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0028400147408",
+   "name": "Sun Chips GARDEN SALSA FLAVORED Sun Chips",
+   "ingredients": "WHOLE CORN, SUNFLOWER AND/OR CANOLA OIL, WHOLE WHEAT, BROWN RICE FLOUR, WHOLE OAT FLOUR, SUGAR, MALTODEXTRIN (MADE FROM CORN), SALT, WHEY, NATURAL FLAVORS, CHEDDAR CHEESE (MILK, CHEESE CULTURES, SALT, ENZYMES), ONION POWDER, DEXTROSE, BUTTERMILK, POTASSIUM CHLORIDE, ROMANO CHEESE (COW'S MILK, CHEESE CULTURES, SALT, ENZYMES), YEAST EXTRACT, LACTOSE, PAPRIKA EXTRACTS, SODIUM CASEINATE, CITRIC ACID, SKIM MILK, GARLIC POWDER, LACTIC ACID, PARMESAN CHEESE (MILK, CHEESE CULTURES, SALT, ENZYMES)",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0072250037068",
+   "name": "Nature's Own Honey Wheat Bread",
+   "ingredients": "UNBLEACHED ENRICHED FLOUR (WHEAT FLOUR, MALTED BARLEY FLOUR, NIACIN, REDUCED IRON, THIAMIN MONONITRATE, RIBOFLAVIN, FOLIC ACID), WATER, WHOLE WHEAT FLOUR, HONEY, WHEAT GLUTEN, SUGAR, WHEAT BRAN, YEAST, CULTURED WHEAT FLOUR, SALT, SOY - BEAN OIL, SOY FLOUR, CALCIUM SULFATE, MONOGLYCERIDES, ENZYMES, MONOCALCIUM PHOSPHATE, SOY LECITHIN, ASCORBIC ACID, NIACIN, REDUCED IRON, THIAMIN MONONITRATE (VITAMIN B1), RIBOFLAVIN, FOLIC ACID, CALCIUM CARBONATE.",
+   "offAllergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0855140002175",
+   "name": "purely elizabeth. ORIGINAL ANCIENT GRAIN GRANOLA",
+   "ingredients": "Organic Certified Gluten-Free Oats, Organic Coconut Sugar, Organic Coconut Oil, Organic Sunflower Seeds, Organic Puffed Amaranth, Organic Quinoa Flakes, Organic Chia Seeds, Organic Cinnamon, Sea Salt.",
+   "offAllergens": [
+    "en:Coconut"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "7614500010617",
+   "name": "Toblerone Dark Chocolate with Honey and Almond Nougat",
+   "ingredients": "cocoa mass, sugar, milk fat, honey (3,0 %), almonds (1,6%), cocoa butter, emulsifier (soya lecithin), egg white, chocolate contains: cocoa solids: 50% minimum,",
+   "offAllergens": [
+    "en:eggs",
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "09141209",
+   "name": "Cadbury Bourn Vita 500Gram Pauch",
+   "ingredients": "glucose syrup, bulking agent (polydextrose), starch, humectant (sorbitol syrup), gelatine, sugar, acids (malic acid, acetic acid), concentrated fruit juices' (1 %) (apple, lime, orange, lemon, strawberry, blackcurrant, raspberry), colours (anthocyanins, vegetable carbon, paprika extract, lutein, curcumin), coconut oil, flavourings, glazing agent (carnauba wa 'equivalent to 6.9% fruit juice.",
+   "offAllergens": [
+    "en:apple",
+    "en:orange"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0061232201047",
+   "name": "Nairn's Stem Ginger Oat Biscuits",
+   "ingredients": "Wholegrain Oats (64%), Brown Sugar, Sustainable Palm Fruit Oil, Stem Ginger (6.3%) (Stem Ginger, Sugar), Dietary Fibre (Oligofructose), Ground Ginger, Partially Inverted Refiners Syrup, Barley Malt Syrup, Raising Agent: Sodium Carbonates, Sea Salt.\n\nMay contain traces of milk.",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": [
+    "en:milk"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0034856008187",
+   "name": "Welch's Fruit Snacks",
+   "ingredients": "WHOLE FRUIT PUREE (GRAPE, PEACH, ORANGE, STRAWBERRY AND RASPBERRY), CORN SYRUP, SUGAR, MODIFIED CORN STARCH, PORK \r\nGELATIN, GRAPE JUICE CONCENTRATE, CITRIC ACID (ACIDULANT), LACTIC ACID, NATURAL AND ARTIFICIAL FLAVORS, ASCORBIC ACID (VITAMIN C), ALPHA TOCOPHEROL ACETATE (VITAMIN E), VITAMIN A PALMITATE, CARNAUBA WAX, ANNATTO (COLOR), TURMERIC (COLOR), AND FRUIT AND VEGETABLE JUICE (COLOR)",
+   "offAllergens": [
+    "en:orange",
+    "en:peach",
+    "en:peanuts"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0096619885725",
+   "name": "Kirkland Signature Extra Fancy Salted Mixed Nuts",
+   "ingredients": "cashews, almonds, pecans, brazil nuts, macadamia nuts, peanut oil*, sea salt.",
+   "offAllergens": [
+    "en:nuts",
+    "en:peanuts"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "00414234",
+   "name": "Trader Giotto's Fettuccine Alfredo",
+   "ingredients": "Pasta (Water, Lurum Wheat Semolina, Pasteurized Eggs, Salt) Sauce (Cream (Milk) Water, Hard Grating Cheese (Pasteurized Milk Salt Vegetable Rennet, Lysozyme Enzyme from Egg White), Butter (Milk) Wheat Flour, Salt,",
+   "offAllergens": [
+    "en:eggs",
+    "en:gluten",
+    "en:milk"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "8402001028823",
+   "name": "Hacendado Caldo de Pollo Frango",
+   "ingredients": "Agua, pollo 4,3%, sal, hortalizas 0,03% (cebolla, zanahoria), aromas naturales, almidón, carne de vacuno, especias. PÁgua, frango 4,3%, sal, legumes 0,03% (cebola, cenoura), aromas naturais, amido, carne de bovino, especiarias. 100 ml 250 ml",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3173281446595",
+   "name": "Cemoi Chocolat noir 82%",
+   "ingredients": "cocoa mass, sugar, cocoa butter, low fat cocoa powder, emulsifier: sunflower lecithin, flavoring,",
+   "offAllergens": [],
+   "offTraces": [
+    "en:gluten",
+    "en:milk",
+    "en:nuts"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0894697002184",
+   "name": "NuttZo NuttZo Organic 7 Nut & Seed Butter POWER FUEL Crunchy",
+   "ingredients": "dry roasted cashews, dry roasted almonds, dry roasted brazil nuts*, flax seeds*, chia seeds*, hazelnuts*, dry roasted pumpkin seeds, Sea salt",
+   "offAllergens": [
+    "en:nuts"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "3609200010726",
+   "name": "N.A ! NATURE ADDICTS Tortilla Pops Finement Salé",
+   "ingredients": "corn 57%, legume flour in variable proportion (peas, beans, lentils, chickpeas) 30%, corn oil, pea protein, sea salt, olive extract, may contain traces of soy and milk,",
+   "offAllergens": [],
+   "offTraces": [
+    "en:milk",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "off",
+   "id": "0013764027220",
+   "name": "Dave's Killer Bread Organic Bread",
+   "ingredients": "organic flours (organic wheat flour, organic whole wheat flour, organic barley flour, organic rye flour, organic spelt flour, organic millet flour, organic quinoa flour, organic potato flour), water, organic cane sugar, organic cracked whole wheat, organic canola oil, organic wheat gluten, sea salt, yeast, organic cultured wheat flour, organic vinegar, organic acerola cherry power, enzymes",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0078895300024",
+   "name": "Lee Kum Kee 16000160 Panda Brand Oyster Flavoured Sauce",
+   "ingredients": "Water, sugar, salt, oyster extract 11% [oysters (molluscs) 90%, water, salt], salt, modified corn starch, flavour enhancer E621, wheat flour, colour E150a",
+   "offAllergens": [
+    "en:gluten",
+    "en:molluscs"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "8851613101378",
+   "name": "Aroy-D Coconut Milk",
+   "ingredients": "COCONUT MILK 99.95%, POLYSORBATE 60.",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0856312002771",
+   "name": "fa!rlife Fairlife 2% Reduced Fat ultra-filtered milk",
+   "ingredients": "reduced fat ultra-filtered milk, lactase enzyme, vitamin a palmitate, vitamin d3",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0013764027039",
+   "name": "Dave's Killer Bread Organic Bread Good Seed",
+   "ingredients": "ORGANIC WHOLE WHEAT (ORGANIC WHOLE WHEAT FLOUR, ORGANIC CRACKED WHOLE WHEAT), WATER, ORGANIC WHEAT FLOUR, ORGANIC GOOD SEED® GRAIN AND SEED MIX (ORGANIC WHOLE FLAX SEEDS, ORGANIC SUNFLOWER SEEDS, ORGANIC STEEL CUT OATS, ORGANIC TRI-COLOR QUINOA [ORGANIC BLACK QUINOA, ORGANIC RED QUINOA, ORGANIC WHITE QUINOA]), ORGANIC CANE SUGAR, ORGANIC WHEAT GLUTEN, YEAST, CONTAINS 2% OR LESS OF EACH OF THE FOLLOWING: ORGANIC MOLASSES, ORGANIC OAT FIBER, SEA SALT, ORGANIC VINEGAR, ORGANIC CULTURED WHEAT FLOUR, ORGANIC ACEROLA CHERRY POWDER, ENZYMES. CONTAINS: WHEAT. 784-061923",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "8000320010118",
+   "name": "Cirio ROSII PULPA",
+   "ingredients": "chopped tomatoes, tomato paste, salt, acidity regulator: citric acid,",
+   "offAllergens": [],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0044000028282",
+   "name": "Belvita belVita Crunchy Blueberry Breakfast Biscuits",
+   "ingredients": "whole grain blend (rolled oats, rye flakes), enriched flour [wheat flour, niacin, reduced iron, thiamin mononitrate (vitamin b1), riboflavin (vitamin b2), folic acid), canola oil, sugar, whole grain wheat flour, evaporated cane sugar, dried blueberries, malt syrup (from corn and barley), invert sugar, baking soda, salt, soy lecithin, disodium pyrophosphate, natural flavor, datem, blueberry juice concentrate, ferric orthophosphate (iron), niacinamide, pyridoxine hydrochloride (vitamin b6), riboflavin (vitamin b2), thiamin mononitrate (vitamin b1),",
+   "offAllergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "5018735224924",
+   "name": "Soreen Malt Lunchbox Loaves",
+   "ingredients": "Fortified Wheat Flour (Wheat Flour, Calcium Carbonate, Iron, Niacin (B3), Thiamin (B1)), Water, Raisins (14%), Partially Inverted Sugar Syrup (Partially Inverted Sugar Syrup, Colour: E150c), Malted Barley Flour (5%), Barley Malt Extract (4.5%), Maize Starch, Rice Starch, Vegetable Fat (Rapeseed, Palm), Salt, Yeast, Preservative: Calcium",
+   "offAllergens": [
+    "en:gluten"
+   ],
+   "offTraces": []
+  },
+  {
+   "source": "off",
+   "id": "0705599011610",
+   "name": "Kodiak Power Cakes Flapjack & Waffle Mix Buttermilk",
+   "ingredients": "100% whole grain wheat flour, 100% whole grain oat flour, wheat protein isolate, whey protein concentrate, brown sugar, milk protein concentrate, buttermilk powder, leavening (monocalcium phosphate, baking soda), sea salt. Contains milk and wheat. Due to processing on shared equipment, may also contain trace amounts of egg, soy, and tree nuts.",
+   "offAllergens": [
+    "en:gluten",
+    "en:milk",
+    "en:nuts"
+   ],
+   "offTraces": [
+    "en:nuts",
+    "en:soybeans"
+   ]
+  },
+  {
+   "source": "usda",
+   "id": "509818",
+   "name": "KNO COOKIES",
+   "ingredients": "WHEAT FLOUR, SUGAR, VEGETABLE CONFECTIONERY FAT, EGG POWDER, SALT, MEIANGE, SALT, MILK WHEY, SODA, BAKING POWDER, SKIMMED MILK POWDER, FLAVOR \"MILK\", CITRIC ACID."
+  },
+  {
+   "source": "usda",
+   "id": "2042488",
+   "name": "TOO GOOD GOURMET COOKIES",
+   "ingredients": "ENRICHED WHEAT FLOUR (WHEAT, MALTED BARLEY FLOUR, NIACIN, REDUCED IRON, THIAMINE MONONITRATE, RIBOFLAVIN, FOLIC ACID), SUGAR, PUMPKIN PUREE, BUTTER (CREAM [MILK]), WHITE CHOCOLATE CHIPS (SUGAR, COCOA BUTTER, PALM KERNEL OIL, WHOLE MILK POWDER, NONFAT MILK POWDER, SOY LECITHIN [EMULSIFIER], VANILLA), PALM OIL, GLYCERIN, INVERT SUGAR, MOLASSES, CINNAMON, NUTMEG, SALT, CLOVE, BAKING POWDER."
+  },
+  {
+   "source": "usda",
+   "id": "2507255",
+   "name": "GAMESA COOKIES",
+   "ingredients": "ENRICHED FLOUR (WHEAT FLOUR, NIACIN, FERROUS FUMARATE, THIAMIN MONONITRATE, RIBOFLAVIN, FOLIC ACID), SUGAR, HIGH FRUCTOSE CORN SYRUP, VEGETABLE OIL BLEND (PALM OIL AND/OR SUNFLOWER OIL AND/OR CANOLA OIL AND/OR SOYBEAN OIL [CONTAINS TBHQ AS PRESERVATIVE]), CONTAINS 2% OR LESS OF: IODIZED SALT, LEAVENING AGENTS (SODIUM BICARBONATE, MONOCALCIUM PHOSPHATE, AMMONIUM BICARBONATE), NONFAT DRY MILK, TRICALCIUM PHOSPHATE, NATURAL AND ARTIFICIAL FLAVORS, CORN STARCH, DRY WHOLE MILK, SOY LECITHIN, SODIUM METABISULFITE (PRESERVATIVE), PROPYLENE GLYCOL MONOSTEARATE, DRIED EGGS, DISODIUM PHOSPHATE, GLYCERYL MONOSTEARATE, MALTODEXTRIN, MODIFIED CORN STARCH, SODIUM STEAROYL LACTYLATE, CALCIUM SULFATE, FERROUS FUMARATE, ZINC OXIDE, CARRAGEENAN, VITAMIN A PALMITATE, XANTHAN GUM, GUAR GUM, SODIUM BENZOATE (PRESERVATIVE), SODIUM PROPIONATE (PRESERVATIVE), COCONUT OIL, BHT (PRESERVATIVE), SORBIC ACID (PRESERVATIVE)."
+  },
+  {
+   "source": "usda",
+   "id": "2291692",
+   "name": "LOTUS COOKIES",
+   "ingredients": "WHEAT FLOUR, SUGAR, VEGETABLE OILS (CONTAINS ONE OR MORE OF SOY BEAN OIL, SUNFLOWER OIL, CANOLA OIL, PALM OIL), BROWN SUGAR SYRUP, SODIUM BICARBONATE (LEGVENING), SOY FLOUR, SALT, CINNAMON. DOES NOT CONTAIN NUTS."
+  },
+  {
+   "source": "usda",
+   "id": "1883844",
+   "name": "ROYAL DANSK COOKIES",
+   "ingredients": "WHEAT FLOUR, BUTTER (MILK), SUGAR, DESICATED COCONUT INVERT SUGAR, SALT, AMMONIUM BICARBONATE, NATURAL FLAVOR (VANILLA)."
+  },
+  {
+   "source": "usda",
+   "id": "2500721",
+   "name": "RITZ CRACKERS",
+   "ingredients": "UNBLEACHED ENRICHED FLOUR (WHEAT FLOUR, NIACIN, REDUCED IRON, THIAMINE MONONITRATE {VITAMIN B1}, RIBOFLAVIN {VITAMIN B2}, FOLIC ACID), CANOLA OIL, PALM OIL, SUGAR, SALT, LEAVENING (CALCIUM PHOSPHATE, BAKING SODA), HIGH FRUCTOSE CORN SYRUP, SOY LECITHIN, NATURAL FLAVOR."
+  },
+  {
+   "source": "usda",
+   "id": "575678",
+   "name": "DARE CRACKERS",
+   "ingredients": "ENRICHED FLOUR (WHEAT FLOUR, NIACIN, REDUCED IRON, THIAMINE MONONITRATE, RIBOFLAVIN, FOLIC ACID), CANOLA AND COCONUT OIL, WHEAT GERM, SESAME SEEDS, WHOLE WHEAT FLOUR, SUGAR, LEAVENING (AMMONIUM BICARBONATE, BAKING SODA), SALT, WHEY (A MILK INGREDIENT), HYDROLYZED SOY PROTEIN, ENZYMES."
+  },
+  {
+   "source": "usda",
+   "id": "2019044",
+   "name": "SHOPRITE CRACKERS",
+   "ingredients": "ENRICHED FLOUR (WHEAT FLOUR, NIACIN, REDUCED IRON, THIAMIN MONONITRATE, RIBOFLAVIN, FOLIC ACID), WHOLE GRAIN WHEAT FLOUR, CANOLA AND/OR SOYBEAN AND/OR PALM OIL WITH TBHQ ADDED FOR FRESHNESS, SUGAR, SALT, CONTAINS 2% OR LESS OF: LEAVENING (CALCIUM PHOSPHATE AND/OR BAKING SODA), HIGH FRUCTOSE CORN FLOUR, SOY LECITHIN, SODIUM SULFITE."
+  },
+  {
+   "source": "usda",
+   "id": "2427225",
+   "name": "FIOR FIORE CRACKERS",
+   "ingredients": "WHEAT FLOUR, CORN OIL, EXTRA VIRGIN OLIVE OIL (3.2%), SALT, ACIDITY REGULATOR: SODIUM BICARBONATE, NATURAL YEAST (WHEAT FLOUR, WATER), ROSEMARY (0.7%), MALTED BARLEY FLOUR, BREWER'S YEAST, NATURAL FLAVORS"
+  },
+  {
+   "source": "usda",
+   "id": "2666787",
+   "name": "WELLABY'S CRACKERS",
+   "ingredients": "POTATO STARCH, GOUDA CHEESE (CULTURED MILK, SALT, ENZYMES), CREAM, CORN FLOUR, RICE FLOUR, CORN STARCH, POTATO FIBER, SUGAR, FETA CHEESE (CULTURED MILK, SALT, ENZYMES), SALT, YEAST EXTRACT, FLAVORINGS, OREGANO, OLIVE OIL, XANTHAN GUM, LEAVENING (AMMONIUM BICARBONATE, GLUCONO DELTA-LACTONE, SODIUM BICARBONATE)."
+  },
+  {
+   "source": "usda",
+   "id": "2511629",
+   "name": "SOUR PATCH KIDS CEREAL",
+   "ingredients": "INGREDIENTS: SUGAR, CORN FLOUR, WHEAT FLOUR, WHOLE GRAIN OAT FLOUR, HYDROGENATED VEGETABLE OIL (COCONUT AND PALM KERNEL OILS), CORN SYRUP, CITRIC ACID, SALT, SODIUM CITRATE, CANOLA OIL, CALCIUM CARBONATE, NATURAL AND ARTIFICIAL FLAVOR, RED 40, YELLOW 5, YELLOW 6, BLUE 1, BHT ADDED TO PRESERVE FRESHNESS. VITAMINS AND MINERALS: FERRIC ORTHOPHOSPHATE (SOURCE OF IRON), NIACINAMIDE (VITAMIN B3), ZINC OXIDE, THIAMIN MONONITRATE (VITAMIN B1), CALCIUM PANTOTHENATE (VITAMIN B5), PYRIDOXINE HYDROCHLORIDE (VITAMIN B6), FOLIC ACID."
+  },
+  {
+   "source": "usda",
+   "id": "2642006",
+   "name": "KELLOGG'S FROSTED FLAKES CEREAL",
+   "ingredients": "MILLED CORN, SUGAR, MALT FLAVOR, CONTAINS 2% OR LESS OF SALT. VITAMINS AND MINERALS: IRON (FERRIC PHOSPHATE), NIACINAMIDE, VITAMIN B6 (PYRIDOXINE HYDROCHLORIDE), VITAMIN B2 (RIBOFLAVIN), VITAMIN B1(THIAMIN HYDROCHLORIDE), FOLIC ACID, VITAMIN D3, VITAMIN B12."
+  },
+  {
+   "source": "usda",
+   "id": "1952060",
+   "name": "MALT O MEAL CEREAL",
+   "ingredients": "WHOLE GRAIN OAT FLOUR, WHEAT STARCH, CALCIUM CARBONATE, SALT, TRISODIUM PHOSPHATE, CARAMEL COLOR. VITAMINS & MINERALS: REDUCED IRON, SODIUM ASCORBATE (VITAMIN C), NIACINAMIDE (VITAMIN B3), ZINC OXIDE (SOURCE OF ZINC), FOLIC ACID, PYRIDOXINE HYDROCHLORIDE (VITAMIN B6), RIBOFLAVIN (VITAMIN B2), VITAMIN A PALMITATE, THIAMIN MONONITRATE (VITAMIN B1), VITAMIN B12, VITAMIN D3."
+  },
+  {
+   "source": "usda",
+   "id": "2140770",
+   "name": "RAISIN BRAN CRUNCH CEREAL",
+   "ingredients": "RICE, SUGAR, WHOLE WHEAT, RAISINS, OAT AND HONEY CLUSTER (WHOLE OATS, SUGAR, WHOLE GRAIN WHEAT, CORN SYRUP, RICE CEREAL [RICE, SUGAR, SALT, HIGH FRUCTOSE CORN SYRUP, MALT FLAVORING, IRON, ASCORBIC ACID (VITAMIN C), NIACINAMIDE, PYRIDOXINE HYDROCHLORIDE (VITAMIN B6), RIBOFLAVIN (VITAMIN B2), THIAMIN HYDROCHLORIDE (VITAMIN B1), VITAMIN A PALMITATE, FOLIC ACID, VITAMIN B12 AND VITAMIN D], MODIFIED CORN STARCH, MOLASSES, PALM OIL, HIGH FRUCTOSE CORN SYRUP, CINNAMON, SALT, HONEY, NATURAL AND ARTIFICIAL FLAVOR, BHT FOR FRESHNESS), WHEAT BRAN, HIGH FRUCTOSE CORN SYRUP, GLYCERIN, SALT, BARLEY MALT SYRUP, NIACINAMIDE, REDUCED IRON, ZINC OXIDE, PYRIDOXINE HYDROCHLORIDE (VITAMIN B6), RIBOFLAVIN (VITAMIN B2), THIAMIN HYDROCHLORIDE (VITAMIN B1), BHT (PRESERVATIVE), VITAMIN A PALMITATE, FOLIC ACID, VITAMIN B12 AND VITAMIN D."
+  },
+  {
+   "source": "usda",
+   "id": "2107531",
+   "name": "KELLOGG'S CORN FLAKES CEREAL",
+   "ingredients": "MILLED CORN, SUGAR, MALT FLAVOR, CONTAINS 2% OR LESS OF IODIZED SALT (SALT, POTASSIUM IODATE), BHT FOR FRESHNESS. VITAMINS AND MINERALS: CALCIUM CARBONATE, VITAMIN C (ASCORBIC ACID), REDUCED IRON, NIACINAMIDE, VITAMIN E ACETATE, ZINC OXIDE, VITAMIN A PALMITATE, VITAMIN B12, VITAMIN B6 (PYRIDOXINE HYDROCHLORIDE), VITAMIN B1 (THIAMIN MONONITRATE), VITAMIN B2 (RIBOFLAVIN), FOLIC ACID."
+  },
+  {
+   "source": "usda",
+   "id": "2058078",
+   "name": "JOHANN'S BAKERY BREAD",
+   "ingredients": "WHITE RICE, POTATO & TAPIOCA FLOUR, POTATO STARCH, YEAST, EGG WHITES, SALT, XANTHAN GUM."
+  },
+  {
+   "source": "usda",
+   "id": "1916888",
+   "name": "GRATEFUL BREAD",
+   "ingredients": "UNBLEACHED WHEAT FLOUR, FILTERED WATER, SOURDOUGH STARTER (UNBLEACHED WHEAT FLOUR, WATER, RYE FLOUR), SEA SALT, MALTED BARLEY FLOUR."
+  },
+  {
+   "source": "usda",
+   "id": "2339103",
+   "name": "VILLAGE HEARTH BREAD",
+   "ingredients": "ENRICHED UNBLEACHED FLOUR (WHEAT FLOUR, MALTED BARLEY FLOUR, NIACIN, REDUCED IRON, THIAMINE MONONITRATE, RIBOFLAVIN, FOLIC ACID), WATER, OAT FIBER, WHEAT GLUTEN, YEAST, SUGAR, CONTAINS LESS THAN 2% OF THE FOLLOWING: SALT, HONEY, SOYBEAN OIL, DOUGH CONDITIONERS (MONOGLYCERIDES, SODIUM STEAROYL LACTYLATE, ASCORBIC ACID, CALCIUM SULFATE, ENZYMES), VINEGAR, SESAME SEED, MONOCALCIUM PHOSPHATE, CALCIUM PROPIONATE (PRESERVATIVE)."
+  },
+  {
+   "source": "usda",
+   "id": "2071481",
+   "name": "PANADERIA PAN DEL CIELO BREAD",
+   "ingredients": "WATER, SALT, LARD, YEAST, SUGAR, FLOUR"
+  },
+  {
+   "source": "usda",
+   "id": "2011754",
+   "name": "FRANZ BREAD",
+   "ingredients": "WATER, BROWN RICE FLOUR, TAPIOCA STARCH, TAPIOCA SYRUP, WHOLE GRAIN SORGHUM FLOUR, XANTHAN GUM, WHOLE GRAIN MILLET SEEDS, CONTAINS 2% OR LESS OF EACH OF THE FOLLOWING: WHOLE EGGS, WHOLE GRAIN MILLET FLOUR, WHOLE GRAIN AMARANTH SEED, WHOLE GRAIN TEFF SEEDS, RED QUINOA SEEDS, EXTRA VIRGIN OLIVE OIL, MOLASSES, SALT, CULTURED RICE FLOUR, YEAST, ENZYMES."
+  },
+  {
+   "source": "usda",
+   "id": "2430438",
+   "name": "MAMMA MIA! PANCAKE MIX",
+   "ingredients": "RICE FLOUR, TAPIOCA STARCH, NON GMO SUGAR, CREAM OF TARTAR, SODIUM BICARBONATE, SEA SALT"
+  },
+  {
+   "source": "usda",
+   "id": "1866260",
+   "name": "FREEDOM FOODS PANCAKE MIX",
+   "ingredients": "FLOUR MIX (RICE FLOUR, WHITE CORN FLOUR), SUGAR, FRUCTOSE, LEAVENING (SODIUM ACID PYROPHOSPHATE, SODIUM BICARBONATE), NATURAL FLAVOR, SALT, CALCIUM PHOSPHATE, GUAR GUM."
+  },
+  {
+   "source": "usda",
+   "id": "2541803",
+   "name": "ANDREA'S GLUTEN-FREE PANCAKE MIX",
+   "ingredients": "BROWN RICE FLOUR, POTATO STARCH, SUGAR, TAPIOCA STARCH, BAKING POWDER (CORN STARCH, SODIUM BICARBONATE, SODIUM ALUMINUM SULFATE, MONOCALCIUM PHOSPHATE), SALT, BAKING SODA, VANILLA (DEXTROSE, GUM ARABIC, NATURAL VANILLA FLAVOR, <2% SILICON DIOXIDE), XANTHAN GUM"
+  },
+  {
+   "source": "usda",
+   "id": "2442192",
+   "name": "JERUSALEM MATZOS PANCAKE MIX",
+   "ingredients": "MATZOH CAKE MEAL, SUGAR, BAKING POWDER (E500, E451, E341, E481), SALT, VANILLA."
+  },
+  {
+   "source": "usda",
+   "id": "557523",
+   "name": "MY FAVORITE PANCAKE MIX",
+   "ingredients": "WHEAT FLOUR (ENRICHED WHEAT FLOUR (NIACIN , REDUCED IRON, THIAMINE MONONITRATE, RIBOFLAVIN, FOLIC ACID), MALTED BARLEY FLOUR), SUGAR, CORN FLOUR, COCOA (ALKALIZED), BAKING POWDER (SODIUM ACID PYROPHOSPHATE, SODIUM BICARBONATE, CORN STARCH, MONO- CALCIUM PHOSPHATE), SWEET CREAM, NATURAL FLAVOR, SEA SALT, RED #40."
+  }
+ ]
+}

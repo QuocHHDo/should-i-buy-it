@@ -45,12 +45,30 @@ test("refined soybean oil is a \"may\", soy itself is a \"contains\"", () => {
   assert.deepEqual(ids(A.fromText("Tofu (soybeans, water)").contains), ["soy"]);
 });
 
+// Cases found on real labels by eval/allergen-eval.mjs.
+test("real-label false flags: other flours, refined peanut oil, lecithin with no source", () => {
+  for (const t of ["SOYA flour (30%), tapioca starch", "black gram flour, corn flour", "legume flour in variable proportion (peas, beans)", "thickener (flour of carob seeds)"])
+    assert.ok(!A.fromText(t).contains.has("wheat"), t);
+  assert.ok(A.fromText("Enriched flour (niacin), sugar").contains.has("wheat"), "plain flour is still wheat");
+  const nuts = A.fromText("Cashews, Almonds, Highly refined peanut oil. May contain: Peanuts, Milk.");
+  assert.ok(!nuts.contains.has("peanut") && nuts.may.has("peanut"));
+  assert.ok(A.fromText("Peanut oil, salt").contains.has("peanut"), "unrefined peanut oil is still a contains");
+  assert.deepEqual(ids(A.fromText("Sugar, emulsifiers: lecithins, salt").may), ["soy"]);
+  assert.deepEqual(ids(A.fromText("Sugar, sunflower lecithin").may), []);
+  // Cadbury Oreo (India): "Emulsifier (322)" is lecithin by its additive number; the label's statement says soy.
+  assert.deepEqual(ids(A.fromText("Starch, Emulsifier (322), Flavouring").may), ["soy"]);
+  assert.deepEqual(ids(A.fromText("Sugar, soy lecithin").contains), ["soy"]);
+});
+
 test("Open Food Facts allergen and traces tags", () => {
   const r = A.check(food("Biscuits", { allergens: ["en:gluten", "en:milk"], traces: ["en:nuts"] }), { allergies: ["wheat", "treenut", "milk"] });
   assert.equal(r.status, "contains");
-  assert.deepEqual(r.contains.map(x => x.id).sort(), ["milk", "wheat"]);
-  assert.deepEqual(r.may.map(x => x.id), ["treenut"]);
-  assert.match(r.contains.find(x => x.id === "wheat").why.join(" "), /gluten/);
+  assert.deepEqual(r.contains.map(x => x.id), ["milk"]);
+  // Their gluten tag covers oats and barley too (Oatly is tagged gluten): a "may" for wheat until the list says wheat.
+  assert.deepEqual(r.may.map(x => x.id).sort(), ["treenut", "wheat"]);
+  assert.match(r.may.find(x => x.id === "wheat").why.join(" "), /gluten/);
+  const flour = A.check(food("Biscuits", { allergens: ["en:gluten"], ingredients: "Wheat flour, sugar" }), { allergies: ["wheat"] });
+  assert.equal(flour.status, "contains");
 });
 
 test("check: the four answers, never \"safe\"", () => {

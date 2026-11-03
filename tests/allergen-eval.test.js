@@ -16,6 +16,12 @@ test("reads a label's own allergen statement", () => {
   assert.deepEqual(ids(S.statement("Apple juice. Contains 10% juice.")), []);
   assert.deepEqual(ids(S.statement("Coconut, sugar. Contains: Tree Nuts (Coconut).")), [], "coconut isn't counted as a tree nut");
   assert.doesNotMatch(S.statement("Wheat flour, eggs. Contains: wheat, egg.").rest, /contains/i, "the statement is hidden from the detector");
+  // Found on real labels: a sub-ingredient's own "(Contains: Soy)" ends at its bracket; cross-contact isn't a statement.
+  const ramen = S.statement("Tocopherol powder (Contains: Soy), Green tea extract, Soy sauce, Sugar");
+  assert.deepEqual(ids(ramen), ["soy"]);
+  assert.match(ramen.rest, /Soy sauce/, "the rest of the list stays for the detector");
+  assert.deepEqual(ids(S.statement("Flavoring (contains alcohol), salt, may contain traces of egg, soy, milk.")), []);
+  assert.deepEqual(ids(S.statement("Yogurt. Contains gluten and is manufactured in a line that may contain almonds.")), []);
 });
 
 test("scoring: a hidden statement must be found from the ingredients", () => {
@@ -32,8 +38,9 @@ test("scoring: a hidden statement must be found from the ingredients", () => {
 
 // Collected with `node eval/allergen-eval.mjs --fetch 300` (or the Allergen eval workflow). Until then, skipped.
 const DATA = path.join(__dirname, "..", "eval/allergen-labels.json");
-test("real labels: every allergen a label names is flagged, and recall from ingredients stays high", { skip: !fs.existsSync(DATA) && "no eval/allergen-labels.json yet" }, () => {
+test("real labels: every allergen a label names is flagged, and with the statement hidden 95%+ still get a warning", { skip: !fs.existsSync(DATA) && "no eval/allergen-labels.json yet" }, () => {
   const s = S.score(JSON.parse(fs.readFileSync(DATA, "utf8")).labels);
   assert.deepEqual(s.full.map(m => `${m.name}: ${m.id}`), [], "the whole label, statement included, must flag what it names");
-  assert.ok(s.recall >= 0.95, `recall ${(s.recall * 100).toFixed(1)}%; misses: ${s.misses.slice(0, 10).map(m => `${m.name}: ${m.id}`).join("; ")}`);
+  // Warned = flagged "contains" or "may contain" (the app shows a warning either way).
+  assert.ok(s.warnedRate >= 0.95, `warned ${(s.warnedRate * 100).toFixed(1)}%; misses: ${s.misses.slice(0, 10).map(m => `${m.name}: ${m.id}`).join("; ")}`);
 });

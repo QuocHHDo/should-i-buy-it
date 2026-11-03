@@ -30,16 +30,24 @@
       not: ["water chestnut", "water chestnuts", "nutmeg", "butternut", "doughnut", "doughnuts", "coconut", "coconuts", "peanut", "peanuts", "ground nut", "groundnut", "groundnuts"] },
     { id: "peanut", label: "Peanuts", hint: "peanut butter, peanut flour, groundnuts",
       words: ["peanut", "peanuts", "groundnut", "groundnuts", "ground nut", "ground nuts", "arachis", "goober", "goobers"],
+      // Highly refined peanut oil is exempt from US allergen labeling too (Kirkland's mixed nuts list it, and peanuts
+      // only under "may contain"). Plain "peanut oil" stays a "contains": cold-pressed oil keeps the protein.
+      soft: ["highly refined peanut oil", "refined peanut oil"],
       not: [] },
     { id: "wheat", label: "Wheat", hint: "flour, semolina, spelt, bread crumbs",
       words: ["wheat", "flour", "semolina", "durum", "spelt", "farina", "kamut", "khorasan", "einkorn", "emmer", "farro", "triticale", "bulgur", "bulghur", "couscous", "seitan", "gluten", "graham", "bread crumbs", "breadcrumbs", "panko", "soy sauce", "shoyu", "udon", "orzo"],
-      not: ["buckwheat", "rice flour", "corn flour", "cornflour", "almond flour", "coconut flour", "chickpea flour", "garbanzo flour", "garbanzo bean flour", "bean flour", "oat flour", "potato flour", "tapioca flour", "soy flour", "cassava flour", "sorghum flour", "buckwheat flour", "millet flour", "quinoa flour", "teff flour", "amaranth flour", "arrowroot flour", "banana flour", "lentil flour", "pea flour", "masa flour", "gluten-free soy sauce", "tamari"] },
+      not: ["buckwheat", "rice flour", "corn flour", "cornflour", "almond flour", "coconut flour", "chickpea flour", "garbanzo flour", "garbanzo bean flour", "bean flour", "oat flour", "potato flour", "tapioca flour", "soy flour", "cassava flour", "sorghum flour", "buckwheat flour", "millet flour", "quinoa flour", "teff flour", "amaranth flour", "arrowroot flour", "banana flour", "lentil flour", "pea flour", "masa flour", "gluten-free soy sauce", "tamari",
+        // Found on real labels (eval/allergen-eval.mjs): flours that aren't wheat.
+        "soya flour", "soybean flour", "gram flour", "black gram flour", "besan", "legume flour", "legume flours", "carob flour", "carob seed flour", "flour of carob", "flour of carob seeds",
+        "hemp flour", "flax flour", "flaxseed flour", "nut flour", "hazelnut flour", "peanut flour", "chestnut flour", "sunflower seed flour", "pumpkin seed flour", "sweet potato flour", "plantain flour", "yam flour", "cricket flour"] },
     { id: "soy", label: "Soy", hint: "soybeans, tofu, soy sauce, soy lecithin",
       words: ["soy", "soya", "soybean", "soybeans", "tofu", "edamame", "miso", "tempeh", "tamari", "shoyu", "natto", "textured vegetable protein", "tvp", "soy sauce", "soy lecithin"],
       // Highly refined soybean oil is exempt from US allergen labeling and most people with a soy allergy tolerate it,
       // so it's a "may", not a "contains" (otherwise nearly every packaged food would be flagged).
-      soft: ["soybean oil", "soybean oils", "soy oil", "soya oil", "soya bean oil", "oil (soybean)", "oils (soybean)", "oil (soy)"],
-      not: [] },
+      soft: ["soybean oil", "soybean oils", "soy oil", "soya oil", "soya bean oil", "oil (soybean)", "oils (soybean)", "oil (soy)",
+        // Lecithin with no source named is usually soy (US labels must say "soy lecithin"; imports often don't).
+        "lecithin", "lecithins", "e322", "e 322", "ins 322", "emulsifier (322)", "emulsifiers (322)", "emulsifier (322(i))", "emulsifier (e322)"],
+      not: ["sunflower lecithin", "sunflower lecithins", "rapeseed lecithin", "rapeseed lecithins", "canola lecithin", "egg lecithin", "lecithin (sunflower)", "lecithins (sunflower)", "lecithin (rapeseed)"] },
     { id: "sesame", label: "Sesame", hint: "sesame seeds and oil, tahini",
       words: ["sesame", "tahini", "tahina", "benne", "gingelly", "halva", "halvah", "gomasio", "gomashio"],
       not: [] },
@@ -51,7 +59,7 @@
   // A phrase as a whole-word pattern; a space or hyphen inside matches either ("half and half", "half-and-half").
   const phrase = w => esc(w.toLowerCase()).replace(/\\-|\s+/g, "[\\s-]+");
   const wordRe = list => list.length ? new RegExp(`(?<![a-z])(?:${[...list].sort((x, y) => y.length - x.length).map(phrase).join("|")})(?![a-z])`, "gi") : null;
-  for (const a of LIST) { a.re = wordRe(a.words); a.softRe = wordRe(a.soft || []); a.notRe = wordRe([...a.not, ...(a.soft || [])]); }
+  for (const a of LIST) { a.re = wordRe(a.words); a.softRe = wordRe(a.soft || []); a.notRe = wordRe([...a.not, ...(a.soft || [])]); a.softNotRe = wordRe(a.not); }
 
   // "May contain", shared-facility and cross-contact statements: their allergens are possible, not ingredients.
   const MAY = /(?:\bmay (?:also )?contain|\bmay have come in contact|\bmade (?:in|on) (?:a |the )?(?:same |shared )?(?:facility|equipment|line|plant)|\b(?:processed|produced|manufactured|packaged|packed) (?:in|on) (?:a |the )?(?:same |shared )?(?:facility|equipment|line|plant)|\bshared (?:equipment|facility|lines?)|\bcross[- ]contact|\btraces? of)[^.;!]*/gi;
@@ -75,7 +83,7 @@
     for (const a of LIST) {
       const m = hits(a.re, a.notRe ? s.replace(a.notRe, " ") : s);
       if (m) hard.set(a.id, m);
-      else if (a.softRe) { const w = hits(a.softRe, s); if (w) soft.set(a.id, w); }
+      else if (a.softRe) { const w = hits(a.softRe, a.softNotRe ? s.replace(a.softNotRe, " ") : s); if (w) soft.set(a.id, w); }
     }
     return { hard, soft };
   }
@@ -88,8 +96,8 @@
     return { contains: main.hard, may, soft: main.soft };
   }
 
-  // Open Food Facts allergen and traces tags ("en:milk") to our ids. Gluten could be barley or rye too; it's
-  // flagged as wheat because nearly all of it is, and the reason says "gluten".
+  // Open Food Facts allergen and traces tags ("en:milk") to our ids. Their gluten tag also covers oats, barley and
+  // rye (Oatly is tagged gluten), so on its own it's only a "may" for wheat; the ingredient list decides.
   const OFF_TAGS = { "en:milk": "milk", "en:eggs": "egg", "en:fish": "fish", "en:crustaceans": "shellfish", "en:molluscs": "shellfish",
     "en:nuts": "treenut", "en:peanuts": "peanut", "en:gluten": "wheat", "en:soybeans": "soy", "en:sesame-seeds": "sesame" };
   const offIds = tags => Array.isArray(tags) ? [...new Set(tags.map(t => OFF_TAGS[String(t).toLowerCase()]).filter(Boolean))] : [];
@@ -211,7 +219,8 @@
     } else if (!f.src) src = "typical";
     const offC = offIds(f.allergens), offM = offIds(f.traces);
     if (offC.length || offM.length) src = "label";
-    offC.forEach(id => add(contains, id, id === "wheat" && (f.allergens || []).includes("en:gluten") ? "gluten (Open Food Facts)" : "Open Food Facts allergen list"));
+    const glutenOnly = (f.allergens || []).includes("en:gluten") && !(f.allergens || []).some(t => /^en:wheat/.test(String(t)));
+    offC.forEach(id => id === "wheat" && glutenOnly ? add(may, id, "gluten (Open Food Facts; could be wheat, barley, rye or oats)") : add(contains, id, "Open Food Facts allergen list"));
     offM.forEach(id => add(may, id, "Open Food Facts traces list"));
     if (f.ingredients) {
       src = "label";
