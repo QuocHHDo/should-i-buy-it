@@ -4,6 +4,7 @@
 //   node eval/allergen-eval.mjs               score eval/allergen-labels.json (or, without it, the real labels
 //                                             saved in tests/fixtures/) → eval/allergen-report.md + .json
 // Run from the Actions tab: .github/workflows/allergen-eval.yml.
+// Behind an HTTPS proxy, Node's fetch needs NODE_USE_ENV_PROXY=1 (Node 22.21+) to use it.
 import fs from "node:fs";
 import path from "node:path";
 import { createRequire } from "node:module";
