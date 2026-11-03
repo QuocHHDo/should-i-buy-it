@@ -1,0 +1,41 @@
+name: Allergen eval
+# How often the allergen flags miss an allergen on real US labels (eval/allergen-eval.mjs).
+# Run from the Actions tab. Collects labels from Open Food Facts and USDA Branded Foods (uses the USDA_API_KEY
+# secret when set), scores them, attaches the report as a download, and saves the labels and report to the
+# eval-results-allergens branch.
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "How many labels to collect"
+        required: false
+        default: "300"
+permissions:
+  contents: write
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Collect labels and score
+        env:
+          USDA_API_KEY: ${{ secrets.USDA_API_KEY }}
+        run: node eval/allergen-eval.mjs --fetch "${{ github.event.inputs.count }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: allergen-eval
+          path: |
+            eval/allergen-report.md
+            eval/allergen-report.json
+            eval/allergen-labels.json
+      - name: Save to the eval-results-allergens branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git checkout -B eval-results-allergens
+          git add -f eval/allergen-labels.json eval/allergen-report.md eval/allergen-report.json
+          git commit -m "Allergen eval from run ${{ github.run_id }}"
+          git push -f origin eval-results-allergens

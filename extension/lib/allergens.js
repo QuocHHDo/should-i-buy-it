@@ -68,7 +68,10 @@
     if (!text) return { hard, soft };
     let s = " " + String(text).toLowerCase().replace(/[’']/g, "'") + " ";
     for (const re of NEGATED) s = s.replace(re, " ");
-    const hits = (re, t) => { re.lastIndex = 0; const m = t.match(re); return m ? [...new Set(m.map(x => x.trim().replace(/\s+/g, " ")))].slice(0, 3) : null; };
+    // "Vegetable Oil (Canola, Cottonseed, Soybean)": the soybean in an oil's list is refined oil, a "may" like
+    // "soybean oil" itself. Found on a real peanut butter label whose own statement named only peanuts.
+    s = s.replace(/\b((?:oils?|shortening)\s*\()([^()]*)(\))/g, (m, a, inner, c) => a + inner.replace(/\bsoy(?:a|beans?)?\b(?!\s+oil)/g, "soybean oil") + c);
+    const hits =(re, t) => { re.lastIndex = 0; const m = t.match(re); return m ? [...new Set(m.map(x => x.trim().replace(/\s+/g, " ")))].slice(0, 3) : null; };
     for (const a of LIST) {
       const m = hits(a.re, a.notRe ? s.replace(a.notRe, " ") : s);
       if (m) hard.set(a.id, m);

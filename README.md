@@ -50,13 +50,14 @@ Each serving gets a point score from about a dozen rules measured against your g
 ## Testing
 
 ```sh
-npm test            # 217 unit tests (node tests/run.js): data, verdict rules, allergens, swaps, search, API conversions, OCR parsing, prices, quiz, evals
+npm test            # 220 unit tests (node tests/run.js): data, verdict rules, allergens, swaps, search, API conversions, OCR parsing, prices, quiz, evals
 npm run typecheck   # TypeScript checks every js/ and extension/ file from JSDoc (tsconfig.json); nothing is built or emitted
 node tests/verdict-dump.js > verdicts.csv   # every built-in food's verdict and reasons, for eyeballing outliers
 node scripts/build-additives.mjs <openfoodfacts-server>/taxonomies   # regenerate js/additives-data.js from Open Food Facts
 BLS_CONTACT=you@example.com node scripts/fetch-prices.mjs /tmp/prices && node scripts/build-prices.mjs /tmp/prices   # rebuild js/prices-data.js (the Update prices workflow does this monthly)
 npm install && npm run test:ui   # click-through test of every feature in both versions + axe accessibility check
 npm run test:layout # Playwright: layout at 320/375/414/1280 px, a real barcode decode from a fake camera, the phone app (compare, label photos, prices) and the extension in Chromium
+node eval/allergen-eval.mjs --fetch 300   # allergen misses on real US labels: hides each label's "Contains:" line and checks the flags find the same allergens from the ingredients (Actions tab: "Allergen eval")
 npm run snapshot    # after an intentional rule or data change: rewrite the verdict snapshot, then review the diff
 ```
 

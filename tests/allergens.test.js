@@ -39,6 +39,10 @@ test("refined soybean oil is a \"may\", soy itself is a \"contains\"", () => {
   assert.deepEqual(ids(A.fromText("Corn, soybean oil, salt").contains), []);
   assert.deepEqual(ids(A.fromText("Corn, soybean oil, salt").may), ["soy"]);
   assert.deepEqual(ids(A.fromText("Soybean oil, soy lecithin").contains), ["soy"]);
+  // A real peanut butter label (tests/fixtures/walmart-pages.json): its statement names only peanuts.
+  assert.deepEqual(ids(A.fromText("Hydrogenated Vegetable Oil (Rapeseed, Cottonseed, Soybean), Salt").contains), []);
+  assert.deepEqual(ids(A.fromText("Hydrogenated Vegetable Oil (Rapeseed, Cottonseed, Soybean), Salt").may), ["soy"]);
+  assert.deepEqual(ids(A.fromText("Tofu (soybeans, water)").contains), ["soy"]);
 });
 
 test("Open Food Facts allergen and traces tags", () => {
