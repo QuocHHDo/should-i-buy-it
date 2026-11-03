@@ -22,6 +22,7 @@ test("reads a label's own allergen statement", () => {
   assert.match(ramen.rest, /Soy sauce/, "the rest of the list stays for the detector");
   assert.deepEqual(ids(S.statement("Flavoring (contains alcohol), salt, may contain traces of egg, soy, milk.")), []);
   assert.deepEqual(ids(S.statement("Yogurt. Contains gluten and is manufactured in a line that may contain almonds.")), []);
+  assert.deepEqual(ids(S.statement("Milk fat. Contains vegetable fats in addition to cocoa butter.")), []);
 });
 
 test("scoring: a hidden statement must be found from the ingredients", () => {
@@ -36,11 +37,19 @@ test("scoring: a hidden statement must be found from the ingredients", () => {
   assert.equal(s.full.length, 0, "with the statement left in, nothing is missed");
 });
 
-// Collected with `node eval/allergen-eval.mjs --fetch 300` (or the Allergen eval workflow). Until then, skipped.
+// Collected with `node eval/allergen-eval.mjs --fetch 800` (or the Allergen eval workflow).
+// Labels whose ingredient text can't reveal the allergen, so no detector could find it with the statement hidden.
+// The app still flags them: it reads the label's statement too. Each needs a reason.
+const UNFINDABLE = {
+  "0041570052785:milk": "Blue Diamond Nut Thins: milk is inside \"natural flavors\"; only the statement says so",
+  "0021908120232:wheat": "Cascadian Farm cereal: Open Food Facts' ingredient text is incomplete (no wheat or almonds listed)",
+  "0021908120232:treenut": "Cascadian Farm cereal: same incomplete ingredient text",
+};
 const DATA = path.join(__dirname, "..", "eval/allergen-labels.json");
-test("real labels: every allergen a label names is flagged, and with the statement hidden 95%+ still get a warning", { skip: !fs.existsSync(DATA) && "no eval/allergen-labels.json yet" }, () => {
+test("real labels: every allergen a label names is flagged, and with the statement hidden only known-unfindable ones are missed", { skip: !fs.existsSync(DATA) && "no eval/allergen-labels.json yet" }, () => {
   const s = S.score(JSON.parse(fs.readFileSync(DATA, "utf8")).labels);
   assert.deepEqual(s.full.map(m => `${m.name}: ${m.id}`), [], "the whole label, statement included, must flag what it names");
-  // Warned = flagged "contains" or "may contain" (the app shows a warning either way).
-  assert.ok(s.warnedRate >= 0.95, `warned ${(s.warnedRate * 100).toFixed(1)}%; misses: ${s.misses.slice(0, 10).map(m => `${m.name}: ${m.id}`).join("; ")}`);
+  const unexpected = s.misses.filter(m => !UNFINDABLE[`${m.ref}:${m.id}`]).map(m => `${m.name} (${m.ref}): ${m.id}`);
+  assert.deepEqual(unexpected, [], "a new miss: fix the detector, or add it to UNFINDABLE with the reason");
+  assert.ok(s.warnedRate >= 0.9, `warned ${(s.warnedRate * 100).toFixed(1)}%`);
 });

@@ -55,6 +55,9 @@ test("real-label false flags: other flours, refined peanut oil, lecithin with no
   assert.ok(A.fromText("Peanut oil, salt").contains.has("peanut"), "unrefined peanut oil is still a contains");
   assert.deepEqual(ids(A.fromText("Sugar, emulsifiers: lecithins, salt").may), ["soy"]);
   assert.deepEqual(ids(A.fromText("Sugar, sunflower lecithin").may), []);
+  assert.ok(!A.fromText("Sea salt, tamari soy sauce powder (tamari soy sauce [soybeans, salt])").contains.has("wheat"), "tamari is made without wheat");
+  const muffin = A.fromText("Wheat flour, soy lecithin. Made in a bakery that may also use tree nuts.");
+  assert.ok(!muffin.contains.has("treenut") && muffin.may.has("treenut"), "\"may also use\" is cross-contact");
   // Cadbury Oreo (India): "Emulsifier (322)" is lecithin by its additive number; the label's statement says soy.
   assert.deepEqual(ids(A.fromText("Starch, Emulsifier (322), Flavouring").may), ["soy"]);
   assert.deepEqual(ids(A.fromText("Sugar, soy lecithin").contains), ["soy"]);

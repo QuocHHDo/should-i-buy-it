@@ -9,7 +9,7 @@ const A = require("../js/allergens.js");
 
 // Plain allergen names as they appear in a Contains statement.
 const STATEMENT_WORDS = [
-  ["milk", /\b(?:milk|dairy|whey|casein|lactose|butter|cream|cheese)\b/i],
+  ["milk", /\b(?:milk|dairy|whey|casein|lactose|(?<!cocoa |cacao |shea |peanut |nut |almond )butter|cream|cheese)\b/i],
   ["egg", /\beggs?\b/i],
   ["fish", /\b(?:fish|anchov(?:y|ies)|tuna|salmon|cod|pollock|tilapia|sardines?|mackerel|haddock|halibut|trout|catfish|bass|swordfish|herring|whitefish|bonito)\b/i],
   ["shellfish", /\b(?:shellfish|crustaceans?|shrimp|crab|lobster|crawfish|crayfish|prawns?|clams?|scallops?|mussels?|oysters?|squid|mollus[ck]s?)\b/i],
@@ -60,7 +60,7 @@ function statement(text) {
 }
 
 // Same text, minus "may contain" / shared-facility sentences: those name possible cross-contact, not ingredients.
-const MAY = /\b(?:may (?:also )?contain|made (?:in|on) (?:a |the )?(?:same |shared )?(?:facility|equipment|line|plant)|(?:processed|produced|manufactured|packaged|packed) (?:in|on) (?:a |the )?(?:same |shared )?(?:facility|equipment|line|plant)|shared (?:equipment|facility|lines?)|traces? of)[^.;]*/gi;
+const MAY = /\b(?:may (?:also )?(?:contain|use|be present)|made (?:in|on) (?:a |the )?(?:same |shared )?(?:facility|equipment|line|plant|bakery|kitchen)|(?:processed|produced|manufactured|packaged|packed|baked) (?:in|on) (?:a |the )?(?:same |shared )?(?:facility|equipment|line|plant|bakery|kitchen)|shared (?:equipment|facility|lines?)|traces? of)[^.;]*/gi;
 
 const snippet = (text, words) => {
   const t = String(text);

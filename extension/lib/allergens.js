@@ -36,7 +36,7 @@
       not: [] },
     { id: "wheat", label: "Wheat", hint: "flour, semolina, spelt, bread crumbs",
       words: ["wheat", "flour", "semolina", "durum", "spelt", "farina", "kamut", "khorasan", "einkorn", "emmer", "farro", "triticale", "bulgur", "bulghur", "couscous", "seitan", "gluten", "graham", "bread crumbs", "breadcrumbs", "panko", "soy sauce", "shoyu", "udon", "orzo"],
-      not: ["buckwheat", "rice flour", "corn flour", "cornflour", "almond flour", "coconut flour", "chickpea flour", "garbanzo flour", "garbanzo bean flour", "bean flour", "oat flour", "potato flour", "tapioca flour", "soy flour", "cassava flour", "sorghum flour", "buckwheat flour", "millet flour", "quinoa flour", "teff flour", "amaranth flour", "arrowroot flour", "banana flour", "lentil flour", "pea flour", "masa flour", "gluten-free soy sauce", "tamari",
+      not: ["buckwheat", "rice flour", "corn flour", "cornflour", "almond flour", "coconut flour", "chickpea flour", "garbanzo flour", "garbanzo bean flour", "bean flour", "oat flour", "potato flour", "tapioca flour", "soy flour", "cassava flour", "sorghum flour", "buckwheat flour", "millet flour", "quinoa flour", "teff flour", "amaranth flour", "arrowroot flour", "banana flour", "lentil flour", "pea flour", "masa flour", "gluten-free soy sauce", "tamari soy sauce", "tamari",
         // Found on real labels (eval/allergen-eval.mjs): flours that aren't wheat.
         "soya flour", "soybean flour", "gram flour", "black gram flour", "besan", "legume flour", "legume flours", "carob flour", "carob seed flour", "flour of carob", "flour of carob seeds",
         "hemp flour", "flax flour", "flaxseed flour", "nut flour", "hazelnut flour", "peanut flour", "chestnut flour", "sunflower seed flour", "pumpkin seed flour", "sweet potato flour", "plantain flour", "yam flour", "cricket flour"] },
@@ -62,7 +62,7 @@
   for (const a of LIST) { a.re = wordRe(a.words); a.softRe = wordRe(a.soft || []); a.notRe = wordRe([...a.not, ...(a.soft || [])]); a.softNotRe = wordRe(a.not); }
 
   // "May contain", shared-facility and cross-contact statements: their allergens are possible, not ingredients.
-  const MAY = /(?:\bmay (?:also )?contain|\bmay have come in contact|\bmade (?:in|on) (?:a |the )?(?:same |shared )?(?:facility|equipment|line|plant)|\b(?:processed|produced|manufactured|packaged|packed) (?:in|on) (?:a |the )?(?:same |shared )?(?:facility|equipment|line|plant)|\bshared (?:equipment|facility|lines?)|\bcross[- ]contact|\btraces? of)[^.;!]*/gi;
+  const MAY = /(?:\bmay (?:also )?(?:contain|use|be present)|\bmay have come in contact|\bmade (?:in|on) (?:a |the )?(?:same |shared )?(?:facility|equipment|line|plant|bakery|kitchen)|\b(?:processed|produced|manufactured|packaged|packed|baked) (?:in|on) (?:a |the )?(?:same |shared )?(?:facility|equipment|line|plant|bakery|kitchen)|\bshared (?:equipment|facility|lines?)|\bcross[- ]contact|\btraces? of)[^.;!]*/gi;
   // "Peanut-free", "free of milk", "no eggs", "does not contain soy": the word is named only to rule it out.
   const NEGATED = [
     // One word only, and no lists: "no added sugar, milk" must still flag milk. A missed allergen is worse than an extra flag.

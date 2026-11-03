@@ -57,7 +57,7 @@ node scripts/build-additives.mjs <openfoodfacts-server>/taxonomies   # regenerat
 BLS_CONTACT=you@example.com node scripts/fetch-prices.mjs /tmp/prices && node scripts/build-prices.mjs /tmp/prices   # rebuild js/prices-data.js (the Update prices workflow does this monthly)
 npm install && npm run test:ui   # click-through test of every feature in both versions + axe accessibility check
 npm run test:layout # Playwright: layout at 320/375/414/1280 px, a real barcode decode from a fake camera, the phone app (compare, label photos, prices) and the extension in Chromium
-node eval/allergen-eval.mjs --fetch 300   # allergen misses on real US labels: hides each label's "Contains:" line and checks the flags find the same allergens from the ingredients (Actions tab: "Allergen eval")
+node eval/allergen-eval.mjs [--fetch 800]   # allergen misses on real US labels: hides each label's "Contains:" line and checks the flags find the same allergens from the ingredients (Actions tab: "Allergen eval")
 npm run snapshot    # after an intentional rule or data change: rewrite the verdict snapshot, then review the diff
 ```
 
