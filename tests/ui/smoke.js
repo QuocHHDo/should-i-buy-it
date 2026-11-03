@@ -401,7 +401,7 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
   // Public-site basics: allergen line, standard-goals hint, report link, footer links.
   if (MODE === "pages") {
     w.location.hash = "#greek-yogurt-plain-nonfat"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
-    ok(/Allergens aren't checked until you add yours/.test(text(".allergy")), "with no allergies set, the result says they aren't checked");
+    ok(/Allergens and diets aren't checked until you add yours/.test(text(".allergy")), "with no allergies set, the result says they aren't checked");
     // Allergies: tick Milk under Goals, and the yogurt gets a "Contains milk" flag; the verdict itself doesn't change.
     const word = text(".tag .verdict");
     const milk = $("#p-al-milk"); milk.checked = true; milk.dispatchEvent(new w.Event("change", { bubbles: true })); await tick(2);
@@ -412,6 +412,13 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok($(".alflag.clear") && /None of your allergens found/.test(text(".alflag")) && /read the label/.test(text(".alflag")), "a food without it still says to read the label", text(".alflag"));
     milk.checked = false; milk.dispatchEvent(new w.Event("change", { bubbles: true })); await tick(2);
     ok(!$(".alflag"), "unticking removes the flag");
+    // Diet: tick Vegetarian, and grilled chicken says so; tofu doesn't.
+    const veg = $("#p-al-vegetarian"); veg.checked = true; veg.dispatchEvent(new w.Event("change", { bubbles: true })); await tick(2);
+    w.location.hash = "#chicken-breast-grilled"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
+    ok(/Contains meat, fish or gelatin/.test(text(".alflag.contains")), "a vegetarian diet flags grilled chicken", text(".alflag"));
+    w.location.hash = "#tofu-firm"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
+    ok($(".alflag.clear") && /Nothing your diet rules out found/.test(text(".alflag")), "tofu passes a vegetarian diet", text(".alflag"));
+    veg.checked = false; veg.dispatchEvent(new w.Event("change", { bubbles: true })); await tick(2);
     w.location.hash = "#greek-yogurt-plain-nonfat"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
     const rep = $(".report a");
     ok(rep && /issues\/new\?title=Wrong\+verdict/.test(rep.href) && /Verdict%3A/.test(rep.href), "a prefilled report link sits under the label");
