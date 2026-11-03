@@ -7,6 +7,8 @@
   const Q = window.SelfCheckSearch;
   const CMP = window.SelfCheckCompare; // js/compare.js
   const AL = window.SelfCheckAllergens; // js/allergens.js
+  // Icons on the Goals chips and in the summary. Decoration only: the text label is always there.
+  const AL_ICON = { milk: "🥛", egg: "🥚", fish: "🐟", shellfish: "🦐", treenut: "🌰", peanut: "🥜", wheat: "🌾", soy: "🫘", sesame: "🥯", gluten: "🍞", vegetarian: "🥕", vegan: "🌱" };
   const CFG = Object.assign({ mode: "pages" }, window.SELF_CHECK_CONFIG || {});
   const PAGES = CFG.mode === "pages";
   const CAT_LABEL = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
@@ -1263,6 +1265,13 @@
     $("p-skip").value = profile.skip || ""; $("p-mild").checked = !!profile.mild; $("p-usda").value = profile.usdaKey || "";
     if (AL) { for (const x of AL.LIST) { const b = /** @type {HTMLInputElement} */ ($("p-al-" + x.id)); if (b) b.checked = (x.diet ? profile.diets || [] : profile.allergies || []).includes(x.id); } $("p-al-other").value = profile.allergyOther || ""; }
     $("profSummary").textContent = `${profile.cal.toLocaleString("en-US")} cal · ${profile.pro} g protein · ≤${profile.sat} g sat fat`;
+    if (AL) {
+      const picked = [...AL.LIST.filter(x => !x.diet && (profile.allergies || []).includes(x.id)).map(x => `${AL_ICON[x.id]} ${x.label}`),
+        ...String(profile.allergyOther || "").split(",").map(t => t.trim()).filter(Boolean)];
+      const diets = AL.LIST.filter(x => x.diet && (profile.diets || []).includes(x.id)).map(x => `${AL_ICON[x.id]} ${x.label}`);
+      const parts = [picked.length ? `Avoiding ${picked.join(", ")}` : "", diets.length ? diets.join(", ") : ""].filter(Boolean);
+      $("alSummary").replaceChildren(...(parts.length ? [el("b", { text: parts.join(" · ") }), ". Foods that contain them are flagged."] : ["Nothing picked, so foods aren't checked for allergens or diet."]));
+    }
   }
   function readProfile() {
     // Only valid numbers are saved; an invalid field keeps its last good value and shows why next to it.
@@ -1273,7 +1282,7 @@
       profile.allergies = AL.LIST.filter(x => !x.diet && on(x)).map(x => x.id); profile.diets = AL.LIST.filter(x => x.diet && on(x)).map(x => x.id);
       profile.allergyOther = $("p-al-other").value.slice(0, 200);
     }
-    store.set("profile", profile); goalsSet = true; $("tabGoalsDot").hidden = true; if (current) renderResult(current); syncProfileUI(); renderBrowse(); renderMeals(); renderChips(); renderList(); renderPlate();
+    store.set("profile", profile); toast("Saved"); goalsSet = true; $("tabGoalsDot").hidden = true; if (current) renderResult(current); syncProfileUI(); renderBrowse(); renderMeals(); renderChips(); renderList(); renderPlate();
     if (current) renderResult(current);
   }
 
@@ -1580,10 +1589,12 @@
     $("codeForm").addEventListener("submit", async e => { e.preventDefault(); const c = $("code").value; await closeScan(); barcodeLookup(c); });
 
     // One checkbox per allergen, built from js/allergens.js so the list can't drift from what's detected.
-    const box = x => el("label", { title: x.hint }, el("input", { type: "checkbox", id: "p-al-" + x.id }), x.label);
+    // A chip per allergen or diet: the icon is decoration (the label says it), the checkbox inside does the work.
+    const box = x => el("label", { class: "tog", title: x.hint }, el("input", { type: "checkbox", id: "p-al-" + x.id }),
+      el("span", { class: "tc", "aria-hidden": "true", text: "✓" }), el("span", { class: "ti", "aria-hidden": "true", text: AL_ICON[x.id] || "" }), x.label);
     if (AL) { $("p-al-boxes").replaceChildren(...AL.LIST.filter(x => !x.diet).map(box)); $("p-diet-boxes").replaceChildren(...AL.LIST.filter(x => x.diet).map(box)); }
     else { $("p-allergies").hidden = true; $("p-diets").hidden = true; }
-    document.querySelectorAll("#profile input").forEach(i => i.addEventListener("change", readProfile));
+    document.querySelectorAll("#profile input, #alBox input, #prefBox input").forEach(i => i.addEventListener("change", readProfile));
     Object.values(PF).forEach(id => $(id).addEventListener("input", () => checkGoal($(id))));
     syncProfileUI();
     Object.values(PF).forEach(id => checkGoal($(id))); // creates each field's (empty) message line

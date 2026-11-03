@@ -216,11 +216,27 @@ button { font: inherit; color: inherit; }
 .alflag.may { border-color: var(--mid); background: var(--mid-soft); } .alflag.may .alt { color: var(--mid); } .alflag.may .alic { background: var(--mid); color: var(--paper); }
 .alflag.unknown .alic { background: var(--bar-track); color: var(--ink); }
 .alflag.clear { border-style: dashed; } .alflag.clear .alic { background: var(--good-soft); color: var(--good); }
-.alset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
-.alset legend { font-size: 13px; color: var(--muted); padding: 0; margin-bottom: 6px; }
-.alboxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 4px 12px; }
-.pgrid .alboxes label { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 14px; min-height: 36px; }
-.alset .alhelp { margin: 0; font-size: 12.5px; color: var(--muted); }
+.alset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; min-width: 0; }
+.alset legend { font: 600 14px var(--font-body); color: var(--ink); padding: 0; margin-bottom: 8px; }
+.alhelp { margin: 0; font-size: 12.5px; color: var(--muted); }
+/* Allergy and diet toggles: a real checkbox inside a chip, so keyboards, screen readers and tests work as before. */
+.altoggles { display: flex; flex-wrap: wrap; gap: 8px; }
+.pgrid .altoggles label.tog { display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 6px 14px 6px 10px; border: 1.5px solid var(--line); border-radius: 999px;
+  background: var(--paper); color: var(--ink); font-size: 14.5px; cursor: pointer; user-select: none; position: relative; }
+.tog input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+.tog .ti { font-size: 18px; line-height: 1; }
+.tog .tc { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--muted); display: inline-grid; place-items: center; font-size: 11px; line-height: 1; color: transparent; flex: none; }
+.pgrid .altoggles label.tog:has(input:checked) { border-color: var(--bad); background: var(--bad-soft); font-weight: 600; }
+.tog:has(input:checked) .tc { background: var(--bad); border-color: var(--bad); color: var(--paper); }
+#p-diets .altoggles label.tog:has(input:checked) { border-color: var(--good); background: var(--good-soft); }
+#p-diets .tog:has(input:checked) .tc { background: var(--good); border-color: var(--good); }
+.tog:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+#alSummary b { color: var(--ink); font-weight: 600; }
+.pgrid.targets { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 560px) { .pgrid.targets { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+details.adv { border-top: 1px solid var(--line); padding-top: 10px; }
+details.adv > summary { cursor: pointer; font-size: 13.5px; color: var(--muted); padding: 6px 0; }
+details.adv > label { margin-top: 8px; }
 .tag .for .linkbtn { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
 .report { margin: 6px 0 0; font-size: 12.5px; } .report a { color: var(--muted); }
 .footlinks { margin: 8px 0 0; font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 14px; } .footlinks a { color: var(--muted); }
@@ -649,32 +665,49 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
   </section>
 
   <section class="box view" id="profile" data-view="goals" hidden aria-labelledby="hGoals">
-    <h2 class="vhead"><span id="hGoals">Your goals <span class="muted">(saved in this browser)</span></span><span class="muted" id="profSummary"></span></h2>
+    <h2 class="vhead"><span id="hGoals">Daily targets <span class="muted">(saved in this browser)</span></span><span class="muted" id="profSummary"></span></h2>
+    <p class="vsub">Every verdict is scored against these.</p>
     <div class="inner">
-      <div class="pgrid">
+      <div class="pgrid targets">
         <label>Calories / day<input id="p-cal" type="number" min="800" max="6000" step="10"></label>
         <label>Protein goal (g)<input id="p-pro" type="number" min="20" max="400"></label>
+        <label>Fiber goal (g)<input id="p-fib" type="number" min="10" max="70"></label>
         <label>Saturated fat limit (g)<input id="p-sat" type="number" min="5" max="40"></label>
         <label>Sodium limit (mg)<input id="p-na" type="number" min="500" max="5000" step="50"></label>
         <label>Added sugar limit (g)<input id="p-add" type="number" min="0" max="100"></label>
-        <label>Fiber goal (g)<input id="p-fib" type="number" min="10" max="70"></label>
-        <label class="wide">Foods or additives you skip (comma separated)<input id="p-skip" type="text"></label>
-        <label class="check wide"><input id="p-mild" type="checkbox"> I prefer mild food (flag spicy items)</label>
-        <fieldset class="wide alset" id="p-allergies">
-          <legend>Food allergies: flagged on every food you look up</legend>
-          <div class="alboxes" id="p-al-boxes"></div>
-          <label>Other allergens (comma separated)<input id="p-al-other" type="text" placeholder="e.g. coconut, mustard" maxlength="200"></label>
-          <p class="alhelp">Checked against the ingredient list and allergen statements when there is one, and a typical recipe for built-in foods. It can miss things: always read the package.</p>
-        </fieldset>
-        <fieldset class="wide alset" id="p-diets">
-          <legend>Diet: flagged the same way</legend>
-          <div class="alboxes" id="p-diet-boxes"></div>
-        </fieldset>
-        <label class="wide" id="usdaKeyWrap" hidden>USDA API key (optional; the shared demo key allows only a few searches an hour)
+      </div>
+    </div>
+  </section>
+
+  <section class="box view" id="alBox" data-view="goals" hidden aria-labelledby="hAllergies">
+    <h2 class="vhead"><span id="hAllergies">Allergies &amp; diet</span></h2>
+    <p class="vsub" id="alSummary" aria-live="polite"></p>
+    <div class="inner pgrid">
+      <fieldset class="wide alset" id="p-allergies">
+        <legend>Allergies</legend>
+        <div class="altoggles" id="p-al-boxes"></div>
+        <label>Other allergens (comma separated)<input id="p-al-other" type="text" placeholder="e.g. coconut, mustard" maxlength="200"></label>
+      </fieldset>
+      <fieldset class="wide alset" id="p-diets">
+        <legend>Diet</legend>
+        <div class="altoggles" id="p-diet-boxes"></div>
+      </fieldset>
+      <p class="alhelp wide">Every food you look up is flagged if it contains, or may contain, what you pick here. It's checked against the label's ingredients and allergen statement, or a typical recipe for built-in foods, and can miss things: always read the package.</p>
+    </div>
+  </section>
+
+  <section class="box view" id="prefBox" data-view="goals" hidden aria-labelledby="hPrefs">
+    <h2 class="vhead"><span id="hPrefs">Preferences</span></h2>
+    <div class="inner pgrid">
+      <label class="wide">Foods or additives you skip (comma separated)<input id="p-skip" type="text" placeholder="e.g. hummus, sucralose, E407"></label>
+      <label class="check wide"><input id="p-mild" type="checkbox"> I prefer mild food (flag spicy items)</label>
+      <details class="wide adv" id="usdaKeyWrap" hidden>
+        <summary>Advanced: your own USDA key</summary>
+        <label>USDA API key (optional; the shared demo key allows only a few searches an hour)
           <input id="p-usda" type="text" placeholder="DEMO_KEY" autocomplete="off" spellcheck="false">
           <span>Get a free key at <a href="https://fdc.nal.usda.gov/api-key-signup.html" target="_blank" rel="noopener">fdc.nal.usda.gov</a>.</span>
         </label>
-      </div>
+      </details>
     </div>
   </section>
 
@@ -721,7 +754,7 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
     </div>
   </section>
 
-  <footer><p class="fine">Built-in values are approximate typical figures for a standard serving; packaged foods vary by brand, so the label on the package wins. USDA results come from USDA FoodData Central; scanned products come from Open Food Facts, a crowd-sourced database that can be incomplete. The label's % Daily Value uses standard FDA values; the bars and verdict use your goals. General nutrition guidance, not medical advice. It doesn't check allergens.</p>
+  <footer><p class="fine">Built-in values are approximate typical figures for a standard serving; packaged foods vary by brand, so the label on the package wins. USDA results come from USDA FoodData Central; scanned products come from Open Food Facts, a crowd-sourced database that can be incomplete. The label's % Daily Value uses standard FDA values; the bars and verdict use your goals. General nutrition guidance, not medical advice. Allergen and diet flags can miss things: read the package.</p>
     <p class="footlinks" data-pages-only><a href="about.html">How it works</a><a href="about.html#sources">Data sources</a><a href="privacy.html">Privacy</a><a href="https://github.com/QuocHHDo/should-i-buy-it/issues/new" target="_blank" rel="noopener">Report a problem</a><a href="https://github.com/QuocHHDo/should-i-buy-it" target="_blank" rel="noopener">Open source (MIT)</a></p></footer>
 </main>
 

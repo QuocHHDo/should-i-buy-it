@@ -343,7 +343,7 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok(shown() === "out" && tab("check").getAttribute("aria-current") === "page" && text("#out h2").length > 0, `opening a food from Browse switches to Check (${text("#out h2")})`);
     if (MODE === "pages") {
       w.location.hash = "#goals"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(2);
-      ok(shown() === "profile,dataBox,installBox,phoneBox", `#goals opens the Goals view (${shown()})`);
+      ok(shown() === "profile,alBox,prefBox,dataBox,installBox,phoneBox", `#goals opens the Goals view (${shown()})`);
       w.location.hash = "#avocado"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(2);
       ok(shown() === "out" && text("#out h2") === "Avocado", `a food link returns to Check (${text("#out h2")})`);
     }
