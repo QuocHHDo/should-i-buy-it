@@ -40,7 +40,7 @@ const norm = s => String(s || "").toLowerCase().replace(/[^a-z]+/g, " ").trim();
 async function fromOff(want) {
   const out = [];
   for (let page = 1; out.length < want && page <= 20; page++) {
-    const url = `https://world.openfoodfacts.org/cgi/search.pl?action=process&tagtype_0=countries&tag_contains_0=contains&tag_0=united-states&sort_by=unique_scans_n&page_size=100&page=${page}&json=1&fields=code,product_name,brands,ingredients_text_en,ingredients_text,allergens_tags,traces_tags`;
+    const url = `https://world.openfoodfacts.org/cgi/search.pl?action=process&tagtype_0=countries&tag_contains_0=contains&tag_0=united-states&sort_by=unique_scans_n&page_size=100&page=${page}&json=1&fields=code,product_name,brands,ingredients_text_en,ingredients_text,allergens_tags,traces_tags,ingredients_analysis_tags`;
     const r = await getJson(url);
     if (!r || !Array.isArray(r.products)) break;
     for (const p of r.products) {
@@ -48,7 +48,8 @@ async function fromOff(want) {
       const ing = String(p.ingredients_text_en || "").trim();
       if (ing.length < 20 || !/[a-z]/i.test(ing) || /[Ѐ-ӿ؀-ۿ぀-ヿ一-鿿]/.test(ing)) continue;
       out.push({ source: "off", id: String(p.code), name: [p.brands && String(p.brands).split(",")[0], p.product_name].filter(Boolean).join(" ").slice(0, 100),
-        ingredients: ing.slice(0, 3000), offAllergens: Array.isArray(p.allergens_tags) ? p.allergens_tags : [], offTraces: Array.isArray(p.traces_tags) ? p.traces_tags : [] });
+        ingredients: ing.slice(0, 3000), offAllergens: Array.isArray(p.allergens_tags) ? p.allergens_tags : [], offTraces: Array.isArray(p.traces_tags) ? p.traces_tags : [],
+        offAnalysis: Array.isArray(p.ingredients_analysis_tags) ? p.ingredients_analysis_tags.filter(t => /veg/.test(String(t))) : [] });
     }
     console.error(`Open Food Facts page ${page}: ${out.length} labels`);
     await sleep(7000);

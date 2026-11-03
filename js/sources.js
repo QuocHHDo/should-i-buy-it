@@ -199,6 +199,8 @@
       nova: [1, 2, 3, 4].includes(Number(p.nova_group)) ? Number(p.nova_group) : undefined,
       // Open Food Facts' own allergen and "traces" (may contain) lists, read by js/allergens.js.
       allergens: offTags(p.allergens_tags), traces: offTags(p.traces_tags),
+      // Their vegan / vegetarian reading of the ingredient list ("en:non-vegan", "en:maybe-vegetarian").
+      analysis: offTags((p.ingredients_analysis_tags || []).filter(t => /veg/.test(String(t)))),
       ingredients: ingredients || undefined });
     return settleAddedSugar(f, v.add != null, false);
   }
@@ -295,7 +297,7 @@
   // Same product, whatever the zeros in front: "0096619237432" and "96619237432".
   const sameCode = (a, b) => !!a && !!b && upcCore(a) === upcCore(b);
   const matchUpc = (foods, code) => (foods || []).find(f => f.gtinUpc && upcCore(f.gtinUpc) === upcCore(code)) || null;
-  const offProductUrl = code => `https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,generic_name,brands,nutriments,serving_size,serving_quantity,serving_quantity_unit,categories_tags,additives_tags,nova_group,ingredients_text,ingredients_text_en,allergens_tags,traces_tags`;
+  const offProductUrl = code => `https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,generic_name,brands,nutriments,serving_size,serving_quantity,serving_quantity_unit,categories_tags,additives_tags,nova_group,ingredients_text,ingredients_text_en,allergens_tags,traces_tags,ingredients_analysis_tags`;
 
 
   // The exact prompt the Claude version uses to look up a food; the Claude-vs-USDA eval sends the same text.

@@ -61,10 +61,10 @@
   // The allergen box above the verdict. With no allergens set, a one-line pointer to set them.
   function renderAllergy(a) {
     const al = a.allergy;
-    if (!al) return el("p", { class: "allergy" }, "Allergens aren't checked until you add yours. ",
-      el("button", { class: "linkbtn", type: "button", text: "Add allergies", onclick: () => { showView("goals"); const b = $("p-allergies"); if (b) b.scrollIntoView({ block: "center" }); } }));
+    if (!al) return el("p", { class: "allergy" }, "Allergens and diets aren't checked until you add yours. ",
+      el("button", { class: "linkbtn", type: "button", text: "Add allergies or a diet", onclick: () => { showView("goals"); const b = $("p-allergies"); if (b) b.scrollIntoView({ block: "center" }); } }));
     const ICON = { contains: "!", may: "?", unknown: "?", clear: "✓" };
-    return el("section", { class: "alflag " + al.status, role: al.status === "contains" ? "alert" : "note", "aria-label": "Your allergens" },
+    return el("section", { class: "alflag " + al.status, role: al.status === "contains" ? "alert" : "note", "aria-label": "Your allergens and diet" },
       el("p", { class: "alt" }, el("span", { class: "alic", "aria-hidden": "true", text: ICON[al.status] }), al.title),
       el("p", { text: al.text }),
       el("p", { class: "alnote", text: al.status === "clear" ? "Not a guarantee. Ingredients change and cross-contact isn't always listed." : "Always read the package, and ask your allergist what to avoid." }));
@@ -1261,14 +1261,18 @@
     // A field showing an error keeps what the user typed until they fix it; only valid fields are refreshed.
     for (const [k, id] of Object.entries(PF)) if ($(id).getAttribute("aria-invalid") !== "true") $(id).value = profile[k];
     $("p-skip").value = profile.skip || ""; $("p-mild").checked = !!profile.mild; $("p-usda").value = profile.usdaKey || "";
-    if (AL) { for (const x of AL.LIST) { const b = /** @type {HTMLInputElement} */ ($("p-al-" + x.id)); if (b) b.checked = (profile.allergies || []).includes(x.id); } $("p-al-other").value = profile.allergyOther || ""; }
+    if (AL) { for (const x of AL.LIST) { const b = /** @type {HTMLInputElement} */ ($("p-al-" + x.id)); if (b) b.checked = (x.diet ? profile.diets || [] : profile.allergies || []).includes(x.id); } $("p-al-other").value = profile.allergyOther || ""; }
     $("profSummary").textContent = `${profile.cal.toLocaleString("en-US")} cal · ${profile.pro} g protein · ≤${profile.sat} g sat fat`;
   }
   function readProfile() {
     // Only valid numbers are saved; an invalid field keeps its last good value and shows why next to it.
     for (const [k, id] of Object.entries(PF)) if (checkGoal($(id))) profile[k] = Number($(id).value);
     profile.skip = $("p-skip").value; profile.mild = $("p-mild").checked; profile.usdaKey = $("p-usda").value.trim();
-    if (AL) { profile.allergies = AL.LIST.filter(x => /** @type {HTMLInputElement} */ ($("p-al-" + x.id)).checked).map(x => x.id); profile.allergyOther = $("p-al-other").value.slice(0, 200); }
+    if (AL) {
+      const on = x => /** @type {HTMLInputElement} */ ($("p-al-" + x.id)).checked;
+      profile.allergies = AL.LIST.filter(x => !x.diet && on(x)).map(x => x.id); profile.diets = AL.LIST.filter(x => x.diet && on(x)).map(x => x.id);
+      profile.allergyOther = $("p-al-other").value.slice(0, 200);
+    }
     store.set("profile", profile); goalsSet = true; $("tabGoalsDot").hidden = true; if (current) renderResult(current); syncProfileUI(); renderBrowse(); renderMeals(); renderChips(); renderList(); renderPlate();
     if (current) renderResult(current);
   }
@@ -1576,8 +1580,9 @@
     $("codeForm").addEventListener("submit", async e => { e.preventDefault(); const c = $("code").value; await closeScan(); barcodeLookup(c); });
 
     // One checkbox per allergen, built from js/allergens.js so the list can't drift from what's detected.
-    if (AL) $("p-al-boxes").replaceChildren(...AL.LIST.map(x => el("label", { title: x.hint }, el("input", { type: "checkbox", id: "p-al-" + x.id }), x.label)));
-    else $("p-allergies").hidden = true;
+    const box = x => el("label", { title: x.hint }, el("input", { type: "checkbox", id: "p-al-" + x.id }), x.label);
+    if (AL) { $("p-al-boxes").replaceChildren(...AL.LIST.filter(x => !x.diet).map(box)); $("p-diet-boxes").replaceChildren(...AL.LIST.filter(x => x.diet).map(box)); }
+    else { $("p-allergies").hidden = true; $("p-diets").hidden = true; }
     document.querySelectorAll("#profile input").forEach(i => i.addEventListener("change", readProfile));
     Object.values(PF).forEach(id => $(id).addEventListener("input", () => checkGoal($(id))));
     syncProfileUI();

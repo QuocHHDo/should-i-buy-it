@@ -666,6 +666,10 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
           <label>Other allergens (comma separated)<input id="p-al-other" type="text" placeholder="e.g. coconut, mustard" maxlength="200"></label>
           <p class="alhelp">Checked against the ingredient list and allergen statements when there is one, and a typical recipe for built-in foods. It can miss things: always read the package.</p>
         </fieldset>
+        <fieldset class="wide alset" id="p-diets">
+          <legend>Diet: flagged the same way</legend>
+          <div class="alboxes" id="p-diet-boxes"></div>
+        </fieldset>
         <label class="wide" id="usdaKeyWrap" hidden>USDA API key (optional; the shared demo key allows only a few searches an hour)
           <input id="p-usda" type="text" placeholder="DEMO_KEY" autocomplete="off" spellcheck="false">
           <span>Get a free key at <a href="https://fdc.nal.usda.gov/api-key-signup.html" target="_blank" rel="noopener">fdc.nal.usda.gov</a>.</span>

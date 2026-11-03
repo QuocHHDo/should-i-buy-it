@@ -102,13 +102,45 @@ function score(records) {
       const got = A.fromText(text).contains;
       const mayToo = A.fromText(text).may;
       for (const id of tags) if (!got.has(id) && !mayToo.has(id)) offMissed.push({ id, ref: r.id, name: r.name, tags: r.offAllergens, text: snippet(text) });
-      for (const id of got.keys()) if (!tags.has(id)) offExtra.push({ id, ref: r.id, name: r.name, words: got.get(id), text: snippet(text, got.get(id)) });
+      for (const id of got.keys()) if (A.IDS.includes(id) && !tags.has(id)) offExtra.push({ id, ref: r.id, name: r.name, words: got.get(id), text: snippet(text, got.get(id)) });
     }
   }
+  const diets = scoreDiets(records);
   const sum = k => Object.values(per).reduce((s, x) => s + x[k], 0);
   const truth = sum("truth"), found = sum("found"), warned = found + sum("asMay");
   return { records: records.length, withStatement, offRecords, truth, found, warned, recall: truth ? found / truth : null, warnedRate: truth ? warned / truth : null,
-    per, misses, asMay, extras, full, offMissed, offExtra };
+    per, misses, asMay, extras, full, offMissed, offExtra, diets };
+}
+
+// Diets against Open Food Facts' own reading of each label: their vegan / vegetarian analysis and their gluten
+// tag. The detector sees only the name and ingredient text (as for a label with no tags), so the two are independent.
+// Their analysis is a parser too: a disagreement is a case to read, not a verdict.
+function scoreDiets(records) {
+  const out = {};
+  for (const d of ["gluten", "vegetarian", "vegan"]) out[d] = { compared: 0, agree: 0, warnedOnly: 0, missed: [], falseFlags: [] };
+  for (const r of records) {
+    const text = String(r.ingredients || "");
+    if (text.length < 10 || r.source !== "off") continue;
+    const det = A.detect({ n: r.name || "", a: [], src: "eval", ingredients: text });
+    const flag = d => det.contains.has(d) ? "contains" : det.may.has(d) ? "may" : "none";
+    const refs = {};
+    const an = Array.isArray(r.offAnalysis) ? r.offAnalysis : null;
+    if (an) for (const d of ["vegan", "vegetarian"]) {
+      if (an.includes(`en:non-${d}`)) refs[d] = "has"; else if (an.includes(`en:${d}`)) refs[d] = "free";
+    }
+    if (Array.isArray(r.offAllergens)) refs.gluten = r.offAllergens.includes("en:gluten") ? "has" : (r.offTraces || []).includes("en:gluten") ? null : "free";
+    for (const [d, ref] of Object.entries(refs)) {
+      if (!ref) continue;
+      const o = out[d], f = flag(d), words = (det.contains.get(d) || det.may.get(d) || []).slice(0, 2);
+      o.compared++;
+      if ((ref === "has" && f === "contains") || (ref === "free" && f === "none")) o.agree++;
+      else if (ref === "has" && f === "may") o.warnedOnly++;
+      else if (ref === "has") o.missed.push({ ref: r.id, name: r.name, text: snippet(text) });
+      else if (f === "contains") o.falseFlags.push({ ref: r.id, name: r.name, why: words, text: snippet(text, words.map(w => (String(w).match(/“([^”]+)”/) || [])[1]).filter(Boolean)) });
+      else o.agree++; // "free" and only a "may": a cautious flag, not counted against it
+    }
+  }
+  return out;
 }
 
 const pct = x => x == null ? "—" : `${(x * 100).toFixed(1)}%`;
@@ -133,6 +165,15 @@ function report(s, title = "Allergen detection on real labels") {
       `Tagged by Open Food Facts but not flagged at all from the text: ${s.offMissed.length}. Flagged “contains” but not tagged: ${s.offExtra.length}. In the app their tags count too, so these are about the text alone; their tags include traces and their own parser's mistakes, so read each.`, "");
     for (const m of s.offMissed.slice(0, 60)) L.push(`- not flagged **${A.labelOf(m.id)}** · ${m.name || m.ref} (tags ${m.tags.join(", ")}) · ${m.text}`);
     for (const m of s.offExtra.slice(0, 60)) L.push(`- flagged **${A.labelOf(m.id)}** (“${(m.words || []).join("”, “")}”) · ${m.name || m.ref} · ${m.text}`);
+  }
+  if (s.diets) {
+    L.push("", "## Diets vs. Open Food Facts' own analysis (name and ingredient text only)", "",
+      "| Diet | Compared | Agree | They say it has it, we only say “may” | They say it has it, we don't flag | We say “contains”, they say it's free |", "|---|---:|---:|---:|---:|---:|",
+      ...Object.entries(s.diets).map(([d, o]) => `| ${A.labelOf(d)} | ${o.compared} | ${o.agree} | ${o.warnedOnly} | ${o.missed.length} | ${o.falseFlags.length} |`), "");
+    for (const [d, o] of Object.entries(s.diets)) {
+      for (const m of o.missed.slice(0, 40)) L.push(`- not flagged **${A.labelOf(d)}** · ${m.name || m.ref} (${m.ref}) · ${m.text}`);
+      for (const m of o.falseFlags.slice(0, 40)) L.push(`- flagged **${A.labelOf(d)}** (${m.why.join("; ")}) · ${m.name || m.ref} (${m.ref}) · ${m.text}`);
+    }
   }
   return L.join("\n") + "\n";
 }

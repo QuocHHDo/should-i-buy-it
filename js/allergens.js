@@ -1,4 +1,5 @@
-// Allergen flags: what the viewer is allergic to (their profile) against what a food is known to contain.
+// Allergen and diet flags: what the viewer avoids (their profile) against what a food is known to contain.
+// Diets (gluten-free, vegetarian, vegan) work the same way as allergens and are flagged the same way.
 // It never says a food is safe. Each food gets one of four answers for the viewer's allergens:
 //   "contains"  an allergen is in the food (Open Food Facts' allergen list, the label's ingredients or "Contains"
 //               line, the food's own name, or a built-in food's typical recipe)
@@ -35,11 +36,11 @@
       soft: ["highly refined peanut oil", "refined peanut oil"],
       not: [] },
     { id: "wheat", label: "Wheat", hint: "flour, semolina, spelt, bread crumbs",
-      words: ["wheat", "flour", "semolina", "durum", "spelt", "farina", "kamut", "khorasan", "einkorn", "emmer", "farro", "triticale", "bulgur", "bulghur", "couscous", "seitan", "gluten", "graham", "bread crumbs", "breadcrumbs", "panko", "soy sauce", "shoyu", "udon", "orzo"],
+      words: ["wheat", "wheatgrass", "wheat grass", "flour", "semolina", "durum", "spelt", "farina", "kamut", "khorasan", "einkorn", "emmer", "farro", "triticale", "bulgur", "bulghur", "couscous", "seitan", "gluten", "graham", "bread crumbs", "breadcrumbs", "panko", "soy sauce", "shoyu", "udon", "orzo"],
       not: ["buckwheat", "rice flour", "corn flour", "cornflour", "almond flour", "coconut flour", "chickpea flour", "garbanzo flour", "garbanzo bean flour", "bean flour", "oat flour", "potato flour", "tapioca flour", "soy flour", "cassava flour", "sorghum flour", "buckwheat flour", "millet flour", "quinoa flour", "teff flour", "amaranth flour", "arrowroot flour", "banana flour", "lentil flour", "pea flour", "masa flour", "gluten-free soy sauce", "tamari soy sauce", "tamari",
         // Found on real labels (eval/allergen-eval.mjs): flours that aren't wheat.
         "soya flour", "soybean flour", "gram flour", "black gram flour", "besan", "legume flour", "legume flours", "carob flour", "carob seed flour", "flour of carob", "flour of carob seeds",
-        "hemp flour", "flax flour", "flaxseed flour", "nut flour", "hazelnut flour", "peanut flour", "chestnut flour", "sunflower seed flour", "pumpkin seed flour", "sweet potato flour", "plantain flour", "yam flour", "cricket flour"] },
+        "hemp flour", "flax flour", "flaxseed flour", "nut flour", "hazelnut flour", "peanut flour", "chestnut flour", "sunflower seed flour", "pumpkin seed flour", "sweet potato flour", "plantain flour", "yam flour", "cricket flour", "corn semolina", "rice semolina"] },
     { id: "soy", label: "Soy", hint: "soybeans, tofu, soy sauce, soy lecithin",
       words: ["soy", "soya", "soybean", "soybeans", "tofu", "edamame", "miso", "tempeh", "tamari", "shoyu", "natto", "textured vegetable protein", "tvp", "soy sauce", "soy lecithin"],
       // Highly refined soybean oil is exempt from US allergen labeling and most people with a soy allergy tolerate it,
@@ -51,9 +52,33 @@
     { id: "sesame", label: "Sesame", hint: "sesame seeds and oil, tahini",
       words: ["sesame", "tahini", "tahina", "benne", "gingelly", "halva", "halvah", "gomasio", "gomashio"],
       not: [] },
+    // Diets. Each also counts what other entries find (see DERIVED): wheat is gluten; fish and shellfish aren't
+    // vegetarian; meat, fish, milk and eggs aren't vegan. `name` is how a flag says it ("Contains meat or fish").
+    { id: "gluten", diet: true, label: "Gluten-free (celiac)", name: "gluten", short: "Has gluten", hint: "wheat, barley, rye, malt; oats unless certified gluten-free",
+      words: ["gluten", "barley", "rye", "malt", "malted", "malt extract", "malt syrup", "malt flavor", "malt flavoring", "malt flavouring", "malt vinegar", "barley malt", "brewer's yeast", "brewers yeast", "triticale"],
+      // Oats are often grown and milled with wheat; only certified gluten-free oats are considered safe for celiac.
+      soft: ["oat", "oats", "oatmeal", "oat flour", "oat bran", "oat fiber", "oat fibre", "rolled oats", "oatmilk", "barley grass", "wheat grass", "wheatgrass", "oat grass"],
+      not: ["buckwheat", "ryegrass"] },
+    { id: "vegetarian", diet: true, label: "Vegetarian", name: "meat, fish or gelatin", short: "Not vegetarian", hint: "no meat, poultry, fish or gelatin",
+      words: ["meat", "meats", "beef", "pork", "chicken", "turkey", "lamb", "mutton", "veal", "duck", "goose", "venison", "bison", "rabbit", "bacon", "ham", "prosciutto", "pancetta", "salami", "pepperoni", "sausage", "sausages", "chorizo", "pastrami", "bologna", "spam",
+        "frankfurter", "frankfurters", "hot dog", "hot dogs", "steak", "brisket", "meatball", "meatballs", "jerky", "liver", "lard", "tallow", "suet", "gelatin", "gelatine", "collagen", "isinglass", "bone broth", "animal fat", "animal shortening",
+        "chicken broth", "beef broth", "chicken stock", "beef stock", "pork rinds", "chicharrones", "animal rennet"],
+      // Could go either way: "chicken flavor" is often made without chicken; rennet and carmine can be animal or not.
+      soft: ["chicken flavor", "chicken flavour", "chicken flavoring", "beef flavor", "beef flavour", "beef flavoring", "pork flavor", "pork flavour", "bacon flavor", "bacon flavour", "rennet", "enzymes (rennet)", "carmine", "cochineal", "e120"],
+      not: ["meatless", "plant-based meat", "plant based meat", "plant-based chicken", "vegan chicken", "vegan beef", "vegan sausage", "vegetarian sausage", "veggie sausage", "veggie bacon", "imitation bacon", "coconut meat", "nut meat", "jackfruit meat",
+        "chicken of the woods", "hen of the woods", "turkey tail", "duck sauce", "steak sauce", "steak seasoning", "hot dog bun", "hot dog buns", "vegetable rennet", "microbial rennet", "non-animal rennet", "vegetarian rennet"] },
+    { id: "vegan", diet: true, label: "Vegan", name: "animal products", short: "Not vegan", hint: "no meat, fish, dairy, eggs or honey",
+      words: ["honey", "beeswax", "shellac", "confectioner's glaze", "confectioners glaze", "royal jelly", "propolis", "bee pollen", "carmine", "cochineal", "e120", "lanolin"],
+      // Vitamin D3 is usually made from lanolin (sheep's wool) unless the label says it's from lichen.
+      soft: ["vitamin d3", "cholecalciferol"],
+      not: ["honeydew", "honeycrisp", "honeysuckle", "honeybush", "vitamin d3 (lichen)", "vegan vitamin d3"] },
   ];
   const BY_ID = Object.fromEntries(LIST.map(a => [a.id, a]));
-  const IDS = LIST.map(a => a.id);
+  // The nine allergens; DIET_IDS the diets. Diets are chosen separately (profile.diets) but checked the same way.
+  const IDS = LIST.filter(a => !a.diet).map(a => a.id);
+  const DIET_IDS = LIST.filter(a => a.diet).map(a => a.id);
+  // What other entries' findings mean for a diet, in order (vegan uses vegetarian's result).
+  const DERIVED = [["gluten", ["wheat"]], ["vegetarian", ["fish", "shellfish"]], ["vegan", ["vegetarian", "milk", "egg", "fish", "shellfish"]]];
 
   const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   // A phrase as a whole-word pattern; a space or hyphen inside matches either ("half and half", "half-and-half").
@@ -75,15 +100,22 @@
     const hard = new Map(), soft = new Map();
     if (!text) return { hard, soft };
     let s = " " + String(text).toLowerCase().replace(/[’']/g, "'") + " ";
+    // "Gluten-free oats" are certified oats, not a "may": keep them out of the gluten check before "-free" is removed.
+    s = s.replace(/\bgluten[\s-]+free\s+(?:whole\s+grain\s+|rolled\s+|organic\s+)*oat(?:s|meal)?\b/g, " certified oats ").replace(/\bcertified gluten[\s-]+free\b/g, " ");
     for (const re of NEGATED) s = s.replace(re, " ");
     // "Vegetable Oil (Canola, Cottonseed, Soybean)": the soybean in an oil's list is refined oil, a "may" like
     // "soybean oil" itself. Found on a real peanut butter label whose own statement named only peanuts.
     s = s.replace(/\b((?:oils?|shortening)\s*\()([^()]*)(\))/g, (m, a, inner, c) => a + inner.replace(/\bsoy(?:a|beans?)?\b(?!\s+oil)/g, "soybean oil") + c);
+    // "Nut & Seed Flour Blend (almonds, sunflower seeds)", "Catalina Flour (pea protein, corn flour)": a flour whose
+    // own list names what it's made of, none of it wheat, isn't wheat. Only when the list names a non-wheat source:
+    // "Enriched Flour (Niacin, Reduced Iron)" lists vitamins, and is still wheat.
+    const NON_WHEAT_SOURCE = /\b(?:almonds?|nuts?|seeds?|peas?|pea protein|corn|rice|tapioca|coconut|chickpeas?|garbanzo|beans?|lentils?|potato(?:es)?|cassava|oats?|sorghum|millet|quinoa|teff|amaranth|buckwheat|arrowroot|flax|chia|sunflower|pumpkin|hemp)\b/;
+    s = s.replace(/\bflours?((?:\s+blend)?\s*\()([^()]*)\)/g, (m, a, inner) => !NON_WHEAT_SOURCE.test(inner) || /\b(?:wheat|flour|semolina|durum|spelt|farina|graham|kamut|einkorn|emmer|triticale)\b/.test(inner.replace(BY_ID.wheat.notRe, " ")) ? m : "fl-our" + a + inner + ")");
     const hits =(re, t) => { re.lastIndex = 0; const m = t.match(re); return m ? [...new Set(m.map(x => x.trim().replace(/\s+/g, " ")))].slice(0, 3) : null; };
     for (const a of LIST) {
       const m = hits(a.re, a.notRe ? s.replace(a.notRe, " ") : s);
       if (m) hard.set(a.id, m);
-      else if (a.softRe) { const w = hits(a.softRe, a.softNotRe ? s.replace(a.softNotRe, " ") : s); if (w) soft.set(a.id, w); }
+      else if (a.softRe) { const w = hits(a.softRe, (a.softNotRe ? s.replace(a.softNotRe, " ") : s).replace(/certified oats/g, " ")); if (w) soft.set(a.id, w); }
     }
     return { hard, soft };
   }
@@ -101,6 +133,11 @@
   const OFF_TAGS = { "en:milk": "milk", "en:eggs": "egg", "en:fish": "fish", "en:crustaceans": "shellfish", "en:molluscs": "shellfish",
     "en:nuts": "treenut", "en:peanuts": "peanut", "en:gluten": "wheat", "en:soybeans": "soy", "en:sesame-seeds": "sesame" };
   const offIds = tags => Array.isArray(tags) ? [...new Set(tags.map(t => OFF_TAGS[String(t).toLowerCase()]).filter(Boolean))] : [];
+  // Open Food Facts' own reading of the ingredient list (ingredients_analysis_tags).
+  const OFF_ANALYSIS = { "en:non-vegan": ["vegan", 1], "en:maybe-vegan": ["vegan", 0], "en:non-vegetarian": ["vegetarian", 1], "en:maybe-vegetarian": ["vegetarian", 0] };
+  // Why a weaker mention is only a "may".
+  const SOFT_WHY = { soy: "refined soybean oil is usually tolerated, and unnamed lecithin is usually but not always soy", peanut: "highly refined peanut oil is usually tolerated; ask your allergist",
+    gluten: "oats are often cross-contaminated with wheat unless certified gluten-free", vegetarian: "flavorings, rennet and carmine can be animal or not", vegan: "vitamin D3 is usually from lanolin unless it says lichen" };
 
   // Built-in foods: what a typical version contains, by name. "?x" means it often may (shared equipment, or common
   // in some recipes but not all). Built-ins not listed have none of the nine in a typical version.
@@ -194,11 +231,26 @@
     "Miso paste": "soy ?wheat", "Queso dip": "milk", "Buffalo sauce": "?milk", "Fish sauce": "fish ?shellfish", "Marinara sauce": "?milk",
     "Vegetable oil (soybean)": "?soy", "Coconut milk, canned": "", "Coconut oil": "", "Butternut squash": "",
   };
+  // Diets for built-in foods, beyond what the allergen table and the name already say (wheat → gluten, a meat word in
+  // the name → not vegetarian, milk or egg → not vegan). Same "?x" for "often".
+  const TYPICAL_DIET = {
+    // gluten without wheat
+    "Barley, pearled": "gluten", "Beer": "gluten ?vegan", "Light beer": "gluten ?vegan", "Frosted cereal": "gluten", "Rice crispy treat": "gluten ?vegetarian", "Raisin bran": "gluten",
+    // meat, fish or gelatin the name doesn't show
+    "Cheeseburger, fast food": "vegetarian", "Double cheeseburger, fast food": "vegetarian", "Chili with beans, canned": "vegetarian", "Potstickers, frozen": "vegetarian",
+    "Egg roll": "?vegetarian", "Lasagna, frozen": "?vegetarian", "Gummy bears": "vegetarian", "Fruit snacks": "vegetarian", "Toaster pastry": "?vegetarian",
+    "Protein bar": "?vegetarian", "French fries": "?vegetarian", "Refried beans": "?vegetarian", "Baked beans": "?vegetarian", "Brown gravy": "?vegetarian",
+    "Instant ramen": "?vegetarian", "Parmesan, grated": "?vegetarian", "Pesto": "?vegetarian", "Alfredo sauce, jarred": "?vegetarian", "Frozen yogurt": "?vegetarian",
+    "Red wine": "?vegan ?vegetarian",
+    // vegan beyond meat, milk and eggs
+    "Honey": "vegan", "Granola": "?vegan", "Graham crackers": "?vegan", "Sugar": "?vegan", "Granola bar, chewy": "?vegan", "Instant oatmeal, flavored": "?vegan",
+  };
   const parseTypical = s => { const c = [], m = []; for (const t of String(s || "").split(/\s+/).filter(Boolean)) (t[0] === "?" ? m : c).push(t.replace(/^\?/, "")); return { contains: c, may: m }; };
 
   // The viewer's allergens: known ids, plus anything typed under "Other" ("coconut, mustard").
   function chosen(p) {
-    const ids = Array.isArray(p && p.allergies) ? p.allergies.filter(id => BY_ID[id]) : [];
+    const ids = [...(Array.isArray(p && p.allergies) ? p.allergies.filter(id => IDS.includes(id)) : []),
+      ...(Array.isArray(p && p.diets) ? p.diets.filter(id => DIET_IDS.includes(id)) : [])];
     const other = String((p && p.allergyOther) || "").split(",").map(s => s.trim().toLowerCase()).filter(s => s.length >= 2 && s.length <= 40).slice(0, 12);
     return { ids, other };
   }
@@ -217,21 +269,41 @@
       t.contains.forEach(id => add(contains, id, "usually in it"));
       t.may.forEach(id => add(may, id, "common in some versions"));
     } else if (!f.src) src = "typical";
+    if (!f.src && Object.prototype.hasOwnProperty.call(TYPICAL_DIET, f.n)) {
+      const t = parseTypical(TYPICAL_DIET[f.n]);
+      t.contains.forEach(id => add(contains, id, "usually in it"));
+      t.may.forEach(id => add(may, id, "common in some versions"));
+    }
     const offC = offIds(f.allergens), offM = offIds(f.traces);
     if (offC.length || offM.length) src = "label";
     const glutenOnly = (f.allergens || []).includes("en:gluten") && !(f.allergens || []).some(t => /^en:wheat/.test(String(t)));
     offC.forEach(id => id === "wheat" && glutenOnly ? add(may, id, "gluten (Open Food Facts; could be wheat, barley, rye or oats)") : add(contains, id, "Open Food Facts allergen list"));
     offM.forEach(id => add(may, id, "Open Food Facts traces list"));
+    // Their gluten tag is exactly the gluten-free diet's question.
+    if ((f.allergens || []).includes("en:gluten")) add(contains, "gluten", "Open Food Facts allergen list");
+    else if ((f.traces || []).includes("en:gluten")) add(may, "gluten", "Open Food Facts traces list");
+    for (const t of Array.isArray(f.analysis) ? f.analysis : []) {
+      const a = OFF_ANALYSIS[String(t).toLowerCase()];
+      if (a) { src = "label"; add(a[1] ? contains : may, a[0], a[1] ? "Open Food Facts ingredient analysis" : "Open Food Facts ingredient analysis: unclear ingredients"); }
+    }
     if (f.ingredients) {
       src = "label";
       const r = fromText(f.ingredients);
       for (const [id, w] of r.contains) w.forEach(x => add(contains, id, `“${x}” in the ingredients`));
-      for (const [id, w] of r.may) w.forEach(x => add(may, id, r.soft.has(id) ? `${x} (highly refined oil is usually tolerated; ask your allergist)` : "“may contain” or shared-facility note"));
+      for (const [id, w] of r.may) w.forEach(x => add(may, id, r.soft.has(id) ? `“${x}” (${SOFT_WHY[id] || "could go either way"})` : "“may contain” or shared-facility note"));
     }
     // The name counts for everything: "Peanut butter pretzels" contains peanuts whatever else is on file.
     const nm = scanBoth(name);
     for (const [id, w] of nm.hard) w.forEach(x => add(contains, id, `“${x}” in the name`));
-    for (const [id, w] of nm.soft) w.forEach(x => add(may, id, `${x} in the name (highly refined oil is usually tolerated)`));
+    for (const [id, w] of nm.soft) w.forEach(x => add(may, id, `“${x}” in the name (${SOFT_WHY[id] || "could go either way"})`));
+    // Diets from what was found: wheat is gluten; fish isn't vegetarian; milk, eggs, meat and fish aren't vegan.
+    // Wheatgrass and barley grass are the young leaves: wheat for an allergy, but only a "may" for gluten.
+    const onlyGrass = id => id === "wheat" && (contains.get(id) || []).every(w => /grass/i.test(w));
+    for (const [to, from] of DERIVED) for (const id of from) {
+      if (contains.has(id) && to === "gluten" && onlyGrass(id)) add(may, to, `${contains.get(id)[0]} (the grass has no gluten, but cross-contact with the grain is common)`);
+      else if (contains.has(id)) add(contains, to, `${lower(id)}: ${contains.get(id)[0]}`);
+      else if (may.has(id)) add(may, to, `${lower(id)}: ${may.get(id)[0]}`);
+    }
     for (const id of contains.keys()) may.delete(id);
     return { contains, may, src };
   }
@@ -253,7 +325,8 @@
   }
 
   const labelOf = id => BY_ID[id] ? BY_ID[id].label : id;
-  const lower = id => BY_ID[id] ? (id === "treenut" ? "tree nuts" : BY_ID[id].label.toLowerCase()) : id;
+  const lower = id => BY_ID[id] ? (BY_ID[id].name || (id === "treenut" ? "tree nuts" : BY_ID[id].label.toLowerCase())) : id;
+  const shortOf = x => (BY_ID[x.id] && BY_ID[x.id].short) || `Has ${x.name}`;
   const join = list => list.length < 2 ? (list[0] || "") : list.slice(0, -1).join(", ") + " and " + list[list.length - 1];
 
   // The answer for this viewer, or null when they haven't set any allergens.
@@ -269,7 +342,7 @@
     const may = [...c.ids.filter(id => !d.contains.has(id) && d.may.has(id)).map(id => ({ id, name: lower(id), why: d.may.get(id) })),
       ...o.may.map(t => ({ id: "other:" + t, name: t, why: ["“may contain” or shared-facility note"] }))];
     const status = contains.length ? "contains" : may.length ? "may" : d.src === "name" ? "unknown" : "clear";
-    return { status, contains, may, src: d.src, ...words(status, contains, may, d.src, f) };
+    return { status, contains, may, src: d.src, ...words(status, contains, may, d.src, f, noun(c)) };
   }
 
   // A plate: the worst answer among its items, naming which item has what.
@@ -283,22 +356,24 @@
     }
     const unknown = parts.some(x => x.r.status === "unknown");
     const status = contains.length ? "contains" : may.length ? "may" : unknown ? "unknown" : "clear";
-    return { status, contains, may, src: "plate", ...words(status, contains, may, "plate", f) };
+    return { status, contains, may, src: "plate", ...words(status, contains, may, "plate", f, noun(chosen(p))) };
   }
 
+  // "your allergens", "your diet", or both, for the card's wording.
+  const noun = c => { const al = c.ids.some(id => IDS.includes(id)) || c.other.length > 0, di = c.ids.some(id => DIET_IDS.includes(id)); return al && di ? "your allergens or diet" : di ? "your diet" : "your allergens"; };
   // What the card says. Never "safe": the best it says is that nothing was found in what was checked.
-  function words(status, contains, may, src, f) {
+  function words(status, contains, may, src, f, what2 = "your allergens") {
     const names = l => join(l.map(x => x.name));
     const what = src === "label" ? "the ingredient list" : src === "typical" ? (f.c === "prepared" ? "a typical recipe" : "a typical version") : src === "plate" ? "the items on this plate" : "the name";
-    if (status === "contains") return { title: `Contains ${names(contains)}`, short: contains.length > 1 ? "Allergens" : `Has ${contains[0].name}`,
+    if (status === "contains") return { title: `Contains ${names(contains)}`, short: shortOf(contains[0]) + (contains.length > 1 ? ` +${contains.length - 1}` : ""),
       text: `${src === "plate" ? "On this plate" : src === "typical" ? `In ${what}` : "From " + what}: ${contains.map(x => `${x.name} (${x.why.join("; ")})`).join(", ")}.${may.length ? ` May also contain ${names(may)}.` : ""}` };
     if (status === "may") return { title: `May contain ${names(may)}`, short: "May contain",
       text: src === "typical" ? `Not usually in it, but common in some versions or made on shared equipment. Check the label.` : src === "plate" ? `${may.map(x => `${x.name} (${x.why.join(", ")})`).join(", ")}. Check each label.` : `The label says it may contain ${names(may)} (shared equipment or facility).` };
-    if (status === "unknown") return { title: "Couldn't check your allergens", short: "Not checked",
-      text: "There's no ingredient list for this food, so allergens can't be checked. Read the package." };
-    return { title: `None of your allergens found`, short: "",
+    if (status === "unknown") return { title: `Couldn't check ${what2}`, short: "Not checked",
+      text: `There's no ingredient list for this food, so ${what2} can't be checked. Read the package.` };
+    return { title: what2 === "your allergens" ? "None of your allergens found" : what2 === "your diet" ? "Nothing your diet rules out found" : "None of your allergens or diet flags found", short: "",
       text: src === "label" ? "Not found in the ingredient list or allergen statements. Lists can be incomplete or out of date: read the package." : src === "plate" ? "None found in the items on this plate. Check each label." : `Not in ${what}. Brands and recipes vary: read the label.` };
   }
 
-  return { LIST, IDS, BY_ID, TYPICAL, scan, fromText, detect, check, chosen, hasAny, offIds, labelOf };
+  return { LIST, IDS, DIET_IDS, BY_ID, TYPICAL, TYPICAL_DIET, scan, fromText, detect, check, chosen, hasAny, offIds, labelOf };
 });

@@ -98,7 +98,7 @@ test("typical recipes: every name is a built-in food, and names that say an alle
   assert.deepEqual(Object.keys(A.TYPICAL).filter(n => !names.has(n)), []);
   for (const f of FOODS) {
     const listed = String(A.TYPICAL[f.n] || "").split(/\s+/).filter(Boolean).map(t => t.replace(/^\?/, ""));
-    for (const id of A.scan([f.n, ...(f.a || [])].join(", ")).keys()) assert.ok(listed.includes(id), `${f.n}: name says ${id}`);
+    for (const id of [...A.scan([f.n, ...(f.a || [])].join(", ")).keys()].filter(id => A.IDS.includes(id))) assert.ok(listed.includes(id), `${f.n}: name says ${id}`);
   }
   const has = (n, id) => A.detect(FOODS.find(f => f.n === n)).contains.has(id);
   assert.ok(has("Pad thai", "peanut") && has("Pad thai", "fish") && has("Pad thai", "egg"));
@@ -136,4 +136,71 @@ test("backups keep valid allergens and drop anything else", () => {
   assert.deepEqual(out.allergies, ["milk", "peanut"]);
   assert.equal(out.allergyOther, "coconut");
   assert.equal(B.KEYS.profile({ cal: 2000, allergyOther: "x".repeat(300) }).allergyOther, undefined);
+});
+
+// ---------- diets: gluten-free, vegetarian, vegan ----------
+const flagOf = (t, d) => { const r = A.detect(food("Test", { ingredients: t })); return r.contains.has(d) ? "contains" : r.may.has(d) ? "may" : "none"; };
+
+test("gluten: wheat counts, so do barley, rye and malt; oats are a may; look-alikes aren't", () => {
+  assert.equal(flagOf("Enriched flour, sugar", "gluten"), "contains", "wheat is gluten");
+  for (const t of ["Barley, water", "Rye flour", "Sugar, malt extract", "Malted milk powder", "Soy sauce (water, wheat, soybeans)"]) assert.equal(flagOf(t, "gluten"), "contains", t);
+  assert.equal(flagOf("Rolled oats, honey", "gluten"), "may", "oats are often cross-contaminated");
+  assert.equal(flagOf("Gluten-free oats, honey", "gluten"), "none", "certified gluten-free oats");
+  for (const t of ["Buckwheat, rice", "Maltodextrin, maltitol, maltose", "Corn, rice flour", "Tamari soy sauce powder"]) assert.equal(flagOf(t, "gluten"), "none", t);
+  // Real labels (eval/allergen-eval.mjs): flours whose own list has no wheat, corn semolina, and wheatgrass.
+  assert.equal(flagOf("Nut & Seed Flour Blend (almonds, sunflower seeds, flax seeds), Tapioca", "gluten"), "none");
+  assert.equal(flagOf("Catalina Flour (pea protein, corn flour, tapioca starch)", "gluten"), "none");
+  assert.equal(flagOf("Enriched Bleached Flour (Flour, Niacin, Reduced Iron)", "gluten"), "contains");
+  assert.equal(flagOf("Enriched flour (niacin, reduced iron, thiamine mononitrate), sugar", "gluten"), "contains", "a vitamin list doesn't make flour wheat-free");
+  assert.equal(flagOf("Whole oat flour, corn semolina", "gluten"), "may");
+  assert.equal(flagOf("Organic wheatgrass powder, barley grass powder", "gluten"), "may", "the grass has no gluten, but cross-contact is common");
+  assert.equal(flagOf("Organic wheatgrass powder", "wheat"), "contains", "for a wheat allergy it's still wheat");
+});
+
+test("vegetarian: meat, fish, gelatin; flavorings and rennet are a may; meatless look-alikes aren't", () => {
+  for (const t of ["Chicken broth, salt", "Sugar, gelatin, citric acid", "Beef tallow", "Anchovies, olive oil", "Shrimp, rice", "Pork rinds"]) assert.equal(flagOf(t, "vegetarian"), "contains", t);
+  for (const t of ["Noodles, artificial chicken flavour, salt", "Milk, cheese cultures, salt, enzymes (rennet)", "Sugar, carmine"]) assert.equal(flagOf(t, "vegetarian"), "may", t);
+  for (const t of ["Plant-based chicken (pea protein)", "Chickpeas, tahini", "Meatless crumbles (soy)", "Water chestnuts, duck sauce", "Coconut meat", "Microbial rennet, milk"]) assert.equal(flagOf(t, "vegetarian"), "none", t);
+  assert.equal(flagOf("Hot dog bun (wheat flour)", "vegetarian"), "none");
+});
+
+test("vegan: anything not vegetarian, plus milk, eggs, honey; plant milks and honeydew aren't", () => {
+  for (const t of ["Whey protein", "Egg whites", "Honey, oats", "Shellac (confectioner's glaze)", "Chicken broth", "Sugar, gelatin"]) assert.equal(flagOf(t, "vegan"), "contains", t);
+  assert.equal(flagOf("Water, vitamin D3", "vegan"), "may", "vitamin D3 is usually from lanolin");
+  for (const t of ["Coconut milk, cocoa butter", "Almond milk (water, almonds)", "Honeydew melon", "Peanut butter (peanuts, salt)", "Oat milk, sunflower lecithin"]) assert.equal(flagOf(t, "vegan"), "none", t);
+});
+
+test("diets on built-in foods: names, typical recipes and derived flags", () => {
+  const p = { diets: ["vegetarian"] }, v = { diets: ["vegan"] }, g = { diets: ["gluten"] };
+  const st = (n, prof) => A.check(FOODS.find(f => f.n === n), prof).status;
+  for (const n of ["Chicken breast, grilled", "Salmon", "Cheeseburger, fast food", "Gummy bears", "Caesar salad", "Pad thai", "Chicken broth"]) assert.equal(st(n, p), "contains", n);
+  for (const n of ["Hummus", "Tofu, firm", "Veggie burger", "Apple", "Whole milk"]) assert.equal(st(n, p), "clear", n);
+  for (const n of ["Whole milk", "Eggs", "Honey", "Butter", "Croissant"]) assert.equal(st(n, v), "contains", n);
+  for (const n of ["Almond milk, unsweetened", "Oat milk", "Soy milk, unsweetened", "Tofu, firm", "Hummus", "Coconut milk, canned"]) assert.equal(st(n, v), "clear", n);
+  for (const n of ["White bread", "Beer", "Barley, pearled", "Soy sauce", "Pasta"]) assert.equal(st(n, g), "contains", n);
+  for (const n of ["White rice", "Corn tortillas", "Quinoa", "Potato, baked"]) assert.equal(st(n, g), "clear", n);
+  assert.equal(st("Oatmeal, rolled oats", g), "may");
+  const names = new Set(FOODS.map(f => f.n));
+  assert.deepEqual(Object.keys(A.TYPICAL_DIET).filter(n => !names.has(n)), [], "every diet entry is a built-in food");
+  // Every meat and seafood food is flagged not vegetarian.
+  assert.deepEqual(FOODS.filter(f => ["meat", "seafood"].includes(f.c) && st(f.n, p) !== "contains").map(f => f.n), []);
+});
+
+test("diets: the flag's wording, Open Food Facts tags, and swaps leave them out", () => {
+  const r = A.check(FOODS.find(f => f.n === "Chicken breast, grilled"), { diets: ["vegetarian"] });
+  assert.equal(r.title, "Contains meat, fish or gelatin");
+  assert.equal(r.short, "Not vegetarian");
+  assert.equal(A.check(FOODS.find(f => f.n === "Apple"), { diets: ["vegan"] }).title, "Nothing your diet rules out found");
+  assert.equal(A.check(FOODS.find(f => f.n === "Apple"), { diets: ["vegan"], allergies: ["milk"] }).title, "None of your allergens or diet flags found");
+  assert.equal(A.check(food("Chips", { analysis: ["en:non-vegan", "en:vegetarian"] }), { diets: ["vegan"] }).status, "contains");
+  assert.equal(A.check(food("Chips", { analysis: ["en:maybe-vegan"] }), { diets: ["vegan"] }).status, "may");
+  assert.equal(A.check(food("Crackers", { allergens: ["en:gluten"] }), { diets: ["gluten"] }).status, "contains");
+  const prof = { ...V.DEFAULT_PROFILE, diets: ["vegetarian"] };
+  const R = M.roles(FOODS, prof);
+  assert.ok(R.protein.length > 0 && !R.protein.some(f => ["meat", "seafood"].includes(f.c)), "meal ideas use only vegetarian proteins");
+  for (const s of V.findSwaps(FOODS.find(f => f.n === "Bacon"), FOODS, prof, 10)) assert.ok(!["meat", "seafood"].includes(s.food.c), s.food.n);
+});
+
+test("backups keep valid diets", () => {
+  assert.deepEqual(B.KEYS.profile({ cal: 2000, diets: ["vegan", "keto", "vegan", "gluten"] }).diets, ["vegan", "gluten"]);
 });
