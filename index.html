@@ -68,6 +68,7 @@ button { font: inherit; color: inherit; }
 /* search */
 .search { position: relative; }
 .search-row { display: flex; gap: 8px; flex-wrap: wrap; }
+#scanBtn:not([hidden]) { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
 #q { flex: 1 1 220px; min-width: 0; font: 500 18px var(--font-body); color: var(--ink); background: var(--surface); border: 2px solid var(--ink); border-radius: 10px; padding: 12px 14px; }
 .btn { font: 700 15px var(--font-body); letter-spacing: 0; background: var(--ink); color: var(--paper); border: 0; border-radius: 10px; padding: 0 18px; cursor: pointer; min-height: 48px; }
 .btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
@@ -555,6 +556,12 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
   .report a { display: inline-block; padding: 12px 0; }
   .tag .for .linkbtn { padding: 12px 6px; margin: -12px -6px; }
   body.picked header .sub { display: none; }
+  /* Phones, with a product open: a slim title and one search row (the scanner as an icon button), so the
+     product starts higher. Its label stays for screen readers. */
+  body.picked h1 { font-size: 24px; }
+  body.picked .search-row { flex-wrap: nowrap; }
+  body.picked #scanBtn { padding: 0 12px; flex: none; }
+  body.picked #scanBtn .scan-lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .result > .side > .tryinstead { order: -1; }
   .leftcol.fold .label { max-height: 300px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
   .label-more { display: block; justify-self: start; }
@@ -601,7 +608,7 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
     <form class="search-row" id="form" autocomplete="off">
       <input id="q" type="search" placeholder="Try avocado, ground beef, oatmeal…" aria-label="Search a food" aria-autocomplete="list" aria-controls="suggest">
       <button class="btn" type="submit">Check</button>
-      <button class="btn ghost" type="button" id="scanBtn" hidden>Scan barcode</button>
+      <button class="btn ghost" type="button" id="scanBtn" hidden><svg class="scan-ic" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5.5A1.5 1.5 0 015.5 4H8M16 4h2.5A1.5 1.5 0 0120 5.5V8M20 16v2.5a1.5 1.5 0 01-1.5 1.5H16M8 20H5.5A1.5 1.5 0 014 18.5V16"/><path d="M8 8v8M11 8v8M14 8v8M17 8v8"/></svg><span class="scan-lbl">Scan barcode</span></button>
     </form>
     <ul class="suggest" id="suggest" role="listbox" hidden></ul>
     <input type="file" id="labelFile" accept="image/*" hidden data-pages-only>
