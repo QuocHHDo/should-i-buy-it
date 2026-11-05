@@ -182,6 +182,14 @@
   // Each bar is a nutrient against the verdict's own cutoffs (the tick marks), with the points it scored. Other
   // factors and the total follow, so the verdict reads as a sum. Always one standard serving: what the verdict judges.
   const signed = n => n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "0";
+  // A deep-dive section folded to one line that keeps its key fact visible ("Ingredients · 6 ingredients · 2 added
+  // sugars"). Opening one is remembered, so people who always read it don't have to tap it every time.
+  let openFolds = new Set(store.get("openFolds", []));
+  function fold(key, cls, title, summary, kids, forceOpen = false) {
+    return el("details", { class: "panel fold " + cls, open: forceOpen || openFolds.has(key) ? true : null,
+      ontoggle: e => { if (e.target.open) openFolds.add(key); else openFolds.delete(key); store.set("openFolds", [...openFolds]); } },
+      el("summary", {}, el("h3", { text: title }), summary ? el("span", { class: "fsum", text: summary }) : null), ...kids);
+  }
   function renderWhy(f) {
     const b = V.breakdown(f, profile);
     if (!b) return renderBars(V.scale(f, mult));
@@ -214,12 +222,13 @@
       scale, el("div", { class: "why-scale-lbl", "aria-hidden": "true" }, el("span", { text: "Limit it ≤ −2" }), el("span", { text: "In moderation" }), el("span", { text: "Get it ≥ +2" })),
       b.note ? el("p", { class: "why-override", text: b.note }) : null,
       b.override ? el("p", { class: "why-override" }, el("b", { text: `Verdict: ${b.word}. ` }), b.override) : null);
-    const title = b.meal ? "What decided it (whole meal)" : "What decided it";
-    return el("section", { class: "panel decided" }, el("h3", { text: title }), wrap, other, total,
+    const title = b.meal ? "Score breakdown (whole meal)" : "Score breakdown";
+    const word = { good: "Get it", mid: "In moderation", bad: "Limit it", fine: "Fine" }[b.byScore];
+    return fold("decided", "decided", title, `Total ${signed(b.score)} → ${word}${b.override ? ` · verdict ${b.word}` : ""}`, [wrap, other, total,
       el("p", { class: "legend", text: (b.meal
         ? "Bars are this meal against a third of your daily goals and limits. Ticks are the cutoffs: past the first, ±1 point; past the second, ±2."
         : "Ticks are the verdict's cutoffs: past the first, ±1 point; past the second, ±2. Protein counts by its share of calories, so a lean food scores higher than a fatty one with the same grams.")
-        + (mult !== 1 && !b.meal ? ` Bars are one serving, which is what the verdict judges; the label shows your ${fmt(mult)} servings.` : "") }));
+        + (mult !== 1 && !b.meal ? ` Bars are one serving, which is what the verdict judges; the label shows your ${fmt(mult)} servings.` : "") })]);
   }
 
   // ---------- swaps ----------
@@ -254,7 +263,7 @@
     const r = f && f.ingredients && window.SelfCheckIngredients ? window.SelfCheckIngredients.analyze(f.ingredients, f.n) : null;
     if (!r) return null;
     const ord = n => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
-    const sec = el("section", { class: "panel ingredients" }, el("h3", { text: "Ingredients" }), el("p", { class: "ing-sum", text: r.summary + "." }));
+    const sec = el("div", { class: "fbody" });
     if (r.contains) sec.append(el("p", { class: "ing-allergen" }, el("b", { text: "Label says: " }), `Contains ${r.contains}.`));
     for (const g of r.groups) {
       sec.append(el("div", { class: "ig " + g.tone },
@@ -269,13 +278,16 @@
     if (r.may.length) sec.append(el("p", { class: "legend", text: r.may.join(" ") }));
     sec.append(el("details", { class: "ingr" }, el("summary", { text: "The label's full text" }), el("p", { text: f.ingredients })));
     sec.append(el("p", { class: "legend", text: "Numbers are each ingredient's place on the label, from most to least by weight. Groups describe what each ingredient is; the verdict already counts the amounts that matter (added sugar, saturated fat, sodium)." }));
-    return sec;
+    const summary = el("span", { class: "fsum ing-sum", text: r.summary + (r.contains ? ` · contains ${r.contains.toLowerCase()}` : "") });
+    return el("details", { class: "panel fold ingredients", open: openFolds.has("ingredients") ? true : null,
+      ontoggle: e => { if (e.target.open) openFolds.add("ingredients"); else openFolds.delete("ingredients"); store.set("openFolds", [...openFolds]); } },
+      el("summary", {}, el("h3", { text: "Ingredients" }), summary), sec);
   }
 
   function renderAdditives(f) {
     const info = window.SelfCheckAdditives && window.SelfCheckAdditives.analyze(f);
     if (!info) return null;
-    const sec = el("section", { class: "panel additives" }, el("h3", { text: "Additives & processing" }));
+    const sec = el("div", { class: "fbody" });
     if (info.novaInfo) sec.append(el("div", { class: "nova n" + info.nova },
       el("span", { class: "nova-badge", text: `NOVA ${info.nova}` }),
       el("span", {}, el("b", { text: info.novaInfo[0] + ". " }), info.novaInfo[1])));
@@ -301,7 +313,10 @@
     }
     if (f.ingredients && !window.SelfCheckIngredients) sec.append(el("details", { class: "ingr" }, el("summary", { text: "Ingredients" }), el("p", { text: f.ingredients })));
     sec.append(el("p", { class: "legend", text: (info.fromText ? "Found by name in the ingredient list, so an additive listed under an unusual name can be missed. " : "From Open Food Facts. ") + "Tap an additive for what it is and what the evidence says. Most approved additives are judged safe at normal amounts; “Mixed evidence” means approved but questioned, with the source. Add any you avoid to your skip list (for example “sucralose” or “E407”)." }));
-    return sec;
+    const n = info.known ? info.items.length : 0, removed = info.known && info.items.some(a => a.status === "removed"), mixed = info.known ? info.items.filter(a => a.status === "mixed").length : 0;
+    const summary = [info.novaInfo ? `${info.novaInfo[0]} (NOVA ${info.nova})` : "", info.known ? (n ? `${n} additive${n === 1 ? "" : "s"}${removed ? ", one removed from food by a regulator" : mixed ? `, ${mixed} with mixed evidence` : ""}` : "no additives") : ""].filter(Boolean).join(" · ");
+    // An additive a regulator has removed from food is worth seeing without a tap: that section starts open.
+    return fold("additives", "additives", "Additives & processing", summary, [sec], removed);
   }
 
   // ---------- price (typical, or your own) ----------
@@ -334,6 +349,12 @@
       sec.append(el("p", { class: "legend" }, p.mine
         ? `Your price: ${PR.money(p.unitPrice)} per ${unitWord}${p.typical != null ? ` (typical ${PR.money(p.typical)} per serving)` : ""}.`
         : `Typical ${PR.money(p.unitPrice)} per ${p.unitLabel} · ${p.source}${p.note ? ` · ${p.note}` : ""}. Your store may differ.`));
+    } else if (!editing) {
+      // Nothing to show: one line with the way to add a price, not a whole box.
+      sec.classList.add("compact");
+      sec.append(el("p", { class: "legend", title: "There's no free, current price series for it." }, "No typical price for this food. ",
+        el("button", { class: "linkish", type: "button", text: "Add my price", onclick: () => { priceEditing = f.n; renderResult(current); } })));
+      return sec;
     } else sec.append(el("p", { class: "legend", text: "No typical price for this food: there's no free, current price series for it." }));
     if (editing) {
       const input = el("input", { type: "number", min: "0", step: "0.01", inputmode: "decimal", id: "myPrice", "aria-label": `Your price per ${unitWord}`, value: p && p.mine ? String(p.unitPrice) : "" });
@@ -527,10 +548,11 @@
             mult !== 1 ? el("p", { class: "per", text: "The verdict is for one standard serving; the label and bars show your amount." }) : null),
           alFirst ? null : renderAllergy(a),
           !isPlate && compareWith && compareWith.n !== f.n ? renderCompare(f) : null,
+          // The decision first (swaps and the reasons), then price, then the folded deep dives.
+          isPlate ? null : renderSwaps(f),
+          el("section", { class: "panel whyp" }, el("h3", { text: "Why" }), reasons),
           isPlate ? renderPlatePrice() : renderPrice(f),
           renderWhy(f),
-          isPlate ? null : renderSwaps(f),
-          el("section", { class: "panel" }, el("h3", { text: "Why" }), reasons),
           isPlate ? null : renderIngredients(f),
           isPlate ? null : renderAdditives(f),
           isPlate || (compareWith && compareWith.n !== f.n) ? null : renderCompare(f)

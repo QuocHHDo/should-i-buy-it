@@ -135,6 +135,8 @@ button { font: inherit; color: inherit; }
   /* Phones: the verdict comes first, then the label. .side's children join the .result grid so they can be reordered. */
   .result > .side { display: contents; }
   .result > .side > .tag { order: -1; }
+  /* Phones: the reasons come right after the verdict and the swaps, before the label. */
+  .result > .side > .whyp { order: -1; }
   .result > .side > .alflag.contains, .result > .side > .alflag.may { order: -2; }
   .leftcol { max-width: none; }
 }
@@ -240,6 +242,17 @@ details.adv > label { margin-top: 8px; }
 .tag .for .linkbtn { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
 .report { margin: 6px 0 0; font-size: 12.5px; } .report a { color: var(--muted); }
 .footlinks { margin: 8px 0 0; font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 14px; } .footlinks a { color: var(--muted); }
+/* Folded deep-dive sections: one line with the key fact, open on tap. */
+details.fold > summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; min-height: 28px; padding-right: 26px; position: relative; }
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary h3 { margin: 0; }
+details.fold > summary .fsum { color: var(--ink); font-size: 14px; }
+details.fold > summary::after { content: ""; position: absolute; right: 4px; top: 6px; width: 8px; height: 8px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); transition: transform .15s; }
+details.fold[open] > summary::after { transform: rotate(-135deg); top: 10px; }
+details.fold[open] > summary { margin-bottom: 10px; }
+details.fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.fbody { display: grid; gap: 10px; }
+.panel.price.compact { padding-top: 0; padding-bottom: 0; } .panel.price.compact .legend { margin: 0; }
 .panel h3 { font: 800 13px var(--font-display); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
 .bars { display: grid; gap: 9px; }
 .bar { display: grid; grid-template-columns: 104px minmax(0, 1fr) 92px; gap: 10px; align-items: center; font-variant-numeric: tabular-nums; }
