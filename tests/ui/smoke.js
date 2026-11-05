@@ -34,6 +34,7 @@ w.fetch = async url => {
     return { ok: true, status: 200, json: async () => ({ totalHits: foods.length, foods }) };
   }
   if (url.includes("api.nal.usda.gov")) return { ok: true, status: 200, json: async () => usdaFixture };
+  if (url.includes("openfoodfacts.org/cgi/search.pl")) return { ok: true, status: 200, json: async () => JSON.parse(read("tests/fixtures/off-search-lays.json")) };
   if (url.includes("openfoodfacts.org") && (offMode === "cola" || offMode === "candy")) return { ok: true, status: 200, json: async () => JSON.parse(read(`tests/fixtures/off-test-${offMode}.json`)) };
   if (url.includes("openfoodfacts.org") && offMode === "empty") return { ok: true, status: 200, json: async () => ({ status: 1, product: { product_name: "Mystery Box", nutriments: {} } }) };
   if (url.includes("openfoodfacts.org") && offMode === "missing") return { ok: false, status: 404, json: async () => ({ status: 0, status_verbose: "product not found" }) };
@@ -135,6 +136,8 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok(!asp.querySelector("details").open && /possibly carcinogenic/.test(asp.textContent) && asp.querySelector("a[href*='who.int']"), "aspartame's note and WHO source are one tap away");
     offMode = "candy"; $("#q").value = "0000000000024"; submit("#form"); await tick(10);
     ok($$(".additives li.st-removed").length === 3 && $$(".additives li.st-removed details[open] a").length === 3 && text(".tag .verdict") === "In moderation", `removed additives flagged with sources; verdict ${text(".tag .verdict")}`);
+    ok($(".additives").tagName === "DETAILS" && $(".additives").open, "a removed additive opens its folded section by itself");
+    ok(/regulator/.test(text(".additives .fsum")), `and the folded line says so (${text(".additives .fsum")})`);
     offMode = "empty"; $("#q").value = "0000000000031"; submit("#form"); await tick(10);
     ok(/Found “Mystery Box”, but neither Open Food Facts nor USDA has its nutrition data/.test(text("#out .notice")), `a product with no nutrition values at all still says so (${text("#out .notice")})`);
     offMode = "ok";
@@ -168,6 +171,14 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok(shown().length > 0 && shown().every(n => /Great Value/.test(n)), `Walmart brands only (${shown().join(", ")})`);
     ok(JSON.parse(w.localStorage.getItem("walmartOnly")) === true, "the Walmart filter is remembered");
     click(btn("Walmart brands only", $("#out"))); await tick(5);
+    // A title pasted from a store page searches products without its sizes, with the typical built-in food on top.
+    $("#q").value = "Lay's Classic Potato Chips, Party Size, 13 oz Bag"; submit("#form"); await tick(20);
+    ok(shown().includes("Lay's Classic Potato Chips") && /Open Food Facts/.test(text("#out .results")), `pasted title finds the product (${shown().slice(0, 4).join(", ")})`);
+    ok(/Searched for “Lay's Classic Potato Chips”/.test(text("#out .notice")), `the cleaned title is shown (${text("#out .searched")})`);
+    const typ = btn("Potato chips", $("#out .typical"));
+    ok(!!typ, `the typical version is pinned on top (${text("#out .typical")})`);
+    click(typ); await tick(4);
+    ok(text("#out h2") === "Potato chips", "choosing it opens the built-in food");
     // 14. Barcode and camera failures always end in a message, never a stuck spinner.
     for (const [mode, re] of [["missing", /Neither Open Food Facts nor USDA Branded Foods has barcode/], ["error", /Open Food Facts had an error \(503\), and USDA doesn't have it/], ["hang", /Open Food Facts took too long to answer, and USDA doesn't have it/]]) {
       offMode = mode; $("#q").value = "0123456789013"; submit("#form"); await tick(mode === "hang" ? 200 : 10);
@@ -208,6 +219,11 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
       const tot = Number($(".why-total b").textContent.replace("−", "-"));
       ok(pts.length >= 6 && pts.reduce((x, y) => x + y, 0) === tot, `chart points add up to the total (${pts.join(",")} = ${tot})`);
       ok($$(".decided .tick").length >= 6, `chart shows the verdict's cutoffs as ticks (${$$(".decided .tick").length})`);
+      // Deep dives start folded to one line with their key fact; opening one is remembered.
+      ok($(".decided").tagName === "DETAILS" && !$(".decided").open && /Total [+−]?\d+ → /.test(text(".decided .fsum")), `the score breakdown is folded with its total showing (${text(".decided .fsum")})`);
+      $(".decided").open = true; $(".decided").dispatchEvent(new w.Event("toggle")); await tick(1);
+      ok(JSON.parse(w.localStorage.getItem("openFolds") || "[]").includes("decided"), "opening it is remembered");
+      $(".decided").open = false; $(".decided").dispatchEvent(new w.Event("toggle")); await tick(1);
       ok(/Get it/.test(text(".why-total")) && /Get it/.test(text(".tag .verdict")), `total matches the verdict (${text(".why-total").slice(0, 40)})`);
     }
     w.location.hash = "#chicken-pho"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
@@ -343,7 +359,7 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok(shown() === "out" && tab("check").getAttribute("aria-current") === "page" && text("#out h2").length > 0, `opening a food from Browse switches to Check (${text("#out h2")})`);
     if (MODE === "pages") {
       w.location.hash = "#goals"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(2);
-      ok(shown() === "profile,dataBox,installBox,phoneBox", `#goals opens the Goals view (${shown()})`);
+      ok(shown() === "profile,alBox,prefBox,dataBox,installBox,phoneBox", `#goals opens the Goals view (${shown()})`);
       w.location.hash = "#avocado"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(2);
       ok(shown() === "out" && text("#out h2") === "Avocado", `a food link returns to Check (${text("#out h2")})`);
     }
@@ -401,7 +417,7 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
   // Public-site basics: allergen line, standard-goals hint, report link, footer links.
   if (MODE === "pages") {
     w.location.hash = "#greek-yogurt-plain-nonfat"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
-    ok(/Allergens aren't checked until you add yours/.test(text(".allergy")), "with no allergies set, the result says they aren't checked");
+    ok(/Allergens and diets aren't checked until you add yours/.test(text(".allergy")), "with no allergies set, the result says they aren't checked");
     // Allergies: tick Milk under Goals, and the yogurt gets a "Contains milk" flag; the verdict itself doesn't change.
     const word = text(".tag .verdict");
     const milk = $("#p-al-milk"); milk.checked = true; milk.dispatchEvent(new w.Event("change", { bubbles: true })); await tick(2);
@@ -412,6 +428,13 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok($(".alflag.clear") && /None of your allergens found/.test(text(".alflag")) && /read the label/.test(text(".alflag")), "a food without it still says to read the label", text(".alflag"));
     milk.checked = false; milk.dispatchEvent(new w.Event("change", { bubbles: true })); await tick(2);
     ok(!$(".alflag"), "unticking removes the flag");
+    // Diet: tick Vegetarian, and grilled chicken says so; tofu doesn't.
+    const veg = $("#p-al-vegetarian"); veg.checked = true; veg.dispatchEvent(new w.Event("change", { bubbles: true })); await tick(2);
+    w.location.hash = "#chicken-breast-grilled"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
+    ok(/Contains meat, fish or gelatin/.test(text(".alflag.contains")), "a vegetarian diet flags grilled chicken", text(".alflag"));
+    w.location.hash = "#tofu-firm"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
+    ok($(".alflag.clear") && /Nothing your diet rules out found/.test(text(".alflag")), "tofu passes a vegetarian diet", text(".alflag"));
+    veg.checked = false; veg.dispatchEvent(new w.Event("change", { bubbles: true })); await tick(2);
     w.location.hash = "#greek-yogurt-plain-nonfat"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
     const rep = $(".report a");
     ok(rep && /issues\/new\?title=Wrong\+verdict/.test(rep.href) && /Verdict%3A/.test(rep.href), "a prefilled report link sits under the label");

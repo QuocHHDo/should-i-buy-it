@@ -11,6 +11,7 @@
   const list = (v, max, each) => Array.isArray(v) ? v.slice(0, max).map(each).filter(x => x != null) : null;
   // Same ranges as the goal inputs.
   const ALLERGY_IDS = ["milk", "egg", "fish", "shellfish", "treenut", "peanut", "wheat", "soy", "sesame"];
+  const DIET_IDS = ["gluten", "vegetarian", "vegan"];
   const GOALS = { cal: [800, 6000], pro: [20, 400], sat: [5, 40], na: [500, 5000], add: [0, 100], fib: [10, 70] };
   // A looked-up food: plain values only (strings, numbers, booleans, arrays of those), with a name and calories.
   function lookupFood(f) {
@@ -37,6 +38,8 @@
       const ids = list(v.allergies, 9, x => ALLERGY_IDS.includes(x) ? x : null);
       if (ids) out.allergies = [...new Set(ids)];
       if (str(v.allergyOther, 200) != null) out.allergyOther = v.allergyOther;
+      const diets = list(v.diets, 10, x => DIET_IDS.includes(x) ? x : null);
+      if (diets) out.diets = [...new Set(diets)];
       return Object.keys(out).length ? out : null;
     },
     favorites: v => list(v, 100, x => str(x)),

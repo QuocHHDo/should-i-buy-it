@@ -7,6 +7,8 @@
   const Q = window.SelfCheckSearch;
   const CMP = window.SelfCheckCompare; // js/compare.js
   const AL = window.SelfCheckAllergens; // js/allergens.js
+  // Icons on the Goals chips and in the summary. Decoration only: the text label is always there.
+  const AL_ICON = { milk: "🥛", egg: "🥚", fish: "🐟", shellfish: "🦐", treenut: "🌰", peanut: "🥜", wheat: "🌾", soy: "🫘", sesame: "🥯", gluten: "🍞", vegetarian: "🥕", vegan: "🌱" };
   const CFG = Object.assign({ mode: "pages" }, window.SELF_CHECK_CONFIG || {});
   const PAGES = CFG.mode === "pages";
   const CAT_LABEL = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
@@ -61,10 +63,10 @@
   // The allergen box above the verdict. With no allergens set, a one-line pointer to set them.
   function renderAllergy(a) {
     const al = a.allergy;
-    if (!al) return el("p", { class: "allergy" }, "Allergens aren't checked until you add yours. ",
-      el("button", { class: "linkbtn", type: "button", text: "Add allergies", onclick: () => { showView("goals"); const b = $("p-allergies"); if (b) b.scrollIntoView({ block: "center" }); } }));
+    if (!al) return el("p", { class: "allergy" }, "Allergens and diets aren't checked until you add yours. ",
+      el("button", { class: "linkbtn", type: "button", text: "Add allergies or a diet", onclick: () => { showView("goals"); const b = $("p-allergies"); if (b) b.scrollIntoView({ block: "center" }); } }));
     const ICON = { contains: "!", may: "?", unknown: "?", clear: "✓" };
-    return el("section", { class: "alflag " + al.status, role: al.status === "contains" ? "alert" : "note", "aria-label": "Your allergens" },
+    return el("section", { class: "alflag " + al.status, role: al.status === "contains" ? "alert" : "note", "aria-label": "Your allergens and diet" },
       el("p", { class: "alt" }, el("span", { class: "alic", "aria-hidden": "true", text: ICON[al.status] }), al.title),
       el("p", { text: al.text }),
       el("p", { class: "alnote", text: al.status === "clear" ? "Not a guarantee. Ingredients change and cross-contact isn't always listed." : "Always read the package, and ask your allergist what to avoid." }));
@@ -180,6 +182,14 @@
   // Each bar is a nutrient against the verdict's own cutoffs (the tick marks), with the points it scored. Other
   // factors and the total follow, so the verdict reads as a sum. Always one standard serving: what the verdict judges.
   const signed = n => n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "0";
+  // A deep-dive section folded to one line that keeps its key fact visible ("Ingredients · 6 ingredients · 2 added
+  // sugars"). Opening one is remembered, so people who always read it don't have to tap it every time.
+  let openFolds = new Set(store.get("openFolds", []));
+  function fold(key, cls, title, summary, kids, forceOpen = false) {
+    return el("details", { class: "panel fold " + cls, open: forceOpen || openFolds.has(key) ? true : null,
+      ontoggle: e => { if (e.target.open) openFolds.add(key); else openFolds.delete(key); store.set("openFolds", [...openFolds]); } },
+      el("summary", {}, el("h3", { text: title }), summary ? el("span", { class: "fsum", text: summary }) : null), ...kids);
+  }
   function renderWhy(f) {
     const b = V.breakdown(f, profile);
     if (!b) return renderBars(V.scale(f, mult));
@@ -212,12 +222,13 @@
       scale, el("div", { class: "why-scale-lbl", "aria-hidden": "true" }, el("span", { text: "Limit it ≤ −2" }), el("span", { text: "In moderation" }), el("span", { text: "Get it ≥ +2" })),
       b.note ? el("p", { class: "why-override", text: b.note }) : null,
       b.override ? el("p", { class: "why-override" }, el("b", { text: `Verdict: ${b.word}. ` }), b.override) : null);
-    const title = b.meal ? "What decided it (whole meal)" : "What decided it";
-    return el("section", { class: "panel decided" }, el("h3", { text: title }), wrap, other, total,
+    const title = b.meal ? "Score breakdown (whole meal)" : "Score breakdown";
+    const word = { good: "Get it", mid: "In moderation", bad: "Limit it", fine: "Fine" }[b.byScore];
+    return fold("decided", "decided", title, `Total ${signed(b.score)} → ${word}${b.override ? ` · verdict ${b.word}` : ""}`, [wrap, other, total,
       el("p", { class: "legend", text: (b.meal
         ? "Bars are this meal against a third of your daily goals and limits. Ticks are the cutoffs: past the first, ±1 point; past the second, ±2."
         : "Ticks are the verdict's cutoffs: past the first, ±1 point; past the second, ±2. Protein counts by its share of calories, so a lean food scores higher than a fatty one with the same grams.")
-        + (mult !== 1 && !b.meal ? ` Bars are one serving, which is what the verdict judges; the label shows your ${fmt(mult)} servings.` : "") }));
+        + (mult !== 1 && !b.meal ? ` Bars are one serving, which is what the verdict judges; the label shows your ${fmt(mult)} servings.` : "") })]);
   }
 
   // ---------- swaps ----------
@@ -252,7 +263,7 @@
     const r = f && f.ingredients && window.SelfCheckIngredients ? window.SelfCheckIngredients.analyze(f.ingredients, f.n) : null;
     if (!r) return null;
     const ord = n => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
-    const sec = el("section", { class: "panel ingredients" }, el("h3", { text: "Ingredients" }), el("p", { class: "ing-sum", text: r.summary + "." }));
+    const sec = el("div", { class: "fbody" });
     if (r.contains) sec.append(el("p", { class: "ing-allergen" }, el("b", { text: "Label says: " }), `Contains ${r.contains}.`));
     for (const g of r.groups) {
       sec.append(el("div", { class: "ig " + g.tone },
@@ -267,13 +278,16 @@
     if (r.may.length) sec.append(el("p", { class: "legend", text: r.may.join(" ") }));
     sec.append(el("details", { class: "ingr" }, el("summary", { text: "The label's full text" }), el("p", { text: f.ingredients })));
     sec.append(el("p", { class: "legend", text: "Numbers are each ingredient's place on the label, from most to least by weight. Groups describe what each ingredient is; the verdict already counts the amounts that matter (added sugar, saturated fat, sodium)." }));
-    return sec;
+    const summary = el("span", { class: "fsum ing-sum", text: r.summary + (r.contains ? ` · contains ${r.contains.toLowerCase()}` : "") });
+    return el("details", { class: "panel fold ingredients", open: openFolds.has("ingredients") ? true : null,
+      ontoggle: e => { if (e.target.open) openFolds.add("ingredients"); else openFolds.delete("ingredients"); store.set("openFolds", [...openFolds]); } },
+      el("summary", {}, el("h3", { text: "Ingredients" }), summary), sec);
   }
 
   function renderAdditives(f) {
     const info = window.SelfCheckAdditives && window.SelfCheckAdditives.analyze(f);
     if (!info) return null;
-    const sec = el("section", { class: "panel additives" }, el("h3", { text: "Additives & processing" }));
+    const sec = el("div", { class: "fbody" });
     if (info.novaInfo) sec.append(el("div", { class: "nova n" + info.nova },
       el("span", { class: "nova-badge", text: `NOVA ${info.nova}` }),
       el("span", {}, el("b", { text: info.novaInfo[0] + ". " }), info.novaInfo[1])));
@@ -299,7 +313,10 @@
     }
     if (f.ingredients && !window.SelfCheckIngredients) sec.append(el("details", { class: "ingr" }, el("summary", { text: "Ingredients" }), el("p", { text: f.ingredients })));
     sec.append(el("p", { class: "legend", text: (info.fromText ? "Found by name in the ingredient list, so an additive listed under an unusual name can be missed. " : "From Open Food Facts. ") + "Tap an additive for what it is and what the evidence says. Most approved additives are judged safe at normal amounts; “Mixed evidence” means approved but questioned, with the source. Add any you avoid to your skip list (for example “sucralose” or “E407”)." }));
-    return sec;
+    const n = info.known ? info.items.length : 0, removed = info.known && info.items.some(a => a.status === "removed"), mixed = info.known ? info.items.filter(a => a.status === "mixed").length : 0;
+    const summary = [info.novaInfo ? `${info.novaInfo[0]} (NOVA ${info.nova})` : "", info.known ? (n ? `${n} additive${n === 1 ? "" : "s"}${removed ? ", one removed from food by a regulator" : mixed ? `, ${mixed} with mixed evidence` : ""}` : "no additives") : ""].filter(Boolean).join(" · ");
+    // An additive a regulator has removed from food is worth seeing without a tap: that section starts open.
+    return fold("additives", "additives", "Additives & processing", summary, [sec], removed);
   }
 
   // ---------- price (typical, or your own) ----------
@@ -332,6 +349,12 @@
       sec.append(el("p", { class: "legend" }, p.mine
         ? `Your price: ${PR.money(p.unitPrice)} per ${unitWord}${p.typical != null ? ` (typical ${PR.money(p.typical)} per serving)` : ""}.`
         : `Typical ${PR.money(p.unitPrice)} per ${p.unitLabel} · ${p.source}${p.note ? ` · ${p.note}` : ""}. Your store may differ.`));
+    } else if (!editing) {
+      // Nothing to show: one line with the way to add a price, not a whole box.
+      sec.classList.add("compact");
+      sec.append(el("p", { class: "legend", title: "There's no free, current price series for it." }, "No typical price for this food. ",
+        el("button", { class: "linkish", type: "button", text: "Add my price", onclick: () => { priceEditing = f.n; renderResult(current); } })));
+      return sec;
     } else sec.append(el("p", { class: "legend", text: "No typical price for this food: there's no free, current price series for it." }));
     if (editing) {
       const input = el("input", { type: "number", min: "0", step: "0.01", inputmode: "decimal", id: "myPrice", "aria-label": `Your price per ${unitWord}`, value: p && p.mine ? String(p.unitPrice) : "" });
@@ -525,10 +548,11 @@
             mult !== 1 ? el("p", { class: "per", text: "The verdict is for one standard serving; the label and bars show your amount." }) : null),
           alFirst ? null : renderAllergy(a),
           !isPlate && compareWith && compareWith.n !== f.n ? renderCompare(f) : null,
+          // The decision first (swaps and the reasons), then price, then the folded deep dives.
+          isPlate ? null : renderSwaps(f),
+          el("section", { class: "panel whyp" }, el("h3", { text: "Why" }), reasons),
           isPlate ? renderPlatePrice() : renderPrice(f),
           renderWhy(f),
-          isPlate ? null : renderSwaps(f),
-          el("section", { class: "panel" }, el("h3", { text: "Why" }), reasons),
           isPlate ? null : renderIngredients(f),
           isPlate ? null : renderAdditives(f),
           isPlate || (compareWith && compareWith.n !== f.n) ? null : renderCompare(f)
@@ -1011,43 +1035,81 @@
   // here with an optional Walmart-brands-only filter (remembered).
   let walmartOnly = store.get("walmartOnly", false);
   async function packagedSearch(text, box) {
-    busy(box, `Searching packaged products for ${text}…`);
+    // A title pasted from a store page ("Lay's Classic Potato Chips, Party Size, 13 oz Bag") is searched without its
+    // sizes and packaging words, in USDA Branded Foods and Open Food Facts at once.
+    const q = Q.cleanTitle(text) || text;
+    busy(box, `Searching packaged products for ${q}…`);
     const key = (profile.usdaKey || "").trim() || "DEMO_KEY";
-    const get = async all => {
-      const res = await withTimeout(fetch(S.brandedSearchUrl(text, key, { all })), LOOKUP_MS);
-      if (res.status === 429) throw Object.assign(new Error("rate"), { name: "RateLimit" });
-      if (res.status === 403) throw Object.assign(new Error("key"), { name: "KeyError" });
-      if (!res.ok) throw Object.assign(new Error("http"), { name: "HttpError", status: res.status });
-      return (await res.json()).foods || [];
-    };
-    try {
+    // The closest built-in food, pinned on top, so something useful shows even when both searches fail.
+    const guessOf = () => { const r = Q.resolve(text, allFoods()); return r.food || (r.near || [])[0] || null; };
+    const usda = (async () => {
+      const get = async all => {
+        const res = await withTimeout(fetch(S.brandedSearchUrl(q, key, { all })), LOOKUP_MS);
+        if (res.status === 429) throw Object.assign(new Error("rate"), { name: "RateLimit" });
+        if (res.status === 403) throw Object.assign(new Error("key"), { name: "KeyError" });
+        if (!res.ok) throw Object.assign(new Error("http"), { name: "HttpError", status: res.status });
+        return (await res.json()).foods || [];
+      };
       let raw = await get(true), loose = false;
       if (!raw.length) { raw = await get(false); loose = true; }
-      const render = () => {
-        const ranked = S.rankBranded(raw, text, { walmartOnly });
-        const items = ranked.map(S.fromUsda).filter(f => !["cal", "fat", "carb", "pro"].every(k => V.isMissing(f, k))).slice(0, 15);
-        const toggle = el("button", { class: "chip" + (walmartOnly ? " on" : ""), type: "button", "aria-pressed": walmartOnly ? "true" : "false", text: "Walmart brands only",
-          onclick: () => { walmartOnly = !walmartOnly; store.set("walmartOnly", walmartOnly); render(); } });
-        const head = el("div", { class: "chiprow", style: "margin:0" }, toggle);
-        const generic = el("button", { class: "btn small ghost", type: "button", text: `Search generic foods for “${text}”`, onclick: () => usdaSearch(text, box) });
-        if (!items.length) {
-          box.replaceChildren(el("p", { text: walmartOnly ? `No Walmart-brand product matches “${text}”.` : `No packaged product matches “${text}”. Try the brand and product, like “great value whole milk”.` }), head, generic);
-          return;
-        }
-        const list = el("ul", { class: "results" });
-        for (const f of items) list.append(el("li", {}, el("button", { type: "button", onclick: () => { saveLookup(f); pick(f); } },
-          el("span", { class: "rname" }, el("span", { text: f.n }), pill(V.assess(f, profile))),
-          el("small", { text: `${amt(f, "cal", " cal")} · ${amt(f, "pro", " g")} protein · ${V.isMissing(f, "sat") ? "sat fat not reported" : amt(f, "sat", " g") + " sat fat"} per ${f.perServing ? f.s : "100 g"}${f.published ? ` · label from ${String(f.published).slice(0, 4)}` : ""}` }))));
-        box.replaceChildren(el("p", { text: loose ? `Nothing matched every word of “${text}”, so these match some of them.` : "Packaged products from USDA Branded Foods, with each label's serving." }), head, list, generic);
-      };
-      render();
-    } catch (e) {
-      const msg = e.name === "RateLimit" ? "USDA's shared demo key is out of searches for now. Add your own free key under Your goals, or try again later."
-        : e.name === "KeyError" ? "USDA rejected the API key. Check the key under Your goals."
-        : navigator.onLine === false ? "You're offline. Packaged-product search needs a connection."
-        : e.name === "TimeoutError" ? "USDA took too long to answer. Try again in a moment." : "The search didn't go through. Try again in a moment.";
-      box.replaceChildren(el("p", { text: msg }), el("button", { class: "btn ghost", type: "button", text: "Try again", onclick: () => packagedSearch(text, box) }));
-    }
+      return { raw, loose };
+    })();
+    // Open Food Facts' search often answers 503 a few times before it answers (seen Nov 2026); three retries.
+    const offOnce = async query => {
+      for (let attempt = 0; attempt < 4; attempt++) {
+        if (attempt) await new Promise(r => setTimeout(r, (CFG.offRetryMs ?? 1500) * attempt));
+        const res = await withTimeout(fetch(S.offSearchUrl(query)), LOOKUP_MS);
+        if (res.ok) return S.rankOff(await res.json(), q);
+        if (res.status !== 503 && res.status !== 429 && res.status !== 502) break;
+      }
+      throw Object.assign(new Error("off"), { name: "HttpError" });
+    };
+    // Shorter tries when the whole title finds nothing (S.offQueries).
+    const off = (async () => {
+      for (const query of S.offQueries(q)) { const found = await offOnce(query); if (found.length) return found; }
+      return [];
+    })();
+    const [u, o] = await Promise.allSettled([usda, off]);
+    const digits = x => String(x || "").replace(/\D/g, "").replace(/^0+/, "");
+    const render = () => {
+      const fromUsda = u.status === "fulfilled" ? S.rankBranded(u.value.raw, q, { walmartOnly }).filter(r => S.wordShare(q, `${r.brandName || r.brandOwner || ""} ${r.description || ""}`) >= 0.5)
+        .map(S.fromUsda).filter(f => !["cal", "fat", "carb", "pro"].every(k => V.isMissing(f, k))) : [];
+      const usdaCodes = new Set(fromUsda.map(f => digits(f.gtin)).filter(Boolean)), usdaNames = new Set(fromUsda.map(f => f.n.toLowerCase()));
+      const fromOff = (o.status === "fulfilled" ? o.value : []).filter(f => !usdaCodes.has(digits(f.code)) && !usdaNames.has(f.n.toLowerCase()))
+        .filter(f => !walmartOnly || (S.storeBrand(f.n) || {}).walmart);
+      // The brand's own label first, unless USDA only matched some of the words and Open Food Facts has products.
+      const usdaLoose = u.status === "fulfilled" && u.value.loose;
+      // Both sources ranked together by how closely the name fits; on a tie the brand's own label (USDA) comes first.
+      const pool = (usdaLoose && fromOff.length ? [...fromOff.slice(0, 10), ...fromUsda.slice(0, 12)] : [...fromUsda.slice(0, 12), ...fromOff.slice(0, 10)]).map((f, i) => ({ f, i, fit: S.nameFit(q, f.n) }));
+      const items = pool.sort((a, b) => (Math.abs(b.fit - a.fit) > 0.01 ? b.fit - a.fit : a.i - b.i)).map(x => x.f).slice(0, 15);
+      const toggle = el("button", { class: "chip" + (walmartOnly ? " on" : ""), type: "button", "aria-pressed": walmartOnly ? "true" : "false", text: "Walmart brands only",
+        onclick: () => { walmartOnly = !walmartOnly; store.set("walmartOnly", walmartOnly); render(); } });
+      const head = el("div", { class: "chiprow", style: "margin:0" }, toggle);
+      const generic = el("button", { class: "btn small ghost", type: "button", text: `Search generic foods for “${q}”`, onclick: () => usdaSearch(q, box) });
+      const guess = guessOf();
+      const typical = guess ? el("p", { class: "typical" }, "Or the typical version: ", el("button", { class: "chip", type: "button", text: guess.n, onclick: () => pick(guess) })) : null;
+      const searched = q !== text ? el("p", { class: "muted searched", text: `Searched for “${q}” (sizes and package words left out).` }) : null;
+      if (!items.length) {
+        // Both searches failed or found nothing: say why, and still offer the typical version.
+        const err = u.status === "rejected" ? u.reason : null;
+        const offPart = o.status === "rejected" ? "Open Food Facts didn't answer" : "Open Food Facts had nothing";
+        const why = navigator.onLine === false ? "You're offline. Packaged-product search needs a connection."
+          : err && err.name === "RateLimit" ? `USDA's shared demo key is out of searches for now, and ${offPart}. Try again in a moment, or add your own free USDA key under Your goals.`
+          : err && err.name === "KeyError" ? `USDA rejected the API key (check it under Your goals), and ${offPart}.`
+          : u.status === "rejected" && o.status === "rejected" ? (err && err.name === "TimeoutError" ? "The product databases took too long to answer. Try again in a moment." : "The search didn't go through. Try again in a moment.")
+          : walmartOnly ? `No Walmart-brand product matches “${q}”.` : `No packaged product matches “${q}”. Try the brand and product, like “great value whole milk”.`;
+        const retry = u.status === "rejected" || o.status === "rejected" ? el("button", { class: "btn ghost", type: "button", text: "Try again", onclick: () => packagedSearch(text, box) }) : null;
+        box.replaceChildren(...[el("p", { text: why }), searched, typical, head, retry, generic].filter(Boolean));
+        return;
+      }
+      const list = el("ul", { class: "results" });
+      for (const f of items) list.append(el("li", {}, el("button", { type: "button", onclick: () => { saveLookup(f); pick(f); } },
+        el("span", { class: "rname" }, el("span", { text: f.n }), pill(V.assess(f, profile))),
+        el("small", { text: `${amt(f, "cal", " cal")} · ${amt(f, "pro", " g")} protein · ${V.isMissing(f, "sat") ? "sat fat not reported" : amt(f, "sat", " g") + " sat fat"} per ${f.src === "off" ? f.s : f.perServing ? f.s : "100 g"}${f.published ? ` · label from ${String(f.published).slice(0, 4)}` : ""} · ${f.src === "off" ? "Open Food Facts" : "USDA"}` }))));
+      const lead = usdaLoose && !fromOff.length ? `Nothing matched every word of “${q}”, so these match some of them.` : "Packaged products, with each label's serving: the brand's own label (USDA Branded Foods) and Open Food Facts.";
+      box.replaceChildren(...[el("p", { text: lead }), searched, typical, head, list, generic].filter(Boolean));
+    };
+    render();
   }
 
   async function usdaSearch(text, box, kind = "generic") {
@@ -1261,15 +1323,26 @@
     // A field showing an error keeps what the user typed until they fix it; only valid fields are refreshed.
     for (const [k, id] of Object.entries(PF)) if ($(id).getAttribute("aria-invalid") !== "true") $(id).value = profile[k];
     $("p-skip").value = profile.skip || ""; $("p-mild").checked = !!profile.mild; $("p-usda").value = profile.usdaKey || "";
-    if (AL) { for (const x of AL.LIST) { const b = /** @type {HTMLInputElement} */ ($("p-al-" + x.id)); if (b) b.checked = (profile.allergies || []).includes(x.id); } $("p-al-other").value = profile.allergyOther || ""; }
+    if (AL) { for (const x of AL.LIST) { const b = /** @type {HTMLInputElement} */ ($("p-al-" + x.id)); if (b) b.checked = (x.diet ? profile.diets || [] : profile.allergies || []).includes(x.id); } $("p-al-other").value = profile.allergyOther || ""; }
     $("profSummary").textContent = `${profile.cal.toLocaleString("en-US")} cal · ${profile.pro} g protein · ≤${profile.sat} g sat fat`;
+    if (AL) {
+      const picked = [...AL.LIST.filter(x => !x.diet && (profile.allergies || []).includes(x.id)).map(x => `${AL_ICON[x.id]} ${x.label}`),
+        ...String(profile.allergyOther || "").split(",").map(t => t.trim()).filter(Boolean)];
+      const diets = AL.LIST.filter(x => x.diet && (profile.diets || []).includes(x.id)).map(x => `${AL_ICON[x.id]} ${x.label}`);
+      const parts = [picked.length ? `Avoiding ${picked.join(", ")}` : "", diets.length ? diets.join(", ") : ""].filter(Boolean);
+      $("alSummary").replaceChildren(...(parts.length ? [el("b", { text: parts.join(" · ") }), ". Foods that contain them are flagged."] : ["Nothing picked, so foods aren't checked for allergens or diet."]));
+    }
   }
   function readProfile() {
     // Only valid numbers are saved; an invalid field keeps its last good value and shows why next to it.
     for (const [k, id] of Object.entries(PF)) if (checkGoal($(id))) profile[k] = Number($(id).value);
     profile.skip = $("p-skip").value; profile.mild = $("p-mild").checked; profile.usdaKey = $("p-usda").value.trim();
-    if (AL) { profile.allergies = AL.LIST.filter(x => /** @type {HTMLInputElement} */ ($("p-al-" + x.id)).checked).map(x => x.id); profile.allergyOther = $("p-al-other").value.slice(0, 200); }
-    store.set("profile", profile); goalsSet = true; $("tabGoalsDot").hidden = true; if (current) renderResult(current); syncProfileUI(); renderBrowse(); renderMeals(); renderChips(); renderList(); renderPlate();
+    if (AL) {
+      const on = x => /** @type {HTMLInputElement} */ ($("p-al-" + x.id)).checked;
+      profile.allergies = AL.LIST.filter(x => !x.diet && on(x)).map(x => x.id); profile.diets = AL.LIST.filter(x => x.diet && on(x)).map(x => x.id);
+      profile.allergyOther = $("p-al-other").value.slice(0, 200);
+    }
+    store.set("profile", profile); toast("Saved"); goalsSet = true; $("tabGoalsDot").hidden = true; if (current) renderResult(current); syncProfileUI(); renderBrowse(); renderMeals(); renderChips(); renderList(); renderPlate();
     if (current) renderResult(current);
   }
 
@@ -1565,7 +1638,9 @@
       $("suggest").hidden = true;
       if (isBarcode(text) && PAGES) return barcodeLookup(text.replace(/[\s-]/g, ""));
       // "great value whole milk", "marketside caesar kit": a store brand means a packaged product.
-      if (PAGES && S.storeBrand(text) && !allFoods().some(f => Q.isExact(f, text))) return openPackaged(text);
+      // A store brand, or a title pasted from a store page ("Lay's Classic Potato Chips, Party Size, 13 oz Bag"),
+      // means a packaged product: search for it, with the closest built-in food pinned on top.
+      if (PAGES && (S.storeBrand(text) || Q.looksLikeProduct(text)) && !allFoods().some(f => Q.isExact(f, text))) return openPackaged(text);
       const r = Q.resolve(text, allFoods());
       if (r.kind === "open") return pick(r.food);
       if (r.kind === "closest") return pick(r.food, { closest: text });
@@ -1576,9 +1651,12 @@
     $("codeForm").addEventListener("submit", async e => { e.preventDefault(); const c = $("code").value; await closeScan(); barcodeLookup(c); });
 
     // One checkbox per allergen, built from js/allergens.js so the list can't drift from what's detected.
-    if (AL) $("p-al-boxes").replaceChildren(...AL.LIST.map(x => el("label", { title: x.hint }, el("input", { type: "checkbox", id: "p-al-" + x.id }), x.label)));
-    else $("p-allergies").hidden = true;
-    document.querySelectorAll("#profile input").forEach(i => i.addEventListener("change", readProfile));
+    // A chip per allergen or diet: the icon is decoration (the label says it), the checkbox inside does the work.
+    const box = x => el("label", { class: "tog", title: x.hint }, el("input", { type: "checkbox", id: "p-al-" + x.id }),
+      el("span", { class: "tc", "aria-hidden": "true", text: "✓" }), el("span", { class: "ti", "aria-hidden": "true", text: AL_ICON[x.id] || "" }), x.label);
+    if (AL) { $("p-al-boxes").replaceChildren(...AL.LIST.filter(x => !x.diet).map(box)); $("p-diet-boxes").replaceChildren(...AL.LIST.filter(x => x.diet).map(box)); }
+    else { $("p-allergies").hidden = true; $("p-diets").hidden = true; }
+    document.querySelectorAll("#profile input, #alBox input, #prefBox input").forEach(i => i.addEventListener("change", readProfile));
     Object.values(PF).forEach(id => $(id).addEventListener("input", () => checkGoal($(id))));
     syncProfileUI();
     Object.values(PF).forEach(id => checkGoal($(id))); // creates each field's (empty) message line

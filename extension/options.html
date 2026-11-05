@@ -35,7 +35,7 @@ a { color: var(--good); }
 
   <section aria-labelledby="hImport">
     <h2 id="hImport">Bring your goals from the app</h2>
-    <p class="muted">In the app, open <b>Goals → Your data</b> and choose <b>Copy as text</b> or <b>Copy transfer link</b>, then paste it here. Only your goals, skip list, mild-food setting and allergies are used.</p>
+    <p class="muted">In the app, open <b>Goals → Your data</b> and choose <b>Copy as text</b> or <b>Copy transfer link</b>, then paste it here. Only your goals, skip list, mild-food setting, allergies and diet are used.</p>
     <label for="paste">Backup text or transfer link<textarea id="paste" spellcheck="false"></textarea></label>
     <div class="row"><button type="button" id="importBtn">Use these goals</button></div>
   </section>
@@ -54,6 +54,9 @@ a { color: var(--good); }
       <fieldset class="wide" id="allergies"><legend>Food allergies (flagged on every product; always read the package)</legend>
         <div class="alboxes" id="alBoxes"></div>
         <label>Other allergens (comma separated)<input id="alOther" type="text" placeholder="e.g. coconut, mustard" maxlength="200"></label>
+      </fieldset>
+      <fieldset class="wide" id="diets"><legend>Diet (flagged the same way)</legend>
+        <div class="alboxes" id="dietBoxes"></div>
       </fieldset>
       <label class="wide">USDA API key (optional; used for barcode lookups when a page has no nutrition facts)<input id="usdaKey" type="text" placeholder="DEMO_KEY" autocomplete="off" spellcheck="false"></label>
       <div class="row wide"><button type="submit">Save</button><button type="button" class="ghost" id="reset">Reset to defaults</button></div>

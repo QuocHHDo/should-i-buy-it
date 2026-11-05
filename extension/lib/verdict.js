@@ -95,7 +95,7 @@
   }
 
   // Generic starting goals (roughly FDA Daily Values on a 2,000-calorie diet).
-  const DEFAULT_PROFILE = { cal: 2000, pro: 100, sat: 20, na: 2300, add: 50, fib: 28, skip: "", mild: false, allergies: [], allergyOther: "" };
+  const DEFAULT_PROFILE = { cal: 2000, pro: 100, sat: 20, na: 2300, add: 50, fib: 28, skip: "", mild: false, allergies: [], allergyOther: "", diets: [] };
 
   // Skip-list matching on whole words with simple plurals: "egg" matches "Eggs" and "Breakfast sandwich, sausage and egg",
   // not "Eggplant" or "Veggie burger". Multi-word terms ("ground beef") must appear as that word sequence.

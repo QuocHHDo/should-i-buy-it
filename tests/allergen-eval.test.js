@@ -53,3 +53,14 @@ test("real labels: every allergen a label names is flagged, and with the stateme
   assert.deepEqual(unexpected, [], "a new miss: fix the detector, or add it to UNFINDABLE with the reason");
   assert.ok(s.warnedRate >= 0.9, `warned ${(s.warnedRate * 100).toFixed(1)}%`);
 });
+
+// Diets against Open Food Facts' own reading of the same labels (their gluten tag and vegan/vegetarian analysis).
+// Every disagreement left when this was written was read: their errors, non-English text, or a mismatched record.
+test("real labels: diets agree with Open Food Facts' analysis at least 95% of the time", { skip: !fs.existsSync(DATA) && "no eval/allergen-labels.json yet" }, () => {
+  const s = S.score(JSON.parse(fs.readFileSync(DATA, "utf8")).labels);
+  for (const [d, o] of Object.entries(s.diets)) {
+    assert.ok(o.compared >= 100, `${d}: only ${o.compared} labels compared`);
+    const rate = (o.agree + o.warnedOnly) / o.compared;
+    assert.ok(rate >= 0.95, `${d}: ${(rate * 100).toFixed(1)}%; not flagged: ${o.missed.slice(0, 5).map(m => m.name).join("; ")}; false flags: ${o.falseFlags.slice(0, 5).map(m => m.name).join("; ")}`);
+  }
+});

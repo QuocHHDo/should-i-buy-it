@@ -12,12 +12,14 @@
   function fill(p, usdaKey) {
     for (const k of NUM) $(k).value = p[k];
     $("skip").value = p.skip || ""; $("mild").checked = !!p.mild; $("usdaKey").value = usdaKey || "";
-    for (const x of AL.LIST) $("al-" + x.id).checked = (p.allergies || []).includes(x.id);
+    for (const x of AL.LIST) $("al-" + x.id).checked = (x.diet ? p.diets || [] : p.allergies || []).includes(x.id);
     $("alOther").value = p.allergyOther || "";
   }
   // One checkbox per allergen, from js/allergens.js.
-  $("alBoxes").replaceChildren(...AL.LIST.map(x => { const l = document.createElement("label"); l.className = "check"; l.title = x.hint;
-    const i = Object.assign(document.createElement("input"), { type: "checkbox", id: "al-" + x.id }); l.append(i, " " + x.label); return l; }));
+  const box = x => { const l = document.createElement("label"); l.className = "check"; l.title = x.hint;
+    const i = Object.assign(document.createElement("input"), { type: "checkbox", id: "al-" + x.id }); l.append(i, " " + x.label); return l; };
+  $("alBoxes").replaceChildren(...AL.LIST.filter(x => !x.diet).map(box));
+  $("dietBoxes").replaceChildren(...AL.LIST.filter(x => x.diet).map(box));
   async function load() { const s = await get(["profile", "usdaKey"]); fill({ ...V.DEFAULT_PROFILE, ...(s.profile || {}) }, s.usdaKey); }
 
   $("goals").addEventListener("submit", async e => {
@@ -26,7 +28,8 @@
     const p = Object.fromEntries(NUM.map(k => [k, Number($(k).value)]));
     // The same checks a restored backup gets.
     const checked = B.KEYS.profile({ ...p, skip: $("skip").value.slice(0, 500), mild: $("mild").checked,
-      allergies: AL.LIST.filter(x => $("al-" + x.id).checked).map(x => x.id), allergyOther: $("alOther").value.slice(0, 200) });
+      allergies: AL.LIST.filter(x => !x.diet && $("al-" + x.id).checked).map(x => x.id), diets: AL.LIST.filter(x => x.diet && $("al-" + x.id).checked).map(x => x.id),
+      allergyOther: $("alOther").value.slice(0, 200) });
     await set({ profile: checked, usdaKey: $("usdaKey").value.trim().slice(0, 100) });
     status("Saved. Open product pages update right away.");
   });
