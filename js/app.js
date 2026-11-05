@@ -1013,43 +1013,81 @@
   // here with an optional Walmart-brands-only filter (remembered).
   let walmartOnly = store.get("walmartOnly", false);
   async function packagedSearch(text, box) {
-    busy(box, `Searching packaged products for ${text}…`);
+    // A title pasted from a store page ("Lay's Classic Potato Chips, Party Size, 13 oz Bag") is searched without its
+    // sizes and packaging words, in USDA Branded Foods and Open Food Facts at once.
+    const q = Q.cleanTitle(text) || text;
+    busy(box, `Searching packaged products for ${q}…`);
     const key = (profile.usdaKey || "").trim() || "DEMO_KEY";
-    const get = async all => {
-      const res = await withTimeout(fetch(S.brandedSearchUrl(text, key, { all })), LOOKUP_MS);
-      if (res.status === 429) throw Object.assign(new Error("rate"), { name: "RateLimit" });
-      if (res.status === 403) throw Object.assign(new Error("key"), { name: "KeyError" });
-      if (!res.ok) throw Object.assign(new Error("http"), { name: "HttpError", status: res.status });
-      return (await res.json()).foods || [];
-    };
-    try {
+    // The closest built-in food, pinned on top, so something useful shows even when both searches fail.
+    const guessOf = () => { const r = Q.resolve(text, allFoods()); return r.food || (r.near || [])[0] || null; };
+    const usda = (async () => {
+      const get = async all => {
+        const res = await withTimeout(fetch(S.brandedSearchUrl(q, key, { all })), LOOKUP_MS);
+        if (res.status === 429) throw Object.assign(new Error("rate"), { name: "RateLimit" });
+        if (res.status === 403) throw Object.assign(new Error("key"), { name: "KeyError" });
+        if (!res.ok) throw Object.assign(new Error("http"), { name: "HttpError", status: res.status });
+        return (await res.json()).foods || [];
+      };
       let raw = await get(true), loose = false;
       if (!raw.length) { raw = await get(false); loose = true; }
-      const render = () => {
-        const ranked = S.rankBranded(raw, text, { walmartOnly });
-        const items = ranked.map(S.fromUsda).filter(f => !["cal", "fat", "carb", "pro"].every(k => V.isMissing(f, k))).slice(0, 15);
-        const toggle = el("button", { class: "chip" + (walmartOnly ? " on" : ""), type: "button", "aria-pressed": walmartOnly ? "true" : "false", text: "Walmart brands only",
-          onclick: () => { walmartOnly = !walmartOnly; store.set("walmartOnly", walmartOnly); render(); } });
-        const head = el("div", { class: "chiprow", style: "margin:0" }, toggle);
-        const generic = el("button", { class: "btn small ghost", type: "button", text: `Search generic foods for “${text}”`, onclick: () => usdaSearch(text, box) });
-        if (!items.length) {
-          box.replaceChildren(el("p", { text: walmartOnly ? `No Walmart-brand product matches “${text}”.` : `No packaged product matches “${text}”. Try the brand and product, like “great value whole milk”.` }), head, generic);
-          return;
-        }
-        const list = el("ul", { class: "results" });
-        for (const f of items) list.append(el("li", {}, el("button", { type: "button", onclick: () => { saveLookup(f); pick(f); } },
-          el("span", { class: "rname" }, el("span", { text: f.n }), pill(V.assess(f, profile))),
-          el("small", { text: `${amt(f, "cal", " cal")} · ${amt(f, "pro", " g")} protein · ${V.isMissing(f, "sat") ? "sat fat not reported" : amt(f, "sat", " g") + " sat fat"} per ${f.perServing ? f.s : "100 g"}${f.published ? ` · label from ${String(f.published).slice(0, 4)}` : ""}` }))));
-        box.replaceChildren(el("p", { text: loose ? `Nothing matched every word of “${text}”, so these match some of them.` : "Packaged products from USDA Branded Foods, with each label's serving." }), head, list, generic);
-      };
-      render();
-    } catch (e) {
-      const msg = e.name === "RateLimit" ? "USDA's shared demo key is out of searches for now. Add your own free key under Your goals, or try again later."
-        : e.name === "KeyError" ? "USDA rejected the API key. Check the key under Your goals."
-        : navigator.onLine === false ? "You're offline. Packaged-product search needs a connection."
-        : e.name === "TimeoutError" ? "USDA took too long to answer. Try again in a moment." : "The search didn't go through. Try again in a moment.";
-      box.replaceChildren(el("p", { text: msg }), el("button", { class: "btn ghost", type: "button", text: "Try again", onclick: () => packagedSearch(text, box) }));
-    }
+      return { raw, loose };
+    })();
+    // Open Food Facts' search often answers 503 a few times before it answers (seen Nov 2026); three retries.
+    const offOnce = async query => {
+      for (let attempt = 0; attempt < 4; attempt++) {
+        if (attempt) await new Promise(r => setTimeout(r, (CFG.offRetryMs ?? 1500) * attempt));
+        const res = await withTimeout(fetch(S.offSearchUrl(query)), LOOKUP_MS);
+        if (res.ok) return S.rankOff(await res.json(), q);
+        if (res.status !== 503 && res.status !== 429 && res.status !== 502) break;
+      }
+      throw Object.assign(new Error("off"), { name: "HttpError" });
+    };
+    // Shorter tries when the whole title finds nothing (S.offQueries).
+    const off = (async () => {
+      for (const query of S.offQueries(q)) { const found = await offOnce(query); if (found.length) return found; }
+      return [];
+    })();
+    const [u, o] = await Promise.allSettled([usda, off]);
+    const digits = x => String(x || "").replace(/\D/g, "").replace(/^0+/, "");
+    const render = () => {
+      const fromUsda = u.status === "fulfilled" ? S.rankBranded(u.value.raw, q, { walmartOnly }).filter(r => S.wordShare(q, `${r.brandName || r.brandOwner || ""} ${r.description || ""}`) >= 0.5)
+        .map(S.fromUsda).filter(f => !["cal", "fat", "carb", "pro"].every(k => V.isMissing(f, k))) : [];
+      const usdaCodes = new Set(fromUsda.map(f => digits(f.gtin)).filter(Boolean)), usdaNames = new Set(fromUsda.map(f => f.n.toLowerCase()));
+      const fromOff = (o.status === "fulfilled" ? o.value : []).filter(f => !usdaCodes.has(digits(f.code)) && !usdaNames.has(f.n.toLowerCase()))
+        .filter(f => !walmartOnly || (S.storeBrand(f.n) || {}).walmart);
+      // The brand's own label first, unless USDA only matched some of the words and Open Food Facts has products.
+      const usdaLoose = u.status === "fulfilled" && u.value.loose;
+      // Both sources ranked together by how closely the name fits; on a tie the brand's own label (USDA) comes first.
+      const pool = (usdaLoose && fromOff.length ? [...fromOff.slice(0, 10), ...fromUsda.slice(0, 12)] : [...fromUsda.slice(0, 12), ...fromOff.slice(0, 10)]).map((f, i) => ({ f, i, fit: S.nameFit(q, f.n) }));
+      const items = pool.sort((a, b) => (Math.abs(b.fit - a.fit) > 0.01 ? b.fit - a.fit : a.i - b.i)).map(x => x.f).slice(0, 15);
+      const toggle = el("button", { class: "chip" + (walmartOnly ? " on" : ""), type: "button", "aria-pressed": walmartOnly ? "true" : "false", text: "Walmart brands only",
+        onclick: () => { walmartOnly = !walmartOnly; store.set("walmartOnly", walmartOnly); render(); } });
+      const head = el("div", { class: "chiprow", style: "margin:0" }, toggle);
+      const generic = el("button", { class: "btn small ghost", type: "button", text: `Search generic foods for “${q}”`, onclick: () => usdaSearch(q, box) });
+      const guess = guessOf();
+      const typical = guess ? el("p", { class: "typical" }, "Or the typical version: ", el("button", { class: "chip", type: "button", text: guess.n, onclick: () => pick(guess) })) : null;
+      const searched = q !== text ? el("p", { class: "muted searched", text: `Searched for “${q}” (sizes and package words left out).` }) : null;
+      if (!items.length) {
+        // Both searches failed or found nothing: say why, and still offer the typical version.
+        const err = u.status === "rejected" ? u.reason : null;
+        const offPart = o.status === "rejected" ? "Open Food Facts didn't answer" : "Open Food Facts had nothing";
+        const why = navigator.onLine === false ? "You're offline. Packaged-product search needs a connection."
+          : err && err.name === "RateLimit" ? `USDA's shared demo key is out of searches for now, and ${offPart}. Try again in a moment, or add your own free USDA key under Your goals.`
+          : err && err.name === "KeyError" ? `USDA rejected the API key (check it under Your goals), and ${offPart}.`
+          : u.status === "rejected" && o.status === "rejected" ? (err && err.name === "TimeoutError" ? "The product databases took too long to answer. Try again in a moment." : "The search didn't go through. Try again in a moment.")
+          : walmartOnly ? `No Walmart-brand product matches “${q}”.` : `No packaged product matches “${q}”. Try the brand and product, like “great value whole milk”.`;
+        const retry = u.status === "rejected" || o.status === "rejected" ? el("button", { class: "btn ghost", type: "button", text: "Try again", onclick: () => packagedSearch(text, box) }) : null;
+        box.replaceChildren(...[el("p", { text: why }), searched, typical, head, retry, generic].filter(Boolean));
+        return;
+      }
+      const list = el("ul", { class: "results" });
+      for (const f of items) list.append(el("li", {}, el("button", { type: "button", onclick: () => { saveLookup(f); pick(f); } },
+        el("span", { class: "rname" }, el("span", { text: f.n }), pill(V.assess(f, profile))),
+        el("small", { text: `${amt(f, "cal", " cal")} · ${amt(f, "pro", " g")} protein · ${V.isMissing(f, "sat") ? "sat fat not reported" : amt(f, "sat", " g") + " sat fat"} per ${f.src === "off" ? f.s : f.perServing ? f.s : "100 g"}${f.published ? ` · label from ${String(f.published).slice(0, 4)}` : ""} · ${f.src === "off" ? "Open Food Facts" : "USDA"}` }))));
+      const lead = usdaLoose && !fromOff.length ? `Nothing matched every word of “${q}”, so these match some of them.` : "Packaged products, with each label's serving: the brand's own label (USDA Branded Foods) and Open Food Facts.";
+      box.replaceChildren(...[el("p", { text: lead }), searched, typical, head, list, generic].filter(Boolean));
+    };
+    render();
   }
 
   async function usdaSearch(text, box, kind = "generic") {
@@ -1578,7 +1616,9 @@
       $("suggest").hidden = true;
       if (isBarcode(text) && PAGES) return barcodeLookup(text.replace(/[\s-]/g, ""));
       // "great value whole milk", "marketside caesar kit": a store brand means a packaged product.
-      if (PAGES && S.storeBrand(text) && !allFoods().some(f => Q.isExact(f, text))) return openPackaged(text);
+      // A store brand, or a title pasted from a store page ("Lay's Classic Potato Chips, Party Size, 13 oz Bag"),
+      // means a packaged product: search for it, with the closest built-in food pinned on top.
+      if (PAGES && (S.storeBrand(text) || Q.looksLikeProduct(text)) && !allFoods().some(f => Q.isExact(f, text))) return openPackaged(text);
       const r = Q.resolve(text, allFoods());
       if (r.kind === "open") return pick(r.food);
       if (r.kind === "closest") return pick(r.food, { closest: text });

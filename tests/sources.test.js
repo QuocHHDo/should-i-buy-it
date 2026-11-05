@@ -123,3 +123,26 @@ test("a second opinion: USDA's record replaces an Open Food Facts one with impos
   assert.equal(S.secondOpinion(bad, { ...bad, src: "usda" }), bad); // just as bad: no swap
   assert.ok(S.sameCode("0096619237432", "96619237432") && !S.sameCode("0096619237432", "0096619237433") && !S.sameCode("", "0"));
 });
+
+test("Open Food Facts name search: URL and ranking (real response for a pasted Lay's title)", () => {
+  const url = S.offSearchUrl("Lay's Classic Potato Chips");
+  assert.match(url, /^https:\/\/world\.openfoodfacts\.org\/cgi\/search\.pl\?/);
+  assert.match(url, /search_terms=Lay%27s\+Classic\+Potato\+Chips/);
+  assert.match(url, /tag_0=united-states/);
+  const data = require("./fixtures/off-search-lays.json");
+  const foods = S.rankOff(data, "Lay's Classic Potato Chips");
+  assert.ok(foods.length >= 3);
+  assert.equal(foods[0].n, "Lay's Classic Potato Chips");
+  assert.ok(foods.every(f => f.src === "off" && f.code && f.cal > 0));
+  assert.equal(new Set(foods.map(f => f.n.toLowerCase())).size, foods.length, "no duplicate names");
+  assert.deepEqual(S.rankOff({ status: 1, product: {} }, "x"), [], "a response with no product list is no results");
+  assert.deepEqual(S.rankOff(data, "kombucha ginger"), [], "products must share at least half the words");
+  assert.deepEqual(S.offQueries("Quest Nutrition Chocolate Chip Cookie Dough Protein Bar"),
+    ["Quest Nutrition Chocolate Chip Cookie Dough Protein Bar", "Quest Chocolate Chip Cookie Dough Protein Bar", "Quest Dough Protein Bar"]);
+  assert.deepEqual(S.offQueries("Lay's Classic Potato Chips"), ["Lay's Classic Potato Chips"]);
+  assert.equal(S.wordShare("Lay's Classic Potato Chips", "Doritos Tortilla Chips, Nacho Cheese"), 0.25, "a USDA result is checked by its brand name (Doritos), not the parent company (Frito-Lay)");
+  assert.equal(S.wordShare("great value almonds", "Great Value Almonds, Smoke"), 1);
+  // The plain product fits better than a variant with extra words; sizes in the name don't count against it.
+  assert.ok(S.nameFit("OREO Chocolate Sandwich Cookies", "Oreo Chocolate Sandwich Cookies") > S.nameFit("OREO Chocolate Sandwich Cookies", "Nabisco, Oreo, Triple Double Chocolate Sandwich Cookies"));
+  assert.equal(S.nameFit("Simply Orange Pulp Free Orange Juice", "Simply Orange Pulp Free Orange Juice, 52 Fl Oz Bottle"), 1);
+});

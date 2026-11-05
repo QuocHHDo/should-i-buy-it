@@ -7,6 +7,33 @@
   const norm = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9/ ]/g, "").replace(/\s+/g, " ").trim();
   const MINOR = new Set(["a", "an", "and", "the", "of", "with", "in", "or", "for"]);
   const words = s => norm(s).split(" ").filter(w => w && !MINOR.has(w));
+  // Plurals don't change the food: "granola bars" contains "granola bar", "breasts" is "breast".
+  const stem = w => w.length > 3 ? w.replace(/(?<=[^aeiou])ies$/, "y").replace(/(?<=(?:ch|sh|x|ss))es$/, "").replace(/(?<=[^s])s$/, "") : w;
+
+  // ---------- titles copied from store websites ----------
+  // "Great Value Whole Vitamin D Milk, Gallon, 128 fl oz" → "Great Value Whole Vitamin D Milk". Sizes, counts,
+  // pack sizes and packaging words say how much is in the package, not what the food is, and they keep both the
+  // built-in match and a product search from finding it.
+  const UNIT = "fl\\.?\\s*oz|fluid\\s+ounces?|oz|ounces?|lbs?|pounds?|g|grams?|kg|mg|ml|l|liters?|litres?|ct|count|counts|pk|pack|packs|pcs|pieces?|servings?|cans?|bottles?|bars?|bags?|pouches?|sticks?|boxes|cartons?|jars?|tubs?";
+  const SIZE = new RegExp(`(?:\\b(?:pack|case|box|set)\\s+of\\s+\\d+\\b|\\b\\d+\\s*x\\s*(?=\\d)|(?:^|[\\s(,/-])\\d+(?:[.,]\\d+)?\\s*-?\\s*(?:${UNIT})\\b\\.?)`, "gi");
+  const PACKAGING = /\b(?:family|party|value|share|sharing|king|snack|club|jumbo|mega|bulk)[\s-]+(?:size|pack)\b|\b(?:multi[\s-]?pack|variety pack|value pack|half gallon|gallon|quart|pint|bag|box|tub|jar|cans?|bottles?|carton|pouch|loaf|each|bunch|case|container|package|pkg|resealable|new|ea)\b/gi;
+  function cleanTitle(text) {
+    let s = String(text || "").replace(/[®™©]/g, " ");
+    // "(Frozen)", "(Pack of 6)", "(12 Count)": a size or a state, not the food.
+    s = s.replace(/\(([^()]*)\)/g, (m, inner) => /\d|frozen|refrigerated|packaging may vary|each/i.test(inner) ? " " : m);
+    s = s.replace(SIZE, " ").replace(PACKAGING, " ");
+    // Separators store sites use between the name and its options: ", ", " - ", " | ", " – ".
+    const parts = s.split(/\s*(?:,|\s[-–—|]\s|\|)\s*/).map(p => p.replace(/\s+/g, " ").trim()).filter(p => /[a-z]{2,}/i.test(p));
+    return parts.join(", ").replace(/\s+/g, " ").trim();
+  }
+  // Does this look pasted from a store page rather than typed? A size or count, packaging words, ®/™, or a long
+  // comma-separated title. Typed searches ("chicken breast", "kirkland protein bar") are short and plain.
+  function looksLikeProduct(text) {
+    const t = String(text || "");
+    SIZE.lastIndex = 0; PACKAGING.lastIndex = 0;
+    const n = words(t).length;
+    return SIZE.test(t) || PACKAGING.test(t) || /[®™]/.test(t) || n >= 6 || (n >= 4 && /,|\s[-–|]\s/.test(t));
+  }
 
   // Edit distance with adjacent swaps (Damerau-Levenshtein, optimal string alignment), stopping early past `max`.
   function editDistance(a, b, max = 2) {
@@ -51,7 +78,8 @@
   // ("kirkland protein bar" ⊃ "protein bar") · 1–10 some query words match allowing typos.
   const STRONG = 60;
   function match(q, foods) {
-    const nq = norm(q); if (!nq) return [];
+    const nq = norm(cleanTitle(q) || q); if (!nq) return [];
+    const qs = " " + nq.split(" ").map(stem).join(" ") + " ";
     const scored = [];
     for (const f of foods) {
       let best = 0;
@@ -61,7 +89,10 @@
         else if (n.split(" ").some(w => w.startsWith(nq))) best = Math.max(best, 60);
         else if (n.includes(nq)) best = Math.max(best, 40);
         else {
-          if (nq.length > 3 && (" " + nq + " ").includes(" " + n + " ")) best = Math.max(best, 30);
+          // The query holds the whole name: the longer the name it holds, the more specific the match
+          // ("lays classic potato chips" → Potato chips over Potato), 30.0–30.9.
+          const ns = n.split(" ").map(stem).join(" ");
+          if (nq.length > 3 && qs.includes(" " + ns + " ")) best = Math.max(best, 30 + Math.min(0.9, 0.15 * n.split(" ").length));
           if (nq.length >= 4) {
             const fz = fuzzyScore(nq, n);
             if (fz.query === 1) best = Math.max(best, 31 + 4 * fz.name);
@@ -88,11 +119,11 @@
     const strong = m.filter(x => x.best >= STRONG);
     if (strong.length === 1) return { kind: "open", food: strong[0].f };
     if (strong.length > 1) return { kind: "choose", near: strong.slice(0, 4).map(x => x.f) };
-    const typo = top.best > 30 && top.best < 40;
-    if (!typo && (top.best === 30 || top.best === 40) && m.filter(x => x.best === top.best).length === 1)
+    const typo = top.best >= 31 && top.best < 40;
+    if (!typo && (Math.floor(top.best) === 30 || top.best === 40) && m.filter(x => x.best === top.best).length === 1)
       return { kind: "closest", food: top.f, near: m.slice(1, 4).map(x => x.f) };
     return { kind: "choose", near: m.slice(0, 4).map(x => x.f), typo };
   }
 
-  return { norm, words, editDistance, fuzzyScore, match, isExact, resolve, STRONG };
+  return { norm, words, editDistance, fuzzyScore, match, isExact, resolve, cleanTitle, looksLikeProduct, STRONG };
 });

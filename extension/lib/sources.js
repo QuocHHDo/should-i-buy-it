@@ -299,6 +299,67 @@
   const matchUpc = (foods, code) => (foods || []).find(f => f.gtinUpc && upcCore(f.gtinUpc) === upcCore(code)) || null;
   const offProductUrl = code => `https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,generic_name,brands,nutriments,serving_size,serving_quantity,serving_quantity_unit,categories_tags,additives_tags,nova_group,ingredients_text,ingredients_text_en,allergens_tags,traces_tags,ingredients_analysis_tags`;
 
+  // ---- Packaged products by name (Open Food Facts) ----
+  // A second source for name searches: crowd-sourced, strong on national brands (Chobani, Lay's, Oreo), no API key, and
+  // it answers when USDA's shared demo key is used up. US products only. Its newer /api/v2/search kept answering 503
+  // (Nov 2026), so this uses /cgi/search.pl, which allows browser requests (CORS *).
+  const OFF_FIELDS = "code,product_name,generic_name,brands,nutriments,serving_size,serving_quantity,serving_quantity_unit,categories_tags,additives_tags,nova_group,ingredients_text,ingredients_text_en,allergens_tags,traces_tags,ingredients_analysis_tags";
+  const offSearchUrl = (text, size = 24) => "https://world.openfoodfacts.org/cgi/search.pl?" + new URLSearchParams({ action: "process", search_simple: "1", json: "1",
+    search_terms: String(text || "").slice(0, 120), page_size: String(size), sort_by: "unique_scans_n", tagtype_0: "countries", tag_contains_0: "contains", tag_0: "united-states", fields: OFF_FIELDS });
+  // Search results as foods, best first: the share of your words in the product's brand and name (it must have at
+  // least half of them, and the first word you typed when that's a brand), then how often it's scanned. Records with
+  // no nutrition are left out; the same product listed twice keeps one.
+  // The share of the words you typed that a product's brand and name contain (plurals count): below half, it's a
+  // different product, whatever a loose search returned.
+  function wordShare(text, hay) {
+    const want = nameWords(text).map(w => w.replace(/[^a-z0-9]/g, "")).filter(w => w.length > 1);
+    if (!want.length) return 1;
+    const have = new Set(nameWords(hay).map(w => w.replace(/[^a-z0-9]/g, "")));
+    return want.filter(w => have.has(w) || have.has(w.replace(/s$/, "")) || have.has(w + "s")).length / want.length;
+  }
+  // How well a product's name fits what you searched: the share of your words it has, minus a little for each
+  // word it adds ("Oreo Chocolate Sandwich Cookies" fits better than "Oreo Triple Double Chocolate Sandwich
+  // Cookies"). Sizes and numbers in the name don't count. Used to rank USDA and Open Food Facts results together.
+  // Open Food Facts matches every word, so a long title can find nothing ("Quest Nutrition … Protein Bar": the brand
+  // is filed as "Quest"). Shorter tries, in order: as given, without company words, then the brand and the last
+  // three words (usually the product).
+  function offQueries(q) {
+    const t = String(q || "").replace(/,/g, " ").replace(/\s+/g, " ").trim();
+    const noCorp = t.replace(/\b(?:nutrition|foods?|brands?|company|co|inc|llc|corp)\b\.?/gi, " ").replace(/\s+/g, " ").trim();
+    const w = noCorp.split(" ");
+    const short = w.length > 4 ? [w[0], ...w.slice(-3)].join(" ") : "";
+    return [...new Set([t, noCorp, short].filter(x => x && x.split(" ").length >= 1))];
+  }
+  function nameFit(text, name) {
+    const strip = t => nameWords(t).map(w => w.replace(/[^a-z0-9]/g, "")).filter(w => w.length > 1 && !/\d/.test(w) && !/^(?:fl|oz|ounce|ounces|bag|bottle|bottles|box|plastic|jar|can|cans)$/.test(w));
+    const want = strip(text), have = strip(name);
+    if (!want.length) return 0;
+    const has = (list, w) => list.includes(w) || list.includes(w.replace(/s$/, "")) || list.includes(w + "s");
+    const hit = want.filter(w => has(have, w)).length;
+    const extra = have.filter(w => !has(want, w)).length;
+    return hit / want.length - 0.04 * extra;
+  }
+  function rankOff(data, text) {
+    const want = nameWords(text).map(w => w.replace(/[^a-z0-9]/g, "")).filter(w => w.length > 1);
+    const out = [], seen = new Set();
+    (data && Array.isArray(data.products) ? data.products : []).forEach((p, i) => {
+      if (!p || !p.code || !p.product_name || !p.nutriments) return;
+      const f = fromOff(String(p.code), p);
+      if (["cal", "fat", "carb", "pro"].every(k => f.missing.includes(k))) return;
+      const have = new Set(nameWords(`${p.brands || ""} ${p.product_name}`).map(w => w.replace(/[^a-z0-9]/g, "")));
+      const has = w => have.has(w) || have.has(w.replace(/s$/, "")) || have.has(w + "s");
+      const hit = want.filter(has).length;
+      if (want.length && hit / want.length < 0.5) return;
+      const key = f.n.toLowerCase();
+      if (seen.has(key)) return;
+      seen.add(key);
+      // Extra words make it a more specific (different) product: "Organic Great Value…" after "Great Value…".
+      const extra = Math.max(0, have.size - hit - 1);
+      out.push({ f, score: (want.length ? hit / want.length : 0) - 0.03 * extra - i * 0.002 });
+    });
+    return out.sort((a, b) => b.score - a.score).map(x => x.f);
+  }
+
 
   // The exact prompt the Claude version uses to look up a food; the Claude-vs-USDA eval sends the same text.
   function claudePrompt(text) {
@@ -327,5 +388,5 @@ If "${text}" is not a food, reply {"found":false}.`;
     return f;
   }
 
-  return { PROCESSED, makeFood, check, issueSummary, settleAddedSugar, fromUsda, fromOff, usdaSearchUrl, usdaFoodUrl, usdaUpcQueries, usdaUpcUrl, matchUpc, trouble, secondOpinion, sameCode, brandedSearchUrl, rankBranded, storeBrand, isWalmart, STORE_BRANDS, linkId, parseLinkId, titleCase, offProductUrl, claudePrompt, parseJsonReply, fromClaude };
+  return { offSearchUrl, offQueries, rankOff, wordShare, nameFit, PROCESSED, makeFood, check, issueSummary, settleAddedSugar, fromUsda, fromOff, usdaSearchUrl, usdaFoodUrl, usdaUpcQueries, usdaUpcUrl, matchUpc, trouble, secondOpinion, sameCode, brandedSearchUrl, rankBranded, storeBrand, isWalmart, STORE_BRANDS, linkId, parseLinkId, titleCase, offProductUrl, claudePrompt, parseJsonReply, fromClaude };
 });

@@ -23,6 +23,7 @@ Live at **https://quochhdo.github.io/should-i-buy-it/**. It installs to your pho
 - **Backup and transfer** (on the Goals tab): download or copy your saved data, restore it from a file or text, or move it to another device with a transfer link. Restores are checked field by field and previewed first; your USDA key is never included.
 - **Learn mode** (under Browse): a quiz built from the app's own data; missed questions come back after 3, 8, then 20 questions.
 - **Serving size** control (½× to 3×), **favorites**, **recent searches**, and **shareable links** (`#salmon`).
+- **Paste a product name from any store site** ("Lay's Classic Potato Chips, Party Size, 13 oz Bag") and press Enter: sizes, counts and packaging words are left out, USDA Branded Foods and Open Food Facts are searched together and ranked by how closely each name fits, and the closest built-in food is pinned on top, so something useful shows even when both databases are busy (`Q.cleanTitle`, `Q.looksLikeProduct` in `js/search.js`; `S.offSearchUrl`, `S.rankOff`, `S.nameFit` in `js/sources.js`).
 - **Lookups beyond the built-in list**: USDA search and barcode scanning via Open Food Facts on the web version; a Claude lookup in the Claude version.
 - **Read a photo of the label** when a barcode isn't found (or there's none): the photo is read on the device with Tesseract.js, the numbers fill a form to check and fix, and only then is it scored. See "Label photos" below.
 - **Impossible numbers are caught**: a looked-up record with sodium heavier than 40% of the serving, saturated or trans fat above total fat, fiber or sugars above carbs, added sugar above total sugars, or cholesterol in a plant-based drink has those values left out ("—", not scored) and named on the card, with a link to fix the record on Open Food Facts. Calories that fat, carbs and protein can't account for are noted too (alcoholic drinks excepted). Found on Kirkland's oat drink, whose Open Food Facts record listed 240 g of sodium a serving (`S.check` in `js/sources.js`).
@@ -51,7 +52,7 @@ Each serving gets a point score from about a dozen rules measured against your g
 ## Testing
 
 ```sh
-npm test            # 229 unit tests (node tests/run.js): data, verdict rules, allergens, swaps, search, API conversions, OCR parsing, prices, quiz, evals
+npm test            # 232 unit tests (node tests/run.js): data, verdict rules, allergens, swaps, search, API conversions, OCR parsing, prices, quiz, evals
 npm run typecheck   # TypeScript checks every js/ and extension/ file from JSDoc (tsconfig.json); nothing is built or emitted
 node tests/verdict-dump.js > verdicts.csv   # every built-in food's verdict and reasons, for eyeballing outliers
 node scripts/build-additives.mjs <openfoodfacts-server>/taxonomies   # regenerate js/additives-data.js from Open Food Facts
