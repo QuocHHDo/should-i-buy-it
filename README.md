@@ -31,7 +31,7 @@ Live at **https://quochhdo.github.io/should-i-buy-it/**. It installs to your pho
 
 - **Works like a phone app**: install it to the home screen (Android shows an Install button; iPhone gets the Share → Add to Home Screen steps; Goals has both). The installed app opens on a big Scan button with your recent scans and their verdicts, starts the camera right away when it's already allowed, and has Scan and Grocery list shortcuts on its icon. No app store needed.
 - **Phone bookmark for Walmart and Sam's Club** (Goals tab): tap it on a Walmart product page to open its verdict here.
-- **Browser extension for Walmart product pages** (`extension/`): a card with the verdict, the main reasons and any flagged additives, using your goals. See below.
+- **Browser extension for Walmart, Sam's Club, Costco, Target and Kroger product pages** (`extension/`): a card with the verdict, the main reasons and any flagged additives, using your goals. See below.
 
 Everything runs in the browser. Goals, favorites, lists and lookups live in your browser's local storage; there is no account and no server.
 
@@ -52,7 +52,7 @@ Each serving gets a point score from about a dozen rules measured against your g
 ## Testing
 
 ```sh
-npm test            # 232 unit tests (node tests/run.js): data, verdict rules, allergens, swaps, search, API conversions, OCR parsing, prices, quiz, evals
+npm test            # 246 unit tests (node tests/run.js): data, verdict rules, allergens, swaps, search, API conversions, OCR parsing, prices, quiz, evals
 npm run typecheck   # TypeScript checks every js/ and extension/ file from JSDoc (tsconfig.json); nothing is built or emitted
 node tests/verdict-dump.js > verdicts.csv   # every built-in food's verdict and reasons, for eyeballing outliers
 node scripts/build-additives.mjs <openfoodfacts-server>/taxonomies   # regenerate js/additives-data.js from Open Food Facts
@@ -111,7 +111,7 @@ js/learn.js                quiz questions and spaced repetition (pure)
 js/compare.js              what a comparison marks as better, price rows, the one-line answer (pure)
 js/prices.js               typical prices, your prices (by barcode), shelf-tag parsing (pure)
 js/labelocr.js             label text from OCR into numbers, with checks (pure); js/labelscan.js runs the OCR
-js/walmart.js, js/costco.js store page readers (pure)
+js/walmart.js, js/costco.js, js/target.js, js/kroger.js   store page readers (pure)
 js/dom.js                  element helpers shared by the app and the extension's pages
 js/camera.js               camera barcode scanning
 js/app.js                  the app's screens and state
@@ -127,13 +127,17 @@ scripts/build-single.mjs   single-file build
 
 Values are approximate and vary by brand; the package label wins. Open Food Facts is crowd-sourced and can be incomplete. The scoring thresholds are rules of thumb, not a clinical standard. General nutrition guidance, not medical advice.
 
-## Browser extension (Walmart, Sam's Club and Costco product pages)
+## Browser extension (Walmart, Sam's Club, Costco, Target and Kroger product pages)
 
 `extension/` is a Chrome extension (Manifest V3, Chrome 116+) that shows a verdict on Walmart product pages (`walmart.com/ip/…`). It uses the same verdict code and foods as the site, and it's free: no server, no account.
 
 It works the same on **Sam's Club** (`samsclub.com/ip/…`), which runs on Walmart's platform: the same product URLs, page data, title and rating row, so one reader serves both (`STORES` in `js/walmart.js`); wording, swap searches and prices name the store. Search badges stay off on Sam's Club, which checks for robots more readily; if a store asks for that check, the badge says to reload instead of failing.
 
 On **Costco** (`costco.com/p/-/…/<id>`) a separate reader, `js/costco.js`, returns the same product shape. Costco's pages carry no Nutrition Facts as text (the label is a photo), so the route is the barcode: the page's structured data (JSON-LD) gives the name, item number, brand, price and category, and the item's record in the page data gives its UPC, department and size (for the price per ounce). Costco's department decides what's food (it files paper towels under Grocery); produce goes by name, and vitamins get the supplement view. The badge sits in the empty space right of the star rating, absolutely positioned so nothing moves. Search badges and the phone bookmark don't cover Costco.
+
+On **Target** (`target.com/p/…/-/A-<tcin>`) `js/target.js` finds the product's record in the page data (Next.js `__NEXT_DATA__`, among its saved query results, next to records of recommended products): the title, UPC, category path, ingredients, label photos and the **Nutrition Facts as a list of nutrients**. That list is turned into Walmart's panel shape, so the same code reads it and makes the same choices (panel, produce by name, supplement view). Target spells units several ways on the same site (`g` or `grm`; `Cal`, `kcal` or `calories`), and the serving's grams are sometimes only in its description ("About 15 chips (28g)"); both are handled. The price isn't in the page data (the page loads it afterwards), so it's read from the page's price module ("$2.99 ($0.30/fluid ounce)") when the page is first opened. Pages Target changes without reloading are fetched and read the same way. The badge goes in the rating row under the title, a wrapping flex row like Walmart's. Checked against 10 live target.com products (captured Nov 5, 2026; `tests/fixtures/target-live.json`): 7 read from Target's own panel (peanut butter, cereal, cola, chips, frozen pizza, a yogurt drink, whey protein), vitamin D3 gets the supplement view, baby carrots (no barcode, no panel) are matched by name, and an after-sun gel gets no badge. `tests/target.test.js` pins each one's route and verdict.
+
+On **Kroger** (`kroger.com/p/…/<13 digits>`) the address itself carries the barcode: `0001600027528` is UPC 016000275287 without its check digit, padded to 13 digits. `js/kroger.js` puts the check digit back (checked against eight real UPCs and an EAN-13) and looks the barcode up in Open Food Facts, then USDA Branded Foods, so a verdict needs nothing from the page. Produce sticker codes (`0000000004011`, bananas) and items priced in the store (codes starting with 2) are matched by name instead. The name, category and price come from the page's structured data or title when it has them, or from the address. **Kroger's site refuses requests from servers, so its page markup couldn't be captured or checked**: the badge floats at the bottom of the window rather than sitting by the stars, Kroger's own Nutrition Facts aren't read, and a non-food page without breadcrumbs can show "no nutrition data" instead of no badge. Kroger's sister stores (Ralphs, Fred Meyer, King Soopers and others) aren't included yet.
 
 It has two levels:
 
@@ -184,9 +188,9 @@ Phones can't run extensions, so Goals → **Walmart on your phone** gives a book
 
 Phones: Chrome on Android and iOS doesn't run extensions.
 
-**Permissions:** storage (your goals), the side panel, Walmart, Sam's Club and Costco pages (to show the badge), optional access to Costco's image host (gdx-assets.costco.com, asked for the first time you read a Costco photo; Walmart and Sam's Club serve their photos to any site), and Open Food Facts and USDA (barcode lookups, without cookies). Nothing is sent anywhere else.
+**Permissions:** storage (your goals), the side panel, Walmart, Sam's Club, Costco, Target and Kroger pages (to show the badge), optional access to Costco's and Target's image hosts (gdx-assets.costco.com, target.scene7.com, asked for the first time you read a photo from that store; Walmart and Sam's Club serve their photos to any site), and Open Food Facts and USDA (barcode lookups, without cookies). Nothing is sent anywhere else.
 
-**For development:** `extension/lib/` holds copies of the app code; after changing `js/`, run `npm run sync:extension` (a test fails if the copies are out of date). `node tests/ui/extension.js` loads the extension in Chromium against saved Walmart page data (`tests/fixtures/walmart-pages.json`).
+**For development:** `extension/lib/` holds copies of the app code; after changing `js/`, run `npm run sync:extension` (a test fails if the copies are out of date). `node tests/ui/extension.js` loads the extension in Chromium against saved Walmart, Sam's Club, Costco and Target page data (`tests/fixtures/walmart-pages.json` and the others in `tests/fixtures/`).
 
 ## About, data and license
 

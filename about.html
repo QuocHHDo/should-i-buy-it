@@ -98,10 +98,10 @@ th { font-weight: 600; }
     <tr><td>Additive names and notes</td><td>Open Food Facts additive taxonomy. Notes written for this app link the regulator review or study each one is based on.</td><td>ODbL 1.0</td><td class="num">Oct 2026</td></tr>
     <tr><td>Typical prices</td><td><a href="https://www.bls.gov/cpi/factsheets/average-prices.htm">BLS Average Price Data</a> (South region where available) and USDA ERS fruit and vegetable prices</td><td>Public domain</td><td class="num">Sep 2026</td></tr>
     <tr><td>Label photos</td><td>Read on your device with <a href="https://github.com/naptha/tesseract.js">Tesseract.js</a>, then checked by you. Photos aren't uploaded.</td><td>Tesseract: Apache-2.0</td><td>When you read one</td></tr>
-    <tr><td>Walmart, Sam's Club and Costco products (extension; phone bookmark for Walmart and Sam's Club)</td><td>The Nutrition Facts, barcode and price on the product page you're looking at, read in your browser. Costco pages show no Nutrition Facts as text, so their barcode is looked up.</td><td>Shown, not stored or shared</td><td>When you look</td></tr>
+    <tr><td>Walmart, Sam's Club, Costco, Target and Kroger products (extension; phone bookmark for Walmart and Sam's Club)</td><td>The Nutrition Facts, barcode and price on the product page you're looking at, read in your browser. Costco pages show no Nutrition Facts as text, and Kroger's address holds the barcode, so for those the barcode is looked up.</td><td>Shown, not stored or shared</td><td>When you look</td></tr>
   </table>
   </div>
-  <p class="muted">Data from Open Food Facts is © Open Food Facts contributors and available under the Open Database License. Should I Buy It? is an independent project and isn't affiliated with or endorsed by USDA, BLS, Open Food Facts, Walmart, Sam's Club or Costco.</p>
+  <p class="muted">Data from Open Food Facts is © Open Food Facts contributors and available under the Open Database License. Should I Buy It? is an independent project and isn't affiliated with or endorsed by USDA, BLS, Open Food Facts, Walmart, Sam's Club, Costco, Target or Kroger.</p>
 
   <h2>Privacy</h2>
   <p>No accounts, no tracking, no analytics. Your goals and lists stay in your browser. See the <a href="privacy.html">privacy policy</a> for exactly what's sent where.</p>
@@ -111,6 +111,7 @@ th { font-weight: 600; }
 
   <h2>What's new</h2>
   <ul class="log">
+    <li><b>Nov 5, 2026</b> · The extension works on Target and Kroger product pages. On Target it reads the page's own Nutrition Facts and price; on Kroger it looks up the barcode in the page's address.</li>
     <li><b>Nov 3, 2026</b> · Diets: gluten-free (celiac), vegetarian and vegan, flagged the same way as allergies, with swaps and meal ideas that fit. Allergen flags were checked against 541 real product labels.</li>
     <li><b>Nov 2, 2026</b> · Food allergies: tick the nine major allergens (or type others) under Goals, and every food, scan, plate and swap is flagged “Contains” or “May contain” them. Swaps and meal ideas leave them out. In the extension too.</li>
     <li><b>Nov 1, 2026</b> · Shelf prices in a comparison (price of a serving, protein per dollar). Products you've scanned open instantly, even without signal. When Open Food Facts' numbers look wrong, USDA's record for the barcode is used instead if it has one.</li>

@@ -36,7 +36,7 @@
   function empty() {
     return el("div", { class: "empty" },
       el("span", { html: C.icon("fine", 36).replace('aria-hidden="true"', 'aria-hidden="true" style="opacity:.5"') }),
-      el("p", { class: "big", text: "Open a Walmart, Sam's Club or Costco food product to see a verdict." }),
+      el("p", { class: "big", text: "Open a Walmart, Sam's Club, Costco, Target or Kroger food product to see a verdict." }),
       el("p", { class: "small", text: "On a product page, the verdict sits next to the star rating. Click it to see the details here." }));
   }
   function render() {
@@ -58,9 +58,10 @@
   // computer with Tesseract (extension/ocr/), and they check the numbers before anything is scored. Nothing is uploaded.
   const LS = self.SelfCheckLabelScan, LO = self.SelfCheckLabelOcr, SRC = self.SelfCheckSources;
   // Costco's image host doesn't serve other sites, so reading its photos needs permission (asked for on first use).
-  const NEEDS_PERMISSION = /^https:\/\/gdx-assets\.costco\.com\//;
-  const big = u => /walmartimages|samsclubimages/.test(u) ? u.split("?")[0] + "?odnHeight=2000&odnWidth=2000" : u;
-  const thumb = u => /walmartimages|samsclubimages/.test(u) ? u.split("?")[0] + "?odnHeight=180&odnWidth=180" : u;
+  // Target's image host (target.scene7.com) is asked for the same way.
+  const NEEDS_PERMISSION = /^https:\/\/(gdx-assets\.costco\.com|target\.scene7\.com)\//;
+  const big = u => /walmartimages|samsclubimages/.test(u) ? u.split("?")[0] + "?odnHeight=2000&odnWidth=2000" : /target\.scene7\.com/.test(u) ? u.split("?")[0] + "?wid=2000&hei=2000&qlt=90&fmt=pjpeg" : u;
+  const thumb = u => /walmartimages|samsclubimages/.test(u) ? u.split("?")[0] + "?odnHeight=180&odnWidth=180" : /target\.scene7\.com/.test(u) ? u.split("?")[0] + "?wid=180&hei=180" : u;
   let photoBusy = false;
   function photoSection(d, open) {
     const prod = d.product || {}, imgs = (prod.images || []).filter(u => /^https:\/\//.test(u));
@@ -85,7 +86,7 @@
       // Chrome only shows a permission prompt right after a click, so ask before anything is awaited.
       const asked = NEEDS_PERMISSION.test(u) ? chrome.permissions.request({ origins: [new URL(u).origin + "/*"] }) : Promise.resolve(true);
       run(async () => {
-        if (!(await asked)) throw new Error("Reading Costco's photos needs permission to load images from gdx-assets.costco.com. You can still use a photo of your own.");
+        if (!(await asked)) throw new Error(`Reading ${/target/.test(u) ? "Target" : "Costco"}'s photos needs permission to load images from ${new URL(u).hostname}. You can still use a photo of your own.`);
         const res = await fetch(big(u), { credentials: "omit" });
         if (!res.ok) throw new Error("photo " + res.status);
         return res.blob();

@@ -12,8 +12,12 @@
     walmart: { id: "walmart", name: "Walmart", search: "https://www.walmart.com/search?q=" },
     sams: { id: "sams", name: "Sam's Club", search: "https://www.samsclub.com/search?q=" },
     costco: { id: "costco", name: "Costco", search: "https://www.costco.com/s?keyword=" },
+    target: { id: "target", name: "Target", search: "https://www.target.com/s?searchTerm=" },
+    kroger: { id: "kroger", name: "Kroger", search: "https://www.kroger.com/search?query=" },
   };
-  const storeOf = host => /(^|\.)samsclub\.com$/i.test(String(host || "")) ? STORES.sams : /(^|\.)costco\.com$/i.test(String(host || "")) ? STORES.costco : STORES.walmart;
+  /** @type {Array<[RegExp, string]>} */
+  const HOSTS = [[/(^|\.)samsclub\.com$/i, "sams"], [/(^|\.)costco\.com$/i, "costco"], [/(^|\.)target\.com$/i, "target"], [/(^|\.)kroger\.com$/i, "kroger"]];
+  const storeOf = host => { const hit = HOSTS.find(([re]) => re.test(String(host || ""))); return hit ? STORES[hit[1]] : STORES.walmart; };
   const storeSearch = (q, store) => (STORES[store] || STORES.walmart).search + encodeURIComponent(q);
 
   // Product id from a product URL: /ip/Some-Name/10315479 → "10315479".
@@ -138,8 +142,8 @@
     if (found.has("carb") && v.carb === 0) { zero("fib"); zero("sug"); zero("add"); }
     const missing = V.NUM_KEYS.filter(k => !found.has(k));
     // Walmart's category path ("Food > Pantry > Peanut butter & spreads > Peanut butter") is read like USDA's branded
-    // food category, so "Try instead" knows what kind of food this is.
-    const f = S.makeFood(shortName(p), servingOf(p.nutrition) || "1 serving", v, { src: "walmart", missing, upc: p.upc, ingredients: p.ingredients || undefined,
+    // food category, so "Try instead" knows what kind of food this is. Target's panel comes through here too (src "target").
+    const f = S.makeFood(shortName(p), servingOf(p.nutrition) || "1 serving", v, { src: p.src || "walmart", missing, upc: p.upc, ingredients: p.ingredients || undefined,
       foodCategory: p.category.slice(1).join(" > ") || undefined, dataType: p.category.length > 1 ? "Branded" : undefined });
     return S.settleAddedSugar(f, found.has("add"), false);
   }
@@ -182,9 +186,9 @@
     return fresh ? { kind: "name", query: produceQuery(p.name) } : { kind: "none", why: "No nutrition facts or barcode on this page." };
   }
 
-  // "Marketside Fresh Organic Bananas, Bunch" → "Bananas".
-  const PRODUCE_NOISE = /\b(marketside|great value|freshness guaranteed|fresh|organic|each|bunch|bag|bundle|package|pack|count|ct|lb|lbs|oz|whole|large|medium|small|premium|conventional)\b|\d+(\.\d+)?/gi;
-  const produceQuery = name => String(name || "").split(",")[0].replace(PRODUCE_NOISE, " ").replace(/\s+/g, " ").trim();
+  // "Marketside Fresh Organic Bananas, Bunch" → "Bananas"; Target's "Fresh Baby-Cut Carrots - Good & Gather™" → "Baby-Cut Carrots".
+  const PRODUCE_NOISE = /\b(marketside|great value|freshness guaranteed|good & gather|good and gather|simple truth|fresh|organic|each|bunch|bag|bundle|package|pack|count|ct|lb|lbs|oz|whole|large|medium|small|premium|conventional)\b|\d+(\.\d+)?/gi;
+  const produceQuery = name => String(name || "").split(/,| - /)[0].replace(/[™®]/g, "").replace(PRODUCE_NOISE, " ").replace(/\s+/g, " ").trim();
 
   // A built-in food for a name-matched product, or null when the match isn't confident.
   function byName(query, foods) {

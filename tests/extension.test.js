@@ -29,14 +29,16 @@ test("every file the manifest names exists, in a load order that works", () => {
     assert.ok(js.indexOf(dep) < js.indexOf(user), `${dep} loads before ${user}`);
 });
 
-test("permissions stay narrow: storage, the side panel, Walmart, Sam's Club and Costco pages, and the two nutrition sources", () => {
+test("permissions stay narrow: storage, the side panel, Walmart, Sam's Club, Costco, Target and Kroger pages, and the two nutrition sources", () => {
   assert.deepEqual(manifest.permissions, ["storage", "sidePanel"]);
   assert.equal(manifest.side_panel.default_path, "sidepanel.html");
   assert.ok(fs.existsSync(path.join(EXT, "sidepanel.html")) && fs.existsSync(path.join(EXT, "sidepanel.js")));
   // Every script the side panel loads exists.
   for (const m of fs.readFileSync(path.join(EXT, "sidepanel.html"), "utf8").matchAll(/src="([^"]+)"/g)) assert.ok(fs.existsSync(path.join(EXT, m[1])), m[1]);
   assert.deepEqual(manifest.host_permissions, ["https://world.openfoodfacts.org/*", "https://api.nal.usda.gov/*"]);
-  assert.deepEqual(manifest.content_scripts[0].matches, ["https://www.walmart.com/*", "https://www.samsclub.com/*", "https://www.costco.com/*"]);
+  assert.deepEqual(manifest.content_scripts[0].matches, ["https://www.walmart.com/*", "https://www.samsclub.com/*", "https://www.costco.com/*", "https://www.target.com/*", "https://www.kroger.com/*"]);
+  // Photo hosts that don't serve other sites are asked for when first used, not at install.
+  assert.deepEqual(manifest.optional_host_permissions, ["https://gdx-assets.costco.com/*", "https://target.scene7.com/*"]);
   const bg = fs.readFileSync(path.join(EXT, manifest.background.service_worker), "utf8");
   assert.match(bg, /credentials: "omit"/);
 });

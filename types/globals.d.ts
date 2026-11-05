@@ -6,7 +6,7 @@ declare const Tesseract: any;
 interface Window {
   claude: any; SELF_CHECK_CONFIG: any; Html5Qrcode: any; Html5QrcodeSupportedFormats: any; __Html5QrcodeLibrary__: any;
   SelfCheckData: any; SelfCheckVerdict: any; SelfCheckSources: any; SelfCheckSearch: any; SelfCheckCard: any;
-  SelfCheckWalmart: any; SelfCheckCostco: any; SelfCheckSupplement: any; SelfCheckIngredients: any; SelfCheckAdditives: any;
+  SelfCheckWalmart: any; SelfCheckCostco: any; SelfCheckTarget: any; SelfCheckKroger: any; SelfCheckSupplement: any; SelfCheckIngredients: any; SelfCheckAdditives: any;
   SelfCheckAdditivesData: any; SelfCheckAdditiveNotes: any; SelfCheckPrices: any; SelfCheckPricesData: any; SelfCheckMeals: any;
   SelfCheckBackup: any; SelfCheckDom: any; SelfCheckCompare: any; SelfCheckCamera: any; SelfCheckLearn: any; SelfCheckAllergens: any; SelfCheckBookmarklet: any; SelfCheckLabelOcr: any; SelfCheckLabelScan: any;
 }

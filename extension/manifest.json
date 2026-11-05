@@ -2,8 +2,8 @@
   "manifest_version": 3,
   "name": "Should I Buy It? Shopping helper",
   "short_name": "Should I Buy It?",
-  "version": "1.8.6",
-  "description": "See whether a food fits your nutrition goals on Walmart, Sam's Club and Costco product pages. Free and private, all in your browser.",
+  "version": "1.9.0",
+  "description": "Does a food fit your goals? A verdict on Walmart, Sam's Club, Costco, Target and Kroger product pages. Free and private.",
   "icons": {
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",
@@ -34,7 +34,9 @@
       "matches": [
         "https://www.walmart.com/*",
         "https://www.samsclub.com/*",
-        "https://www.costco.com/*"
+        "https://www.costco.com/*",
+        "https://www.target.com/*",
+        "https://www.kroger.com/*"
       ],
       "js": [
         "lib/foods.js",
@@ -50,6 +52,8 @@
         "lib/search.js",
         "lib/walmart.js",
         "lib/costco.js",
+        "lib/target.js",
+        "lib/kroger.js",
         "content.js"
       ],
       "run_at": "document_idle"
@@ -64,6 +68,7 @@
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   },
   "optional_host_permissions": [
-    "https://gdx-assets.costco.com/*"
+    "https://gdx-assets.costco.com/*",
+    "https://target.scene7.com/*"
   ]
 }

@@ -54,7 +54,7 @@
     const cut = p && p.add > 0 ? p.add * (meal ? MEAL_CUT.limit[0] * MEAL_SHARE : CUT.add[0]) : 0;
     return !(cut > 0 && known(f, "sug") && !isLowerBound(f, "sug") && f.sug < cut);
   };
-  const SOURCE_WORD = { usda: "USDA", off: "Open Food Facts", claude: "the lookup", walmart: "Walmart's nutrition panel" };
+  const SOURCE_WORD = { usda: "USDA", off: "Open Food Facts", claude: "the lookup", walmart: "Walmart's nutrition panel", target: "Target's nutrition panel" };
   const listWords = ks => { const w = ks.map(k => NUTRIENT_WORD[k]); return w.length <= 1 ? w.join("") : w.slice(0, -1).join(", ") + " or " + w.at(-1); };
   // "Partial data: USDA didn't report saturated fat or total sugars." (null when nothing is missing)
   function missingNote(f) {

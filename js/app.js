@@ -31,7 +31,7 @@
     S.settleAddedSugar(f, f.src === "off" ? !f.missing.includes("add") : f.add > 0, /\braw\b/i.test(f.n));
   }
   // Lookups saved before the impossible-value checks: run them now (a mistyped record keeps showing otherwise).
-  for (const f of lookups) if ((f.src === "usda" || f.src === "off" || f.src === "walmart") && !f.checked) { S.check(f, f.categories); f.checked = 1; }
+  for (const f of lookups) if ((f.src === "usda" || f.src === "off" || f.src === "walmart" || f.src === "target") && !f.checked) { S.check(f, f.categories); f.checked = 1; }
   let recents = store.get("recents", []);
   let favs = store.get("favorites", []);
   const allFoods = () => [...FOODS, ...lookups];
@@ -501,6 +501,7 @@
       `The brand's own label${f.published ? `, published ${f.published}` : ""}${f.gtin ? ` (UPC ${f.gtin})` : ""}. ${f.perServing ? "Values per serving." : "Values per 100 g."} Recipes change; the package wins.`);
     else if (f.src === "usda") src.append(el("b", { text: "From USDA FoodData Central. " }), "Values per 100 g.");
     else if (f.src === "walmart") src.append(el("b", { text: "From Walmart's Nutrition Facts panel. " }), "Added from the browser extension. Recipes change; the package wins.");
+    else if (f.src === "target") src.append(el("b", { text: "From Target's Nutrition Facts panel. " }), "Added from the browser extension. Recipes change; the package wins.");
     else if (f.src === "photo") src.append(el("b", { text: "From a photo of the label. " }), "Read on this device and checked by you; the photo wasn't uploaded.");
     else if (f.src === "off") src.append(el("b", { text: "From Open Food Facts. " }), f.per100 ? "Values are per 100 g because the package has no serving size on file; use the servings buttons to match what you eat." : "Values per the package's serving. Crowd-sourced; check the label.");
     else if (isPlate) src.append("The sum of every item at the servings you chose. Judged as one meal: against a third of your daily goals and limits.");

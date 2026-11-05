@@ -32,6 +32,19 @@ const costcoHtml = k => CO.html(k, { layout: `<style>body{margin:0;font:14px Ari
 <style>[data-bv-show=rating_summary] div, [data-bv-show=rating_summary] span { position: static !important; display: block !important; margin: 0 !important }</style>
 <div id="price" style="font-size:28px;font-weight:700;margin-top:12px">$${CO.ITEMS[k].price}</div><button id="atc">Add to Cart</button><section style="height:900px"></section></div></div>
 <script>setTimeout(() => { document.getElementById("CostcoBVReviewContainer").innerHTML = '<span style="display:inline-flex;gap:6px;height:28px;align-items:center;width:316px;white-space:nowrap">★★★★★ 4.8 (512) <a href="#">Write a review</a></span>'; }, 600);</script>` });
+// Target pages: the product records from live target.com pages (Nov 5, 2026) in the page data, and Target's title,
+// rating row (a wrapping flex row; the stars, then "Questions") and price module around them, copied from the page.
+const TG = require(path.join(ROOT, "tests/fixtures/target-live.json")).pages;
+const targetHtml = (id, { price = "$4.79", unit = "($0.18/ounce)" } = {}) => `<!doctype html><html><head><meta charset="utf-8"><title>Target</title>
+<style>body{margin:0;font:14px Arial,sans-serif} .wrap{display:grid;grid-template-columns:760px 520px;gap:40px;padding:120px 20px 0} .gallery{height:520px;background:#eee}
+.h-display-flex{display:flex} .h-flex-wrap{flex-wrap:wrap} .h-flex-align-center{align-items:center} .h-margin-a-module-gap{margin-bottom:16px} .h-margin-r-tiny{margin-right:4px}
+#atc{display:block;width:100%;height:44px;margin-top:8px;border:0;border-radius:4px;background:#cc0000;color:#fff;font-weight:700}</style></head><body>
+<div class="wrap"><div class="gallery">photos</div><div id="above-the-fold-information">
+<div data-module-type="ProductDetailTitle"><h1 data-test="product-title" style="font-size:24px;margin:0 0 16px">${TG[id].product.item.product_description.title}</h1></div>
+<div data-module-type="ProductDetailReviewsAndQuestions"><div class="h-margin-a-module-gap h-display-flex h-flex-wrap"><div class="h-display-flex" data-test="ratingFeedbackContainer"><span class="h-display-flex h-flex-align-center h-margin-r-tiny" id="ratingReviewId" role="link" tabindex="0"><button type="button" data-test="rating-stars" style="border:0;background:none;padding:0;height:20px">★★★★★ 277</button></span><a href="#" data-test="questionsCountLink">4 Questions</a></div></div></div>
+<div data-test="module-product-detail-price-v2" id="price"><span data-test="product-price" style="font-size:28px;font-weight:700">${price}</span> <span>${unit}</span></div>
+<button id="atc">Add to cart</button><section style="height:900px"></section></div></div>
+<script id="__NEXT_DATA__" type="application/json">${JSON.stringify({ props: { pageProps: {}, dehydratedState: { queries: [{ state: { data: { data: { product: TG[id].product } } } }] } } })}</script></body></html>`;
 // A pre-workout (Supplement Facts), built from the label on the real page the user checked.
 const SUPPS = require(path.join(ROOT, "tests/fixtures/walmart-supplements.json")).pages;
 for (const [k, v] of Object.entries(SUPPS)) PAGES["supp-" + k] = { props: { pageProps: { initialData: { data: build(v) } } } };
@@ -62,6 +75,9 @@ const OFF = {
     nutriments: { "energy-kcal_serving": 0, fat_serving: 0, "saturated-fat_serving": 0, sodium_serving: 0.04, carbohydrates_serving: 0, sugars_serving: 0, proteins_serving: 0 } } },
   // Cheerios as Costco sells them (the 2-count box's barcode).
   "016000435094": { status: 1, product: { product_name: "Cheerios", serving_size: "1.5 cup (39 g)", serving_quantity: 39, categories_tags: ["en:breakfast-cereals"],
+    nutriments: { "energy-kcal_serving": 140, fat_serving: 2.5, "saturated-fat_serving": 0.5, "trans-fat_serving": 0, sodium_serving: 0.19, carbohydrates_serving: 29, fiber_serving: 4, sugars_serving: 2, "added-sugars_serving": 2, proteins_serving: 5 } } },
+  // Cheerios Gluten Free as Kroger sells them (its address ends in 0001600027528).
+  "016000275287": { status: 1, product: { product_name: "Cheerios", serving_size: "1.5 cup (39 g)", serving_quantity: 39, categories_tags: ["en:breakfast-cereals"],
     nutriments: { "energy-kcal_serving": 140, fat_serving: 2.5, "saturated-fat_serving": 0.5, "trans-fat_serving": 0, sodium_serving: 0.19, carbohydrates_serving: 29, fiber_serving: 4, sugars_serving: 2, "added-sugars_serving": 2, proteins_serving: 5 } } },
   "078742370033": { status: 1, product: { product_name: "Hannaford Peanut butter", serving_size: "2 tbsp. (32 g)", serving_quantity: 32,
     nutriments: { "energy-kcal_serving": 180, fat_serving: 16, "saturated-fat_serving": 3, "trans-fat_serving": 0, cholesterol_serving: 0, sodium_serving: 0.135, carbohydrates_serving: 7, fiber_serving: 2, sugars_serving: 3, "added-sugars_serving": 2, proteins_serving: 7 },
@@ -99,6 +115,17 @@ const ok = (cond, msg) => { console.log((cond ? "PASS " : "FAIL ") + msg); if (!
       const id = C_ID(r.request().url());
       if (/gdx-assets\.costco\.com\/test\/pb-label\.jpg/.test(r.request().url())) return r.fulfill({ contentType: "image/jpeg", body: fs.readFileSync(path.join(ROOT, "tests/fixtures/label-skippy.jpg")), headers: { "access-control-allow-origin": "*" } });
       return CO_ID[id] ? r.fulfill({ contentType: "text/html", body: costcoHtml(CO_ID[id]) }) : r.fulfill({ contentType: "text/html", body: "<!doctype html><title>Costco</title><p>home</p>" });
+    });
+    await ctx.route("https://www.target.com/**", r => {
+      const id = (r.request().url().match(/\/-\/A-(\d+)/) || [])[1];
+      // The yogurt drink is priced per fluid ounce, as Target shows drinks.
+      return TG[id] ? r.fulfill({ contentType: "text/html", body: targetHtml(id, id === "79543780" ? { price: "$2.99", unit: "($0.30/fluid ounce)" } : {}) }) : r.fulfill({ contentType: "text/html", body: "<!doctype html><title>Target</title><p>home</p>" });
+    });
+    // Kroger: only what the reader relies on (the address and the title); its page markup couldn't be captured.
+    await ctx.route("https://www.kroger.com/**", r => {
+      const u = r.request().url(), id = (u.match(/\/p\/[^/?#]+\/(\d{13})/) || [])[1];
+      const title = { "0001600027528": "Cheerios Gluten Free Heart Healthy Cereal, 18 oz", "0000000004011": "Banana - Each" }[id];
+      return r.fulfill({ contentType: "text/html", body: title ? `<!doctype html><html><head><title>${title} - Kroger</title></head><body><h1>${title}</h1><div id="atc" style="height:40px">Add to Cart</div><section style="height:1200px"></section></body></html>` : "<!doctype html><title>Kroger</title><p>home</p>" });
     });
     await ctx.route("https://world.openfoodfacts.org/**", r => { hits.off++; const code = (r.request().url().match(/product\/(\d+)/) || [])[1]; return r.fulfill({ contentType: "application/json", body: JSON.stringify(OFF[code] || { status: 0 }) }); });
     await ctx.route("https://api.nal.usda.gov/**", r => r.fulfill({ contentType: "application/json", body: JSON.stringify({ foods: [] }) }));
@@ -200,7 +227,7 @@ const ok = (cond, msg) => { console.log((cond ? "PASS " : "FAIL ") + msg); if (!
     const p3 = await ctx.newPage(); await p3.goto(`chrome-extension://${extId}/sidepanel.html?tab=${tabId}`);
     await page.goto("https://www.walmart.com/ip/Sceptre-40-TV/683540269?x=1"); await page.waitForTimeout(1200);
     const t3 = await p3.evaluate(async () => { await new Promise(r => setTimeout(r, 400)); return document.body.innerText; });
-    ok(/Open a Walmart, Sam's Club or Costco food product to see a verdict\./.test(t3), "non-food page: the side panel shows its empty state");
+    ok(/Open a Walmart, Sam's Club, Costco, Target or Kroger food product to see a verdict\./.test(t3), "non-food page: the side panel shows its empty state");
     await p3.close();
 
     // ---- 6. No rating row to sit in: a small pill at the bottom left, clear of the buy box ----
@@ -310,6 +337,52 @@ const ok = (cond, msg) => { console.log((cond ? "PASS " : "FAIL ") + msg); if (!
     ok(/^https:\/\/www\.costco\.com\/s\?keyword=/.test(coSwap || ""), `swaps search Costco (${coSwap})`);
     await sw.evaluate(() => chrome.storage.local.set({ profile: null }));
     await page.waitForTimeout(1500); await badge(/Get it/); // the goals change re-checks the page
+
+    // ---- 8d2. Target: the Nutrition Facts from the page data, the badge in the rating row; Kroger: the barcode from the address ----
+    const tgBadge = () => page.evaluate(() => {
+      const host = document.getElementById("should-i-buy-it-badge"), b = host.shadowRoot.querySelector("button"), r = b.getBoundingClientRect();
+      const row = document.querySelector('[data-module-type="ProductDetailReviewsAndQuestions"] > div'), stars = row.firstElementChild.getBoundingClientRect(), rr = row.getBoundingClientRect();
+      const hit = ["atc", "price"].map(id => document.getElementById(id)).some(x => { const q = x.getBoundingClientRect(); return r.left < q.right && r.right > q.left && r.top < q.bottom && r.bottom > q.top; });
+      return { text: b.textContent.replace(/\s+/g, " ").trim(), inRow: host.parentElement === row, floating: b.classList.contains("pill"), rightOfStars: r.left >= stars.right, rowH: Math.round(rr.height), hit, hosts: document.querySelectorAll("#should-i-buy-it-badge").length };
+    });
+    const tgUrl = id => TG[id].url;
+    await page.goto(tgUrl("47952194"));
+    const rowH0 = await page.evaluate(() => Math.round(document.querySelector('[data-module-type="ProductDetailReviewsAndQuestions"] > div').getBoundingClientRect().height));
+    await badge(/Get it/); await page.waitForTimeout(500);
+    b = await tgBadge();
+    ok(b.inRow && !b.floating && b.rightOfStars && b.rowH === rowH0 && !b.hit && b.hosts === 1, `Target peanut butter: Get it, in the rating row right of the stars, the row's height unchanged (${JSON.stringify(b)}, was ${rowH0})`);
+    if (SHOTS) await page.screenshot({ path: path.join(SHOTS, "ext12b-target.png") });
+    pt = await ptext(/Get it/);
+    ok(/Source: The Nutrition Facts on this Target page/.test(pt), "the panel says the numbers came from the Target page");
+    await page.goto(tgUrl("79543780"));
+    b = await badge(/Get it/);
+    pt = await ptext(/a serving/).catch(async () => ptext());
+    ok(/≈ \$3\.00 a serving at the Target price \(\$0\.30\/fl oz\)/.test(pt), `Target's price, read from the page: the cost of a 296 mL serving at $0.30 a fluid ounce (${pt.slice(0, 400)})`);
+    const offBefore = hits.off;
+    await page.goto(tgUrl("47994392"));
+    b = await badge(/Limit it/);
+    ok(/Limit it/.test(b.text) && hits.off === offBefore, `Target frozen pizza: Limit it, from the page alone (no barcode lookup) (${b.text})`);
+    await page.goto(tgUrl("94669568"));
+    b = await badge(/Get it/);
+    ok(/Get it/.test(b.text), `Target baby carrots: typical values by name (${b.text})`);
+    await page.goto(tgUrl("50281458"));
+    b = await badge(/Supplement/);
+    ok(/^Supplement/.test(b.text), `Target vitamin D3: the supplement view (${b.text})`);
+    await page.goto(tgUrl("80818627")); await page.waitForTimeout(1500);
+    ok(await page.evaluate(() => !document.getElementById("should-i-buy-it-badge")), "Target after-sun gel: no badge");
+    // Target changes pages without reloading: the next product's page is fetched and read.
+    await page.goto(tgUrl("47952194")); await badge(/Get it/);
+    await page.evaluate(u => history.pushState({}, "", u), tgUrl("12953464"));
+    b = await badge(/Limit it/);
+    ok(/Limit it/.test(b.text), `Target, a page change without a reload: the cola's verdict (${b.text})`);
+    await page.goto("https://www.kroger.com/p/cheerios-gluten-free-heart-healthy-cereal/0001600027528");
+    b = await badge(/Get it/);
+    ok(/Get it/.test(b.text) && b.floating && !b.hit, `Kroger Cheerios: the barcode from the address, Open Food Facts' record; the badge floats clear of Add to Cart (${JSON.stringify(b)})`);
+    pt = await ptext(/Open Food Facts/);
+    ok(/barcode 016000275287/.test(pt), "the panel names the barcode worked out from Kroger's address");
+    await page.goto("https://www.kroger.com/p/banana/0000000004011");
+    b = await badge(/Get it/);
+    ok(/Get it/.test(b.text), `Kroger bananas: a sticker code, so typical values by name (${b.text})`);
 
     // ---- 8e. Reading a label photo: no Nutrition Facts on the page and no barcode record, so the panel offers the photo ----
     // The photo is a real one (Skippy peanut butter, from Open Food Facts, CC BY-SA 3.0), read by the bundled Tesseract.

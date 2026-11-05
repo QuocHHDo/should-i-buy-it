@@ -1,5 +1,5 @@
-// Shows a "Should I Buy It?" verdict on Walmart, Sam's Club and Costco product pages (Sam's Club runs on Walmart's
-// platform; Costco has its own reader, js/costco.js): a small badge next to the star rating, and the full
+// Shows a "Should I Buy It?" verdict on Walmart, Sam's Club, Costco, Target and Kroger product pages (Sam's Club runs on
+// Walmart's platform; the others have their own readers, js/costco.js, js/target.js, js/kroger.js): a small badge next to the star rating, and the full
 // breakdown in the browser's side panel (sidepanel.html), opened by clicking the badge. Nutrition comes from, in order:
 // the page's own Nutrition Facts panel; for fresh produce, a name match to the app's built-in foods; otherwise the
 // product's barcode in Open Food Facts, then USDA Branded Foods. The verdict is the site's own (lib/verdict.js).
@@ -9,9 +9,12 @@
   const { FOODS } = self.SelfCheckData;
   const STORE = W.storeOf(location.hostname); // { id, name, search }
   // How to read this store's pages. Costco's pages have no Nutrition Facts text; its reader finds the barcode instead.
-  const CO = self.SelfCheckCostco;
-  const READ = STORE.id === "costco"
-    ? { productId: CO.productId, product: src => CO.product(src), plan: CO.plan }
+  // Target's has its Nutrition Facts as data; Kroger's reads the barcode from the address.
+  const CO = self.SelfCheckCostco, TG = self.SelfCheckTarget, KR = self.SelfCheckKroger;
+  /** @type {{ productId: (url: string) => string | null, product: (src: any, url: string) => any, plan: (p: any) => any }} */
+  const READ = STORE.id === "costco" ? { productId: CO.productId, product: src => CO.product(src), plan: CO.plan }
+    : STORE.id === "target" ? { productId: TG.productId, product: (src, url) => TG.product(src, url), plan: TG.plan }
+    : STORE.id === "kroger" ? { productId: KR.productId, product: (src, url) => KR.product(src, url), plan: KR.plan }
     : { productId: W.productId, product: src => W.product(W.nextData(src)), plan: W.plan };
   const firstUrl = location.href; // the embedded page data belongs to this URL; later (client-side) pages are fetched
   let lastUrl = null, run = 0;
@@ -33,12 +36,14 @@
 
   // ---------- data ----------
   async function pageProduct(url) {
-    if (url === firstUrl) { const p = READ.product(document); if (p) return p; }
+    if (url === firstUrl) { const p = READ.product(document, url); if (p) return p; }
+    // Kroger's barcode is in the address, so a page that can't be fetched still has a product.
+    if (STORE.id === "kroger") { try { const res = await fetch(url, { credentials: "include" }); return READ.product(res.ok ? await res.text() : "", url); } catch { return READ.product("", url); } }
     const res = await fetch(url, { credentials: "include" });
     const html = await res.text();
     // The store asked to check for a robot (it can, after many page loads in a row): say so instead of "can't read".
     if (/are-you-human|not a robot/i.test(res.url + html.slice(0, 4000))) throw Object.assign(new Error("challenge"), { challenge: true });
-    return READ.product(html);
+    return READ.product(html, url);
   }
   // Barcode lookups are cached in this browser: found for 30 days, not found for a day (in case a record gets added).
   const DAY = 864e5, KEEP = 300;
@@ -153,7 +158,12 @@
   const MARK = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect width="24" height="24" rx="6" fill="#2c6a3d"/><rect x="4" y="7" width="16" height="11" rx="2.5" fill="#fff"/><circle cx="7.4" cy="12.5" r="1.3" fill="#2c6a3d"/><path d="M10.5 12.6l2.2 2.2 4.3-4.6" fill="none" stroke="#2c6a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   let badgeState = null; // what the badge shows now: { tier, word, reason, warn, label }
   /** @returns {HTMLElement | null} */
-  const anchor = () => STORE.id === "costco" ? document.getElementById("CostcoBVReviewContainer") : document.querySelector('[data-testid="reviews-and-ratings"]');
+  // Target's rating row is a wrapping flex row under the title, like Walmart's (checked on target.com). Kroger's page
+  // hasn't been checked, so its badge floats.
+  const anchor = () => STORE.id === "costco" ? document.getElementById("CostcoBVReviewContainer")
+    : STORE.id === "target" ? document.querySelector('[data-module-type="ProductDetailReviewsAndQuestions"] > div')
+    : STORE.id === "kroger" ? null
+    : document.querySelector('[data-testid="reviews-and-ratings"]');
   function hostEl() {
     let host = document.getElementById(HOST_ID);
     if (host) return host;

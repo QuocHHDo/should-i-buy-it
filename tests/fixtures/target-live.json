@@ -1,0 +1,1572 @@
+{
+ "captured": "2026-11-05",
+ "note": "Product records from live target.com product pages (the __NEXT_DATA__ query cache), trimmed to the fields js/target.js reads.",
+ "pages": {
+  "1002758810": {
+   "url": "https://www.target.com/p/c4-cellucor-c4-whey-protein-reese-s-peanut-butter-chocolate-5-85-lb-2-65-kg/-/A-1002758810",
+   "product": {
+    "__typename": "Product",
+    "tcin": "1002758810",
+    "category": {
+     "name": "Whey Protein",
+     "breadcrumbs": [
+      {
+       "name": "target"
+      },
+      {
+       "name": "Health"
+      },
+      {
+       "name": "Nutrition"
+      },
+      {
+       "name": "Protein"
+      },
+      {
+       "name": "Protein Powders"
+      },
+      {
+       "name": "Whey Protein"
+      }
+     ]
+    },
+    "item": {
+     "primary_barcode": "842595135855",
+     "primary_brand": {
+      "name": "Cellucor C4"
+     },
+     "product_description": {
+      "title": "C4 / Cellucor C4\u00ae Whey Protein, Reese's Peanut Butter & Chocolate , 5.85 lb (2.65 kg)"
+     },
+     "product_classification": {
+      "product_type_name": "HEALTH AND BEAUTY",
+      "item_type": {
+       "name": "Protein Powders and Collagen"
+      }
+     },
+     "merchandise_classification": {
+      "department_name": "OTC - HEALTH & IMMUNE CARE"
+     },
+     "enrichment": {
+      "image_info": {
+       "primary_image": {
+        "url": "https://target.scene7.com/is/image/Target/GUEST_cda27533-ea61-41fa-ac16-922303951103"
+       },
+       "alternate_images": [
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_8aba9491-c319-4ee5-ba18-7c7d28c9db9e"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_013b5fde-7f3d-48ce-b36f-0af69b666e86"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_79dec4d0-4a3b-447c-8d2c-eb4480352e0e"
+        }
+       ],
+       "content_labels": [
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_8aba9491-c319-4ee5-ba18-7c7d28c9db9e"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_cda27533-ea61-41fa-ac16-922303951103"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_013b5fde-7f3d-48ce-b36f-0af69b666e86"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_79dec4d0-4a3b-447c-8d2c-eb4480352e0e"
+        }
+       ]
+      },
+      "nutrition_facts": {
+       "ingredients": "ingredients: whey protein concentrate, whey protein isolate, partially defatted peanut flour, cocoa powder processed with alkali, natural & artificial flavors, potassium chloride, sunflower lecithin, salt, xanthan gum, cellulose gum, sucralose, acesulfame potassium.",
+       "nutrition_label_type_code": "LEGACY_FORMAT",
+       "value_prepared_list": [
+        {
+         "description": "Per Serving",
+         "nutrients": [
+          {
+           "name": "Calories",
+           "quantity": 140,
+           "unit_of_measurement": "calories"
+          },
+          {
+           "name": "Total Fat",
+           "percentage": 3,
+           "quantity": 2.5,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Saturated Fat",
+           "percentage": 10,
+           "quantity": 2,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Trans Fat",
+           "quantity": 0,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Cholesterol",
+           "percentage": 27,
+           "quantity": 80,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Sodium",
+           "percentage": 8,
+           "quantity": 190,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Total Carbohydrate",
+           "percentage": 1,
+           "quantity": 4,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Dietary Fiber",
+           "percentage": 4,
+           "quantity": 1,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Sugars",
+           "quantity": 2,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Added Sugars",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Protein",
+           "percentage": 50,
+           "quantity": 25,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Vitamin D",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "mcg"
+          },
+          {
+           "name": "Calcium",
+           "percentage": 10,
+           "quantity": 140,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Iron",
+           "percentage": 6,
+           "quantity": 1,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Potassium",
+           "percentage": 10,
+           "quantity": 490,
+           "unit_of_measurement": "mg"
+          }
+         ],
+         "serving_size": "40.2",
+         "serving_size_unit_of_measurement": "g",
+         "servings_per_container": "66"
+        }
+       ],
+       "warning": "Contains: milk, peanuts"
+      }
+     }
+    }
+   }
+  },
+  "12953464": {
+   "url": "https://www.target.com/p/coca-cola-12pk-12-fl-oz-cans/-/A-12953464",
+   "product": {
+    "__typename": "Product",
+    "tcin": "12953464",
+    "category": {
+     "name": "Cola",
+     "breadcrumbs": [
+      {
+       "name": "target"
+      },
+      {
+       "name": "Grocery"
+      },
+      {
+       "name": "Beverages"
+      },
+      {
+       "name": "Soda & Pop"
+      },
+      {
+       "name": "Cola"
+      }
+     ]
+    },
+    "item": {
+     "primary_barcode": "049000028904",
+     "primary_brand": {
+      "name": "Coca-Cola"
+     },
+     "product_description": {
+      "title": "Coca-Cola Soda - 12pk/12 fl oz Cans"
+     },
+     "product_classification": {
+      "product_type_name": "GROCERY",
+      "item_type": {
+       "name": "Soft Drinks"
+      }
+     },
+     "merchandise_classification": {
+      "department_name": "DSD BEVERAGES"
+     },
+     "enrichment": {
+      "image_info": {
+       "primary_image": {
+        "url": "https://target.scene7.com/is/image/Target/GUEST_39fc9c6f-0bb8-4ed7-942e-f29389c72c4c"
+       },
+       "alternate_images": [
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_69fe1d2f-4b90-42a5-b774-2a84dfd5b007"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_fd7a8712-e10e-4595-a2d8-1dc9b94ce71f"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_fdec2cce-0081-45a9-97f8-a96fec59017f"
+        }
+       ],
+       "content_labels": [
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_0063059d-fe2d-4a2f-bfb6-723a0ec098a0"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_7d1e55cf-b48f-42e7-8e00-ca5ed8d12004"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_712d57a0-1d91-4c66-9111-db4fe71bd285"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_7ebe6c95-d413-419d-a61c-f45270f4082c"
+        }
+       ]
+      },
+      "nutrition_facts": {
+       "ingredients": "Carbonated Water, High Fructose Corn Syrup, Caramel Color, Phosphoric Acid, Natural Flavors, Caffeine ",
+       "nutrition_label_type_code": "LEGACY_FORMAT",
+       "value_prepared_list": [
+        {
+         "nutrients": [
+          {
+           "name": "Calories",
+           "quantity": 140,
+           "unit_of_measurement": "Cal"
+          },
+          {
+           "name": "Total Fat",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Sodium",
+           "percentage": 2,
+           "quantity": 45,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Total Carbohydrate",
+           "percentage": 14,
+           "quantity": 39,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Sugars",
+           "quantity": 39,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Added Sugars",
+           "percentage": 78,
+           "quantity": 39,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Protein",
+           "quantity": 0,
+           "unit_of_measurement": "g"
+          }
+         ],
+         "serving_size": "355.0",
+         "serving_size_unit_of_measurement": "mL",
+         "servings_per_container": "12"
+        }
+       ]
+      }
+     }
+    }
+   }
+  },
+  "14930839": {
+   "url": "https://www.target.com/p/lay-39-s-classic-potato-chips-2-62oz/-/A-14930839",
+   "product": {
+    "__typename": "Product",
+    "tcin": "14930839",
+    "category": {
+     "name": "Potato Chips",
+     "breadcrumbs": [
+      {
+       "name": "target"
+      },
+      {
+       "name": "Grocery"
+      },
+      {
+       "name": "Snacks"
+      },
+      {
+       "name": "Chips, Puffs & Pretzels"
+      },
+      {
+       "name": "Potato Chips"
+      }
+     ]
+    },
+    "item": {
+     "primary_barcode": "028400770088",
+     "primary_brand": {
+      "name": "Lay's"
+     },
+     "product_description": {
+      "title": "Lay&#39;s Classic Potato Chips - 2.5oz: Gluten-Free, No Artificial Flavors"
+     },
+     "product_classification": {
+      "product_type_name": "GROCERY",
+      "item_type": {
+       "name": "Chips, Puffs and Pretzels"
+      }
+     },
+     "merchandise_classification": {
+      "department_name": "SNACKS"
+     },
+     "enrichment": {
+      "image_info": {
+       "primary_image": {
+        "url": "https://target.scene7.com/is/image/Target/GUEST_98044427-97ab-4196-a04e-73b9dac39248"
+       },
+       "alternate_images": [
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_4cca7a45-190f-43f5-9253-4ef6639d326f"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_6f4b60d6-c5f4-437a-981d-fc756033cad5"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_ff26a9b1-0caf-45cb-b9c0-939f1a3a1bc7"
+        }
+       ],
+       "content_labels": [
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_a19efcf5-f9e7-464e-a12b-9b097fc129f9"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_ff26a9b1-0caf-45cb-b9c0-939f1a3a1bc7"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_98044427-97ab-4196-a04e-73b9dac39248"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_6f4b60d6-c5f4-437a-981d-fc756033cad5"
+        }
+       ]
+      },
+      "nutrition_facts": {
+       "ingredients": "Potatoes, Vegetable Oil (Canola, Corn, Soybean, and/or Sunflower Oil), and Salt.",
+       "nutrition_label_type_code": "LEGACY_FORMAT",
+       "value_prepared_list": [
+        {
+         "description": "About 15 chips (28g) of Per serving",
+         "nutrients": [
+          {
+           "name": "Total Fat",
+           "percentage": 13,
+           "quantity": 10,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Saturated Fat",
+           "percentage": 7,
+           "quantity": 1.5,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Trans Fat",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Cholesterol",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Sodium",
+           "percentage": 6,
+           "quantity": 140,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Total Carbohydrate",
+           "percentage": 6,
+           "quantity": 15,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Dietary Fiber",
+           "percentage": 5,
+           "quantity": 1,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Total Sugars",
+           "percentage": 0,
+           "quantity": 1,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Protein",
+           "percentage": 0,
+           "quantity": 2,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Vitamin D",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "mcg"
+          },
+          {
+           "name": "Calcium",
+           "percentage": 0,
+           "quantity": 10,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Iron",
+           "percentage": 2,
+           "quantity": 0.6,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Potassium",
+           "percentage": 6,
+           "quantity": 350,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Calories",
+           "percentage": 0,
+           "quantity": 160,
+           "unit_of_measurement": "kcal"
+          }
+         ],
+         "serving_size": "15",
+         "serving_size_unit_of_measurement": "chips",
+         "servings_per_container": "2.5"
+        },
+        {
+         "nutrients": [
+          {
+           "name": "Total Fat",
+           "percentage": 32,
+           "quantity": 25,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Saturated Fat",
+           "percentage": 17,
+           "quantity": 3.5,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Trans Fat",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Cholesterol",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Sodium",
+           "percentage": 15,
+           "quantity": 350,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Total Carbohydrate",
+           "percentage": 14,
+           "quantity": 38,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Dietary Fiber",
+           "percentage": 12,
+           "quantity": 3,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Total Sugars",
+           "percentage": 0,
+           "quantity": 2,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Protein",
+           "percentage": 0,
+           "quantity": 4,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Vitamin D",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "mcg"
+          },
+          {
+           "name": "Calcium",
+           "percentage": 0,
+           "quantity": 10,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Iron",
+           "percentage": 6,
+           "quantity": 1.4,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Potassium",
+           "percentage": 15,
+           "quantity": 880,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Calories",
+           "percentage": 0,
+           "quantity": 400,
+           "unit_of_measurement": "kcal"
+          }
+         ],
+         "serving_size": "1",
+         "serving_size_unit_of_measurement": "package"
+        }
+       ]
+      }
+     }
+    }
+   }
+  },
+  "47952194": {
+   "url": "https://www.target.com/p/adams-peanut-butter-100-natural-crunchy-peanut-butter-26oz/-/A-47952194",
+   "product": {
+    "__typename": "Product",
+    "tcin": "47952194",
+    "category": {
+     "name": "Peanut Butter",
+     "breadcrumbs": [
+      {
+       "name": "target"
+      },
+      {
+       "name": "Grocery"
+      },
+      {
+       "name": "Pantry"
+      },
+      {
+       "name": "Spreads, Jams & Nut Butters"
+      },
+      {
+       "name": "Nut & Seed Butters"
+      },
+      {
+       "name": "Peanut Butter"
+      }
+     ]
+    },
+    "item": {
+     "primary_barcode": "051500710203",
+     "primary_brand": {
+      "name": "Adams Peanut Butter"
+     },
+     "product_description": {
+      "title": "Adam&#39;s 100% Natural Crunchy Peanut Butter - 26oz"
+     },
+     "product_classification": {
+      "product_type_name": "GROCERY",
+      "item_type": {
+       "name": "Nut and Seed Butters"
+      }
+     },
+     "merchandise_classification": {
+      "department_name": "MEAL ESSENTIALS"
+     },
+     "enrichment": {
+      "image_info": {
+       "primary_image": {
+        "url": "https://target.scene7.com/is/image/Target/GUEST_28f013a8-8ad3-42a2-bbb9-bde2ea83b803"
+       },
+       "alternate_images": [
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_1631bc5d-bfd7-471a-86d1-bf8e1679b39b"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_1bb1cea2-f239-4870-add9-2d6906bcf4ef"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_cb1b3c82-f33c-4436-a366-388ca9693d65"
+        }
+       ],
+       "content_labels": [
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_cb1b3c82-f33c-4436-a366-388ca9693d65"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_1bb1cea2-f239-4870-add9-2d6906bcf4ef"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_28f013a8-8ad3-42a2-bbb9-bde2ea83b803"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_1631bc5d-bfd7-471a-86d1-bf8e1679b39b"
+        }
+       ]
+      },
+      "nutrition_facts": {
+       "ingredients": "PEANUTS, CONTAINS 1% OR LESS OF SALT. ",
+       "nutrition_label_type_code": "LEGACY_FORMAT",
+       "value_prepared_list": [
+        {
+         "nutrients": [
+          {
+           "name": "Calories",
+           "quantity": 190,
+           "unit_of_measurement": "Cal"
+          },
+          {
+           "name": "Total Fat",
+           "percentage": 20,
+           "quantity": 16,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Saturated Fat",
+           "percentage": 14,
+           "quantity": 3,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Trans Fat",
+           "quantity": 0,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Cholesterol",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Sodium",
+           "percentage": 4,
+           "quantity": 95,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Total Carbohydrate",
+           "percentage": 2,
+           "quantity": 7,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Dietary Fiber",
+           "percentage": 10,
+           "quantity": 3,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Sugars",
+           "quantity": 2,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Added Sugars",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Protein",
+           "percentage": 8,
+           "quantity": 8,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Vitamin D",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "mcg"
+          },
+          {
+           "name": "Calcium",
+           "percentage": 2,
+           "quantity": 18,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Iron",
+           "percentage": 2,
+           "quantity": 1,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Potassium",
+           "percentage": 4,
+           "quantity": 201,
+           "unit_of_measurement": "mg"
+          }
+         ],
+         "serving_size": "2",
+         "serving_size_unit_of_measurement": "Tbsp",
+         "servings_per_container": "About 23"
+        }
+       ]
+      }
+     }
+    }
+   }
+  },
+  "47994392": {
+   "url": "https://www.target.com/p/dogtown-4-meat-frozen-pizza-17-5oz/-/A-47994392",
+   "product": {
+    "__typename": "Product",
+    "tcin": "47994392",
+    "category": {
+     "name": "Frozen Meat Pizza",
+     "breadcrumbs": [
+      {
+       "name": "target"
+      },
+      {
+       "name": "Grocery"
+      },
+      {
+       "name": "Frozen Foods"
+      },
+      {
+       "name": "Frozen Pizza"
+      },
+      {
+       "name": "Frozen Meat Pizza"
+      }
+     ]
+    },
+    "item": {
+     "primary_barcode": "689076130677",
+     "primary_brand": {
+      "name": "Dogtown Pizza"
+     },
+     "product_description": {
+      "title": "Dogtown 4-Meat Frozen Pizza - 17.5oz"
+     },
+     "product_classification": {
+      "product_type_name": "GROCERY",
+      "item_type": {
+       "name": "Pizzas"
+      }
+     },
+     "merchandise_classification": {
+      "department_name": "FROZEN PIZZA/DESSERTS"
+     },
+     "enrichment": {
+      "image_info": {
+       "primary_image": {
+        "url": "https://target.scene7.com/is/image/Target/GUEST_7d7846b6-7940-48a5-bc8b-91847563bb98"
+       },
+       "alternate_images": [
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_61e6c7f8-2865-4585-bcd0-dba8ae01fd4e"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_eada35b2-06d7-4816-8f7a-18051ad0a514"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_f04c4f89-2089-40db-8beb-ccd85a4846bb"
+        }
+       ],
+       "content_labels": [
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_f04c4f89-2089-40db-8beb-ccd85a4846bb"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_eada35b2-06d7-4816-8f7a-18051ad0a514"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_61e6c7f8-2865-4585-bcd0-dba8ae01fd4e"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_7d7846b6-7940-48a5-bc8b-91847563bb98"
+        }
+       ]
+      },
+      "nutrition_facts": {
+       "ingredients": "Pizza Crust (Unbleached Flour (Wheat Flour, Malted Barley Flour, Niacin, Reduced Iron, Thiamine Mononitrate, Riboflavin, Folic Acid), Water, Soybean Oil, Contains Less than 2% of the Following: Sugar, Yeast, Salt, Canola Oil (Releasing Agent), Pizza Sauce (Crushed Tomatoes (Water, Concentrated Crushed Tomatoes), Salt, Sugar, Dehydrated Onion, Spices, Citric Acid, Garlic Powder), Pasteurized Process Cheddar, Swiss and Provolone Cheese (Cultured Pasteurized Milk and Part-Skim Milk, Water, Salt, Sodium Phosphate, Milkfat, Contains Less than 0.5 Percent of Lactic Acid, Sorbic Acid (Preservative), Enzymes, Smoke Flavor), Low Moisture Part Skim Mozzarella (Pasteurized Part Skim Milk, Cheese Cultures, Salt, Enzymes), Italian Sausage (Pork, Seasoning (Salt, Spices, Dextrose, Dehydrated Garlic), Natural Flavorings), Bacon (Cured with Water, Salt, Sugar, Sodium Erythorbate, Sodium Nitrite, May Also Contain Smoke Flavoring, Dextrose, Sodium Phosphate, Potassium Chloride, Sodium Diacetate, Flavoring, Honey), Pepperoni (Pork, Beef, Salt, Contains 2% or Less of Water, Paprika, Dextrose, Natural Spices, Smoke Flavoring, Lactic Acid Starter Culture, Sodium Ascorbate (Vitamin C), Flavoring, Garlic Powder, Sodium Nitrite, BHA, BHT, Citric Acid), Ham (Cured with Water, Salt, Dextrose, Modified Potato Starch, Sodium Phosphates, Potassium Lactate, Sugar, Corn Syrup, Sodium Erythorbate, Sodium Nitrite, Sodium Diacetate), Paroma Cheese (Parmesan and Romano Cheese (Pasteurized Cow's Milk, Cheese Culture, Salt, Enzymes)) Ground Oregano.",
+       "nutrition_label_type_code": "LEGACY_FORMAT",
+       "value_prepared_list": [
+        {
+         "description": "1/4 Pizza (139g)",
+         "nutrients": [
+          {
+           "name": "Total Fat",
+           "percentage": 23,
+           "quantity": 16,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Saturated Fat",
+           "percentage": 40,
+           "quantity": 8,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Trans Fat",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Cholesterol",
+           "percentage": 18,
+           "quantity": 55,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Sodium",
+           "percentage": 80,
+           "quantity": 1140,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Total Carbohydrate",
+           "percentage": 9,
+           "quantity": 26,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Dietary Fiber",
+           "percentage": 7,
+           "quantity": 2,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Total Sugars",
+           "percentage": 0,
+           "quantity": 1,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Added Sugars",
+           "percentage": 2,
+           "quantity": 1,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Protein",
+           "percentage": 0,
+           "quantity": 19,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Vitamin D",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "mcg"
+          },
+          {
+           "name": "Calcium",
+           "percentage": 20,
+           "quantity": 248,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Iron",
+           "percentage": 10,
+           "quantity": 2,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Potassium",
+           "percentage": 6,
+           "quantity": 255,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Calories",
+           "percentage": 0,
+           "quantity": 350,
+           "unit_of_measurement": "kcal"
+          }
+         ],
+         "serving_size": "0.25",
+         "serving_size_unit_of_measurement": "pizza",
+         "servings_per_container": "4"
+        }
+       ],
+       "warning": "Allergy warning: contains milk, wheat, and soy."
+      }
+     }
+    }
+   }
+  },
+  "50281458": {
+   "url": "https://www.target.com/p/vitamin-d3-bone-health-dietary-supplement-softgels-500ct-up-38-up-8482/-/A-50281458",
+   "product": {
+    "__typename": "Product",
+    "tcin": "50281458",
+    "category": {
+     "name": "Vitamin D",
+     "breadcrumbs": [
+      {
+       "name": "target"
+      },
+      {
+       "name": "Health"
+      },
+      {
+       "name": "Vitamins & Supplements"
+      },
+      {
+       "name": "Letter Vitamins"
+      },
+      {
+       "name": "Vitamin D"
+      }
+     ]
+    },
+    "item": {
+     "primary_barcode": "085239186756",
+     "primary_brand": {
+      "name": "up&up"
+     },
+     "product_description": {
+      "title": "Vitamin D3 Bone Health Dietary Supplement Softgels - 500ct - up&#38;up&#8482;"
+     },
+     "product_classification": {
+      "product_type_name": "HEALTH AND BEAUTY",
+      "item_type": {
+       "name": "Vitamins"
+      }
+     },
+     "merchandise_classification": {
+      "department_name": "OTC - HEALTH & IMMUNE CARE"
+     },
+     "enrichment": {
+      "image_info": {
+       "primary_image": {
+        "url": "https://target.scene7.com/is/image/Target/GUEST_d9ad2718-63d2-437e-8282-249b11787dfe"
+       },
+       "alternate_images": [
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_439dbc37-e13c-4020-a8d9-d3f8a38d5ac4"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_6a37c1e3-a2c4-409a-90c9-397e385f332d"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_66c92cb7-539c-4ebf-ab19-43406327b2ac"
+        }
+       ],
+       "content_labels": [
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_439dbc37-e13c-4020-a8d9-d3f8a38d5ac4"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_66c92cb7-539c-4ebf-ab19-43406327b2ac"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_d9ad2718-63d2-437e-8282-249b11787dfe"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_6a37c1e3-a2c4-409a-90c9-397e385f332d"
+        }
+       ]
+      },
+      "nutrition_facts": {
+       "ingredients": "Soybean oil, Gelatin, Vegetable glycerin, Purified water, Corn oil.",
+       "nutrition_label_type_code": "LEGACY_FORMAT",
+       "value_prepared_list": [
+        {
+         "description": "per serving (1 Softgel)",
+         "nutrients": [
+          {
+           "name": "Vitamin D3",
+           "percentage": 125,
+           "quantity": 25,
+           "unit_of_measurement": "mcg"
+          }
+         ],
+         "serving_size": "1",
+         "serving_size_unit_of_measurement": "softgel"
+        }
+       ],
+       "warning": "WARNING: IF YOU ARE PREGNANT, NURSING, TAKING ANY MEDICATIONS OR HAVE ANY MEDICAL CONDITIONS. CONSULT YOUR DOCTOR BEFORE USE. DISCONTINUE USE AND CONSULT YOUR DOCTOR IF ANY ADVERSE REACTIONS OCCUR., KEEP OUT OF REACH OF CHILDREN., TAMPER RESISTANT: DO NOT USE IF SEAL UNDER CAP IS BROKEN OR MISSING."
+      }
+     }
+    }
+   }
+  },
+  "79543780": {
+   "url": "https://www.target.com/p/chobani-complete-protein-strawberry-cream-yogurt-drink-10-fl-oz/-/A-79543780",
+   "product": {
+    "__typename": "Product",
+    "tcin": "79543780",
+    "category": {
+     "name": "Greek & Icelandic Yogurt",
+     "breadcrumbs": [
+      {
+       "name": "target"
+      },
+      {
+       "name": "Grocery"
+      },
+      {
+       "name": "Dairy, Eggs & Cheese"
+      },
+      {
+       "name": "Yogurt"
+      },
+      {
+       "name": "Greek & Icelandic Yogurt"
+      }
+     ]
+    },
+    "item": {
+     "primary_barcode": "818290017710",
+     "primary_brand": {
+      "name": "Chobani"
+     },
+     "product_description": {
+      "title": "Chobani 20g Protein Strawberries and Cream Yogurt Drink - 20g Protein 10 fl oz"
+     },
+     "product_classification": {
+      "product_type_name": "GROCERY",
+      "item_type": {
+       "name": "Yogurt Drinks"
+      }
+     },
+     "merchandise_classification": {
+      "department_name": "DAIRY"
+     },
+     "enrichment": {
+      "image_info": {
+       "primary_image": {
+        "url": "https://target.scene7.com/is/image/Target/GUEST_98a9e779-bac6-4ffd-a05b-144401b2dc99"
+       },
+       "alternate_images": [
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_a56a5838-e019-4410-b035-669026e05b93"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_c05c384d-38cb-47a6-8f87-94a95c484f39"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_c5031a97-09af-42b3-bebc-7a1c0d22089e"
+        }
+       ],
+       "content_labels": [
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_c5031a97-09af-42b3-bebc-7a1c0d22089e"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_c05c384d-38cb-47a6-8f87-94a95c484f39"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_6a92b513-5dc6-4850-a002-5f6b8352879b"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_a56a5838-e019-4410-b035-669026e05b93"
+        }
+       ]
+      },
+      "nutrition_facts": {
+       "ingredients": "Lowfat Greek Yogurt (Cultured Skim Milk and Cream), Water, Strawberries, Less than 2% of: Chicory Root Fiber, Natural Flavors, Lactase**, Fruit Pectin, Vegetable Juice Concentrate (For Color), Stevia Extract, Locust Bean Gum, Monk Fruit Extract, Lemon Juice Concentrate, **Ingredient Not Found in Regular Yogurt ",
+       "nutrition_label_type_code": "LEGACY_FORMAT",
+       "value_prepared_list": [
+        {
+         "nutrients": [
+          {
+           "name": "Calories",
+           "quantity": 170,
+           "unit_of_measurement": "Cal"
+          },
+          {
+           "name": "Total Fat",
+           "percentage": 4,
+           "quantity": 3,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Saturated Fat",
+           "percentage": 10,
+           "quantity": 2,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Trans Fat",
+           "quantity": 0,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Cholesterol",
+           "percentage": 7,
+           "quantity": 20,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Sodium",
+           "percentage": 5,
+           "quantity": 115,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Total Carbohydrate",
+           "percentage": 5,
+           "quantity": 14,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Dietary Fiber",
+           "percentage": 4,
+           "quantity": 1,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Sugars",
+           "quantity": 11,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Added Sugars",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Protein",
+           "percentage": 40,
+           "quantity": 20,
+           "unit_of_measurement": "g"
+          },
+          {
+           "name": "Vitamin D",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "mcg"
+          },
+          {
+           "name": "Calcium",
+           "percentage": 25,
+           "quantity": 320,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Iron",
+           "percentage": 0,
+           "quantity": 0.3,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Potassium",
+           "percentage": 8,
+           "quantity": 420,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Vitamin B12",
+           "percentage": 90,
+           "quantity": 2.1,
+           "unit_of_measurement": "mcg"
+          }
+         ],
+         "serving_size": "296.0",
+         "serving_size_unit_of_measurement": "mL"
+        }
+       ]
+      }
+     }
+    }
+   }
+  },
+  "80818627": {
+   "url": "https://www.target.com/p/banana-boat-aloe-vera-gel-after-sun-treatment-8-fl-oz/-/A-80818627",
+   "product": {
+    "__typename": "Product",
+    "tcin": "80818627",
+    "category": {
+     "name": "After Sun Care",
+     "breadcrumbs": [
+      {
+       "name": "target"
+      },
+      {
+       "name": "Beauty"
+      },
+      {
+       "name": "Skin Care"
+      },
+      {
+       "name": "Sun Care & Tanning"
+      },
+      {
+       "name": "After Sun Care"
+      }
+     ]
+    },
+    "item": {
+     "primary_barcode": "079656000078",
+     "primary_brand": {
+      "name": "Banana Boat"
+     },
+     "product_description": {
+      "title": "Banana Boat Aloe Vera Gel After Sun Treatment - 8 fl oz"
+     },
+     "product_classification": {
+      "product_type_name": "HEALTH AND BEAUTY",
+      "item_type": {
+       "name": "After Sun Treatments"
+      }
+     },
+     "merchandise_classification": {
+      "department_name": "SKIN/BATH CARE"
+     },
+     "enrichment": {
+      "image_info": {
+       "primary_image": {
+        "url": "https://target.scene7.com/is/image/Target/GUEST_e9e520a4-15ef-4cf5-89ff-9243adecfe3e"
+       },
+       "alternate_images": [
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_05e604a8-018f-4869-abf7-01dee31cea74"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_4ce5b60d-16cf-4f9a-9823-3ce8f25e9473"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_20f09405-6faa-45ed-96dd-da2c67f3cd8c"
+        }
+       ],
+       "content_labels": [
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_65c8499e-ba2d-43c5-8cfa-24dfa9166998"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_f1494427-95a4-44ed-90e3-1591f8e4e526"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_20f09405-6faa-45ed-96dd-da2c67f3cd8c"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_05e604a8-018f-4869-abf7-01dee31cea74"
+        }
+       ]
+      },
+      "nutrition_facts": {
+       "ingredients": "Water, Alcohol Denat., Glycerin, Polysorbate 20, Carbomer, Triethanolamine, PEG-4 Dilaurate, PEG-4 Laurate, Aloe Barbadensis Leaf Juice, PEG-4, Benzophenone-4, Imidazolidinyl Urea, lodopropynyl Butylcarbamate, Fragrance, Yellow 5, Blue 1. ",
+       "nutrition_label_type_code": "LEGACY_FORMAT"
+      }
+     }
+    }
+   }
+  },
+  "94669568": {
+   "url": "https://www.target.com/p/baby-cut-carrots-good-gather/-/A-94669568",
+   "product": {
+    "__typename": "Product",
+    "tcin": "94669568",
+    "category": {
+     "name": "Fresh Carrots",
+     "breadcrumbs": [
+      {
+       "name": "target"
+      },
+      {
+       "name": "Grocery"
+      },
+      {
+       "name": "Produce"
+      },
+      {
+       "name": "Fresh Vegetables"
+      },
+      {
+       "name": "Fresh Carrots"
+      }
+     ]
+    },
+    "item": {
+     "primary_brand": {
+      "name": "Good & Gather"
+     },
+     "product_description": {
+      "title": "Fresh Baby-Cut Carrots - Good & Gather\u2122"
+     },
+     "product_classification": {
+      "product_type_name": "GROCERY",
+      "item_type": {
+       "name": "Vegetables"
+      }
+     },
+     "merchandise_classification": {
+      "department_name": "VEGETABLES/PACKAGED VEG"
+     },
+     "enrichment": {
+      "image_info": {
+       "primary_image": {
+        "url": "https://target.scene7.com/is/image/Target/GUEST_abaa4c53-5fd7-4a83-8275-e21fa71e5e16"
+       },
+       "alternate_images": [
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_fd721646-549c-4ddb-b9c2-2d50ad6cd0fb"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_670c149c-4bbc-43f7-bf39-e1d03414a1c0"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_19cb8933-7635-433a-9486-0db10a2a3cfc"
+        }
+       ],
+       "content_labels": [
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_670c149c-4bbc-43f7-bf39-e1d03414a1c0"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_abaa4c53-5fd7-4a83-8275-e21fa71e5e16"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_19cb8933-7635-433a-9486-0db10a2a3cfc"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_d03315c1-a062-43c1-8712-dd14e361c455"
+        }
+       ]
+      }
+     }
+    }
+   }
+  },
+  "94967407": {
+   "url": "https://www.target.com/p/cheerios-gluten-free-yellow-box-breakfast-cereal-cup-1-3oz/-/A-94967407",
+   "product": {
+    "__typename": "Product",
+    "tcin": "94967407",
+    "category": {
+     "name": "Cold Cereal",
+     "breadcrumbs": [
+      {
+       "name": "target"
+      },
+      {
+       "name": "Grocery"
+      },
+      {
+       "name": "Breakfast & Cereal"
+      },
+      {
+       "name": "Cereal"
+      },
+      {
+       "name": "Cold Cereal"
+      }
+     ]
+    },
+    "item": {
+     "primary_barcode": "016000141599",
+     "primary_brand": {
+      "name": "Cheerios"
+     },
+     "product_description": {
+      "title": "Cheerios Gluten Free Yellow Box Breakfast Cereal Cup - 1.3oz"
+     },
+     "product_classification": {
+      "product_type_name": "GROCERY",
+      "item_type": {
+       "name": "Cold Cereals"
+      }
+     },
+     "merchandise_classification": {
+      "department_name": "BREAKFAST/WARM BEVERAGES"
+     },
+     "enrichment": {
+      "image_info": {
+       "primary_image": {
+        "url": "https://target.scene7.com/is/image/Target/GUEST_9eb53d66-f5b4-482c-bcc5-0bef6f10aea7"
+       },
+       "alternate_images": [
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_83078407-945f-4655-92d1-b3b7a1cf30d7"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_b151dea2-ef62-4a86-8fea-4a9869bd3abc"
+        },
+        {
+         "url": "https://target.scene7.com/is/image/Target/GUEST_f1ef1ad4-7adc-4aed-a424-7660e2d0a402"
+        }
+       ],
+       "content_labels": [
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_2a479151-2b5f-4d82-9ef8-cd12ed53e480"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_d6be044d-5751-4085-b72e-dd960ff8edbe"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_336a4df8-6dfd-43e9-822c-746a2126f6bf"
+        },
+        {
+         "image_url": "https://target.scene7.com/is/image/Target/GUEST_4cf21d21-d75f-47a7-94b8-441abfe7659f"
+        }
+       ]
+      },
+      "nutrition_facts": {
+       "ingredients": "Whole Grain Oats, Corn Starch, Sugar, Salt, Tripotassium Phosphate. Vitamin E (Mixed Tocopherols) Added to Preserve Freshness. Vitamins and Minerals: Calcium Carbonate, Iron and Zinc (Mineral Nutrients), Vitamin C (Sodium Ascorbate), a B Vitamin (Niacinamide), Vitamin B6 (Pyridoxine Hydrochloride), Vitamin A (Palmitate), Vitamin B1 (Thiamin Mononitrate), a B Vitamin (Folic Acid), Vitamin B12, Vitamin D3.",
+       "nutrition_label_type_code": "LEGACY_FORMAT",
+       "value_prepared_list": [
+        {
+         "description": "1 container (36g)",
+         "nutrients": [
+          {
+           "name": "Total Fat",
+           "percentage": 3,
+           "quantity": 2.5,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Saturated Fat",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Trans Fat",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Cholesterol",
+           "percentage": 0,
+           "quantity": 0,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Sodium",
+           "percentage": 8,
+           "quantity": 180,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Total Carbohydrate",
+           "percentage": 10,
+           "quantity": 27,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Dietary Fiber",
+           "percentage": 14,
+           "quantity": 4,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Soluble Fiber",
+           "percentage": 0,
+           "quantity": 2,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Total Sugars",
+           "percentage": 0,
+           "quantity": 2,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Added Sugars",
+           "percentage": 2,
+           "quantity": 1,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Protein",
+           "percentage": 0,
+           "quantity": 5,
+           "unit_of_measurement": "grm"
+          },
+          {
+           "name": "Vitamin D",
+           "percentage": 15,
+           "quantity": 3.6,
+           "unit_of_measurement": "mcg"
+          },
+          {
+           "name": "Calcium",
+           "percentage": 8,
+           "quantity": 120,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Iron",
+           "percentage": 60,
+           "quantity": 11.6,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Potassium",
+           "percentage": 6,
+           "quantity": 240,
+           "unit_of_measurement": "mg"
+          },
+          {
+           "name": "Folic Acid",
+           "percentage": 0,
+           "quantity": 40,
+           "unit_of_measurement": "mcg"
+          },
+          {
+           "name": "Calories",
+           "percentage": 0,
+           "quantity": 130,
+           "unit_of_measurement": "kcal"
+          }
+         ],
+         "serving_size": "1",
+         "serving_size_unit_of_measurement": "container"
+        }
+       ]
+      }
+     }
+    }
+   }
+  }
+ }
+}
