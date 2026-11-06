@@ -436,8 +436,8 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok($(".alflag.clear") && /Nothing your diet rules out found/.test(text(".alflag")), "tofu passes a vegetarian diet", text(".alflag"));
     veg.checked = false; veg.dispatchEvent(new w.Event("change", { bubbles: true })); await tick(2);
     w.location.hash = "#greek-yogurt-plain-nonfat"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
-    const rep = $(".report a");
-    ok(rep && /issues\/new\?title=Wrong\+verdict/.test(rep.href) && /Verdict%3A/.test(rep.href), "a prefilled report link sits under the label");
+    const rep = $(".src a.report");
+    ok(rep && /issues\/new\?title=Wrong\+verdict/.test(rep.href) && /Verdict%3A/.test(rep.href), "a prefilled report link sits in the source line under the label");
     ok($$("footer .footlinks a").map(a => a.getAttribute("href")).includes("about.html"), "footer links to How it works");
     const forText = text(".tag .for");
     ok(/^(For you|Standard goals · Set yours)$/.test(forText), `the verdict says whose goals it uses (${forText})`);

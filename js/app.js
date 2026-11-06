@@ -86,7 +86,7 @@
   const LINK = '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>';
 
   // ---------- state ----------
-  let labelOpen = false, current = null, mult = 1, explainKey = null, compareWith = null, cmpBasis = "serving";
+  let current = null, mult = 1, explainKey = null, compareWith = null, cmpBasis = "serving";
   let glist = store.get("grocery", []).filter(x => x && x.n);
   let plate = store.get("plate", []).filter(x => x && x.n);
 
@@ -129,7 +129,8 @@
   const GROUP = { more: "Aim for more", low: "Keep low", ctx: "Context" };
   function renderExplain(box, k, f) {
     const e = k && V.explain(k, f, profile);
-    if (!e) { box.replaceChildren(el("p", { class: "ex-hint", text: "Tap any line on the label to see what it means." })); return; }
+    box.hidden = !e;
+    if (!e) { box.replaceChildren(); return; }
     const detail = V.isMissing(f, k) ? "Not reported for this food, so it isn't counted either way." : (V.isLowerBound(f, k) ? "Some items don't report this, so the total is a minimum. " : "") + e[3];
     box.replaceChildren(el("div", { class: "ex-h" }, el("p", { class: "ex-t", text: e[0] }), el("span", { class: "ex-g " + e[1], text: GROUP[e[1]] })), el("p", { text: e[2] }), el("p", { class: "ex-r", text: detail }));
   }
@@ -506,6 +507,7 @@
     else if (isPlate) src.append("The sum of every item at the servings you chose. Judged as one meal: against a third of your daily goals and limits.");
     else if (isDish(f)) src.append(el("b", { text: "A typical recipe. " }), "Restaurant and homemade versions vary a lot, most of all in sodium and portion size, so treat these numbers as an estimate. If the restaurant posts nutrition, that wins.");
     else src.append("Typical values for this serving. Brands vary.");
+    if (PAGES && !isPlate) src.append(" ", el("a", { class: "report", href: reportUrl(f, a), target: "_blank", rel: "noopener", text: "Wrong number? Report it" }));
 
     // Numbers the source has that no label can have (a mistyped crowd-sourced record): left out, and said so.
     // One short line; what exactly is wrong, and where to fix it, behind "Details".
@@ -536,10 +538,10 @@
       closestBanner(f),
       head,
       el("div", { class: "result" },
-        el("div", { class: "leftcol" + (labelOpen ? "" : " fold") }, seg, issues, partial, label,
-          el("button", { class: "btn small ghost label-more", type: "button", "aria-expanded": labelOpen ? "true" : "false",
-            text: labelOpen ? "Show less of the label" : "Show the full label", onclick: () => { labelOpen = !labelOpen; renderResult(current); } }),
-          box, src, PAGES && !isPlate ? el("p", { class: "report" }, el("a", { href: reportUrl(f, a), target: "_blank", rel: "noopener", text: "Wrong number or verdict? Report it" })) : null),
+        // The whole label, always: sodium, sugar, fiber and protein are what people check. Tapping a line explains it.
+        el("div", { class: "leftcol" }, seg, issues, partial, label,
+          el("p", { class: "label-hint", text: "Tap any line on the label to see what it means." }),
+          box, src),
         el("div", { class: "side" },
           // Your allergens come before the verdict when one is (or may be) in the food; otherwise just after it.
           alFirst ? renderAllergy(a) : null,

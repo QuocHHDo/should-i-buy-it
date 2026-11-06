@@ -180,12 +180,13 @@ const serve = () => new Promise(resolve => {
     ({ ctx, page } = await open("", { seed: { lookups: [oldCopy] } }));
     await page.route("**/world.openfoodfacts.org/**", r => r.fulfill({ contentType: "application/json", body: JSON.stringify({ code: "0096619237432", status: 1, product: OAT }) }));
     await page.fill("#q", "Kirkland Signature Oat"); await page.press("#q", "Enter");
-    await page.waitForFunction(() => /look wrong/.test(document.getElementById("out").textContent));
+    await page.waitForSelector("#out .partial-note > span");
     // A barcode typed in the search box is looked up as a barcode, whether you press Check or tap the suggestion row.
     await page.fill("#q", ""); await page.type("#q", "0096619237432");
     const row = await page.textContent("#suggest li.action");
     await page.click("#suggest li.action");
-    await page.waitForFunction(() => /look wrong/.test(document.getElementById("out").textContent) && !/No packaged product/.test(document.getElementById("out").textContent));
+    // Wait for the card's note, not the words: "…numbers look wrong. Checking USDA…" shows while the second opinion loads.
+    await page.waitForSelector("#out .partial-note > span");
     ok(/^Look up barcode 0096619237432$/.test(row.trim()), `typing a barcode offers 'Look up barcode', and it finds the product (${row.trim()})`);
     const oat = await page.evaluate(() => ({ note: document.querySelector("#out .partial-note > span").textContent, more: document.querySelector("#out .issue-more").textContent.replace(/\s+/g, " "), open: document.querySelector("#out .issue-more").open, label: document.querySelector("#out .leftcol").textContent.replace(/\s+/g, " ") }));
     ok(oat.note === "Some numbers look wrong (sodium, trans fat, cholesterol), so they aren't counted. Check the package." && !oat.open && /Sodium 240,000 mg in a 240 g serving/.test(oat.more) && /about 211 calories, not the 120 listed/.test(oat.more) && /Fix it on Open Food Facts/.test(oat.more),

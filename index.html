@@ -241,7 +241,7 @@ details.adv { border-top: 1px solid var(--line); padding-top: 10px; }
 details.adv > summary { cursor: pointer; font-size: 13.5px; color: var(--muted); padding: 6px 0; }
 details.adv > label { margin-top: 8px; }
 .tag .for .linkbtn { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
-.report { margin: 6px 0 0; font-size: 12.5px; } .report a { color: var(--muted); }
+.src .report { color: var(--muted); white-space: nowrap; }
 .footlinks { margin: 8px 0 0; font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 14px; } .footlinks a { color: var(--muted); }
 /* Folded deep-dive sections: one line with the key fact, open on tap. */
 details.fold > summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; min-height: 28px; padding-right: 26px; position: relative; }
@@ -543,8 +543,9 @@ body.home #scanBtn { display: none; } /* the big Scan button replaces it */
 body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBar { display: none; }
 .bk-preview { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: grid; gap: 8px; background: var(--paper); }
 .bk-preview.err { border-color: var(--bad); color: var(--bad); }
-/* Phones: 44px tap targets, a shorter header once a food is open, swaps before the label, and a folded label. */
-.label-more { display: none; }
+/* Phones: 44px tap targets, a shorter header once a food is open, and swaps before the label. */
+.label-hint { margin: -4px 0 0; font-size: 13px; color: var(--muted); }
+.explain[hidden] { display: none; }
 @media (max-width: 720px) {
   .chip, .seg, .icon-btn, .result-head .icon-btn, .btn.small { min-height: 44px; }
   .icon-btn { min-width: 44px; justify-content: center; }
@@ -553,7 +554,7 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
   .qty button { width: 44px; height: 40px; }
   .photolink { padding: 12px 4px; }
   .footlinks { gap: 0 14px; } .footlinks a { display: inline-block; padding: 12px 0; }
-  .report a { display: inline-block; padding: 12px 0; }
+  .src .report { display: inline-block; padding: 10px 0; }
   .tag .for .linkbtn { padding: 12px 6px; margin: -12px -6px; }
   body.picked header .sub { display: none; }
   /* Phones, with a product open: a slim title and one search row (the scanner as an icon button), so the
@@ -563,8 +564,6 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
   body.picked #scanBtn { padding: 0 12px; flex: none; }
   body.picked #scanBtn .scan-lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .result > .side > .tryinstead { order: -1; }
-  .leftcol.fold .label { max-height: 300px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
-  .label-more { display: block; justify-self: start; }
 }
 .toast { display: flex; align-items: center; gap: 12px; width: max-content; max-width: calc(100% - 32px); }
 .toast-act { all: unset; cursor: pointer; font-weight: 700; color: var(--accent-soft); text-decoration: underline; text-underline-offset: 2px; padding: 6px 2px; }
