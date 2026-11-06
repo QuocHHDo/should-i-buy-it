@@ -252,27 +252,36 @@ const serve = () => new Promise(resolve => {
     ok(tess.some(u => /eng\.traineddata\.gz/.test(u)) && !tess.some(u => !/localhost/.test(u)), "everything it loaded came from this site (no outside servers)");
     await ctx.close();
 
-    // 6d. Goals: suggested targets from a few answers; "Use these" fills the boxes and saves; the answers aren't kept.
+    // 6d. Goals: "About you" puts a suggestion beside each target; using them saves; the answers aren't kept.
     ({ ctx, page } = await open(""));
     await page.click('#tabs button[data-view="goals"]');
-    ok(await page.evaluate(() => document.getElementById("sgBox").open), "with goals not set yet, 'Suggest my targets' is open on the Goals page");
-    await page.fill("#sg-age", "32"); await page.selectOption("#sg-sex", "male"); await page.fill("#sg-ft", "5"); await page.fill("#sg-in", "10"); await page.fill("#sg-lb", "170");
-    await page.waitForSelector(".sglist");
-    const sg = (await page.textContent(".sglist")).replace(/\s+/g, " ");
-    ok(/Calories ?2,400/.test(sg) && /Protein ?60 g/.test(sg) && /Fiber ?34 g/.test(sg) && /Saturated fat ?≤ 26 g/.test(sg) && /Added sugar ?≤ 60 g/.test(sg), `suggested targets for a 32-year-old, 5'10", 170 lb man (${sg})`);
-    ok(!/null/.test(await page.textContent(".sgresult")), "no stray text in the result");
-    await page.click(".sgbtns button"); // the weight box is still focused: leaving it must not swap the button out
+    ok(!(await page.$(".sghint")) && /Fill these in/.test(await page.textContent(".sgstatus")), "before About you is filled in: no suggestions, just a prompt");
+    await page.fill("#sg-age", "32"); await page.click("#sg-sex-male"); await page.fill("#sg-ft", "5"); await page.fill("#sg-in", "10"); await page.fill("#sg-lb", "170");
+    await page.waitForSelector(".sghint");
+    const hint = id => page.evaluate(i => document.getElementById(i).closest(".tcell").querySelector(".sghint").textContent.replace(/\s+/g, " ").trim(), id);
+    const hints = { cal: await hint("p-cal"), pro: await hint("p-pro"), fib: await hint("p-fib"), sat: await hint("p-sat"), na: await hint("p-na"), add: await hint("p-add") };
+    ok(/2,400/.test(hints.cal) && /60/.test(hints.pro) && /34/.test(hints.fib) && /26/.test(hints.sat) && /✓ Suggested/.test(hints.na) && /60/.test(hints.add), `a suggestion beside each target for a 32-year-old, 5'10", 170 lb man (${JSON.stringify(hints)})`);
+    ok(/2,400 cal · 60 g protein/.test(await page.textContent(".sgstatus")), "a one-line summary under About you");
+    ok(!/null/.test(await page.textContent("#profile")), "no stray text");
+    ok(await page.evaluate(() => !document.querySelector("label .sghint")), "suggestions aren't part of the boxes' labels");
+    await page.click(".tcell:has(#p-pro) .sguse");
+    await page.waitForFunction(() => document.getElementById("p-pro").value === "60");
+    ok(/✓ Suggested/.test(await hint("p-pro")), "using one suggestion fills that box and marks it");
+    await page.click("#sgAll"); // the weight box may still be focused: leaving it must not swap the button out
     await page.waitForFunction(() => document.getElementById("p-cal").value === "2400");
     const [saved, allStored] = await page.evaluate(() => [JSON.parse(localStorage.getItem("profile") || "null"), JSON.stringify({ ...localStorage })]);
     ok(saved && saved.cal === 2400 && saved.pro === 60 && saved.fib === 34 && saved.sat === 26 && saved.add === 60 && saved.na === 2300 && !("age" in saved) && !/\b170\b|"age"|"weight"|"height"/.test(allStored),
-      "'Use these' fills and saves the six targets, and nothing about age, height or weight is stored");
+      "'Use all suggestions' fills and saves the six targets, and nothing about age, height or weight is stored");
+    ok(await page.evaluate(() => document.getElementById("sgAll").hidden && document.querySelectorAll(".sgok").length === 6), "once they all match: every target says ✓ and the button goes away");
     await page.click("#sg-preg");
-    ok(/pregnancy/.test(await page.textContent(".sgresult")) && !(await page.$(".sglist")), "pregnant or breastfeeding: no numbers, ask a doctor or dietitian");
+    ok(/pregnancy/.test(await page.textContent(".sgstatus")) && !(await page.$(".sghint")), "pregnant or breastfeeding: no numbers, ask a doctor or dietitian");
     await page.click("#sg-preg"); await page.fill("#sg-age", "16");
-    ok(/for adults/.test(await page.textContent(".sgresult")), "under 18: no numbers");
-    await page.setViewportSize({ width: 390, height: 844 });
+    ok(/for adults/.test(await page.textContent(".sgstatus")), "under 18: no numbers");
     await page.fill("#sg-age", "32");
-    if (SHOTS) await page.locator("#sgBox").screenshot({ path: path.join(SHOTS, "app7-suggest-targets.png") });
+    await page.setViewportSize({ width: 1100, height: 900 });
+    if (SHOTS) await page.locator("#profile").screenshot({ path: path.join(SHOTS, "app7-suggest-targets-desktop.png") });
+    await page.setViewportSize({ width: 390, height: 844 });
+    if (SHOTS) await page.locator("#profile").screenshot({ path: path.join(SHOTS, "app7-suggest-targets.png") });
     ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "fits a 390 px phone without sideways scrolling");
     await ctx.close();
 
