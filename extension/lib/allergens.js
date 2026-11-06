@@ -1,5 +1,5 @@
 // Allergen and diet flags: what the viewer avoids (their profile) against what a food is known to contain.
-// Diets (gluten-free, vegetarian, vegan) work the same way as allergens and are flagged the same way.
+// Diets (gluten-free, no pork, pescatarian, vegetarian, vegan) work the same way as allergens and are flagged the same way.
 // It never says a food is safe. Each food gets one of four answers for the viewer's allergens:
 //   "contains"  an allergen is in the food (Open Food Facts' allergen list, the label's ingredients or "Contains"
 //               line, the food's own name, or a built-in food's typical recipe)
@@ -62,6 +62,18 @@
       // Oats are often grown and milled with wheat; only certified gluten-free oats are considered safe for celiac.
       soft: ["oat", "oats", "oatmeal", "oat flour", "oat bran", "oat fiber", "oat fibre", "rolled oats", "oatmilk", "barley grass", "wheat grass", "wheatgrass", "oat grass"],
       not: ["buckwheat", "ryegrass"] },
+    // No pork: pork words for sure; gelatin, sausages and cured meats only "may" (often pork, often not). Beef, turkey,
+    // fish and plant versions are taken out first.
+    { id: "pork", diet: true, label: "No pork", name: "pork", short: "Has pork", hint: "no pork, ham, bacon or lard; gelatin and sausages may be pork",
+      words: ["pork", "ham", "hams", "bacon", "prosciutto", "pancetta", "guanciale", "porchetta", "lard", "pork rinds", "chicharrones", "spam", "pork fat", "pork gelatin", "porcine", "speck", "capicola", "mortadella"],
+      soft: ["gelatin", "gelatine", "collagen", "sausage", "sausages", "pepperoni", "salami", "chorizo", "hot dog", "hot dogs", "frankfurter", "frankfurters", "bologna", "natural casing", "casings", "pork flavor", "pork flavour", "bacon flavor", "bacon flavour", "bacon bits"],
+      not: ["turkey bacon", "beef bacon", "turkey ham", "veggie bacon", "vegan bacon", "imitation bacon", "plant-based bacon", "plant based bacon", "beef gelatin", "bovine gelatin", "fish gelatin", "kosher gelatin", "halal gelatin",
+        "beef collagen", "bovine collagen", "marine collagen", "fish collagen", "beef sausage", "chicken sausage", "turkey sausage", "veggie sausage", "vegan sausage", "vegetarian sausage", "plant-based sausage",
+        "beef pepperoni", "turkey pepperoni", "beef salami", "chicken chorizo", "beef chorizo", "soy chorizo", "vegan chorizo", "beef hot dog", "beef hot dogs", "all beef", "all-beef", "hot dog, beef", "chicken hot dog", "turkey hot dog",
+        "beef frankfurter", "beef bologna", "turkey bologna", "chicken bologna", "hot dog bun", "hot dog buns", "imitation bacon bits", "bacon bits (soy", "cellulose casing", "collagen casing (beef"] },
+    // Pescatarian: vegetarian, but fish and shellfish are fine. Same word lists, minus fish-only ones (isinglass).
+    { id: "pescatarian", diet: true, label: "Pescatarian", name: "meat or gelatin", short: "Not pescatarian", hint: "no meat or poultry; fish and seafood are fine",
+      words: [], soft: [], not: [] },
     { id: "vegetarian", diet: true, label: "Vegetarian", name: "meat, fish or gelatin", short: "Not vegetarian", hint: "no meat, poultry, fish or gelatin",
       words: ["meat", "meats", "beef", "pork", "chicken", "turkey", "lamb", "mutton", "veal", "duck", "goose", "venison", "bison", "rabbit", "bacon", "ham", "prosciutto", "pancetta", "salami", "pepperoni", "sausage", "sausages", "chorizo", "pastrami", "bologna", "spam",
         "frankfurter", "frankfurters", "hot dog", "hot dogs", "steak", "brisket", "meatball", "meatballs", "jerky", "liver", "lard", "tallow", "suet", "gelatin", "gelatine", "collagen", "isinglass", "bone broth", "animal fat", "animal shortening",
@@ -77,6 +89,7 @@
       not: ["honeydew", "honeycrisp", "honeysuckle", "honeybush", "vitamin d3 (lichen)", "vegan vitamin d3"] },
   ];
   const BY_ID = Object.fromEntries(LIST.map(a => [a.id, a]));
+  { const veg = BY_ID.vegetarian, pes = BY_ID.pescatarian; pes.words = veg.words.filter(w => w !== "isinglass"); pes.soft = [...veg.soft]; pes.not = [...veg.not, "fish gelatin", "fish collagen", "marine collagen"]; }
   // The nine allergens; DIET_IDS the diets. Diets are chosen separately (profile.diets) but checked the same way.
   const IDS = LIST.filter(a => !a.diet).map(a => a.id);
   const DIET_IDS = LIST.filter(a => a.diet).map(a => a.id);
@@ -140,7 +153,8 @@
   const OFF_ANALYSIS = { "en:non-vegan": ["vegan", 1], "en:maybe-vegan": ["vegan", 0], "en:non-vegetarian": ["vegetarian", 1], "en:maybe-vegetarian": ["vegetarian", 0] };
   // Why a weaker mention is only a "may".
   const SOFT_WHY = { milk: "butter flavor is often made without milk; the label's Contains line will say if it has any", soy: "refined soybean oil is usually tolerated, and unnamed lecithin is usually but not always soy", peanut: "highly refined peanut oil is usually tolerated; ask your allergist",
-    gluten: "oats are often cross-contaminated with wheat unless certified gluten-free", vegetarian: "flavorings, rennet and carmine can be animal or not", vegan: "vitamin D3 is usually from lanolin unless it says lichen" };
+    gluten: "oats are often cross-contaminated with wheat unless certified gluten-free", vegetarian: "flavorings, rennet and carmine can be animal or not", pescatarian: "flavorings, rennet and carmine can be animal or not",
+    pork: "gelatin, sausages and cured meats are often pork but not always; the label or maker can tell you", vegan: "vitamin D3 is usually from lanolin unless it says lichen" };
 
   // Built-in foods: what a typical version contains, by name. "?x" means it often may (shared equipment, or common
   // in some recipes but not all). Built-ins not listed have none of the nine in a typical version.
@@ -238,12 +252,12 @@
   // the name → not vegetarian, milk or egg → not vegan). Same "?x" for "often".
   const TYPICAL_DIET = {
     // gluten without wheat
-    "Barley, pearled": "gluten", "Beer": "gluten ?vegan", "Light beer": "gluten ?vegan", "Frosted cereal": "gluten", "Rice crispy treat": "gluten ?vegetarian", "Raisin bran": "gluten",
+    "Barley, pearled": "gluten", "Beer": "gluten ?vegan", "Light beer": "gluten ?vegan", "Frosted cereal": "gluten", "Rice crispy treat": "gluten ?vegetarian ?pork", "Raisin bran": "gluten",
     // meat, fish or gelatin the name doesn't show
-    "Cheeseburger, fast food": "vegetarian", "Double cheeseburger, fast food": "vegetarian", "Chili with beans, canned": "vegetarian", "Potstickers, frozen": "vegetarian",
-    "Egg roll": "?vegetarian", "Lasagna, frozen": "?vegetarian", "Gummy bears": "vegetarian", "Fruit snacks": "vegetarian", "Toaster pastry": "?vegetarian",
-    "Protein bar": "?vegetarian", "French fries": "?vegetarian", "Refried beans": "?vegetarian", "Baked beans": "?vegetarian", "Brown gravy": "?vegetarian",
-    "Instant ramen": "?vegetarian", "Parmesan, grated": "?vegetarian", "Pesto": "?vegetarian", "Alfredo sauce, jarred": "?vegetarian", "Frozen yogurt": "?vegetarian",
+    "Cheeseburger, fast food": "vegetarian", "Double cheeseburger, fast food": "vegetarian", "Chili with beans, canned": "vegetarian ?pork", "Potstickers, frozen": "vegetarian pork",
+    "Egg roll": "?vegetarian ?pork", "Lasagna, frozen": "?vegetarian ?pork", "Gummy bears": "vegetarian ?pork", "Fruit snacks": "vegetarian ?pork", "Toaster pastry": "?vegetarian",
+    "Protein bar": "?vegetarian", "French fries": "?vegetarian", "Refried beans": "?vegetarian ?pork", "Baked beans": "?vegetarian ?pork", "Brown gravy": "?vegetarian ?pork",
+    "Instant ramen": "?vegetarian ?pork", "Parmesan, grated": "?vegetarian", "Pesto": "?vegetarian", "Alfredo sauce, jarred": "?vegetarian", "Frozen yogurt": "?vegetarian",
     "Red wine": "?vegan ?vegetarian",
     // vegan beyond meat, milk and eggs
     "Honey": "vegan", "Granola": "?vegan", "Graham crackers": "?vegan", "Sugar": "?vegan", "Granola bar, chewy": "?vegan", "Instant oatmeal, flavored": "?vegan",
@@ -273,7 +287,8 @@
       t.may.forEach(id => add(may, id, "common in some versions"));
     } else if (!f.src) src = "typical";
     if (!f.src && Object.prototype.hasOwnProperty.call(TYPICAL_DIET, f.n)) {
-      const t = parseTypical(TYPICAL_DIET[f.n]);
+      // Every built-in listed as not vegetarian here is meat, gelatin or rennet, so it isn't pescatarian either.
+      const t = parseTypical(TYPICAL_DIET[f.n].replace(/(\??)vegetarian\b/g, "$1vegetarian $1pescatarian"));
       t.contains.forEach(id => add(contains, id, "usually in it"));
       t.may.forEach(id => add(may, id, "common in some versions"));
     }
@@ -288,6 +303,8 @@
     for (const t of Array.isArray(f.analysis) ? f.analysis : []) {
       const a = OFF_ANALYSIS[String(t).toLowerCase()];
       if (a) { src = "label"; add(a[1] ? contains : may, a[0], a[1] ? "Open Food Facts ingredient analysis" : "Open Food Facts ingredient analysis: unclear ingredients"); }
+      // Not vegetarian could be fish, which a pescatarian eats: only a "may" for them.
+      if (a && a[0] === "vegetarian") add(may, "pescatarian", "Open Food Facts ingredient analysis: not vegetarian (could be fish)");
     }
     if (f.ingredients) {
       src = "label";
@@ -298,7 +315,10 @@
     // The name counts for everything: "Peanut butter pretzels" contains peanuts whatever else is on file.
     const nm = scanBoth(name);
     for (const [id, w] of nm.hard) w.forEach(x => add(contains, id, `“${x}” in the name`));
-    for (const [id, w] of nm.soft) w.forEach(x => add(may, id, `“${x}” in the name (${SOFT_WHY[id] || "could go either way"})`));
+    // Weaker mentions count only in the food's own name, not its search aliases: "Hot dog, beef" is found by "hot dog",
+    // but it's beef, not a hot dog that may be pork.
+    const own = scanBoth(f.n);
+    for (const [id, w] of own.soft) w.forEach(x => add(may, id, `“${x}” in the name (${SOFT_WHY[id] || "could go either way"})`));
     // Diets from what was found: wheat is gluten; fish isn't vegetarian; milk, eggs, meat and fish aren't vegan.
     // Wheatgrass and barley grass are the young leaves: wheat for an allergy, but only a "may" for gluten.
     const onlyGrass = id => id === "wheat" && (contains.get(id) || []).every(w => /grass/i.test(w));

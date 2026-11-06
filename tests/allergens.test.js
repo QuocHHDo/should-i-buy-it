@@ -210,6 +210,30 @@ test("real-label false flags found by the diet eval: a brand name, butter flavor
   assert.ok(A.fromText("Popcorn, butter (cream, salt)").contains.has("milk"), "real butter is still milk");
 });
 
+test("no pork: pork words for sure; gelatin and sausages are a may; beef, turkey and plant versions aren't", () => {
+  for (const t of ["Pork, water, salt", "Cured ham (pork, salt)", "Bacon, salt", "Lard, flour", "Prosciutto di Parma", "Pancetta"]) assert.equal(flagOf(t, "pork"), "contains", t);
+  for (const t of ["Sugar, corn syrup, gelatin", "Pepperoni, mozzarella", "Sausage (meat, spices)", "Bacon flavor, salt", "Collagen peptides", "Bacon bits"]) assert.equal(flagOf(t, "pork"), "may", t);
+  for (const t of ["Turkey bacon (turkey, salt)", "Beef gelatin, sugar", "Fish gelatin", "Chicken sausage", "Beef pepperoni", "Soy chorizo", "Hamburger bun (wheat flour)", "Graham flour, honey", "Pork-free gummies (sugar, pectin)", "Water, pectin"]) assert.equal(flagOf(t, "pork"), "none", t);
+  const pr = { diets: ["pork"] }, st = n => A.check(FOODS.find(f => f.n === n), pr).status;
+  for (const n of ["Bacon", "Pork breakfast sausage", "Potstickers, frozen"]) assert.equal(st(n), "contains", n);
+  for (const n of ["Gummy bears", "Bologna", "Refried beans"]) assert.equal(st(n), "may", n);
+  for (const n of ["Hot dog, beef", "Chicken breast, grilled", "Salmon", "Apple", "Hamburger bun"]) assert.equal(st(n), "clear", n);
+  assert.equal(A.check(FOODS.find(f => f.n === "Bacon"), pr).title, "Contains pork");
+});
+
+test("pescatarian: meat and gelatin are out; fish and shellfish are fine", () => {
+  for (const t of ["Chicken broth, salt", "Sugar, gelatin", "Beef tallow", "Pork rinds"]) assert.equal(flagOf(t, "pescatarian"), "contains", t);
+  for (const t of ["Anchovies, olive oil", "Shrimp, rice", "Salmon, salt", "Fish gelatin, sugar", "Plant-based chicken (pea protein)"]) assert.equal(flagOf(t, "pescatarian"), "none", t);
+  assert.equal(flagOf("Noodles, artificial chicken flavour", "pescatarian"), "may");
+  const pe = { diets: ["pescatarian"] }, st = n => A.check(FOODS.find(f => f.n === n), pe).status;
+  for (const n of ["Salmon", "Shrimp", "Tuna, canned in water", "Fish sticks, frozen", "Tofu, firm"]) assert.equal(st(n), "clear", n);
+  for (const n of ["Chicken breast, grilled", "Bacon", "Cheeseburger, fast food", "Gummy bears"]) assert.equal(st(n), "contains", n);
+  assert.deepEqual(FOODS.filter(f => f.c === "meat" && st(f.n) !== "contains").map(f => f.n), [], "every meat food is flagged");
+  assert.equal(A.check(food("Chips", { analysis: ["en:non-vegetarian"] }), pe).status, "may", "OFF's 'not vegetarian' could be fish");
+  const R = M.roles(FOODS, { ...V.DEFAULT_PROFILE, diets: ["pescatarian"] });
+  assert.ok(R.protein.length > 0 && !R.protein.some(f => f.c === "meat"), "meal ideas leave out meat");
+});
+
 test("backups keep valid diets", () => {
-  assert.deepEqual(B.KEYS.profile({ cal: 2000, diets: ["vegan", "keto", "vegan", "gluten"] }).diets, ["vegan", "gluten"]);
+  assert.deepEqual(B.KEYS.profile({ cal: 2000, diets: ["vegan", "keto", "vegan", "gluten", "pork", "pescatarian"] }).diets, ["vegan", "gluten", "pork", "pescatarian"]);
 });

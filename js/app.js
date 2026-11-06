@@ -8,7 +8,7 @@
   const CMP = window.SelfCheckCompare; // js/compare.js
   const AL = window.SelfCheckAllergens; // js/allergens.js
   // Icons on the Goals chips and in the summary. Decoration only: the text label is always there.
-  const AL_ICON = { milk: "🥛", egg: "🥚", fish: "🐟", shellfish: "🦐", treenut: "🌰", peanut: "🥜", wheat: "🌾", soy: "🫘", sesame: "🥯", gluten: "🍞", vegetarian: "🥕", vegan: "🌱" };
+  const AL_ICON = { milk: "🥛", egg: "🥚", fish: "🐟", shellfish: "🦐", treenut: "🌰", peanut: "🥜", wheat: "🌾", soy: "🫘", sesame: "🥯", gluten: "🍞", pork: "🐖", pescatarian: "🎣", vegetarian: "🥕", vegan: "🌱" };
   const CFG = Object.assign({ mode: "pages" }, window.SELF_CHECK_CONFIG || {});
   const PAGES = CFG.mode === "pages";
   const CAT_LABEL = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
