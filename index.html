@@ -335,6 +335,23 @@ details.fold > summary:focus-visible { outline: 2px solid var(--accent); outline
 .cmpbig { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 48px; }
 .cmpbig .cmpt { display: grid; gap: 1px; text-align: left; }
 .cmpbig small { font-weight: 400; font-size: 13px; opacity: .85; }
+/* Goals: suggested targets */
+.sgbox { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; background: var(--paper); }
+.sgbox > summary { cursor: pointer; font-size: 15px; }
+.sgbox[open] > summary { margin-bottom: 8px; }
+.sgform { display: grid; gap: 10px; margin-top: 8px; }
+.sgrow { display: flex; flex-wrap: wrap; gap: 10px; }
+.sgrow[hidden] { display: none; }
+.sgf { display: grid; gap: 4px; font-size: 13px; color: var(--muted); flex: 1 1 120px; }
+.sgf input, .sgf select { font: 500 16px var(--font-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 0; }
+.sgunits { margin: 0; }
+.sgresult { margin-top: 12px; display: grid; gap: 8px; }
+.sgpick .sgf { flex-basis: 180px; }
+.sglist { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 6px 14px; margin: 0; }
+.sglist dt { font-size: 12.5px; color: var(--muted); } .sglist dd { margin: 0 0 4px; font-weight: 700; font-size: 17px; }
+.sgwhy { margin: 0; color: var(--mid); font-weight: 600; }
+.sghow summary { cursor: pointer; font-size: 13.5px; color: var(--accent); }
+.sghow ul { margin: 6px 0 0; padding-left: 18px; font-size: 13.5px; display: grid; gap: 4px; }
 /* Reading a label photo: the numbers to check */
 .photolink { all: unset; cursor: pointer; font-size: 14px; color: var(--muted); justify-self: center; text-align: center; }
 .photolink u { color: var(--accent); font-weight: 600; }
@@ -794,6 +811,7 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
 <script src="js/search.js"></script>
 <script src="js/card.js"></script>
 <script src="js/compare.js"></script>
+<script src="js/targets.js"></script>
 <script src="js/walmart.js"></script>
 <script src="js/bookmarklet.js"></script>
 <script src="js/learn.js"></script>

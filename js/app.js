@@ -1319,6 +1319,68 @@
     }
   }
 
+  // ---------- suggested targets (js/targets.js) ----------
+  // A few answers in, six suggested targets out; "Use these" fills the boxes below, which stay editable. The answers
+  // themselves are never saved. Open by default until goals have been set.
+  const TG = window.SelfCheckTargets;
+  function renderSuggest() {
+    if (!TG || $("sgBox")) return;
+    const opt = (v, t) => el("option", { value: v, text: t });
+    const num = (id, label, attrs) => el("label", { class: "sgf" }, label, el("input", { id, type: "number", inputmode: "decimal", ...attrs }));
+    const units = el("div", { class: "chiprow sgunits", role: "group", "aria-label": "Units" });
+    let metric = false;
+    const us = el("div", { class: "sgrow" }, num("sg-ft", "Height (ft)", { min: 4, max: 7, step: 1, placeholder: "5" }), num("sg-in", "(in)", { min: 0, max: 11, step: 1, placeholder: "10" }), num("sg-lb", "Weight (lb)", { min: 80, max: 660, placeholder: "170" }));
+    const si = el("div", { class: "sgrow", hidden: true }, num("sg-cm", "Height (cm)", { min: 120, max: 230, placeholder: "178" }), num("sg-kg", "Weight (kg)", { min: 35, max: 300, step: 0.1, placeholder: "77" }));
+    const setUnits = m => { metric = m; us.hidden = m; si.hidden = !m; [...units.children].forEach((b, i) => { const on = i === (m ? 1 : 0); b.setAttribute("aria-pressed", String(on)); b.classList.toggle("on", on); }); update(); };
+    units.append(...[["US units", false], ["Metric", true]].map(([t, m]) => el("button", { class: "chip" + (m ? "" : " on"), type: "button", text: t, "aria-pressed": String(!m), onclick: () => setUnits(m) })));
+    const result = el("div", { class: "sgresult", role: "status", "aria-live": "polite" });
+    const form = el("form", { class: "sgform", oninput: () => update(), onsubmit: e => { e.preventDefault(); } },
+      el("div", { class: "sgrow" }, num("sg-age", "Age", { min: 18, max: 100, placeholder: "32" }),
+        el("label", { class: "sgf" }, "Sex", el("select", { id: "sg-sex" }, opt("female", "Female"), opt("male", "Male"), opt("other", "Prefer not to say")))),
+      units, us, si,
+      el("div", { class: "sgrow sgpick" },
+        el("label", { class: "sgf" }, "Activity", el("select", { id: "sg-act" }, ...Object.entries(TG.ACTIVITY).map(([k, v]) => opt(k, v.label)))),
+        el("label", { class: "sgf" }, "Goal", el("select", { id: "sg-goal" }, ...Object.entries(TG.GOAL).map(([k, v]) => opt(k, v.label))))),
+      el("label", { class: "check sgpreg" }, el("input", { id: "sg-preg", type: "checkbox" }), " Pregnant or breastfeeding"));
+    const q = id => form.querySelector("#" + id);
+    q("sg-act").value = "light"; q("sg-goal").value = "keep";
+    // Redraws only when the answers change: leaving a box fires events too, and redrawing then would swap out the
+    // "Use these" button between the press and the click.
+    let shown = null;
+    function update() {
+      const v = id => q(id).value.trim();
+      const key = [metric, ...["sg-age", "sg-sex", "sg-ft", "sg-in", "sg-lb", "sg-cm", "sg-kg", "sg-act", "sg-goal"].map(v), q("sg-preg").checked].join("|");
+      if (key === shown) return;
+      shown = key;
+      const age = Number(v("sg-age"));
+      const heightCm = metric ? Number(v("sg-cm")) : (v("sg-ft") ? TG.cmFromFtIn(v("sg-ft"), v("sg-in") || 0) : 0);
+      const weightKg = metric ? Number(v("sg-kg")) : (v("sg-lb") ? TG.kgFromLb(v("sg-lb")) : 0);
+      if (!q("sg-preg").checked && (!age || !heightCm || !weightKg)) { result.replaceChildren(el("p", { class: "muted", text: "Fill in age, height and weight to see suggested targets." })); return; }
+      const r = TG.suggest({ age, sex: q("sg-sex").value, heightCm, weightKg, activity: q("sg-act").value, goal: q("sg-goal").value, pregnant: q("sg-preg").checked });
+      if (!r.ok) { result.replaceChildren(el("p", { class: "sgwhy", text: r.why })); return; }
+      const t = r.targets;
+      const items = [["Calories", t.cal.toLocaleString("en-US")], ["Protein", `${t.pro} g`], ["Fiber", `${t.fib} g`], ["Saturated fat", `≤ ${t.sat} g`], ["Sodium", `≤ ${t.na.toLocaleString("en-US")} mg`], ["Added sugar", `≤ ${t.add} g`]];
+      result.replaceChildren(...[
+        el("dl", { class: "sglist" }, ...items.flatMap(([k, val]) => [el("dt", { text: k }), el("dd", { text: val })])),
+        r.floored ? el("p", { class: "legend", text: `Calories stop at ${t.cal.toLocaleString("en-US")}: going lower isn't advised without a doctor or dietitian.` }) : null,
+        el("div", { class: "sgbtns" }, el("button", { class: "btn small", type: "button", text: "Use these", onclick: () => {
+          for (const [k, id] of Object.entries(PF)) { $(id).value = String(t[k]); $(id).removeAttribute("aria-invalid"); }
+          readProfile(); toast("Targets set. You can still change any of them.");
+        } })),
+        el("details", { class: "sghow" }, el("summary", { text: "How these are worked out" }),
+          el("ul", {},
+            el("li", { text: `Calories: your resting calories (Mifflin-St Jeor equation, about ${Math.round(TG.resting({ sex: q("sg-sex").value, age, heightCm, weightKg })).toLocaleString("en-US")}) × your activity = about ${r.maintenance.toLocaleString("en-US")} to stay the same${q("sg-goal").value === "lose" ? ", minus 500 to lose about a pound a week" : q("sg-goal").value === "gain" ? ", plus 250 to build muscle" : ""}. It's an estimate: most people land within about 10%.` }),
+            el("li", { text: "Protein: 0.8 g per kg of body weight (the RDA), 1.0 when very active, 1.2 when losing weight, 1.6 when building muscle." }),
+            el("li", { text: "Fiber: 14 g per 1,000 calories. Saturated fat and added sugar: each under 10% of calories. Sodium: under 2,300 mg. (Dietary Guidelines for Americans.)" }),
+            el("li", { text: "Not medical advice. If you have a condition that affects what you eat, your doctor's or dietitian's numbers come first." })))].filter(Boolean));
+    }
+    const box = el("details", { class: "sgbox", id: "sgBox", open: goalsSet ? null : true },
+      el("summary", {}, el("b", { text: "Suggest my targets" }), el("span", { class: "muted", text: " · from your age, size and activity" })),
+      el("p", { class: "legend", text: "Your answers are only used for this calculation; they aren't saved." }), form, result);
+    $("profile").querySelector(".inner").prepend(box);
+    update();
+  }
+
   // ---------- goals ----------
   const PF = { cal: "p-cal", pro: "p-pro", sat: "p-sat", na: "p-na", add: "p-add", fib: "p-fib" };
   function syncProfileUI() {
@@ -1662,6 +1724,7 @@
     Object.values(PF).forEach(id => $(id).addEventListener("input", () => checkGoal($(id))));
     syncProfileUI();
     Object.values(PF).forEach(id => checkGoal($(id))); // creates each field's (empty) message line
+    renderSuggest();
     // Goals not set yet: a dot on the Goals tab instead of opening the panel.
     $("tabGoalsDot").hidden = !!(savedProfile || CFG.profile);
     renderChips(); renderBrowse(); renderList(); renderPlate(); renderQuiz();

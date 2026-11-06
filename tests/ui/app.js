@@ -252,6 +252,30 @@ const serve = () => new Promise(resolve => {
     ok(tess.some(u => /eng\.traineddata\.gz/.test(u)) && !tess.some(u => !/localhost/.test(u)), "everything it loaded came from this site (no outside servers)");
     await ctx.close();
 
+    // 6d. Goals: suggested targets from a few answers; "Use these" fills the boxes and saves; the answers aren't kept.
+    ({ ctx, page } = await open(""));
+    await page.click('#tabs button[data-view="goals"]');
+    ok(await page.evaluate(() => document.getElementById("sgBox").open), "with goals not set yet, 'Suggest my targets' is open on the Goals page");
+    await page.fill("#sg-age", "32"); await page.selectOption("#sg-sex", "male"); await page.fill("#sg-ft", "5"); await page.fill("#sg-in", "10"); await page.fill("#sg-lb", "170");
+    await page.waitForSelector(".sglist");
+    const sg = (await page.textContent(".sglist")).replace(/\s+/g, " ");
+    ok(/Calories ?2,400/.test(sg) && /Protein ?60 g/.test(sg) && /Fiber ?34 g/.test(sg) && /Saturated fat ?≤ 26 g/.test(sg) && /Added sugar ?≤ 60 g/.test(sg), `suggested targets for a 32-year-old, 5'10", 170 lb man (${sg})`);
+    ok(!/null/.test(await page.textContent(".sgresult")), "no stray text in the result");
+    await page.click(".sgbtns button"); // the weight box is still focused: leaving it must not swap the button out
+    await page.waitForFunction(() => document.getElementById("p-cal").value === "2400");
+    const [saved, allStored] = await page.evaluate(() => [JSON.parse(localStorage.getItem("profile") || "null"), JSON.stringify({ ...localStorage })]);
+    ok(saved && saved.cal === 2400 && saved.pro === 60 && saved.fib === 34 && saved.sat === 26 && saved.add === 60 && saved.na === 2300 && !("age" in saved) && !/\b170\b|"age"|"weight"|"height"/.test(allStored),
+      "'Use these' fills and saves the six targets, and nothing about age, height or weight is stored");
+    await page.click("#sg-preg");
+    ok(/pregnancy/.test(await page.textContent(".sgresult")) && !(await page.$(".sglist")), "pregnant or breastfeeding: no numbers, ask a doctor or dietitian");
+    await page.click("#sg-preg"); await page.fill("#sg-age", "16");
+    ok(/for adults/.test(await page.textContent(".sgresult")), "under 18: no numbers");
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.fill("#sg-age", "32");
+    if (SHOTS) await page.locator("#sgBox").screenshot({ path: path.join(SHOTS, "app7-suggest-targets.png") });
+    ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "fits a 390 px phone without sideways scrolling");
+    await ctx.close();
+
     // 7. On a computer the phone home stays out of the way.
     const c = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: "block" });
     const pc = await c.newPage(); await pc.goto(base); await pc.waitForSelector("#out h2");
