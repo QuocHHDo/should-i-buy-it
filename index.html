@@ -167,6 +167,23 @@ button { font: inherit; color: inherit; }
 .label .row b, .label .row .pct { font-weight: 800; }
 .label .foot { font-family: var(--font-body); font-size: 10.5px; line-height: 1.35; padding-top: 5px; }
 .label [data-k] { cursor: pointer; }
+.label .ns { display: none; }
+/* Phones: the same lines in two columns with short names, about 40% shorter. Wider screens keep the FDA layout. */
+@media (max-width: 560px) {
+  .label { display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; padding: 6px 9px 8px; font-size: 13.5px; }
+  .label > :not(.row) { grid-column: 1 / -1; }
+  .label .lt { font-size: 26px; }
+  .label .food { font-size: 13.5px; }
+  .label .serv { font-size: 14px; }
+  .label .amt { display: none; }
+  .label .cal .k { font-size: 20px; } .label .cal .v { font-size: 28px; }
+  .label .rule-med { border-top-width: 4px; } .label .rule-thick { border-top-width: 6px; }
+  .label .row, .label .row.ind, .label .row.ind2 { padding: 3px 0; gap: 4px; min-width: 0; }
+  .label .row > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+  .label .nf { display: none; } .label .ns { display: inline; }
+  .label .foot { font-size: 10px; padding-top: 4px; }
+  .label [data-k].on { box-shadow: inset 0 -2px 0 var(--accent); }
+}
 .label [data-k].on { background: var(--accent-soft); }
 .label [data-k].on { box-shadow: inset 3px 0 0 var(--accent); }
 .explain { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 6px; }
@@ -289,6 +306,7 @@ details.adv > label { margin-top: 8px; }
 }
 .why-row p.hint { margin: 0; }
 .why-more { margin-top: 12px; }
+.betterlist { display: grid; gap: 8px; } .betterlist > p { margin: 0; font-size: 13.5px; }
 .whystack { display: grid; gap: 14px; min-width: 0; }
 .why-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: baseline; }
 .why-head .name { font-size: 13.5px; font-weight: 600; }
@@ -638,6 +656,12 @@ body:not([data-view="check"]) .mini { display: none; }
 .mini-jump::-webkit-scrollbar { display: none; }
 .mini-jump button { font: 600 13px var(--font-body); color: var(--accent); background: none; border: 0; padding: 6px 0; white-space: nowrap; cursor: pointer; }
 #out .whyp, #out .label, #out .compare, #out .ingredients { scroll-margin-top: 84px; }
+/* First visit only: three steps, above the example result. */
+.welcome { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin-bottom: 18px; }
+.welcome[hidden], body:not([data-view="check"]) .welcome { display: none; }
+.welcome h2 { font-size: 20px; margin: 0 0 8px; }
+.welcome ol { margin: 0 0 10px; padding-left: 22px; display: grid; gap: 6px; font-size: 15px; }
+.welcome p { margin: 0 0 12px; font-size: 13.5px; }
 /* More: settings you use once, moved off Goals. */
 .morelink { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; cursor: pointer; }
 .morelink[hidden] { display: none; }
@@ -654,7 +678,7 @@ body:not([data-view="check"]) section.search { display: none; }
   .bscroll::-webkit-scrollbar { display: none; }
   .bscroll > * { flex: none; }
   /* Phones: price and compare right after the verdict and reasons, before the label. */
-  .result > .side > .price, .result > .side > .compare, .result > .side > .shortlist { order: -1; }
+  .result > .side > .price, .result > .side > .compare, .result > .side > .shortlist, .result > .side > .betterpicks { order: -1; }
 }
 .btn:disabled { background: transparent; color: var(--muted); border: 1.5px solid var(--line); cursor: default; }
 .linkbtn.alcta { font: inherit; font-size: 13px; color: var(--accent); background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
@@ -719,6 +743,16 @@ body:not([data-view="check"]) section.search { display: none; }
     </div>
   </section>
 
+  <section class="welcome" id="welcome" hidden aria-labelledby="wH">
+    <h2 id="wH">How it works</h2>
+    <ol>
+      <li><b>Scan a barcode or search a food.</b> Packaged products, store brands and everyday foods.</li>
+      <li><b>Get a verdict for your goals:</b> Get it, In moderation or Limit it, and exactly why.</li>
+      <li><b>Set your goals</b> so the verdicts fit you. It takes about a minute.</li>
+    </ol>
+    <p class="muted">Below is an example. Nothing you enter leaves your device.</p>
+    <div class="chiprow" style="margin:0"><button class="btn small" type="button" id="wGoals">Set my goals</button><button class="btn small ghost" type="button" id="wOk">Got it</button></div>
+  </section>
   <section id="out" class="view" data-view="check" aria-live="polite" aria-label="Result"></section>
 
   <section class="box view" id="plateBox" data-view="plate" hidden aria-labelledby="hPlate">
@@ -901,6 +935,7 @@ body:not([data-view="check"]) section.search { display: none; }
 <script src="js/search.js"></script>
 <script src="js/card.js"></script>
 <script src="js/compare.js"></script>
+<script src="js/alternatives.js"></script>
 <script src="js/targets.js"></script>
 <script src="js/walmart.js"></script>
 <script src="js/bookmarklet.js"></script>

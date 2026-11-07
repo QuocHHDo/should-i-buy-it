@@ -29,7 +29,7 @@ const srv = http.createServer((req, res) => {
     const ctx = await browser.newContext({ viewport: { width: Number(process.env.SCAN_WIDTH || 375), height: 800 }, serviceWorkers: "block", permissions: ["camera"] });
     const page = await ctx.newPage();
     let asked = null;
-    await page.route("**/world.openfoodfacts.org/**", r => { asked = r.request().url(); r.fulfill({ contentType: "application/json", body: fs.readFileSync(path.join(ROOT, "tests/fixtures/off-nutella.json"), "utf8") }); });
+    await page.route("**/world.openfoodfacts.org/**", r => { if (/\/product\//.test(r.request().url())) asked = r.request().url(); r.fulfill({ contentType: "application/json", body: fs.readFileSync(path.join(ROOT, "tests/fixtures/off-nutella.json"), "utf8") }); });
     await page.goto(base); await page.waitForSelector("#out h2");
     const hasDetector = await page.evaluate(() => "BarcodeDetector" in window);
     // On phones the big Scan button on the home replaces the small one; on wider screens it's the small one.

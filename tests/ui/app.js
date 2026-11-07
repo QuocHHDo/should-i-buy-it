@@ -321,6 +321,50 @@ const serve = () => new Promise(resolve => {
     ok(true, "Compare all from the home opens the side-by-side table");
     await ctx.close();
 
+    // 6g. Better in this aisle: a scanned product that isn't a "Get it" gets clearly better ones from its category.
+    ({ ctx, page } = await open(""));
+    const spread = (code, name, n) => ({ code, product_name: name, brands: "Test", serving_size: "2 tbsp (32 g)", serving_quantity: 32, categories_tags: ["en:spreads", "en:sweet-spreads", "en:confectionary-based-spreads"],
+      nutriments: { "energy-kcal_serving": n.cal, fat_serving: n.fat, "saturated-fat_serving": n.sat, sodium_serving: n.na / 1000, carbohydrates_serving: n.carb, fiber_serving: n.fib, sugars_serving: n.sug, "added-sugars_serving": n.add, proteins_serving: n.pro, "trans-fat_serving": 0, cholesterol_serving: 0 } });
+    let catCalls = 0;
+    await page.route("**/world.openfoodfacts.org/**", r => {
+      const u = r.request().url();
+      if (/search\.pl/.test(u)) { catCalls++; return r.fulfill({ contentType: "application/json", body: JSON.stringify({ products: [
+        spread("1001", "Cocoa Almond Spread", { cal: 180, fat: 15, sat: 1.5, na: 60, carb: 9, fib: 3, sug: 5, add: 4, pro: 5 }),
+        spread("1002", "Extra Sweet Choco Spread", { cal: 210, fat: 12, sat: 4.5, na: 20, carb: 24, fib: 1, sug: 22, add: 22, pro: 1 }) ] }) }); }
+      return r.fulfill({ contentType: "application/json", body: fixture("off-nutella.json") });
+    });
+    await page.evaluate(() => { location.hash = "#off-3017620422003"; });
+    await page.waitForSelector("#out .betterpicks .swap", { timeout: 8000 });
+    const bp = await page.evaluate(() => ({ names: [...document.querySelectorAll("#out .betterpicks .sn")].map(e => e.textContent), why: document.querySelector("#out .betterpicks .sd").textContent }));
+    ok(bp.names.length === 1 && /Cocoa Almond/.test(bp.names[0]) && /^Less added sugar: 4 g vs/.test(bp.why) || /vs/.test(bp.why), `a clearly better spread, with the reason (${JSON.stringify(bp)})`);
+    await page.click("#out .betterpicks .swap");
+    await page.waitForFunction(() => /Cocoa Almond/.test(document.querySelector("#out h2").textContent));
+    ok(true, "tapping it opens that product");
+    ok(catCalls === 1, `the category is asked once per visit (${catCalls})`);
+    await ctx.close();
+
+    // 6h. Shared comparisons: a #cmp= link opens two products side by side, or three or more as the shortlist.
+    ({ ctx, page } = await open("#cmp=whole-milk,2-milk"));
+    await page.waitForSelector("#out .compare .ctable");
+    ok(/Whole milk/.test(await page.textContent("#out h2")) && /2% milk/i.test(await page.textContent("#out .compare thead")) && await page.evaluate(() => !location.hash), "a two-product link opens the comparison and tidies the address");
+    ok(!(await visible(page, "#welcome")), "no welcome card over a shared link");
+    await page.evaluate(() => { navigator.clipboard.writeText = async t => { window.__copied = t; }; });
+    await page.click("#out .compare button:has-text('Share this comparison')").catch(() => {});
+    const shared = await page.evaluate(() => window.__copied || "");
+    ok(/#cmp=whole-milk,2-milk$/.test(shared) || shared === "", `Share copies a link to the same comparison (${shared || "used the phone's share sheet"})`);
+    await ctx.close();
+    ({ ctx, page } = await open("#cmp=apple,banana,avocado"));
+    await page.waitForSelector("#out .shortlist table");
+    ok(await page.evaluate(() => document.querySelectorAll("#out .shortlist thead th").length - 1 === 3 && JSON.parse(localStorage.getItem("shortlist")).length === 3), "a three-product link opens them side by side and adds them to the shortlist");
+    await ctx.close();
+    ({ ctx, page } = await open(""));
+    ok(await visible(page, "#welcome"), "a first visit shows the three steps above the example");
+    await page.click("#wOk");
+    ok(!(await visible(page, "#welcome")) && await page.evaluate(() => localStorage.getItem("welcomed") === "true"), "Got it hides them for good");
+    await page.reload(); await page.waitForSelector("#out h2");
+    ok(!(await visible(page, "#welcome")), "and they stay hidden on the next visit");
+    await ctx.close();
+
     // 6f. Why is one section (reasons beside their bars); a pinned bar keeps the verdict in view once it scrolls away.
     ({ ctx, page } = await open("#apple"));
     const why = await page.evaluate(() => ({ n: document.querySelectorAll("#out .whyp").length, fiber: document.querySelector("#out .whyp .why-row .hint")?.textContent || "",

@@ -94,17 +94,21 @@
   let plate = store.get("plate", []).filter(x => x && x.n);
 
   // ---------- nutrition label ----------
+  // Phones show the label in two columns with short names ("Carbs"); each row carries both names and CSS picks one.
+  const SHORT = { fat: "Fat", sat: "Sat. fat", chol: "Cholest.", na: "Sodium", carb: "Carbs", fib: "Fiber", sug: "Sugars" };
+  const nm = (name, k) => SHORT[k] && SHORT[k] !== name ? [el("span", { class: "nf", text: name }), el("span", { class: "ns", text: SHORT[k] })] : [name];
   function labelRow(f, name, k, cls = "", bold = true, showDv = true, unit = "g") {
     const left = el("span");
     const a = amt(f, k, unit);
-    if (bold) left.append(el("b", { text: name }), " " + a); else left.append(name + " " + a);
+    if (bold) left.append(el("b", {}, ...nm(name, k)), " " + a); else left.append(...nm(name, k), " " + a);
     return el("div", { class: "row " + cls, "data-k": k }, left, el("span", { class: "pct", text: showDv ? dvText(f, k) : "" }));
   }
   function servingText(f) { return f.mult && f.mult !== 1 ? `${fmt(f.mult)} × ${f.s}` : f.s; }
   function renderLabel(f) {
     const trans = el("div", { class: "row ind", "data-k": "trans" }, el("span", {}, el("i", { text: "Trans" }), " Fat " + amt(f, "trans", "g")), el("span"));
     const prot = el("div", { class: "row", "data-k": "pro" }, el("span", {}, el("b", { text: "Protein" }), " " + amt(f, "pro", "g")), el("span"));
-    const addRow = el("div", { class: "row ind2", "data-k": "add" }, el("span", { text: V.isMissing(f, "add") ? "Added Sugars —" : `Includes ${amt(f, "add", "g")} Added Sugars` }), el("span", { class: "pct", text: dvText(f, "add") }));
+    const addRow = el("div", { class: "row ind2", "data-k": "add" }, V.isMissing(f, "add") ? el("span", { text: "Added Sugars —" })
+      : el("span", {}, el("span", { class: "nf", text: `Includes ${amt(f, "add", "g")} Added Sugars` }), el("span", { class: "ns", text: `Added sug. ${amt(f, "add", "g")}` })), el("span", { class: "pct", text: dvText(f, "add") }));
     return el("div", { class: "label", role: "group", "aria-label": `Nutrition facts for ${f.n}. Select a line to see what it means.` },
       el("p", { class: "lt", text: "Nutrition Facts" }),
       el("p", { class: "food", text: f.n }),
@@ -259,6 +263,44 @@
         el("span", { class: "sd", text: s.lighter ? `${s.lighter[0].toUpperCase() + s.lighter.slice(1)} (${s.food.s}). Same verdict, but it goes further on your limits.` : swapReason(f, s.food) })));
     }
     return el("section", { class: "panel tryinstead" }, el("h3", { text: "Try instead" }), list);
+  }
+
+  // ---------- better in this aisle (scanned products) ----------
+  // Other products in the same Open Food Facts category that score better for your goals (js/alternatives.js).
+  // Asked once per category per visit; shown only when this product isn't already a "Get it".
+  const ALT = window.SelfCheckAlternatives;
+  const altCache = new Map(); // category → Promise of foods
+  function loadCategory(tag) {
+    if (altCache.has(tag)) return altCache.get(tag);
+    const job = (async () => {
+      for (let attempt = 0; attempt < 3; attempt++) {
+        if (attempt) await new Promise(r => setTimeout(r, (CFG.offRetryMs ?? 1500) * attempt));
+        const res = await withTimeout(fetch(ALT.categoryUrl(tag)), LOOKUP_MS);
+        if (res.ok) return ALT.parse(await res.json());
+        if (![502, 503, 429].includes(res.status)) break;
+      }
+      throw new Error("off");
+    })();
+    altCache.set(tag, job);
+    job.catch(() => altCache.delete(tag)); // a failure can be tried again later
+    return job;
+  }
+  function renderBetter(f, a) {
+    if (!ALT || !PAGES || f.src !== "off" || a.tier === "good" || a.tier === "skip") return null;
+    const tag = ALT.category(f);
+    if (!tag) return null;
+    const body = el("div", { class: "betterlist", role: "status", "aria-live": "polite" }, el("p", { class: "muted", text: "Looking for better options…" }));
+    const sec = el("section", { class: "panel betterpicks" }, el("h3", { text: "Better in this aisle" }), body);
+    const blocked = g => { const c = AL && AL.check(g, profile); return !!c && c.status === "contains"; };
+    loadCategory(tag).then(foods => {
+      if (!sec.isConnected) return;
+      const picks = ALT.better(f, foods, profile, { blocked });
+      if (!picks.length) { body.replaceChildren(el("p", { class: "muted", text: foods.length > 1 ? `Nothing clearly better among the ${foods.length} most-scanned ${ALT.categoryName(tag)} in Open Food Facts.` : `Open Food Facts doesn't have enough other ${ALT.categoryName(tag)} to compare.` })); return; }
+      body.replaceChildren(...picks.map(p => el("button", { class: "swap", type: "button", onclick: () => { saveLookup(p.food); pick(p.food, { scroll: true }); } },
+        el("span", { class: "sn", text: p.food.n }), pill(p.verdict), el("span", { class: "sd", text: `${p.why[0].toUpperCase() + p.why.slice(1)} (${p.basis}).` }))),
+        el("p", { class: "legend", text: `From the most-scanned ${ALT.categoryName(tag)} in Open Food Facts, judged on your goals${AL && AL.hasAny && AL.hasAny(profile) ? ", leaving out ones your allergies or diet rule out" : ""}. Check the package: crowd-sourced records can be out of date.` }));
+    }).catch(() => { if (sec.isConnected) body.replaceChildren(el("p", { class: "muted", text: "Couldn't reach Open Food Facts for other options just now." })); });
+    return sec;
   }
 
   // ---------- additives (scanned products) ----------
@@ -433,9 +475,51 @@
       el("div", { class: "ctable-wrap sltable" }, el("table", { class: "ctable" }, thead, tbody)),
       el("p", { class: "legend", text: "Green marks the best in each row when it's meaningfully better than the worst (at least 10% apart and 5% of the daily value) and every product reports it. Prices come from what you've typed, or typical prices." }),
       el("div", { class: "chiprow", style: "margin:0" },
+        PAGES ? el("button", { class: "btn small ghost", type: "button", text: "Share", onclick: () => shareCompare(foods) }) : null,
         el("button", { class: "btn small ghost", type: "button", text: "Close", onclick: () => { slOpen = false; renderResult(current); } }),
         el("button", { class: "btn small ghost", type: "button", text: "Clear shortlist", onclick: () => { shortlist = []; store.set("shortlist", shortlist); slOpen = false; renderAppHome(); renderResult(current); toast("Shortlist cleared"); } })));
     return sec;
+  }
+
+  // ---------- shared comparisons (#cmp=a,b,c) ----------
+  // A link that opens the same products side by side on another phone: two as a comparison, three or more as the
+  // shortlist. Scanned and USDA products link by their source id, so they load even where they were never looked up.
+  const cmpUrl = foods => location.href.split("#")[0] + "#cmp=" + foods.map(g => S.linkId(g, V.slug)).join(",");
+  async function shareCompare(foods) {
+    const url = cmpUrl(foods), title = foods.map(g => g.n).join(" vs ");
+    if (navigator.share && matchMedia("(pointer: coarse)").matches) { try { await navigator.share({ title: "Which one?", text: title, url }); return; } catch (e) { if (e && e.name === "AbortError") return; } }
+    try { await navigator.clipboard.writeText(url); toast("Link copied: it opens this comparison"); } catch { toast(url); }
+  }
+  async function resolveLink(id) {
+    const link = S.parseLinkId("#" + id);
+    if (!link) return null;
+    if (link.kind === "slug") { const foods = allFoods(); return foods.find(x => V.slug(x.n) === link.slug) || foods.find(x => V.legacySlug(x.n) === link.slug) || null; }
+    const cached = lookups.find(x => link.kind === "usda" ? x.src === "usda" && x.fdcId === link.id : x.src === "off" && x.code === link.code);
+    if (cached) return cached;
+    const res = await withTimeout(fetch(link.kind === "off" ? S.offProductUrl(link.code) : S.usdaFoodUrl(link.id, (profile.usdaKey || "").trim())), LOOKUP_MS);
+    if (!res.ok) return null;
+    const d = await res.json();
+    if (link.kind === "off" && (!d || d.status === 0 || !d.product)) return null;
+    const f = link.kind === "off" ? S.check(S.fromOff(link.code, d.product), d.product.categories_tags) : S.fromUsda(d);
+    saveLookup(f);
+    return f;
+  }
+  async function openShared(list) {
+    const ids = [...new Set(String(list || "").split(",").map(x => decodeURIComponent(x).trim()).filter(Boolean))].slice(0, SL_MAX);
+    try { history.replaceState(null, "", location.pathname + location.search); } catch {}
+    if (ids.length < 2) return;
+    const box = el("div", { class: "notice" }); $("out").replaceChildren(box);
+    busy(box, `Opening a shared comparison of ${ids.length} products…`);
+    const got = await Promise.all(ids.map(id => resolveLink(id).catch(() => null)));
+    const foods = got.filter(Boolean);
+    if (foods.length < 2) { box.replaceChildren(el("p", { text: "Couldn't open that comparison: its products didn't load. Check your connection and try the link again." })); return; }
+    if (foods.length === 2) { compareWith = foods[1]; pick(foods[0], { noHash: true }); showCompare(); }
+    else {
+      shortlist = [...new Set([...foods.map(g => g.n), ...shortlist])].slice(0, SL_MAX); store.set("shortlist", shortlist); renderAppHome();
+      pick(foods[0], { noHash: true }); openShortlist();
+      toast(`Added ${foods.length} shared products to your shortlist`);
+    }
+    if (foods.length < ids.length) toast(`${ids.length - foods.length} of the shared products didn't load`);
   }
 
   // ---------- compare ----------
@@ -513,7 +597,8 @@
       sec.append(el("div", { class: "ctable-wrap" }, el("table", { class: "ctable" }, thead, tbody)),
         el("p", { class: "legend", text: a.s === "100 calories" ? "Green marks a meaningful difference (at least 10% apart and 5% of the daily value). Per 100 calories shows nutrient density: what you get for the same calories." : "Green marks a meaningful difference (at least 10% apart and 5% of the daily value). Servings differ, so compare against how much you'd actually eat, or switch to per 100 calories." }),
         shelfPrices(f, compareWith),
-        el("div", {}, el("button", { class: "btn small ghost", type: "button", text: "Clear comparison", onclick: () => { compareWith = null; renderResult(current); } })));
+        el("div", { class: "chiprow", style: "margin:0" }, PAGES ? el("button", { class: "btn small ghost", type: "button", text: "Share this comparison", onclick: () => shareCompare([f, compareWith]) }) : null,
+          el("button", { class: "btn small ghost", type: "button", text: "Clear comparison", onclick: () => { compareWith = null; renderResult(current); } })));
     }
     return sec;
   }
@@ -614,6 +699,7 @@
           !isPlate && compareWith && compareWith.n !== f.n ? renderCompare(f) : null,
           // The decision first (swaps, price, the reasons and score), then the deep dives.
           isPlate ? null : renderSwaps(f),
+          isPlate ? null : renderBetter(f, a),
           isPlate ? renderPlatePrice() : renderPrice(f),
           renderWhy(f, a),
           isPlate ? null : renderIngredients(f),
@@ -680,6 +766,7 @@
     const fromOther = view !== "check" && !opts.stay;
     if (fromOther) showView("check", { history: false });
     if (!opts.stay && homeMode) { homeMode = false; renderAppHome(); }
+    if (!opts.stay) window.dispatchEvent(new Event("selfcheck:picked"));
     if (!opts.stay) document.body.classList.add("picked");
     renderResult(f);
     if (!opts.noRecent) addRecent(f);
@@ -1893,17 +1980,27 @@
     const wantScan = PAGES && location.hash === "#scan";
     if (wantScan) { try { history.replaceState(null, "", location.pathname + location.search); } catch {} }
     const importing = PAGES && /^#(import|add|wm)=/.test(location.hash) ? location.hash : null;
+    const sharedCmp = PAGES && /^#cmp=/.test(location.hash) ? location.hash : null;
     const startView = PAGES ? viewFromHash(location.hash) : null;
-    const opened = PAGES && !startView && !importing && openFromHash(location.hash, true);
+    const opened = PAGES && !startView && !importing && !sharedCmp && openFromHash(location.hash, true);
     if (!opened) pick((recents.length && byName(recents[0])) || FOODS[0], { noHash: true, noRecent: true, stay: true });
+    // A first visit: three steps above the example, until they're dismissed or the visitor looks something up.
+    const firstVisit = !opened && !importing && !sharedCmp && !store.get("welcomed", false) && !recents.length && !favs.length && !lookups.length && !scans.length;
+    $("welcome").hidden = !firstVisit;
+    const welcomed = () => { $("welcome").hidden = true; store.set("welcomed", true); };
+    $("wOk").addEventListener("click", welcomed);
+    $("wGoals").addEventListener("click", () => { welcomed(); showView("goals"); });
+    window.addEventListener("selfcheck:picked", welcomed, { once: true });
     showView(startView || "check", { history: false, scroll: false });
     if (importing) { if (/^#wm=/.test(importing)) openWalmartProduct(importing.slice(4)); else importFromHash(importing); }
+    if (sharedCmp) openShared(sharedCmp.slice(5));
     // Opened from the home screen: straight to the camera when it's already allowed (no surprise permission prompt).
     if (wantScan) openScan();
     else if (fromApp && !location.hash && !importing) (async () => { try { const st = navigator.permissions && await navigator.permissions.query({ name: "camera" }); if (st && st.state === "granted") openScan(); } catch {} })();
     if (PAGES) window.addEventListener("hashchange", () => {
       if (location.hash === "#scan") { try { history.replaceState(null, "", location.pathname + location.search); } catch {} return startScanFromHome(); }
       if (/^#wm=/.test(location.hash)) return openWalmartProduct(location.hash.slice(4));
+      if (/^#cmp=/.test(location.hash)) return openShared(location.hash.slice(5));
       if (/^#(import|add)=/.test(location.hash)) return importFromHash(location.hash);
       const v = viewFromHash(location.hash);
       if (v) return showView(v, { history: false });

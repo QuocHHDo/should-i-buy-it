@@ -8,5 +8,6 @@ interface Window {
   SelfCheckData: any; SelfCheckVerdict: any; SelfCheckSources: any; SelfCheckSearch: any; SelfCheckCard: any;
   SelfCheckWalmart: any; SelfCheckCostco: any; SelfCheckSupplement: any; SelfCheckIngredients: any; SelfCheckAdditives: any;
   SelfCheckAdditivesData: any; SelfCheckAdditiveNotes: any; SelfCheckPrices: any; SelfCheckPricesData: any; SelfCheckMeals: any;
-  SelfCheckBackup: any; SelfCheckDom: any; SelfCheckCompare: any; SelfCheckCamera: any; SelfCheckTargets: any; SelfCheckLearn: any; SelfCheckAllergens: any; SelfCheckBookmarklet: any; SelfCheckLabelOcr: any; SelfCheckLabelScan: any;
+  SelfCheckBackup: any; SelfCheckDom: any; SelfCheckCompare: any;
+ SelfCheckAlternatives: any; SelfCheckCamera: any; SelfCheckTargets: any; SelfCheckLearn: any; SelfCheckAllergens: any; SelfCheckBookmarklet: any; SelfCheckLabelOcr: any; SelfCheckLabelScan: any;
 }
