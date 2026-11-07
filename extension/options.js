@@ -1,16 +1,16 @@
 // Settings: goals for the product-page card, typed in or brought over from the app's backup or transfer link.
 (() => {
   "use strict";
-  const V = self.SelfCheckVerdict, B = self.SelfCheckBackup, AL = self.SelfCheckAllergens;
+  const V = self.SelfCheckVerdict, B = self.SelfCheckBackup, AL = self.SelfCheckAllergens, TG = self.SelfCheckTargets;
   /** @type {(id: string) => any} */
   const $ = id => document.getElementById(id);
-  const NUM = ["cal", "pro", "sat", "na", "add", "fib"];
+  const NUM = ["cal", "pro", "sat", "na", "add", "fib", "carb"];
   const status = (text, ok = true) => { $("status").textContent = text; $("status").className = ok ? "ok" : "err"; };
   const get = keys => new Promise(r => chrome.storage.local.get(keys, v => r(v || {})));
   const set = obj => new Promise(r => chrome.storage.local.set(obj, r));
 
   function fill(p, usdaKey) {
-    for (const k of NUM) $(k).value = p[k];
+    for (const k of NUM) $(k).value = p[k] ?? 0;
     $("skip").value = p.skip || ""; $("mild").checked = !!p.mild; $("usdaKey").value = usdaKey || "";
     for (const x of AL.LIST) $("al-" + x.id).checked = (x.diet ? p.diets || [] : p.allergies || []).includes(x.id);
     $("alOther").value = p.allergyOther || "";
@@ -46,6 +46,38 @@
     await load();
     $("paste").value = "";
     status("Goals imported from the app.");
+  });
+
+  // Carb limit presets.
+  document.querySelectorAll(".carbquick button").forEach(b => b.addEventListener("click", () => { $("carb").value = /** @type {HTMLElement} */ (b).dataset.carb; status("Carb limit set. Press Save to keep it."); }));
+
+  // Suggested targets (lib/targets.js, the same formulas as the app). Nothing here is saved.
+  const opt = (sel, entries) => sel.replaceChildren(...entries.map(([v, t]) => Object.assign(document.createElement("option"), { value: v, textContent: t })));
+  opt($("sgAct"), Object.entries(TG.ACTIVITY).map(([k, v]) => [k, v.label])); $("sgAct").value = "light";
+  opt($("sgGoal"), Object.entries(TG.GOAL).map(([k, v]) => [k, v.label])); $("sgGoal").value = "keep";
+  let sg = null;
+  function suggest() {
+    const metric = $("sgUnits").value === "metric";
+    document.querySelectorAll("#sgForm .us").forEach(e => { /** @type {HTMLElement} */ (e).hidden = metric; });
+    document.querySelectorAll("#sgForm .metric").forEach(e => { /** @type {HTMLElement} */ (e).hidden = !metric; });
+    const age = Number($("sgAge").value), sex = $("sgSex").value;
+    const heightCm = metric ? Number($("sgCm").value) : ($("sgFt").value ? TG.cmFromFtIn($("sgFt").value, $("sgIn").value || 0) : 0);
+    const weightKg = metric ? Number($("sgKg").value) : ($("sgLb").value ? TG.kgFromLb($("sgLb").value) : 0);
+    sg = null; $("sgUse").hidden = true;
+    if (!$("sgPreg").checked && (!age || !sex || !heightCm || !weightKg)) { $("sgOut").textContent = "Fill these in to see suggested targets."; return; }
+    const r = TG.suggest({ age, sex, heightCm, weightKg, activity: $("sgAct").value, goal: $("sgGoal").value, pregnant: $("sgPreg").checked });
+    if (!r.ok) { $("sgOut").textContent = r.why; return; }
+    sg = r.targets; const t = r.targets, n = x => x.toLocaleString("en-US");
+    const b = Object.assign(document.createElement("b"), { textContent: `${n(t.cal)} cal · ${t.pro} g protein · ${t.fib} g fiber · ≤${t.sat} g sat fat · ≤${n(t.na)} mg sodium · ≤${t.add} g added sugar` });
+    $("sgOut").replaceChildren("Suggested: ", b, r.floored ? ` Calories stop at ${n(t.cal)}: going lower isn't advised without a doctor or dietitian.` : "", " Estimates; not medical advice.");
+    $("sgUse").hidden = false;
+  }
+  $("sgForm").addEventListener("input", suggest); $("sgForm").addEventListener("change", suggest);
+  $("sgUse").addEventListener("click", () => {
+    if (!sg) return;
+    for (const k of ["cal", "pro", "fib", "sat", "na", "add"]) $(k).value = sg[k];
+    $("goals").scrollIntoView({ behavior: "smooth", block: "start" });
+    status("Suggested targets filled in. Press Save to use them.");
   });
 
   // Search badges switch.

@@ -4,7 +4,7 @@
 import fs from "node:fs";
 import path from "node:path";
 const ROOT = new URL("..", import.meta.url).pathname;
-export const LIB = ["foods.js", "allergens.js", "additives-data.js", "additive-notes.js", "additives.js", "ingredients.js", "supplement.js", "verdict.js", "sources.js", "search.js", "walmart.js", "costco.js", "backup.js", "card.js", "labelocr.js", "labelscan.js", "dom.js"];
+export const LIB = ["foods.js", "allergens.js", "additives-data.js", "additive-notes.js", "additives.js", "ingredients.js", "supplement.js", "verdict.js", "sources.js", "search.js", "walmart.js", "costco.js", "backup.js", "card.js", "labelocr.js", "labelscan.js", "dom.js", "targets.js"];
 // The label-photo reader, vendored in vendor/tesseract/. Chrome 116+ has WebAssembly SIMD, so only that core ships.
 export const OCR = ["tesseract.min.js", "worker.min.js", "tesseract-core-simd-lstm.wasm.js", "eng.traineddata.gz", "LICENSE-tesseract.js.md", "LICENSE-tesseract.js-core", "README.md"];
 for (const f of LIB) fs.copyFileSync(path.join(ROOT, "js", f), path.join(ROOT, "extension/lib", f));

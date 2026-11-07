@@ -392,6 +392,15 @@ const ok = (cond, msg) => { console.log((cond ? "PASS " : "FAIL ") + msg); if (!
     await opts.fill("#paste", link); await opts.click("#importBtn");
     await opts.waitForFunction(() => /imported/.test(document.getElementById("status").textContent));
     ok(await opts.evaluate(() => document.getElementById("pro").value === "140" && document.getElementById("mild").checked), "a transfer link from the app imports the goals");
+    // Suggested targets and the carb limit, the same as the app's Goals.
+    await opts.fill("#sgAge", "32"); await opts.selectOption("#sgSex", "male"); await opts.fill("#sgFt", "5"); await opts.fill("#sgIn", "10"); await opts.fill("#sgLb", "170");
+    await opts.waitForFunction(() => /2,400 cal · 60 g protein/.test(document.getElementById("sgOut").textContent));
+    await opts.click("#sgUse"); await opts.click('.carbquick button[data-carb="25"]'); await opts.click("button[type=submit]");
+    await opts.waitForFunction(() => /Saved/.test(document.getElementById("status").textContent));
+    ok(await sw.evaluate(() => chrome.storage.local.get("profile").then(o => o.profile.cal === 2400 && o.profile.pro === 60 && o.profile.carb === 25)), "suggested targets and a keto carb limit are saved");
+    ok(await sw.evaluate(() => chrome.storage.local.get(null).then(o => !/"age"|"weight"|"height"/.test(JSON.stringify(o)))), "age, height and weight aren't stored");
+    await opts.selectOption("#sgUnits", "metric"); await opts.check("#sgPreg");
+    ok(await opts.evaluate(() => /pregnancy/.test(document.getElementById("sgOut").textContent) && document.getElementById("sgUse").hidden && !document.getElementById("sgCm").closest("label").hidden), "pregnancy: no numbers; metric shows cm and kg");
     ok(errors.length === 0, "no page errors" + (errors.length ? ": " + errors.join(" | ") : ""));
   } finally { await ctx.close(); fs.rmSync(dir, { recursive: true, force: true }); }
   console.log(fails ? `${fails} extension check(s) failed` : "All extension checks passed");
