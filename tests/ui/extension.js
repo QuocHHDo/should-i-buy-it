@@ -163,8 +163,9 @@ const ok = (cond, msg) => { console.log((cond ? "PASS " : "FAIL ") + msg); if (!
     ok(/^SHOULD I BUY IT\? Fine No calories and nothing to flag, so it barely affects your day\. Diet Coke Caffeine-Free Soda Pop/i.test(pt), `panel opens on the verdict, then the reason and the product (${pt.slice(0, 120)})`);
     const shape = await panel.evaluate(() => { const s = document.querySelector(".verdict svg"); return s && /<circle[^>]*r="9.5"[^>]*fill="var\(--v-fine\)"/.test(s.innerHTML) && (s.innerHTML.match(/<circle/g) || []).length === 1; });
     ok(shape, "Fine has its own solid icon (a filled dot), not an empty circle");
-    ok(/YOUR DAILY LIMITS, ONE SERVING Sat fat 0 g · 0% Sodium 40 mg · 2% Added sugar 0 g · 0%/.test(pt) && !/Ticks:/.test(pt) && await panel.evaluate(() => document.querySelectorAll(".bar .zone.warn").length === 3 && document.querySelectorAll(".bar .zone.bad").length === 3), "bars show shaded zones instead of ticks and a legend sentence; 0 g sugar means 0 g added");
-    const tip = await panel.evaluate(() => { const b = document.querySelector(".bar"); return b.tabIndex === 0 && b.getAttribute("aria-label"); });
+    ok(/YOUR DAILY LIMITS, ONE SERVING 0% Sat fat 0 g 2% Sodium 40 mg 0% Added sugar 0 g/.test(pt) && await panel.evaluate(() => document.querySelectorAll(".ring-tile .ring.ok").length === 3 && document.querySelectorAll(".num-tile").length === 3),
+      `limits as three rings (green: fine) and the key numbers as tiles; 0 g sugar means 0 g added (${(pt.match(/YOUR DAILY LIMITS.{0,80}/) || [""])[0]})`);
+    const tip = await panel.evaluate(() => { const b = document.querySelector(".ring-tile"); return b.tabIndex === 0 && b.getAttribute("aria-label"); });
     ok(/counts against the verdict from 15% and counts double from 30%/.test(tip || ""), `each bar explains itself on hover or focus (${tip})`);
     ok(/Carbonated Water/.test(pt) && /⚠ Caffeine: The product name says caffeine-free\. Check the package\./.test(pt) && !(await panel.$(".banner")), "the conflict sits next to Caffeine, with no banner (it doesn't change the verdict)");
     const noteWords = await panel.evaluate(() => [...document.querySelectorAll(".notes li > span:nth-child(2)")].map(s => s.firstChild.textContent.trim().split(/\s+/).length));
@@ -256,7 +257,7 @@ const ok = (cond, msg) => { console.log((cond ? "PASS " : "FAIL ") + msg); if (!
     b = await badge(/Get it/);
     ok(b.inRow && b.hosts === 1 && /^Get it\s*·\s*\S/.test(b.text) && !b.hit, `Sam's Club Cheerios: the badge sits in the rating row (${b.text})`);
     pt = await ptext(/Get it/);
-    ok(/Source: The Nutrition Facts on this Sam's Club page\./.test(pt) && !/a serving at the/.test(pt), "the panel names Sam's Club as the source; no per-serving price from a per-box unit price");
+    ok(/Source: The Nutrition Facts on this Sam's Club page\./.test(pt) && !/a serving at the|From the [^.]*price/.test(pt) && !/\$\d+\.\d\d a serving/.test(pt), "the panel names Sam's Club as the source; no per-serving price from a per-box unit price");
     await page.goto("https://www.samsclub.com/ip/Bananas-3-lbs/18638953319");
     b = await badge(/Get it/);
     ok(/Get it/.test(b.text), `Sam's Club bananas: typical values by name (${b.text})`);

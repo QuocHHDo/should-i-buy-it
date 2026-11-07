@@ -148,7 +148,13 @@
   .w { font-weight: 800; flex: none; } .good .w { color: var(--v-good-ink); } .fine .w { color: var(--v-fine-ink); } .supp .w { color: var(--accent); } .mid .w { color: var(--v-mid-ink); } .bad .w, .skip .w { color: var(--v-bad-ink); }
   .sep { color: var(--muted); flex: none; } .r { color: var(--muted); font-weight: 500; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
   .warn { color: var(--v-mid-ink); font-weight: 800; flex: none; } .wait .r { font-style: italic; }
-  .pill { position: fixed; left: 16px; bottom: 24px; z-index: 2147483000; box-shadow: 0 6px 18px rgba(0,0,0,.18); height: 34px; padding: 0 12px 0 6px; max-width: min(360px, calc(100vw - 32px)); }`;
+  .pill { position: fixed; left: 16px; bottom: 24px; z-index: 2147483000; box-shadow: 0 6px 18px rgba(0,0,0,.18); height: 34px; padding: 0 12px 0 6px; max-width: min(360px, calc(100vw - 32px)); }
+  /* Two parts: the verdict on its color, then the reason. */
+  .bd.two { padding: 0 10px 0 0; gap: 8px; overflow: hidden; height: 26px; }
+  .seg { align-self: stretch; display: inline-flex; align-items: center; padding: 0 10px; color: #fff; font-weight: 800; letter-spacing: .01em; flex: none; }
+  .good .seg { background: #2b7742; } .mid .seg { background: #8a5a0f; } .bad .seg, .skip .seg { background: #b23a2f; } .fine .seg { background: #646b60; } .supp .seg { background: #2c6a3d; }
+  .two .r { color: #3d4239; } .two .sep { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .pill.two { height: 36px; padding: 0 12px 0 0; } .pill.two .mark { padding-left: 8px; }`;
   // The app's mark, so the badge reads as the extension's and not as part of Walmart's page.
   const MARK = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect width="24" height="24" rx="6" fill="#2c6a3d"/><rect x="4" y="7" width="16" height="11" rx="2.5" fill="#fff"/><circle cx="7.4" cy="12.5" r="1.3" fill="#2c6a3d"/><path d="M10.5 12.6l2.2 2.2 4.3-4.6" fill="none" stroke="#2c6a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   let badgeState = null; // what the badge shows now: { tier, word, reason, warn, label }
@@ -208,15 +214,16 @@
     const b = badgeState;
     const ic = el("span", { class: "ic" }); if (b.tier) ic.innerHTML = C.icon(b.tier, 18);
     const mk = el("span", { class: "mark" }); mk.innerHTML = MARK;
-    const btn = el("button", { class: `bd ${b.tier || "wait"}${floating ? " pill" : ""}`, type: "button", title: b.label + (b.warn ? `\n⚠ ${b.warn}` : "") + "\nClick for the full breakdown",
+    const two = !!(b.tier && b.word);
+    const btn = el("button", { class: `bd ${b.tier || "wait"}${floating ? " pill" : ""}${two ? " two" : ""}`, type: "button", title: b.label + (b.warn ? `\n⚠ ${b.warn}` : "") + "\nClick for the full breakdown",
       "aria-label": `Should I Buy It? ${b.label}.${b.warn ? ` Warning: ${b.warn}` : ""} Open the full breakdown in the side panel.`,
       onclick: openPanel },
-      floating ? mk : null, b.tier ? ic : null, b.word ? el("span", { class: "w", text: b.word }) : null, b.word ? el("span", { class: "sep", text: "·" }) : null,
+      floating ? mk : null, two ? el("span", { class: "seg", text: b.word }) : null, !two && b.tier ? ic : null, !two && b.word ? el("span", { class: "w", text: b.word }) : null, b.word ? el("span", { class: "sep", text: "·" }) : null,
       el("span", { class: "r", text: b.reason }), b.warn ? el("span", { class: "warn", text: "⚠", "aria-hidden": "true" }) : null);
     root.append(btn);
     // A reason cut to a few characters reads worse than none: show just the verdict (the tooltip and panel have the rest).
     const rs = btn.querySelector(".r");
-    if (rs && rs.scrollWidth > rs.clientWidth && rs.clientWidth < 80) { rs.remove(); const sp = btn.querySelector(".sep"); if (sp) sp.remove(); }
+    if (rs && rs.scrollWidth > rs.clientWidth && rs.clientWidth < 80) { rs.remove(); const sp = btn.querySelector(".sep"); if (sp) sp.remove(); btn.style.paddingRight = "0"; }
     if (floating) placePill(btn);
   }
   // Opens the side panel. Chrome only allows that right after a click, so the message goes out synchronously.

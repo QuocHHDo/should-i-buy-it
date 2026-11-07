@@ -37,15 +37,32 @@ h2 { margin: 0; font: 700 var(--t-label)/1.2 system-ui, sans-serif; letter-spaci
 .small { font-size: var(--t-small); color: var(--muted); margin: 0; }
 p { margin: 0; }
 
-/* Verdict first */
-.verdict { gap: var(--s2); }
-.vrow { display: flex; align-items: center; gap: var(--s2); }
-.vrow svg { flex: none; }
-.vword { font: 800 var(--t-verdict)/1.1 system-ui, sans-serif; }
+/* Verdict first: big and centered, the answer at a glance. */
+.verdict { gap: var(--s2); justify-items: center; text-align: center; padding-top: var(--s2); }
+.vrow { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.vrow svg { flex: none; width: 48px; height: 48px; }
+.vword { font: 800 32px/1.1 system-ui, sans-serif; letter-spacing: -.01em; }
+.verdict .headline { font-size: 15px; max-width: 32ch; }
+.verdict .alflag, .verdict .banner { text-align: left; justify-self: stretch; }
 .good .vword { color: var(--v-good-ink); } .fine .vword { color: var(--v-fine-ink); } .mid .vword { color: var(--v-mid-ink); } .bad .vword, .skip .vword { color: var(--v-bad-ink); } .supp .vword { color: var(--accent); }
 .headline { font-weight: 600; }
 .pname { font-size: var(--t-small); color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .banner { background: var(--warn-soft); border-radius: var(--r); padding: var(--s2) var(--s3); font-size: var(--t-small); }
+
+/* Tiles: limit rings and key numbers, three across. */
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s2); }
+.tile { background: var(--surface); border-radius: var(--r-lg); padding: var(--s3) var(--s2); display: grid; justify-items: center; align-content: start; gap: 6px; text-align: center; min-width: 0; }
+.ring-tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ring { --p: 0; --c: var(--v-good); width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(closest-side, var(--surface) 76%, transparent 77% 100%), conic-gradient(var(--c) calc(var(--p) * 1%), var(--line) 0); }
+.ring b { font: 800 14px/1 system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+.ring.warn { --c: var(--v-mid); } .ring.bad { --c: var(--v-bad); } .ring.na { background: repeating-linear-gradient(135deg, var(--line) 0 4px, var(--surface) 4px 8px); }
+.tname { font-size: var(--t-small); font-weight: 600; line-height: 1.2; }
+.tsub { font-size: var(--t-label); color: var(--muted); line-height: 1.25; overflow-wrap: anywhere; }
+.tnum { font: 800 21px/1.1 system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+.serv-tile .tnum { font-size: 14px; line-height: 1.25; font-weight: 700; overflow-wrap: anywhere; }
+.zkey .k0 { background: var(--v-good) !important; } .zkey .k1 { background: var(--v-mid) !important; } .zkey .k2 { background: var(--v-bad) !important; }
+.zkey { justify-content: center; }
 
 /* Bars: shaded zones show where a serving starts to count against the verdict and where it counts double. */
 .bars { display: grid; gap: var(--s2); }

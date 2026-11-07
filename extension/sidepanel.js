@@ -191,24 +191,26 @@
       el("p", { class: "alnote", text: "Always read the package." }));
   }
 
+  // Your daily limits as rings: how much of each limit one serving uses, colored green (fine), amber (counts
+  // against the verdict) or red (counts double), so the answer reads without a legend.
   function bars(f) {
     const list = C.limitBars(f, profile);
     if (!list.length) return null;
-    const rows = list.map(b => {
+    const tiles = list.map(b => {
       const [t1, t2] = b.marks, [s1, s2] = b.markShares || [];
+      const fill = Math.min(1, Math.max(0, b.fill || 0));
+      const tone = !b.known ? "na" : t2 != null && fill >= t2 ? "bad" : t1 != null && fill >= t1 ? "warn" : "ok";
+      const word = { ok: "fine", warn: "counts against the verdict", bad: "counts double", na: "not listed" }[tone];
       const tip = b.known
-        ? `${b.name}: ${b.value} of your daily limit. One serving counts against the verdict from ${Math.round(s1 * 100)}% and counts double from ${Math.round(s2 * 100)}%.`
+        ? `${b.name}: ${b.value} of your daily limit, ${word}. One serving counts against the verdict from ${Math.round(s1 * 100)}% and counts double from ${Math.round(s2 * 100)}%.`
         : `${b.name}: not listed for this product.`;
-      return el("div", { class: "bar", tabindex: "0", role: "group", title: tip, "aria-label": tip },
-        el("span", { text: b.name }),
-        el("div", { class: "track" + (b.known ? "" : " na"), "aria-hidden": "true" },
-          t1 != null ? el("span", { class: "zone warn", style: `left:${(t1 * 100).toFixed(1)}%;right:${t2 != null ? ((1 - t2) * 100).toFixed(1) : 0}%` }) : null,
-          t2 != null ? el("span", { class: "zone bad", style: `left:${(t2 * 100).toFixed(1)}%;right:0` }) : null,
-          b.known ? el("span", { class: "fill", style: `width:${(b.fill * 100).toFixed(1)}%` }) : null),
-        el("span", { class: "val" }, b.known ? el("b", { text: b.value.split(" · ")[0] }) : "not listed", b.known ? ` · ${b.value.split(" · ")[1]}` : null));
+      const [amount, share] = b.known ? b.value.split(" · ") : ["not listed", ""];
+      return el("div", { class: "tile ring-tile", tabindex: "0", role: "group", title: tip, "aria-label": tip },
+        el("div", { class: "ring " + tone, style: `--p:${(fill * 100).toFixed(1)}`, "aria-hidden": "true" }, el("b", { text: b.known ? share : "?" })),
+        el("span", { class: "tname", text: b.name }), el("span", { class: "tsub", text: amount }));
     });
     return el("section", { "aria-labelledby": "hLimits" }, el("h2", { id: "hLimits", text: "Your daily limits, one serving" }),
-      el("div", { class: "bars" }, ...rows),
+      el("div", { class: "tiles" }, ...tiles),
       el("div", { class: "zkey", "aria-hidden": "true" }, el("span", {}, el("i", { class: "k0" }), "fine"), el("span", {}, el("i", { class: "k1" }), "counts against"), el("span", {}, el("i", { class: "k2" }), "counts double")));
   }
 
@@ -221,9 +223,16 @@
       onclick: () => setTimeout(() => set({ toApp: [] }), 300) }) : null;
     if (send) B.encode(B.packAdd(toApp)).then(t => { send.href = SITE + "#add=" + t; });
     const sp = f.storePrice, per = sp && sp.perServing ? C.perDollar(f, sp.perServing) : null;
+    // The key numbers as tiles: calories, protein, and the price of a serving (or the serving size when there's no price).
+    const tile = (num, label, cls = "") => el("div", { class: "tile num-tile " + cls }, el("span", { class: "tnum", text: num }), el("span", { class: "tsub", text: label }));
+    const priced = sp && sp.perServing;
     return el("section", { "aria-label": "Serving and price" },
-      el("div", { class: "facts" }, el("span", { text: `${V.isMissing(f, "cal") ? "—" : Math.round(f.cal)} cal · ${V.isMissing(f, "pro") ? "—" : V.fmt(f.pro) + " g"} protein · per ${f.s}` }), listBtn),
-      sp && sp.perServing ? el("p", { class: "price" }, el("b", { text: `≈ ${C.money(sp.perServing)} a serving` }), ` at the ${sp.store || "store"} price${sp.unitText ? ` (${sp.unitText})` : ""}`, per ? ` · ${per}` : null) : null,
+      el("div", { class: "tiles" },
+        tile(V.isMissing(f, "cal") ? "—" : String(Math.round(f.cal)), "calories"),
+        tile(V.isMissing(f, "pro") ? "—" : `${V.fmt(f.pro)} g`, "protein"),
+        priced ? tile(C.money(sp.perServing), "a serving") : tile(f.s, "a serving", "serv-tile")),
+      el("div", { class: "facts" }, el("span", { text: priced ? `Per ${f.s}` : "" }), listBtn),
+      priced ? el("p", { class: "price" }, `From the ${sp.store || "store"} price${sp.unitText ? ` (${sp.unitText})` : ""}`, per ? ` · ${per}` : null) : null,
       send);
   }
 
