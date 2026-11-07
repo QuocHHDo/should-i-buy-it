@@ -193,15 +193,17 @@
     return el("section", { class: "panel fold " + cls },
       el("div", { class: "fhead" }, el("h3", { text: title }), summary ? el("span", { class: "fsum", text: summary }) : null), ...kids);
   }
-  function renderWhy(f) {
+  // "Why": the reasons and the score in one section. Each nutrient is one line (name, bar against the verdict's cutoffs,
+  // amount, points) with its reason under it; reasons that aren't about one nutrient follow; then the total.
+  const ICON = { pos: "+", neg: "−", warn: "!", note: "i" };
+  const reasonItem = r => el("li", { class: r.k }, el("span", { class: "ic", "aria-hidden": "true", text: ICON[r.k] || "i" }), el("span", { text: r.t }));
+  function renderWhy(f, a) {
     const b = V.breakdown(f, profile);
-    if (!b) return renderBars(V.scale(f, mult));
+    if (!b) return el("div", { class: "whyp whystack" }, el("section", { class: "panel" }, el("h3", { text: "Why" }), el("ul", { class: "reasons" }, ...a.reasons.map(reasonItem))), renderBars(V.scale(f, mult)));
+    const keys = new Set(b.rows.map(r => r.k));
     const wrap = el("div", { class: "why-rows" });
     for (const r of b.rows) {
       const tone = !r.known ? "na" : r.points > 0 ? "good" : r.points <= -2 ? "bad" : r.points < 0 ? "warn" : r.kind === "limit" ? "ok" : "neutral";
-      const head = el("div", { class: "why-head" }, el("span", { class: "name", text: r.name }),
-        el("span", { class: "val", text: r.known ? r.text : "not reported" }),
-        el("span", { class: "pts " + tone, text: r.known ? signed(r.points) : "?", "aria-label": r.known ? `${signed(r.points)} points` : "not counted" }));
       const track = el("div", { class: "track" + (r.known ? "" : " na") });
       if (r.known) {
         const w = Math.min(1, Math.max(0, r.v) / r.max);
@@ -209,30 +211,29 @@
         if (r.v > r.max) track.append(el("span", { class: "over", "aria-hidden": "true", text: "›" }));
       }
       for (const m of r.marks) if (m < r.max) track.append(el("span", { class: "tick", style: `left:${(m / r.max * 100).toFixed(1)}%`, title: `${Math.round(m * 100)}%` }));
+      const said = a.reasons.filter(x => x.n === r.k);
       wrap.append(el("div", { class: "why-row", role: "group", "aria-label": `${r.name}: ${r.known ? r.text : "not reported"}, ${r.known ? signed(r.points) + " points" : "not counted"}. Ticks at ${r.marks.map(m => Math.round(m * 100) + "%").join(" and ")} of the ${r.axis}.` },
-        head, track, r.hint && r.known ? el("span", { class: "hint", text: r.hint }) : null));
+        el("div", { class: "why-line" }, el("span", { class: "name", text: r.name }), track,
+          el("span", { class: "val", text: r.known ? r.text : "not reported" }),
+          el("span", { class: "pts " + tone, text: r.known ? signed(r.points) : "?", "aria-label": r.known ? `${signed(r.points)} points` : "not counted" })),
+        said.length ? el("p", { class: "hint", text: said.map(x => x.t).join(" ") }) : r.hint && r.known ? el("p", { class: "hint", text: r.hint }) : null));
     }
-    const other = b.other.length ? el("div", { class: "why-other" }, el("span", { class: "lbl", text: "Also" }),
-      ...b.other.map(o => el("span", { class: "why-chip " + (o.points > 0 ? "good" : "bad") }, el("b", { text: signed(o.points) }), " " + o.label))) : null;
-    // Score line from −6 to +6: Limit it at −2 or lower, Get it at +2 or higher.
-    // Where a score sits on the -6…+6 scale, as a percentage (a number; formatted where it's used).
+    const rest = a.reasons.filter(x => !keys.has(x.n));
+    const other = rest.length ? el("ul", { class: "reasons why-more" }, ...rest.map(reasonItem)) : null;
     const pos = s => Math.round((Math.max(-6, Math.min(6, s)) + 6) / 12 * 1000) / 10;
     const scale = el("div", { class: "why-scale", "aria-hidden": "true" },
       el("div", { class: "zone bad", style: `width:${pos(-1.5)}%` }), el("div", { class: "zone mid", style: `width:${(pos(1.5) - pos(-1.5)).toFixed(1)}%` }), el("div", { class: "zone good" }),
       el("span", { class: "marker", style: `left:${pos(b.score)}%` }));
+    const word = { good: "Get it", mid: "In moderation", bad: "Limit it", fine: "Fine" }[b.byScore];
     const total = el("div", { class: "why-total" },
-      el("p", {}, "Total ", el("b", { text: signed(b.score) }), " → ", el("b", { class: "tw " + b.byScore, text: { good: "Get it", mid: "In moderation", bad: "Limit it", fine: "Fine" }[b.byScore] })),
+      el("p", {}, "Total ", el("b", { text: signed(b.score) }), " → ", el("b", { class: "tw " + b.byScore, text: word })),
       scale, el("div", { class: "why-scale-lbl", "aria-hidden": "true" }, el("span", { text: "Limit it ≤ −2" }), el("span", { text: "In moderation" }), el("span", { text: "Get it ≥ +2" })),
       b.note ? el("p", { class: "why-override", text: b.note }) : null,
       b.override ? el("p", { class: "why-override" }, el("b", { text: `Verdict: ${b.word}. ` }), b.override) : null);
-    const title = b.meal ? "Score breakdown (whole meal)" : "Score breakdown";
-    const word = { good: "Get it", mid: "In moderation", bad: "Limit it", fine: "Fine" }[b.byScore];
-    return fold("decided", title, `Total ${signed(b.score)} → ${word}${b.override ? ` · verdict ${b.word}` : ""}`, [wrap, other, total,
-      el("p", { class: "legend", text: (b.meal
-        ? "Bars are this meal against a third of your daily goals and limits. Ticks are the cutoffs: past the first, ±1 point; past the second, ±2."
-        : "Ticks are the verdict's cutoffs: past the first, ±1 point; past the second, ±2. Protein counts by its share of calories, so a lean food scores higher than a fatty one with the same grams.")
-        + (profile.carb > 0 && !b.meal ? " Net carbs have a third tick at half your limit: −3." : "")
-        + (mult !== 1 && !b.meal ? ` Bars are one serving, which is what the verdict judges; the label shows your ${fmt(mult)} servings.` : "") })]);
+    return fold("decided whyp", b.meal ? "Why (whole meal)" : "Why", `Total ${signed(b.score)} → ${word}${b.override ? ` · verdict ${b.word}` : ""}`, [wrap, other, total,
+      el("p", { class: "legend", text: (b.meal ? "Bars: this meal against a third of your daily goals and limits. " : "")
+        + "Ticks are the cutoffs: past the first ±1 point, past the second ±2" + (profile.carb > 0 && !b.meal ? " (net carbs: −3 past half your limit)" : "") + "."
+        + (mult !== 1 && !b.meal ? ` Bars are one serving, which is what the verdict judges.` : "") })]);
   }
 
   // ---------- swaps ----------
@@ -589,11 +590,11 @@
         partial = el("p", { class: "partial-note", role: "note" }, `${list[0].toUpperCase() + list.slice(1)} ${keys.length > 1 ? "aren't" : "isn't"} listed for this product, so the verdict could change. Check the package.`);
       }
     }
-    const ICON = { pos: "+", neg: "−", warn: "!", note: "i" };
-    const reasons = el("ul", { class: "reasons" });
-    for (const r of a.reasons) reasons.append(el("li", { class: r.k }, el("span", { class: "ic", "aria-hidden": "true", text: ICON[r.k] || "i" }), el("span", { text: r.t })));
 
     const alFirst = !!(a.allergy && (a.allergy.status === "contains" || a.allergy.status === "may"));
+    const cmpBox = isPlate || (compareWith && compareWith.n !== f.n) ? null : renderCompare(f);
+    const wide = WIDE.matches; // computers: Compare sits under the label, so both columns end about level
+    document.body.classList.add("has-result");
     $("out").replaceChildren(...[
       closestBanner(f),
       head,
@@ -601,7 +602,7 @@
         // The whole label, always: sodium, sugar, fiber and protein are what people check. Tapping a line explains it.
         el("div", { class: "leftcol" }, seg, issues, partial, label,
           el("p", { class: "label-hint", text: "Tap any line on the label to see what it means." }),
-          box, src),
+          box, src, wide ? cmpBox : null),
         el("div", { class: "side" },
           // Your allergens come before the verdict when one is (or may be) in the food; otherwise just after it.
           alFirst ? renderAllergy(a) : null,
@@ -611,16 +612,47 @@
           alFirst ? null : renderAllergy(a),
           !isPlate && slOpen ? renderShortlist() : null,
           !isPlate && compareWith && compareWith.n !== f.n ? renderCompare(f) : null,
-          // The decision first (swaps and the reasons), then price, then the folded deep dives.
+          // The decision first (swaps, price, the reasons and score), then the deep dives.
           isPlate ? null : renderSwaps(f),
-          el("section", { class: "panel whyp" }, el("h3", { text: "Why" }), reasons),
           isPlate ? renderPlatePrice() : renderPrice(f),
-          renderWhy(f),
+          renderWhy(f, a),
           isPlate ? null : renderIngredients(f),
           isPlate ? null : renderAdditives(f),
-          isPlate || (compareWith && compareWith.n !== f.n) ? null : renderCompare(f)
+          wide ? null : cmpBox
         ))
     ].filter(Boolean));
+    updateMini(f, a, isPlate);
+  }
+
+  // ---------- pinned summary ----------
+  // Once the verdict scrolls out of view, a slim bar at the top keeps the answer (name, verdict, price) in sight, with
+  // jumps to the main sections. Tapping the name goes back to the top.
+  const WIDE = window.matchMedia ? matchMedia("(min-width: 761px)") : /** @type {any} */ ({ matches: true, addEventListener() {} });
+  WIDE.addEventListener("change", () => { if (current && view === "check") renderResult(current); });
+  let miniObs = null;
+  function updateMini(f, a, isPlate) {
+    let bar = $("mini");
+    if (!bar) {
+      bar = el("div", { class: "mini", id: "mini", hidden: true, role: "region", "aria-label": "Current food" });
+      document.body.append(bar);
+    }
+    const p = !isPlate && PR ? (storePriceOf(f) || PR.price({ ...f, mult }, myPrices)) : null;
+    const cost = p ? (p.perServing ? p.perServing * (p.cost == null ? mult : 1) : null) : null;
+    const amount = p && p.cost != null ? p.cost : cost;
+    const go = sel => () => { const t = document.querySelector(sel); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" }); };
+    bar.replaceChildren(
+      el("div", { class: "mini-top" },
+        el("button", { class: "mini-name", type: "button", text: f.n, title: "Back to the top", onclick: () => scrollTo({ top: 0, behavior: "smooth" }) }),
+        pill(a), amount ? el("span", { class: "mini-price", text: `≈ ${PR.money(amount)}` }) : null),
+      el("nav", { class: "mini-jump", "aria-label": "Jump to" },
+        ...[["Why", "#out .whyp"], ["Label", "#out .label"], document.querySelector("#out .compare") ? ["Compare", "#out .compare"] : null,
+          document.querySelector("#out .ingredients") ? ["Ingredients", "#out .ingredients"] : null].filter(Boolean)
+          .map(([t, sel]) => el("button", { type: "button", text: t, onclick: go(sel) }))));
+    if (miniObs) miniObs.disconnect();
+    const tag = document.querySelector("#out .tag");
+    if (!tag || !("IntersectionObserver" in window)) { bar.hidden = true; return; }
+    miniObs = new IntersectionObserver(([e]) => { bar.hidden = e.isIntersecting || e.boundingClientRect.top > 0 || view !== "check"; });
+    miniObs.observe(tag);
   }
 
   // Problem reports go to the GitHub issue tracker, prefilled with the food and its verdict.
@@ -1748,7 +1780,7 @@
     }));
   }
   function startScanFromHome() { showView("check", { history: false }); openScan(); $("scan").scrollIntoView({ behavior: "smooth", block: "start" }); }
-  function goHome() { homeMode = true; document.body.classList.remove("picked"); renderAppHome(); scrollTo({ top: 0, behavior: "smooth" }); }
+  function goHome() { homeMode = true; document.body.classList.remove("picked", "has-result"); if ($("mini")) $("mini").hidden = true; renderAppHome(); scrollTo({ top: 0, behavior: "smooth" }); }
 
   // Installing: a real Install button where the browser offers one (Chrome, Edge, Samsung Internet on Android, and
   // desktop Chrome); on iPhone and iPad, the Share → Add to Home Screen steps. The banner shows on phones only, can be

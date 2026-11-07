@@ -321,6 +321,23 @@ const serve = () => new Promise(resolve => {
     ok(true, "Compare all from the home opens the side-by-side table");
     await ctx.close();
 
+    // 6f. Why is one section (reasons beside their bars); a pinned bar keeps the verdict in view once it scrolls away.
+    ({ ctx, page } = await open("#apple"));
+    const why = await page.evaluate(() => ({ n: document.querySelectorAll("#out .whyp").length, fiber: document.querySelector("#out .whyp .why-row .hint")?.textContent || "",
+      dup: document.querySelectorAll("#out .reasons li").length, rows: document.querySelectorAll("#out .whyp .why-row").length, old: !!document.querySelector("#out .panel.whyp:not(.decided)") }));
+    ok(why.n === 1 && !why.old && why.rows >= 6 && why.fiber.length > 10, `one Why section: each nutrient's reason sits under its bar (${JSON.stringify(why)})`);
+    ok(await page.evaluate(() => { const t = document.querySelector("#out .tag").getBoundingClientRect().bottom, w = document.querySelector("#out .whyp").getBoundingClientRect().top, l = document.querySelector("#out .label").getBoundingClientRect().top; return t < w && w < l; }), "phones: verdict, then Why, then the label");
+    ok(await page.evaluate(() => !document.querySelector("#mini") || document.querySelector("#mini").hidden), "no pinned bar while the verdict is on screen");
+    await page.evaluate(() => scrollTo(0, document.querySelector("#out .label").getBoundingClientRect().top + scrollY));
+    await page.waitForSelector("#mini:not([hidden])");
+    ok(/Apple/.test(await page.textContent("#mini .mini-name")) && /Get it/i.test(await page.textContent("#mini .vp")), "scrolled down: the pinned bar shows the name and verdict");
+    await page.click("#mini .mini-jump button:has-text('Why')");
+    await page.waitForFunction(() => Math.abs(document.querySelector("#out .whyp").getBoundingClientRect().top - 84) < 30);
+    ok(true, "Why in the pinned bar jumps to that section, just below the bar");
+    await page.click('#tabs button[data-view="goals"]');
+    ok(!(await visible(page, "#mini")), "the pinned bar is only on Check");
+    await ctx.close();
+
     // 7. On a computer the phone home stays out of the way.
     const c = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: "block" });
     const pc = await c.newPage(); await pc.goto(base); await pc.waitForSelector("#out h2");
