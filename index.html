@@ -228,7 +228,7 @@ button { font: inherit; color: inherit; }
   background: var(--paper); color: var(--ink); font-size: 14.5px; cursor: pointer; user-select: none; position: relative; }
 .tog input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
 .tog .ti { font-size: 18px; line-height: 1; }
-.tog .tc { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--muted); display: inline-grid; place-items: center; font-size: 11px; line-height: 1; color: transparent; flex: none; }
+.tog .tc { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--muted); display: inline-grid; place-items: center; font-size: 11px; line-height: 1; color: transparent; flex: none; }
 .pgrid .altoggles label.tog:has(input:checked) { border-color: var(--bad); background: var(--bad-soft); font-weight: 600; }
 .tog:has(input:checked) .tc { background: var(--bad); border-color: var(--bad); color: var(--paper); }
 #p-diets .altoggles label.tog:has(input:checked) { border-color: var(--good); background: var(--good-soft); }
@@ -434,7 +434,7 @@ details.box > summary .muted { font-weight: 400; font-size: 13.5px; }
 .bitem .rank { font: 600 12px var(--font-body); color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
 .pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
 .pgrid label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
-.pgrid input[type="number"], .pgrid input[type="text"] { font: 500 16px var(--font-body); color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; min-width: 0; }
+.pgrid input[type="number"], .pgrid input[type="text"] { font: 500 16px var(--font-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; min-width: 0; }
 .pgrid .wide { grid-column: 1 / -1; }
 .pgrid .check { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 14px; }
 .pgrid a { color: var(--accent); }
@@ -469,6 +469,7 @@ details.box > summary .muted { font-weight: 400; font-size: 13.5px; }
   .suggest li:hover, .label [data-k]:hover { background: var(--accent-soft); }
   .chip:hover { border-color: var(--accent); color: var(--accent); }
   .chip.on:hover { color: var(--paper); border-color: var(--ink); }
+  .morelink:hover { border-color: var(--accent); }
   .swap:hover { border-color: var(--accent); }
   .results button:hover { border-color: var(--accent); }
   .bitem:hover { border-color: var(--accent); }
@@ -615,6 +616,28 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
 .toast-act { all: unset; cursor: pointer; font-weight: 700; color: var(--accent-soft); text-decoration: underline; text-underline-offset: 2px; padding: 6px 2px; }
 .toast-act:focus-visible { outline: 2px solid var(--paper); border-radius: 4px; }
 .empty-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* More: settings you use once, moved off Goals. */
+.morelink { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; cursor: pointer; }
+.morelink[hidden] { display: none; }
+.morelink span:first-child { display: grid; gap: 2px; } .morelink small { color: var(--muted); font-size: 13px; }
+.morelink > span:last-child { font-size: 22px; color: var(--muted); }
+.morehead { display: grid; gap: 2px; } .morehead[hidden] { display: none; }
+.morehead .vhead, .morehead .vsub { margin: 4px 0 0; padding-left: 0; padding-right: 0; }
+.backlink { justify-self: start; font: 600 14px var(--font-body); color: var(--accent); background: none; border: 0; padding: 10px 0; cursor: pointer; }
+/* Only Check needs the search bar. */
+body:not([data-view="check"]) section.search { display: none; }
+/* Browse filters: one sideways-scrolling row each on phones. */
+@media (max-width: 760px) {
+  .bscroll { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -16px; padding-right: 16px; -webkit-overflow-scrolling: touch; }
+  .bscroll::-webkit-scrollbar { display: none; }
+  .bscroll > * { flex: none; }
+  /* Phones: price and compare right after the verdict and reasons, before the label. */
+  .result > .side > .price, .result > .side > .compare, .result > .side > .shortlist { order: -1; }
+}
+.btn:disabled { background: transparent; color: var(--muted); border: 1.5px solid var(--line); cursor: default; }
+.linkbtn.alcta { font: inherit; font-size: 13px; color: var(--accent); background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.fine a { color: inherit; }
 </style>
 </head>
 <body>
@@ -723,9 +746,9 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
   <section class="box view" id="browse" data-view="browse" hidden aria-labelledby="hBrowse">
     <h2 class="vhead"><span id="hBrowse">Browse all foods</span><span class="muted" id="browseCount"></span></h2>
     <div class="inner">
-      <div class="chiprow" id="cats" style="margin:0"></div>
-      <div class="chiprow" id="bsort" style="margin:0" role="group" aria-label="Sort foods"></div>
-      <div class="chiprow" id="bbasis" style="margin:0" role="group" aria-label="Ranking basis" hidden></div>
+      <div class="chiprow bscroll" id="cats" style="margin:0"></div>
+      <div class="chiprow bscroll" id="bsort" style="margin:0" role="group" aria-label="Sort foods"></div>
+      <div class="chiprow bscroll" id="bbasis" style="margin:0" role="group" aria-label="Ranking basis" hidden></div>
       <p class="fine" id="bsortNote" hidden>Ranked per serving by the same score behind each verdict (lower is less healthy), then by how much of your saturated fat, sodium and added-sugar limits one serving uses.</p>
       <div class="blist" id="blist"></div>
     </div>
@@ -788,7 +811,13 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
     </div>
   </section>
 
-  <section class="box view" id="dataBox" data-view="goals" hidden aria-labelledby="hData">
+  <section class="view morehead" id="moreHead" data-view="more" hidden aria-labelledby="hMore">
+    <button class="backlink" type="button" id="moreBack">‹ Goals</button>
+    <h2 class="vhead" id="hMore">More</h2>
+    <p class="vsub">Back up your data, install the app, and shortcuts for store websites.</p>
+  </section>
+  <button class="view morelink" type="button" id="moreLink" data-view="goals" hidden><span><b>More</b><small>Back up your data · Install the app · Walmart &amp; Sam's Club shortcut</small></span><span aria-hidden="true">›</span></button>
+  <section class="box view" id="dataBox" data-view="more" hidden aria-labelledby="hData">
     <h2 class="vhead"><span id="hData">Your data</span></h2>
     <p class="vsub">Goals, favorites, your list and plate, your prices and looked-up foods are saved only in this browser. Back them up, or move them to another phone or computer.</p>
     <div class="inner">
@@ -812,13 +841,13 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
     </div>
   </section>
 
-  <section class="box view" id="installBox" data-view="goals" hidden data-pages-only aria-labelledby="hInstall">
+  <section class="box view" id="installBox" data-view="more" hidden data-pages-only aria-labelledby="hInstall">
     <h2 class="vhead"><span id="hInstall">Install the app</span></h2>
     <p class="vsub">Put Should I Buy It? on your home screen: it opens straight to the scanner, works offline for the built-in foods, and has no app store, account or ads.</p>
     <div class="inner" id="installHow"></div>
   </section>
 
-  <section class="box view" id="phoneBox" data-view="goals" hidden aria-labelledby="hPhone">
+  <section class="box view" id="phoneBox" data-view="more" hidden aria-labelledby="hPhone">
     <h2 class="vhead"><span id="hPhone">Walmart and Sam&#39;s Club on your phone</span></h2>
     <p class="vsub">A bookmark that checks the Walmart or Sam&#39;s Club product you're looking at. Tap it on a product page and this app opens with the verdict.</p>
     <div class="inner">
@@ -831,7 +860,7 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
     </div>
   </section>
 
-  <footer><p class="fine">Built-in values are approximate typical figures for a standard serving; packaged foods vary by brand, so the label on the package wins. USDA results come from USDA FoodData Central; scanned products come from Open Food Facts, a crowd-sourced database that can be incomplete. The label's % Daily Value uses standard FDA values; the bars and verdict use your goals. General nutrition guidance, not medical advice. Allergen and diet flags can miss things: read the package.</p>
+  <footer><p class="fine">Typical values; the package label wins. General nutrition guidance, not medical advice. Allergen and diet flags can miss things: read the package.</p>
     <p class="footlinks" data-pages-only><a href="about.html">How it works</a><a href="about.html#sources">Data sources</a><a href="privacy.html">Privacy</a><a href="https://github.com/QuocHHDo/should-i-buy-it/issues/new" target="_blank" rel="noopener">Report a problem</a><a href="https://github.com/QuocHHDo/should-i-buy-it" target="_blank" rel="noopener">Open source (MIT)</a></p></footer>
 </main>
 

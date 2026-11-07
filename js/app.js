@@ -67,7 +67,7 @@
   function renderAllergy(a) {
     const al = a.allergy;
     if (!al) return el("p", { class: "allergy" }, "Allergens and diets aren't checked until you add yours. ",
-      el("button", { class: "linkbtn", type: "button", text: "Add allergies or a diet", onclick: () => { showView("goals"); const b = $("p-allergies"); if (b) b.scrollIntoView({ block: "center" }); } }));
+      el("button", { class: "linkbtn alcta", type: "button", text: "Add allergies or a diet", onclick: () => { showView("goals"); const b = $("p-allergies"); if (b) b.scrollIntoView({ block: "center" }); } }));
     const ICON = { contains: "!", may: "?", unknown: "?", clear: "✓" };
     return el("section", { class: "alflag " + al.status, role: al.status === "contains" ? "alert" : "note", "aria-label": "Your allergens and diet" },
       el("p", { class: "alt" }, el("span", { class: "alic", "aria-hidden": "true", text: ICON[al.status] }), al.title),
@@ -470,15 +470,15 @@
   }
   function renderCompare(f) {
     const sec = el("section", { class: "panel compare" }, el("h3", { text: "Compare" }));
-    const input = el("input", { type: "search", id: "cmpq", placeholder: "Compare with another food…", "aria-label": "Food to compare with", autocomplete: "off" });
+    const input = el("input", { type: "search", id: "cmpq", placeholder: "Compare with…", "aria-label": "Food to compare with", autocomplete: "off" });
     const list = el("ul", { class: "suggest", role: "listbox", hidden: true });
     const row = el("div", { class: "compare-row" }, input,
-      PAGES ? el("button", { class: "btn small", type: "button", text: "Scan to compare", onclick: startCompareScan }) : null);
+      PAGES ? el("button", { class: "btn small ghost", type: "button", text: "Scan to compare", onclick: startCompareScan }) : null);
     sec.append(row, list);
     // Recent scans, one tap each: the products you were just holding.
     const onSl = shortlist.includes(f.n), others = shortlist.filter(n => n !== f.n).map(byName).filter(Boolean);
     sec.append(el("div", { class: "chiprow slrow", style: "margin:0" },
-      el("button", { class: "btn small" + (onSl ? " ghost" : ""), type: "button", "aria-pressed": String(onSl), text: onSl ? "✓ On your shortlist" : "+ Add to shortlist", onclick: () => toggleShort(f) }),
+      el("button", { class: "btn small ghost", type: "button", "aria-pressed": String(onSl), text: onSl ? "✓ On your shortlist" : "+ Add to shortlist", onclick: () => toggleShort(f) }),
       others.length + (onSl ? 1 : 0) >= 2 && !slOpen ? el("button", { class: "btn small ghost", type: "button", text: `Compare all ${others.length + (onSl ? 1 : 0)}`, onclick: openShortlist }) : null,
       !others.length ? el("span", { class: "muted slhint", text: "Keep the few products you choose between here, and see them side by side." }) : null));
     if (others.length && !compareWith) sec.append(el("div", { class: "chiprow", style: "margin:0", role: "group", "aria-label": "Compare with your shortlist" }, el("span", { class: "lbl", text: "Shortlist" }),
@@ -550,7 +550,7 @@
         el("button", { class: "icon-btn", type: "button", "aria-pressed": onList ? "true" : "false", onclick: () => toggleList(f) },
           el("span", { class: "lbl-long" }, stableLabel(onList, "Add to list", "On grocery list")), el("span", { class: "lbl-short" }, stableLabel(onList, "+ List", "On list"))),
         el("button", { class: "icon-btn", type: "button", onclick: () => addToPlate(f, mult) },
-          el("span", { class: "lbl-long", text: `Add ${multLabel(mult)} to plate` }), el("span", { class: "lbl-short", text: `+ ${multLabel(mult)} to plate` })));
+          el("span", { class: "lbl-long", text: mult === 1 ? "Add to plate" : `Add ${multLabel(mult)} to plate` }), el("span", { class: "lbl-short", text: mult === 1 ? "+ Plate" : `+ ${multLabel(mult)} to plate` })));
       if (PAGES) actions.append(el("button", { class: "icon-btn icon-only", type: "button", "aria-label": "Copy link", title: "Copy link", onclick: () => copyLink(f) }, svgIcon(LINK), el("span", { class: "lbl-long", text: "Copy link" })));
       seg = el("div", { class: "serving", role: "group", "aria-label": "Serving size" }, el("span", { class: "lbl", text: "Servings" }));
       for (const m of MULTS) seg.append(el("button", { class: "seg", type: "button", "aria-pressed": m === mult ? "true" : "false", text: multLabel(m), onclick: () => { mult = m; renderResult(current); } }));
@@ -667,9 +667,13 @@
   // ---------- views (tab bar) ----------
   // One view at a time: Check (search + result), Plate, List, Browse (with the quiz), Goals. On GitHub Pages each
   // view but Check has its own address (#plate, #list, #browse, #goals), so Back and shared links work.
-  const VIEWS = ["check", "plate", "list", "browse", "goals"];
+  const VIEWS = ["check", "plate", "list", "browse", "goals", "more"]; // More (backup, install, shortcuts) has no tab: it opens from Goals
   let view = "check";
   const viewFromHash = h => { const v = String(h || "").replace(/^#/, ""); return v !== "check" && VIEWS.includes(v) ? v : null; };
+  function wireMore() {
+    $("moreLink").addEventListener("click", () => showView("more"));
+    $("moreBack").addEventListener("click", () => showView("goals"));
+  }
   // opts.history: false when the address already says where we are (a hash change or the first load).
   function showView(v, opts = {}) {
     if (!VIEWS.includes(v)) v = "check";
@@ -677,7 +681,7 @@
     view = v;
     document.body.dataset.view = v;
     document.querySelectorAll(".view").forEach((/** @type {HTMLElement} */ n) => { n.hidden = n.dataset.view !== v; });
-    document.querySelectorAll("#tabs button").forEach((/** @type {HTMLElement} */ b) => b.setAttribute("aria-current", b.dataset.view === v ? "page" : "false"));
+    document.querySelectorAll("#tabs button").forEach((/** @type {HTMLElement} */ b) => b.setAttribute("aria-current", b.dataset.view === (v === "more" ? "goals" : v) ? "page" : "false"));
     if (v === "browse") renderBrowse();
     if (v === "plate") renderMeals();
     if (v !== "check" && !$("scan").hidden) closeScan(); // don't leave the camera running behind another view
@@ -975,13 +979,14 @@
   function renderBrowse() {
     $("browseCount").textContent = foodCountText();
     if (view !== "browse") return; // built when the view is shown
-    const cats = $("cats");
+    const cats = $("cats"), keepX = [cats.scrollLeft, $("bsort").scrollLeft];
     cats.replaceChildren();
     const opts = [{ id: "all", label: "All" }, ...CATEGORIES, ...(lookups.length ? [{ id: "lookup", label: "Looked up" }] : [])];
     for (const c of opts) cats.append(el("button", { class: "chip" + (c.id === browseCat ? " on" : ""), type: "button", "aria-pressed": c.id === browseCat ? "true" : "false", text: c.label, onclick: () => { browseCat = c.id; renderBrowse(); } }));
     const sorts = $("bsort");
     sorts.replaceChildren(el("span", { class: "lbl", text: "Sort" }));
     for (const s of SORTS) sorts.append(el("button", { class: "chip" + (s.id === browseSort ? " on" : ""), type: "button", "aria-pressed": s.id === browseSort ? "true" : "false", text: s.label, onclick: () => { browseSort = s.id; store.set("browseSort", s.id); renderBrowse(); } }));
+    cats.scrollLeft = keepX[0]; sorts.scrollLeft = keepX[1]; // the sideways rows stay where you'd scrolled them
     const ranked = browseSort !== "az", byValue = browseSort === "value";
     $("bsortNote").hidden = !ranked;
     const basis = $("bbasis");
@@ -1541,7 +1546,7 @@
       el("div", { class: "actions" },
         canSave ? el("button", { class: "btn small", type: "button", text: "Restore", onclick: () => restoreBackup(r.data) }) : null,
         el("button", { class: "btn small ghost", type: "button", text: "Cancel", onclick: () => box.replaceChildren() }))));
-    showView("goals");
+    showView("more");
     box.scrollIntoView({ block: "nearest" });
   }
   function restoreBackup(data) {
@@ -1628,8 +1633,8 @@
       previewAdd(r);
       return true;
     }
-    try { history.replaceState(null, "", "#goals"); } catch {}
-    showView("goals", { history: false });
+    try { history.replaceState(null, "", "#more"); } catch {}
+    showView("more", { history: false });
     previewBackup(r);
     return true;
   }
@@ -1637,7 +1642,7 @@
   function previewAdd(r) {
     const box = $("addPreview");
     box.replaceChildren();
-    if (!r.ok || r.kind !== "add") { box.append(el("div", { class: "bk-preview err", text: r.ok ? "That link is a full backup, not list items. Open it from Goals → Your data." : r.error })); return; }
+    if (!r.ok || r.kind !== "add") { box.append(el("div", { class: "bk-preview err", text: r.ok ? "That link is a full backup, not list items. Open it from Goals → More → Your data." : r.error })); return; }
     const items = r.data.grocery;
     box.append(el("div", { class: "bk-preview" },
       el("p", { style: "margin:0" }, el("b", { text: `Add ${items.length} item${items.length === 1 ? "" : "s"} from the browser extension?` })),
@@ -1838,6 +1843,7 @@
       if (PAGES && b.dataset.view === "check" && view === "check" && !homeMode && (fromApp || phone())) return goHome();
       showView(b.dataset.view);
     }));
+    wireMore();
     $("glistCopy").addEventListener("click", copyList);
     $("glistClear").addEventListener("click", () => { glist = glist.filter(x => !x.done); saveList(); });
     $("glistFavs").addEventListener("click", addGoodFavorites);

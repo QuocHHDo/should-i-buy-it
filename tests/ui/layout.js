@@ -43,6 +43,7 @@ const SHOTS = process.env.SHOTS_DIR;
 const shot = async (page, name) => { if (SHOTS) await page.screenshot({ path: path.join(SHOTS, name + ".png"), fullPage: false }); };
 
 async function openFood(page, name) {
+  if (!(await page.isVisible("#q"))) await page.click('#tabs [data-view="check"]'); // the search bar is only on Check
   await page.fill("#q", name);
   await page.press("#q", "Enter");
   await page.waitForFunction(n => document.querySelector("#out h2")?.textContent === n, name);
@@ -162,7 +163,7 @@ async function openFood(page, name) {
       page.on("pageerror", e => { fails++; console.log("FAIL page error: " + e.message); });
       await page.goto(link); await page.waitForSelector("#bkPreview .bk-preview");
       const pv = await page.evaluate(() => ({ t: document.getElementById("bkPreview").textContent, view: document.body.dataset.view, hash: location.hash, list: localStorage.getItem("grocery") }));
-      ok(/3 grocery items/.test(pv.t) && pv.view === "goals" && pv.hash === "#goals" && !pv.list, `transfer link opens a preview on Goals and changes nothing yet (${pv.t.slice(0, 70)})`);
+      ok(/3 grocery items/.test(pv.t) && pv.view === "more" && pv.hash === "#more" && !pv.list, `transfer link opens a preview on Goals and changes nothing yet (${pv.t.slice(0, 70)})`);
       await shot(page, "f1-import-preview-375");
       await Promise.all([page.waitForEvent("load"), page.click('#bkPreview .btn:has-text("Restore")')]);
       await page.waitForSelector("#out h2");

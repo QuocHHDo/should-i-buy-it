@@ -269,7 +269,7 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
   click(btn("Clear checked", $("#glistBox")));
   ok(/empty/.test(text("#glistCount")), "clear checked");
   click(btn("2", $(".serving"))); click(btn("Add 2 to plate", $("#out")));
-  $("#q").value = "Brown rice"; submit("#form"); click(btn("Add 1 to plate", $("#out")));
+  $("#q").value = "Brown rice"; submit("#form"); click(btn("Add to plate", $("#out")));
   ok(/2 items/.test(text("#plateCount")), `plate has two items (${text("#plateCount")})`);
   ok(/≈ \$\d+\.\d\d/.test(text("#plateItems .ptotal")), `plate total includes a typical cost (${text("#plateItems .ptotal")})`);
   click($("#plateView"));
@@ -359,7 +359,10 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok(shown() === "out" && tab("check").getAttribute("aria-current") === "page" && text("#out h2").length > 0, `opening a food from Browse switches to Check (${text("#out h2")})`);
     if (MODE === "pages") {
       w.location.hash = "#goals"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(2);
-      ok(shown() === "profile,alBox,prefBox,dataBox,installBox,phoneBox", `#goals opens the Goals view (${shown()})`);
+      ok(shown() === "profile,alBox,prefBox,moreLink", `#goals opens the Goals view: targets, allergies, preferences and a link to More (${shown()})`);
+      w.location.hash = "#more"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(2);
+      ok(shown() === "moreHead,dataBox,installBox,phoneBox", `#more holds backup, install and the store shortcut (${shown()})`);
+      ok($('#tabs button[data-view="goals"]').getAttribute("aria-current") === "page", "More counts as part of Goals in the tab bar");
       w.location.hash = "#avocado"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(2);
       ok(shown() === "out" && text("#out h2") === "Avocado", `a food link returns to Check (${text("#out h2")})`);
     }
