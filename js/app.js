@@ -186,13 +186,12 @@
   // Each bar is a nutrient against the verdict's own cutoffs (the tick marks), with the points it scored. Other
   // factors and the total follow, so the verdict reads as a sum. Always one standard serving: what the verdict judges.
   const signed = n => n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "0";
-  // A deep-dive section folded to one line that keeps its key fact visible ("Ingredients · 6 ingredients · 2 added
-  // sugars"). Opening one is remembered, so people who always read it don't have to tap it every time.
-  let openFolds = new Set(store.get("openFolds", []));
-  function fold(key, cls, title, summary, kids, forceOpen = false) {
-    return el("details", { class: "panel fold " + cls, open: forceOpen || openFolds.has(key) ? true : null,
-      ontoggle: e => { if (e.target.open) openFolds.add(key); else openFolds.delete(key); store.set("openFolds", [...openFolds]); } },
-      el("summary", {}, el("h3", { text: title }), summary ? el("span", { class: "fsum", text: summary }) : null), ...kids);
+  // A deep-dive section: always open, with its key fact next to the heading ("Ingredients · 6 ingredients · 2 added
+  // sugars") so it can be skimmed. Nothing on the product page is folded away.
+  try { localStorage.removeItem("openFolds"); } catch {} // left over from when these sections folded
+  function fold(cls, title, summary, kids) {
+    return el("section", { class: "panel fold " + cls },
+      el("div", { class: "fhead" }, el("h3", { text: title }), summary ? el("span", { class: "fsum", text: summary }) : null), ...kids);
   }
   function renderWhy(f) {
     const b = V.breakdown(f, profile);
@@ -228,7 +227,7 @@
       b.override ? el("p", { class: "why-override" }, el("b", { text: `Verdict: ${b.word}. ` }), b.override) : null);
     const title = b.meal ? "Score breakdown (whole meal)" : "Score breakdown";
     const word = { good: "Get it", mid: "In moderation", bad: "Limit it", fine: "Fine" }[b.byScore];
-    return fold("decided", "decided", title, `Total ${signed(b.score)} → ${word}${b.override ? ` · verdict ${b.word}` : ""}`, [wrap, other, total,
+    return fold("decided", title, `Total ${signed(b.score)} → ${word}${b.override ? ` · verdict ${b.word}` : ""}`, [wrap, other, total,
       el("p", { class: "legend", text: (b.meal
         ? "Bars are this meal against a third of your daily goals and limits. Ticks are the cutoffs: past the first, ±1 point; past the second, ±2."
         : "Ticks are the verdict's cutoffs: past the first, ±1 point; past the second, ±2. Protein counts by its share of calories, so a lean food scores higher than a fatty one with the same grams.")
@@ -281,12 +280,10 @@
         ...g.items.filter(i => i.conflict).map(i => el("p", { class: "ign iconf", text: `⚠ ${i.name}: ${i.conflict}` }))));
     }
     if (r.may.length) sec.append(el("p", { class: "legend", text: r.may.join(" ") }));
-    sec.append(el("details", { class: "ingr" }, el("summary", { text: "The label's full text" }), el("p", { text: f.ingredients })));
+    sec.append(el("div", { class: "ingr" }, el("b", { text: "As written on the label" }), el("p", { text: f.ingredients })));
     sec.append(el("p", { class: "legend", text: "Numbers are each ingredient's place on the label, from most to least by weight. Groups describe what each ingredient is; the verdict already counts the amounts that matter (added sugar, saturated fat, sodium)." }));
     const summary = el("span", { class: "fsum ing-sum", text: r.summary + (r.contains ? ` · contains ${r.contains.toLowerCase()}` : "") });
-    return el("details", { class: "panel fold ingredients", open: openFolds.has("ingredients") ? true : null,
-      ontoggle: e => { if (e.target.open) openFolds.add("ingredients"); else openFolds.delete("ingredients"); store.set("openFolds", [...openFolds]); } },
-      el("summary", {}, el("h3", { text: "Ingredients" }), summary), sec);
+    return el("section", { class: "panel fold ingredients" }, el("div", { class: "fhead" }, el("h3", { text: "Ingredients" }), summary), sec);
   }
 
   function renderAdditives(f) {
@@ -300,28 +297,27 @@
       if (!info.items.length) sec.append(el("p", { class: "muted", text: "No additives listed." }));
       else {
         const list = el("ul", { class: "addlist" });
-        // Tap a row for what it is, why it's there and what the evidence says. Removed ones start open.
+        // Each row says what it is, why it's there and what the evidence says.
         for (const a of info.items) {
           const body = el("div", { class: "abody-more" },
             a.what || a.role ? el("p", {}, a.what ? el("b", { text: a.what + " " }) : null, a.role || "") : null,
             a.note ? el("p", {}, a.note, a.src ? " " : null, a.src ? el("a", { href: a.src, target: "_blank", rel: "noopener", text: "Source" }) : null) : null,
             a.efsaHigh ? el("p", { class: "muted", text: "EFSA's safety review found some people may exceed the acceptable daily intake." }) : null,
             el("p", { class: "muted", text: a.statusHint }));
-          const sum = el("summary", {},
+          const sum = el("div", { class: "arow" },
             el("span", { class: "acode", text: a.code || "—" }),
             el("span", { class: "aname", text: a.name }),
             el("span", { class: `astatus ${a.status}`, text: a.statusLabel }));
-          list.append(el("li", { class: `st-${a.status}` }, el("details", { open: a.status === "removed" ? true : null }, sum, body)));
+          list.append(el("li", { class: `st-${a.status}` }, sum, body));
         }
         sec.append(list);
       }
     }
-    if (f.ingredients && !window.SelfCheckIngredients) sec.append(el("details", { class: "ingr" }, el("summary", { text: "Ingredients" }), el("p", { text: f.ingredients })));
-    sec.append(el("p", { class: "legend", text: (info.fromText ? "Found by name in the ingredient list, so an additive listed under an unusual name can be missed. " : "From Open Food Facts. ") + "Tap an additive for what it is and what the evidence says. Most approved additives are judged safe at normal amounts; “Mixed evidence” means approved but questioned, with the source. Add any you avoid to your skip list (for example “sucralose” or “E407”)." }));
+    if (f.ingredients && !window.SelfCheckIngredients) sec.append(el("div", { class: "ingr" }, el("b", { text: "Ingredients" }), el("p", { text: f.ingredients })));
+    sec.append(el("p", { class: "legend", text: (info.fromText ? "Found by name in the ingredient list, so an additive listed under an unusual name can be missed. " : "From Open Food Facts. ") + "Most approved additives are judged safe at normal amounts; “Mixed evidence” means approved but questioned, with the source. Add any you avoid to your skip list (for example “sucralose” or “E407”)." }));
     const n = info.known ? info.items.length : 0, removed = info.known && info.items.some(a => a.status === "removed"), mixed = info.known ? info.items.filter(a => a.status === "mixed").length : 0;
     const summary = [info.novaInfo ? `${info.novaInfo[0]} (NOVA ${info.nova})` : "", info.known ? (n ? `${n} additive${n === 1 ? "" : "s"}${removed ? ", one removed from food by a regulator" : mixed ? `, ${mixed} with mixed evidence` : ""}` : "no additives") : ""].filter(Boolean).join(" · ");
-    // An additive a regulator has removed from food is worth seeing without a tap: that section starts open.
-    return fold("additives", "additives", "Additives & processing", summary, [sec], removed);
+    return fold("additives", "Additives & processing", summary, [sec]);
   }
 
   // ---------- price (typical, or your own) ----------

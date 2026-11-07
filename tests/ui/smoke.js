@@ -133,11 +133,11 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok(/NOVA 4/.test(text(".additives .nova")) && $$(".additives .addlist li").length === 6 && /E951AspartameMixed evidence/.test(text(".additives")), `additives panel lists the cola's 6 additives (${text(".additives").slice(0, 120)})`);
     ok(!$(".additives li.st-removed") && $$(".additives li.st-mixed").length >= 2 && /E330Citric acidConsidered safe/.test(text(".additives")), `statuses: none removed, sweeteners mixed, citric acid safe (${$$(".additives li").map(l => l.className).join(" ")})`);
     const asp = $$(".additives li").find(l => /Aspartame/.test(l.textContent));
-    ok(!asp.querySelector("details").open && /possibly carcinogenic/.test(asp.textContent) && asp.querySelector("a[href*='who.int']"), "aspartame's note and WHO source are one tap away");
+    ok(!asp.querySelector("details") && /possibly carcinogenic/.test(asp.textContent) && asp.querySelector("a[href*='who.int']"), "aspartame's note and WHO source are shown without a tap");
     offMode = "candy"; $("#q").value = "0000000000024"; submit("#form"); await tick(10);
-    ok($$(".additives li.st-removed").length === 3 && $$(".additives li.st-removed details[open] a").length === 3 && text(".tag .verdict") === "In moderation", `removed additives flagged with sources; verdict ${text(".tag .verdict")}`);
-    ok($(".additives").tagName === "DETAILS" && $(".additives").open, "a removed additive opens its folded section by itself");
-    ok(/regulator/.test(text(".additives .fsum")), `and the folded line says so (${text(".additives .fsum")})`);
+    ok($$(".additives li.st-removed").length === 3 && $$(".additives li.st-removed a").length === 3 && text(".tag .verdict") === "In moderation", `removed additives flagged with sources; verdict ${text(".tag .verdict")}`);
+    ok($(".additives").tagName === "SECTION", "the additives section is always shown");
+    ok(/regulator/.test(text(".additives .fsum")), `and the line by the heading says so (${text(".additives .fsum")})`);
     offMode = "empty"; $("#q").value = "0000000000031"; submit("#form"); await tick(10);
     ok(/Found “Mystery Box”, but neither Open Food Facts nor USDA has its nutrition data/.test(text("#out .notice")), `a product with no nutrition values at all still says so (${text("#out .notice")})`);
     offMode = "ok";
@@ -220,10 +220,7 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
       ok(pts.length >= 6 && pts.reduce((x, y) => x + y, 0) === tot, `chart points add up to the total (${pts.join(",")} = ${tot})`);
       ok($$(".decided .tick").length >= 6, `chart shows the verdict's cutoffs as ticks (${$$(".decided .tick").length})`);
       // Deep dives start folded to one line with their key fact; opening one is remembered.
-      ok($(".decided").tagName === "DETAILS" && !$(".decided").open && /Total [+−]?\d+ → /.test(text(".decided .fsum")), `the score breakdown is folded with its total showing (${text(".decided .fsum")})`);
-      $(".decided").open = true; $(".decided").dispatchEvent(new w.Event("toggle")); await tick(1);
-      ok(JSON.parse(w.localStorage.getItem("openFolds") || "[]").includes("decided"), "opening it is remembered");
-      $(".decided").open = false; $(".decided").dispatchEvent(new w.Event("toggle")); await tick(1);
+      ok($(".decided").tagName === "SECTION" && !$("#out details.fold") && /Total [+−]?\d+ → /.test(text(".decided .fsum")), `the score breakdown is always shown, with its total by the heading (${text(".decided .fsum")})`);
       ok(/Get it/.test(text(".why-total")) && /Get it/.test(text(".tag .verdict")), `total matches the verdict (${text(".why-total").slice(0, 40)})`);
     }
     w.location.hash = "#chicken-pho"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
