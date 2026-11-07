@@ -87,6 +87,8 @@ details > summary::-webkit-details-marker { display: none; }
 .disc[open] > summary::before { content: "▾"; }
 .disc > summary h2 { display: inline; }
 .disc[open] > summary { margin-bottom: var(--s3); }
+.shown > .shead { margin-bottom: var(--s3); }
+.shown > .shead h2 { display: inline; }
 .allergen { font-size: var(--t-small); background: var(--surface); border-radius: var(--r-sm); padding: 6px var(--s2); }
 .ig { display: grid; gap: 6px; padding-top: var(--s3); border-top: 1px solid var(--line); }
 .ig:first-of-type { border-top: 0; padding-top: 0; }

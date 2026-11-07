@@ -171,6 +171,9 @@ const ok = (cond, msg) => { console.log((cond ? "PASS " : "FAIL ") + msg); if (!
     ok(noteWords.every(n => n <= 12), `notes are short (${noteWords.join(", ")} words)`);
     const order = await panel.evaluate(() => [...document.querySelectorAll("main > section")].map(s => s.getAttribute("aria-label") || (s.querySelector("h2") || {}).textContent || s.className).join(" › "));
     ok(/^Verdict › Your daily limits[^›]* › Serving and price › Why › Ingredients › About this verdict$/.test(order), `order: verdict, bars, notes, ingredients, sources (${order})`);
+    ok(await panel.evaluate(() => [...document.querySelectorAll(".shown .shead h2")].map(h => h.textContent).join("|") === "Ingredients|About this verdict" && ![...document.querySelectorAll("details.disc")].some(d => /Ingredients|About this verdict/.test(d.querySelector("summary").textContent))
+      && document.querySelector(".shown .ig").getBoundingClientRect().height > 0 && /net carbs|fiber/.test(document.querySelector(".foot").textContent) && !/doesn't check allergens/.test(document.body.textContent)),
+      "Ingredients and About this verdict are always shown, like the app; the About text is current");
     if (SHOTS) await panel.screenshot({ path: path.join(SHOTS, "ext8-panel-dietcoke.png"), fullPage: true });
 
     // ---- 3. Same tab, next product (Walmart changes pages without reloading): badge and panel follow ----

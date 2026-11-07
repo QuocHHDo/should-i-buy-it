@@ -264,6 +264,9 @@
   const disclosure = (k, title, summaryExtra, ...kids) => el("details", { class: "disc", open: openSet.has(k) ? true : null,
     ontoggle: e => { if (e.target.open) openSet.add(k); else openSet.delete(k); set({ panelSections: [...openSet] }); } },
     el("summary", {}, el("h2", { text: title }), summaryExtra ? el("span", { class: "small", text: ` · ${summaryExtra}` }) : null), ...kids);
+  // A section that's always open: its heading, the key fact beside it, then everything (same as the app's product page).
+  const shown = (title, summaryExtra, ...kids) => el("div", { class: "shown" },
+    el("div", { class: "shead" }, el("h2", { text: title }), summaryExtra ? el("span", { class: "small", text: ` · ${summaryExtra}` }) : null), ...kids);
 
   function ingredients(r) {
     const groups = r.groups.map(g => {
@@ -287,7 +290,7 @@
     });
     return el("section", {},
       r.contains ? el("p", { class: "allergen" }, el("b", { text: "Label says: " }), `Contains ${r.contains}.`) : null,
-      disclosure("ingr", "Ingredients", r.summary,
+      shown("Ingredients", r.summary,
         el("p", { class: "small", text: "Numbers are each ingredient's place on the label, most to least by weight." }),
         ...groups,
         r.may.length ? el("p", { class: "small", text: r.may.join(" ") }) : null));
@@ -298,9 +301,9 @@
     return el("section", { class: "foot" },
       el("p", {}, el("b", { text: "Source: " }), `${r.detail}.${listedAs}${r.note ? " " + r.note : ""}`),
       f.issues && f.issues.length ? el("p", { class: "banner", role: "note", title: f.issues.join("; ") }, self.SelfCheckSources.issueSummary(f)) : null,
-      disclosure("about", "About this verdict", null,
-        el("p", { text: "It doesn't check allergens: read the label if you have a food allergy." }),
-        el("p", { text: `Scored against your goals: ${profile.cal.toLocaleString("en-US")} cal, ${profile.pro} g protein, ≤${profile.sat} g saturated fat, ≤${profile.na.toLocaleString("en-US")} mg sodium, ≤${profile.add} g added sugar.` }),
+      shown("About this verdict", null,
+        el("p", { text: `Scored against your goals: ${profile.cal.toLocaleString("en-US")} cal, ${profile.pro} g protein, ${profile.fib} g fiber, ≤${profile.sat} g saturated fat, ≤${profile.na.toLocaleString("en-US")} mg sodium, ≤${profile.add} g added sugar${profile.carb > 0 ? `, ≤${profile.carb} g net carbs` : ""}.` }),
+        el("p", { text: "Allergen and diet flags read the ingredients and can miss things: always read the package if you have a food allergy." }),
         el("p", { text: "General nutrition guidance, not medical advice." })),
       el("div", { class: "links" },
         el("button", { class: "btn", type: "button", text: "Change your goals", onclick: () => chrome.runtime.openOptionsPage() }),
