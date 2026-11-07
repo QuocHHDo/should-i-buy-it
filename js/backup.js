@@ -12,7 +12,7 @@
   // Same ranges as the goal inputs.
   const ALLERGY_IDS = ["milk", "egg", "fish", "shellfish", "treenut", "peanut", "wheat", "soy", "sesame"];
   const DIET_IDS = ["gluten", "pork", "pescatarian", "vegetarian", "vegan"];
-  const GOALS = { cal: [800, 6000], pro: [20, 400], sat: [5, 40], na: [500, 5000], add: [0, 100], fib: [10, 70] };
+  const GOALS = { cal: [800, 6000], pro: [20, 400], sat: [5, 40], na: [500, 5000], add: [0, 100], fib: [10, 70], carb: [0, 300] };
   // A looked-up food: plain values only (strings, numbers, booleans, arrays of those), with a name and calories.
   function lookupFood(f) {
     if (!f || typeof f !== "object" || Array.isArray(f) || !str(f.n) || num(f.cal, 0, 20000) == null) return null;
@@ -43,6 +43,7 @@
       return Object.keys(out).length ? out : null;
     },
     favorites: v => list(v, 100, x => str(x)),
+    shortlist: v => list(v, 6, x => str(x)),
     recents: v => list(v, 30, x => str(x)),
     grocery: v => list(v, 300, x => x && str(x.n) ? { n: x.n, done: x.done === true, ...(num(x.qty, 1, 99) ? { qty: Math.round(x.qty) } : {}) } : null),
     plate: v => list(v, 50, x => x && str(x.n) && num(x.mult, 0.25, 10) ? { n: x.n, mult: x.mult } : null),

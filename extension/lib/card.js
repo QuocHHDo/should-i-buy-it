@@ -40,15 +40,15 @@
   }
 
   // Saturated fat, sodium and added sugar against your daily limits, with the verdict's own cutoffs as ticks.
-  const LIMITS = ["sat", "na", "add"];
+  const LIMITS = ["sat", "na", "add", "carb"]; // net carbs only appear when a carb limit is set
   function limitBars(f, p) {
     const b = V.breakdown(f, p);
     if (!b) return [];
     return b.rows.filter(r => LIMITS.includes(r.k)).map(r => ({
-      k: r.k, name: { sat: "Sat fat", na: "Sodium", add: "Added sugar" }[r.k], known: r.known,
+      k: r.k, name: { sat: "Sat fat", na: "Sodium", add: "Added sugar", carb: "Net carbs" }[r.k], known: r.known,
       share: r.known ? r.v : null, fill: r.known ? Math.min(1, Math.max(0, r.v) / r.max) : 0, marks: r.marks.filter(m => m < r.max).map(m => m / r.max), markShares: r.marks.filter(m => m < r.max),
       tone: !r.known ? "na" : r.points <= -2 ? "bad" : r.points < 0 ? "warn" : "ok",
-      value: r.known ? `${r.atLeast ? "≥" : ""}${r.k === "na" ? Math.round(f.na).toLocaleString("en-US") + " mg" : V.fmt(f[r.k]) + " g"} · ${pct(r.v, 1)}%` : "not listed",
+      value: r.known ? `${r.atLeast ? "≥" : ""}${r.k === "na" ? Math.round(f.na).toLocaleString("en-US") + " mg" : V.fmt(r.k === "carb" ? V.netCarb(f) : f[r.k]) + " g"} · ${pct(r.v, 1)}%` : "not listed",
     }));
   }
 

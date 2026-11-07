@@ -285,6 +285,42 @@ const serve = () => new Promise(resolve => {
     ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "fits a 390 px phone without sideways scrolling");
     await ctx.close();
 
+    // 6e. Carb limit: Keto changes an apple's verdict and saves; the shortlist compares several products side by side.
+    ({ ctx, page } = await open("#apple"));
+    const verdict = () => page.textContent("#out .verdict");
+    ok(/Get it/.test(await verdict()), "an apple is Get it with no carb limit");
+    await page.click('#tabs button[data-view="goals"]');
+    await page.click('#carbChips button[data-carb="25"]');
+    ok(await page.evaluate(() => JSON.parse(localStorage.getItem("profile")).carb === 25 && document.getElementById("p-carb").value === "25"
+      && document.querySelector('#carbChips button[data-carb="25"]').getAttribute("aria-pressed") === "true"), "Keto saves a 25 g net-carb limit and shows as picked");
+    ok(/≤25 g net carbs/.test(await page.textContent("#profSummary")), "the goals summary mentions it");
+    await page.fill("#p-carb", "900"); await page.dispatchEvent("#p-carb", "change");
+    ok(/Use a number from 0 to 300/.test(await page.textContent("#p-carb-err")) && await page.evaluate(() => JSON.parse(localStorage.getItem("profile")).carb === 25), "an impossible limit is refused and the last good one kept");
+    await page.click('#carbChips button[data-carb="25"]');
+    await page.click('#tabs button[data-view="check"]');
+    ok(/In moderation/.test(await verdict()) && /most of your carbs/.test(await page.textContent("#out")), "on keto an apple is In moderation, and the reason says why");
+    // Shortlist
+    await page.click("#out .slrow button");
+    ok(/On your shortlist/.test(await page.textContent("#out .slrow")), "the product goes on the shortlist");
+    for (const q of ["banana", "avocado"]) { await page.evaluate(h => { location.hash = h; }, q); await page.waitForFunction(n => document.querySelector("#out h2").textContent.toLowerCase().startsWith(n), q); await page.click("#out .slrow button"); }
+    await page.click("#out .slrow button:has-text('Compare all 3')");
+    await page.waitForSelector("#out .shortlist table");
+    const sl = await page.evaluate(() => ({ cols: document.querySelectorAll("#out .shortlist thead th").length - 1, rows: [...document.querySelectorAll("#out .shortlist tbody tr")].map(r => r.cells[0].textContent), sum: document.querySelector("#out .shortlist .cmpsum").textContent,
+      wins: document.querySelectorAll("#out .shortlist td.win").length }));
+    ok(sl.cols === 3 && sl.rows.includes("Verdict") && sl.rows.includes("Net carbs") && sl.wins > 0, `three products side by side, with a net-carb row on keto (${sl.rows.join(", ")})`);
+    ok(/Best fit for your goals: Avocado/.test(sl.sum), `a one-line answer (${sl.sum})`);
+    ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "the table scrolls inside its box on a phone, not the page");
+    if (SHOTS) await page.locator("#out .shortlist").screenshot({ path: path.join(SHOTS, "app8-shortlist.png") });
+    await page.click("#out .shortlist .slx >> nth=0");
+    ok(await page.evaluate(() => document.querySelectorAll("#out .shortlist thead th").length - 1 === 2 && JSON.parse(localStorage.getItem("shortlist")).length === 2), "× removes one and it's saved");
+    await ctx.close();
+    ({ ctx, page } = await open("?source=app", { seed: { shortlist: ["Apple", "Banana"] } }));
+    ok(await visible(page, "#slHome") && /Your shortlist · 2/.test(await page.textContent("#slHome")), "the app home shows the shortlist");
+    await page.click("#slHome button");
+    await page.waitForSelector("#out .shortlist table");
+    ok(true, "Compare all from the home opens the side-by-side table");
+    await ctx.close();
+
     // 7. On a computer the phone home stays out of the way.
     const c = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: "block" });
     const pc = await c.newPage(); await pc.goto(base); await pc.waitForSelector("#out h2");

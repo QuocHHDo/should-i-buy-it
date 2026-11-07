@@ -38,3 +38,24 @@ test("price rows: the cheaper serving when 10% and 5¢ apart, and protein per do
   assert.equal(CMP.priceRows({ cost: 0.50 }, null, null, null).length, 0); // one side has no price
   assert.equal(CMP.priceRows({ cost: 1 }, { cost: 1 }, { k: "fib", v: 3 }, { k: "pro", v: 9 }).length, 1); // not both protein sources
 });
+
+test("shortlist table: best per row only when meaningfully better and reported by all; ties mark nobody", () => {
+  const { FOODS } = require("../js/foods.js");
+  const T = require("../js/compare.js"), Vv = require("../js/verdict.js");
+  const get = n => FOODS.find(f => f.n === n);
+  const cols = ["Whole milk", "2% milk", "Skim milk"].map(get).map(f => ({ food: f, verdict: Vv.assess(f, Vv.DEFAULT_PROFILE), price: null, value: null }));
+  const t = T.table(cols);
+  const row = l => t.find(r => r.label === l);
+  assert.equal(row("Saturated fat").best, 2, "skim has the least saturated fat");
+  assert.equal(row("Calories").best, -1, "calories are shown, never marked");
+  assert.ok(!t.some(r => r.kind === "money"), "no price row without prices");
+  assert.ok(!t.some(r => r.label === "Net carbs"), "net carbs only with a carb limit");
+  assert.ok(T.table(cols, { carbLimit: 25 }).some(r => r.label === "Net carbs"));
+  const unk = T.table([cols[0], { ...cols[2], food: { ...cols[2].food, missing: ["sat"] } }]);
+  assert.equal(unk.find(r => r.label === "Saturated fat").best, -1, "unknown in one product: no winner");
+  const priced = T.table(cols.map((c, i) => ({ ...c, price: { cost: [0.4, 0.4, 0.3][i], mine: true } })));
+  assert.equal(priced.find(r => r.kind === "money").best, 2);
+  assert.equal(priced.find(r => r.kind === "money").label, "Price");
+  const tie = T.table(cols.map(c => ({ ...c, price: { cost: 0.4, mine: false } })));
+  assert.equal(tie.find(r => r.kind === "money").best, -1);
+});

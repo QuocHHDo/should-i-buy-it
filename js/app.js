@@ -34,6 +34,9 @@
   for (const f of lookups) if ((f.src === "usda" || f.src === "off" || f.src === "walmart") && !f.checked) { S.check(f, f.categories); f.checked = 1; }
   let recents = store.get("recents", []);
   let favs = store.get("favorites", []);
+  // The shortlist: a few products you keep choosing between, compared side by side. Names, newest last; up to 6.
+  const SL_MAX = 6;
+  let shortlist = store.get("shortlist", []).filter(n => typeof n === "string"), slOpen = false;
   const allFoods = () => [...FOODS, ...lookups];
   const byName = n => allFoods().find(f => f.n === n);
 
@@ -229,6 +232,7 @@
       el("p", { class: "legend", text: (b.meal
         ? "Bars are this meal against a third of your daily goals and limits. Ticks are the cutoffs: past the first, ±1 point; past the second, ±2."
         : "Ticks are the verdict's cutoffs: past the first, ±1 point; past the second, ±2. Protein counts by its share of calories, so a lean food scores higher than a fatty one with the same grams.")
+        + (profile.carb > 0 && !b.meal ? " Net carbs have a third tick at half your limit: −3." : "")
         + (mult !== 1 && !b.meal ? ` Bars are one serving, which is what the verdict judges; the label shows your ${fmt(mult)} servings.` : "") })]);
   }
 
@@ -384,6 +388,59 @@
       el("span", { class: "price-amt", text: `≈ ${PR.money(c.total)}` }), el("span", { text: c.missing ? ` for the ${c.priced} item${c.priced === 1 ? "" : "s"} with a price (${c.missing} without)` : " for this meal" })));
   }
 
+  // ---------- shortlist ----------
+  function toggleShort(f) {
+    if (shortlist.includes(f.n)) shortlist = shortlist.filter(n => n !== f.n);
+    else { if (shortlist.length >= SL_MAX) { toast(`The shortlist holds ${SL_MAX}. Remove one first.`); return; } shortlist = [...shortlist, f.n]; toast(`Added to your shortlist (${shortlist.length})`); }
+    store.set("shortlist", shortlist); if (shortlist.length < 2) slOpen = false; renderAppHome(); if (current) renderResult(current);
+  }
+  function openShortlist() {
+    const first = byName(shortlist.find(n => byName(n)) || "");
+    if (!first) return;
+    slOpen = true;
+    if (!current || !shortlist.includes(current.n)) pick(first, { noRecent: true }); else renderResult(current);
+    const el2 = document.querySelector("#out .shortlist"); if (el2) el2.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  let slBasis = "serving";
+  function renderShortlist() {
+    const foods = shortlist.map(byName).filter(Boolean);
+    if (foods.length < 2) return null;
+    const sec = el("section", { class: "panel shortlist", "aria-labelledby": "slH" }, el("h3", { id: "slH", text: `Your shortlist (${foods.length})` }));
+    const scaledOf = f => slBasis === "kcal" ? (V.per100kcal(f) || f) : f;
+    const cols = foods.map(f => { const price = PR ? PR.price(f, myPrices) : null; return { food: scaledOf(f), raw: f, verdict: V.assess(f, profile), price, value: price ? PR.value(f, price) : null }; });
+    const perKcal = slBasis === "kcal" && cols.every(c => c.price && c.raw.cal > 0) ? cols.map(c => c.price.perServing * 100 / c.raw.cal) : null;
+    const rows = CMP.table(cols, { carbLimit: profile.carb || 0, perKcal });
+    sec.append(el("div", { class: "chiprow", style: "margin:0", role: "group", "aria-label": "Compare basis" },
+      ...[["serving", "Per serving"], ["kcal", "Per 100 calories"]].map(([k, t]) => el("button", { class: "chip" + (slBasis === k ? " on" : ""), type: "button", "aria-pressed": String(slBasis === k), text: t, onclick: () => { slBasis = k; renderResult(current); } }))));
+    const thead = el("thead", {}, el("tr", {}, el("th", { text: slBasis === "kcal" ? "Per 100 calories" : "Per serving" }),
+      ...cols.map(c => el("th", {}, el("button", { class: "linkbtn slname", type: "button", text: c.raw.n, onclick: () => pick(c.raw, { scroll: true }) }),
+        el("span", { class: "sv", text: c.food === c.raw ? c.raw.s : "100 calories" }),
+        el("button", { class: "slx", type: "button", "aria-label": `Remove ${c.raw.n} from the shortlist`, title: "Remove", text: "×", onclick: () => toggleShort(c.raw) })))));
+    const tbody = el("tbody");
+    for (const r of rows) {
+      const cells = r.values.map((v, i) => {
+        const win = r.best === i;
+        if (r.kind === "verdict") return el("td", { class: win ? "win" : null }, pill(v));
+        const text = v == null ? "—" : r.kind === "money" ? PR.money(v) : r.kind === "grams" ? `${Math.round(v)} g` : r.k === "net" ? `${fmt(v)} g` : amt(cols[i].food, r.k, r.unit);
+        return el("td", { class: win ? "win" : null, text });
+      });
+      tbody.append(el("tr", {}, el("td", { text: r.label }), ...cells));
+    }
+    // The answer in a line: what each product is best at.
+    const bestAt = cols.map(() => []);
+    for (const r of rows) if (r.best >= 0 && r.kind !== "verdict") bestAt[r.best].push(r.kind === "money" ? "cheapest" : r.kind === "grams" ? "most protein per $1" : `${r.dir === "more" ? "most" : "least"} ${r.label.toLowerCase()}`);
+    const vbest = rows[0].best;
+    const lines = cols.map((c, i) => bestAt[i].length ? `${c.raw.n}: ${bestAt[i].join(", ")}` : null).filter(Boolean);
+    sec.append(el("p", { class: "cmpsum", role: "status" },
+      el("b", { text: vbest >= 0 ? `Best fit for your goals: ${cols[vbest].raw.n}.` : "No single best verdict." }), lines.length ? " " + lines.join(". ") + "." : ""),
+      el("div", { class: "ctable-wrap sltable" }, el("table", { class: "ctable" }, thead, tbody)),
+      el("p", { class: "legend", text: "Green marks the best in each row when it's meaningfully better than the worst (at least 10% apart and 5% of the daily value) and every product reports it. Prices come from what you've typed, or typical prices." }),
+      el("div", { class: "chiprow", style: "margin:0" },
+        el("button", { class: "btn small ghost", type: "button", text: "Close", onclick: () => { slOpen = false; renderResult(current); } }),
+        el("button", { class: "btn small ghost", type: "button", text: "Clear shortlist", onclick: () => { shortlist = []; store.set("shortlist", shortlist); slOpen = false; renderAppHome(); renderResult(current); toast("Shortlist cleared"); } })));
+    return sec;
+  }
+
   // ---------- compare ----------
   // Shelf prices for the two products being compared: the price and the package size, as the shelf tag shows them.
   // Saved like "Use my store's price", so the product's own page uses them too.
@@ -419,7 +476,14 @@
       PAGES ? el("button", { class: "btn small", type: "button", text: "Scan to compare", onclick: startCompareScan }) : null);
     sec.append(row, list);
     // Recent scans, one tap each: the products you were just holding.
-    const recent = PAGES && !compareWith ? scans.map(x => byName(x.n)).filter(g => g && g.n !== f.n).slice(0, 4) : [];
+    const onSl = shortlist.includes(f.n), others = shortlist.filter(n => n !== f.n).map(byName).filter(Boolean);
+    sec.append(el("div", { class: "chiprow slrow", style: "margin:0" },
+      el("button", { class: "btn small" + (onSl ? " ghost" : ""), type: "button", "aria-pressed": String(onSl), text: onSl ? "✓ On your shortlist" : "+ Add to shortlist", onclick: () => toggleShort(f) }),
+      others.length + (onSl ? 1 : 0) >= 2 && !slOpen ? el("button", { class: "btn small ghost", type: "button", text: `Compare all ${others.length + (onSl ? 1 : 0)}`, onclick: openShortlist }) : null,
+      !others.length ? el("span", { class: "muted slhint", text: "Keep the few products you choose between here, and see them side by side." }) : null));
+    if (others.length && !compareWith) sec.append(el("div", { class: "chiprow", style: "margin:0", role: "group", "aria-label": "Compare with your shortlist" }, el("span", { class: "lbl", text: "Shortlist" }),
+      ...others.map(g => el("button", { class: "chip", type: "button", text: g.n, onclick: () => { compareWith = g; renderResult(current); showCompare(); } }))));
+    const recent = PAGES && !compareWith ? scans.map(x => byName(x.n)).filter(g => g && g.n !== f.n && !shortlist.includes(g.n)).slice(0, 4) : [];
     if (recent.length) sec.append(el("div", { class: "chiprow", style: "margin:0", role: "group", "aria-label": "Compare with a recent scan" }, el("span", { class: "lbl", text: "Recent scans" }),
       ...recent.map(g => el("button", { class: "chip", type: "button", text: g.n, onclick: () => { compareWith = g; renderResult(current); showCompare(); } }))));
     attachSuggest(input, list, g => { compareWith = g; renderResult(current); });
@@ -549,6 +613,7 @@
             goalsSet ? null : el("button", { class: "linkbtn", type: "button", text: "Set yours", onclick: () => showView("goals") })), el("div", { class: "verdict" }, C2 ? el("span", { class: "vicon", "aria-hidden": "true", html: C2.icon(a.tier, 34) }) : null, a.word), a.spicy ? el("span", { class: "vp spicy flag", text: "Spicy" }) : null, el("p", { class: "why", text: a.why }),
             mult !== 1 ? el("p", { class: "per", text: "The verdict is for one standard serving; the label and bars show your amount." }) : null),
           alFirst ? null : renderAllergy(a),
+          !isPlate && slOpen ? renderShortlist() : null,
           !isPlate && compareWith && compareWith.n !== f.n ? renderCompare(f) : null,
           // The decision first (swaps and the reasons), then price, then the folded deep dives.
           isPlate ? null : renderSwaps(f),
@@ -1414,10 +1479,12 @@
   function syncProfileUI() {
     // A field showing an error keeps what the user typed until they fix it; only valid fields are refreshed.
     for (const [k, id] of Object.entries(PF)) if ($(id).getAttribute("aria-invalid") !== "true") $(id).value = profile[k];
+    if ($("p-carb").getAttribute("aria-invalid") !== "true") $("p-carb").value = String(profile.carb || 0);
+    document.querySelectorAll("#carbChips .chip").forEach(b => { const on = Number(/** @type {HTMLElement} */ (b).dataset.carb) === (profile.carb || 0); b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
     $("p-skip").value = profile.skip || ""; $("p-mild").checked = !!profile.mild; $("p-usda").value = profile.usdaKey || "";
     if (AL) { for (const x of AL.LIST) { const b = /** @type {HTMLInputElement} */ ($("p-al-" + x.id)); if (b) b.checked = (x.diet ? profile.diets || [] : profile.allergies || []).includes(x.id); } $("p-al-other").value = profile.allergyOther || ""; }
     if (sgTargets) refreshHints();
-    $("profSummary").textContent = `${profile.cal.toLocaleString("en-US")} cal · ${profile.pro} g protein · ≤${profile.sat} g sat fat`;
+    $("profSummary").textContent = `${profile.cal.toLocaleString("en-US")} cal · ${profile.pro} g protein · ≤${profile.sat} g sat fat${profile.carb > 0 ? ` · ≤${profile.carb} g net carbs` : ""}`;
     if (AL) {
       const picked = [...AL.LIST.filter(x => !x.diet && (profile.allergies || []).includes(x.id)).map(x => `${AL_ICON[x.id]} ${x.label}`),
         ...String(profile.allergyOther || "").split(",").map(t => t.trim()).filter(Boolean)];
@@ -1429,6 +1496,7 @@
   function readProfile() {
     // Only valid numbers are saved; an invalid field keeps its last good value and shows why next to it.
     for (const [k, id] of Object.entries(PF)) if (checkGoal($(id))) profile[k] = Number($(id).value);
+    if (checkGoal($("p-carb"))) profile.carb = Number($("p-carb").value);
     profile.skip = $("p-skip").value; profile.mild = $("p-mild").checked; profile.usdaKey = $("p-usda").value.trim();
     if (AL) {
       const on = x => /** @type {HTMLInputElement} */ ($("p-al-" + x.id)).checked;
@@ -1632,7 +1700,7 @@
   // ---------- goal inputs: inline validation ----------
   // One state only: an invalid value stays in the field, marked, with a message saying what's still in use.
   // Nothing is saved until it's fixed. Every goal field reserves a line for the message, so the row never shifts.
-  const goalKey = input => Object.keys(PF).find(k => PF[k] === input.id);
+  const goalKey = input => input.id === "p-carb" ? "carb" : Object.keys(PF).find(k => PF[k] === input.id);
   function checkGoal(input) {
     const raw = input.value.trim(), v = Number(raw), min = Number(input.min), max = Number(input.max);
     const fmtN = n => n.toLocaleString("en-US");
@@ -1667,6 +1735,10 @@
     const C = window.SelfCheckCard;
     const items = scans.map(x => byName(x.n)).filter(Boolean).slice(0, SCANS_SHOW);
     $("scanRecentBox").hidden = !items.length;
+    const sl = shortlist.map(byName).filter(Boolean);
+    $("slHome").hidden = sl.length < 2;
+    if (sl.length >= 2) $("slHome").replaceChildren(el("span", { class: "slh-t" }, el("b", { text: `Your shortlist · ${sl.length}` }), el("small", { text: sl.map(f => f.n).join(" · ") })),
+      el("button", { class: "btn small", type: "button", text: "Compare all", onclick: openShortlist }));
     $("scanRecent").replaceChildren(...items.map(f => {
       const a = V.assess(f, profile);
       const al = a.allergy && (a.allergy.status === "contains" || a.allergy.status === "may") ? a.allergy : null;
@@ -1751,7 +1823,10 @@
     else { $("p-allergies").hidden = true; $("p-diets").hidden = true; }
     document.querySelectorAll("#profile input, #alBox input, #prefBox input").forEach(i => i.addEventListener("change", readProfile));
     Object.values(PF).forEach(id => $(id).addEventListener("input", () => checkGoal($(id))));
+    $("p-carb").addEventListener("input", () => checkGoal($("p-carb")));
+    document.querySelectorAll("#carbChips .chip").forEach(b => b.addEventListener("click", () => { $("p-carb").value = /** @type {HTMLElement} */ (b).dataset.carb; readProfile(); }));
     syncProfileUI();
+    checkGoal($("p-carb"));
     Object.values(PF).forEach(id => checkGoal($(id))); // creates each field's (empty) message line
     renderSuggest();
     // Goals not set yet: a dot on the Goals tab instead of opening the panel.

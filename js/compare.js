@@ -43,5 +43,42 @@
       verdicts: wordA === wordB ? `Both: ${wordA}.` : `${nameA}: ${wordA}. ${nameB}: ${wordB}.` };
   }
 
-  return { ROWS, rows, priceRows, summary };
+  // The shortlist: several products side by side. cols: [{ food (already scaled to the basis), verdict, price, value }].
+  // Each row marks the best column when it's meaningfully better than the worst (same rule as two-way compare), and
+  // only when every product reports that nutrient. carbLimit adds a net-carb row (less is better).
+  const TIER_RANK = { good: 3, fine: 2, mid: 1, bad: 0, skip: -1 };
+  function table(cols, { carbLimit = 0, perKcal = null } = {}) {
+    const pick = (vals, dir, k) => {
+      if (!dir || vals.some(v => v == null) || vals.length < 2) return -1;
+      const best = dir === "more" ? Math.max(...vals) : Math.min(...vals), worst = dir === "more" ? Math.min(...vals) : Math.max(...vals);
+      if (!(k ? V.meaningfulDiff(k, best, worst) : best !== worst)) return -1;
+      const i = vals.indexOf(best);
+      return vals.indexOf(best, i + 1) === -1 ? i : -1; // a tie for best marks nobody
+    };
+    const out = [];
+    const ranks = cols.map(c => TIER_RANK[c.verdict.tier] ?? 0);
+    const top = Math.max(...ranks);
+    out.push({ label: "Verdict", kind: "verdict", values: cols.map(c => c.verdict), best: ranks.filter(r => r === top).length === 1 ? ranks.indexOf(top) : -1 });
+    const prices = cols.map((c, i) => c.price ? (perKcal ? perKcal[i] : c.price.cost) : null);
+    if (prices.some(v => v != null)) {
+      const known = prices.every(v => v != null), lo = known ? Math.min(...prices) : 0, hi = known ? Math.max(...prices) : 0;
+      out.push({ label: cols.every(c => !c.price || c.price.mine) ? "Price" : "Typical price", kind: "money", values: prices,
+        best: known && hi - lo >= Math.max(0.05, 0.1 * hi) ? pick(prices, "less", null) : -1 });
+    }
+    const vals = cols.map(c => c.value && c.value.k === "pro" ? c.value.v : null);
+    if (vals.filter(v => v != null).length >= 2) out.push({ label: "Protein per $1", kind: "grams", values: vals,
+      best: vals.every(v => v != null) && Math.max(...vals) - Math.min(...vals) >= 0.1 * Math.max(...vals) ? pick(vals, "more", null) : -1 });
+    const unknownIn = (f, k) => V.isMissing(f, k) || V.isLowerBound(f, k);
+    for (const [label, k, unit, dir] of ROWS) {
+      const values = cols.map(c => unknownIn(c.food, k) ? null : c.food[k]);
+      out.push({ label, k, unit, dir, kind: "nutrient", values, best: pick(values, dir, k) });
+      if (k === "carb" && carbLimit > 0) {
+        const net = cols.map(c => V.netCarb(c.food));
+        out.push({ label: "Net carbs", k: "net", unit: " g", dir: "less", kind: "nutrient", values: net, best: pick(net, "less", "carb") });
+      }
+    }
+    return out;
+  }
+
+  return { ROWS, rows, priceRows, summary, table };
 });

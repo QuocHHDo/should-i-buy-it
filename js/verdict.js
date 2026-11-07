@@ -94,8 +94,14 @@
     return all.length ? Number(all[all.length - 1][1]) : null;
   }
 
+  // Net carbs: total carbohydrate minus fiber (US labels count fiber inside total carbs). Unknown fiber counts as zero,
+  // so the number is never lower than it should be. null when carbs aren't reported.
+  const netCarb = f => isMissing(f, "carb") ? null : Math.max(0, Math.round((f.carb - (isMissing(f, "fib") ? 0 : f.fib || 0)) * 10) / 10);
+  // The daily-limit nutrients that block "Get it" when unknown: the carb limit joins them only when one is set.
+  const limitsFor = p => p && p.carb > 0 ? [...KEY_LIMITS, "carb"] : KEY_LIMITS;
+
   // Generic starting goals (roughly FDA Daily Values on a 2,000-calorie diet).
-  const DEFAULT_PROFILE = { cal: 2000, pro: 100, sat: 20, na: 2300, add: 50, fib: 28, skip: "", mild: false, allergies: [], allergyOther: "", diets: [] };
+  const DEFAULT_PROFILE = { cal: 2000, pro: 100, sat: 20, na: 2300, add: 50, fib: 28, carb: 0, skip: "", mild: false, allergies: [], allergyOther: "", diets: [] };
 
   // Skip-list matching on whole words with simple plurals: "egg" matches "Eggs" and "Breakfast sandwich, sausage and egg",
   // not "Eggplant" or "Veggie burger". Multi-word terms ("ground beef") must appear as that word sequence.
@@ -130,7 +136,9 @@
   const HEAVY_SHARE = 0.2;
   const MEANINGFUL_REL = 0.1;
   // One serving's cutoffs, as shares of the daily limit: the first costs a point, the second two.
-  const CUT = { sat: [0.15, 0.3], na: [0.2, 0.35], add: [0.15, 0.3] };
+  // The optional carb limit (low carb, keto) has a third step: one serving that takes half the day's carbs costs three
+  // points, so even a whole fruit or whole grain can't be a top pick on a tight limit.
+  const CUT = { sat: [0.15, 0.3], na: [0.2, 0.35], add: [0.15, 0.3], carb: [0.15, 0.3, 0.5] };
   // Share of calories from protein for "decent" and "high" protein, and below which a heavy serving is penalized.
   const DENSITY = [0.2, 0.4];
   const HEAVY_DENSITY = 0.15;
@@ -169,6 +177,12 @@
       else if (share >= MEAL_CUT.limit[0]) { s -= 1; r.push({ k: "neg", n: k, d: -1, t: `Getting high on ${word}: ${amt}${unit}, ${pct(f[k], m[k])}% of this meal's share.` }); }
     };
     limit("sat", "saturated fat", " g"); limit("na", "sodium", " mg"); limit("add", "added sugar", " g");
+    const net = netCarb(f), mc = p.carb > 0 ? p.carb * MEAL_SHARE : 0;
+    if (mc && net != null) {
+      const share = net / mc;
+      if (share >= MEAL_CUT.limit[1]) { s -= 2; r.push({ k: "neg", n: "carb", d: -2, t: `High in carbs for your limit: ${fmt(net)} g net carbs is ${pct(net, mc)}% of this meal's share (${pct(net, p.carb)}% of your ${p.carb} g a day).` }); }
+      else if (share >= MEAL_CUT.limit[0]) { s -= 1; r.push({ k: "neg", n: "carb", d: -1, t: `Getting high on carbs: ${fmt(net)} g net, ${pct(net, mc)}% of this meal's share.` }); }
+    }
     if ((f.tags || []).includes("processed")) { s -= 1; r.push({ k: "neg", n: "processed", d: -1, t: "Includes processed meat, which is linked to higher heart and cancer risk." }); }
     if (K("cal") && m.cal) {
       if (f.cal > MEAL_CUT.cal * m.cal) { s -= 1; r.push({ k: "neg", n: "cal", d: -1, t: `A big meal: ${Math.round(f.cal)} calories is ${pct(f.cal, p.cal)}% of your ${p.cal.toLocaleString("en-US")} for the day.` }); }
@@ -182,13 +196,15 @@
       if (!hasNeg) r.push({ k: "warn", t: "Not much going for it yet: more protein, fiber or vegetables would make this a strong meal." }); }
     // A meal over its share of a limit can't be a top pick, however much protein and fiber it has: the −2 for a
     // limit is the same at 100% or 260% of the share, so the pluses could otherwise outweigh it.
-    const over = ["sat", "na", "add"].filter(k => K(k) && m[k] && f[k] / m[k] >= MEAL_CUT.limit[1]);
+    const over = ["sat", "na", "add"].filter(k => K(k) && m[k] && f[k] / m[k] >= MEAL_CUT.limit[1]).map(k => NUTRIENT_WORD[k]);
+    if (mc && net != null && net / mc >= MEAL_CUT.limit[1]) over.push("net carbs");
     if (over.length && tier === "good") {
       tier = "mid"; word = "In moderation";
-      why = `Strong on protein and balance, but over this meal's share of ${listWords(over)}.`;
-      r.push({ k: "warn", t: `Can't be "Get it" while it goes over this meal's share of ${listWords(over)}. A smaller portion or a leaner swap would fix that.` });
+      const ow = over.length <= 1 ? over.join("") : over.slice(0, -1).join(", ") + " or " + over.at(-1);
+      why = `Strong on protein and balance, but over this meal's share of ${ow}.`;
+      r.push({ k: "warn", t: `Can't be "Get it" while it goes over this meal's share of ${ow}. A smaller portion or a leaner swap would fix that.` });
     }
-    const unknownLimits = KEY_LIMITS.filter(k => unknownLimit(f, k, p, true));
+    const unknownLimits = limitsFor(p).filter(k => unknownLimit(f, k, p, true));
     const note = missingNote(f);
     if (note) r.push({ k: "warn", t: (f.missing || []).some(k => KEY_LIMITS.includes(k) || k === "sug") ? `${note} They aren't counted either way.` : note });
     if (unknownLimits.length && tier === "good") {
@@ -250,6 +266,14 @@
     if (addShare >= CUT.add[1]) { s -= 2; r.push({ k: "neg", n: "add", d: -2, t: `High added sugar: ${fmt(f.add)} g is ${Math.round(addShare * 100)}% of your ${p.add} g daily limit.` }); }
     else if (addShare >= CUT.add[0]) { s -= 1; r.push({ k: "neg", n: "add", d: -1, t: `Some added sugar: ${fmt(f.add)} g (${Math.round(addShare * 100)}% of your limit).` }); }
 
+    // The carb limit, when one is set (Goals → carb limit). Judged on net carbs.
+    const net = p.carb > 0 ? netCarb(f) : null, carbShare = net != null ? net / p.carb : 0;
+    if (net != null) {
+      const fib = K("fib") && f.fib > 0 ? ` (${fmt(f.carb)} g carbs minus ${fmt(f.fib)} g fiber)` : "";
+      if (carbShare >= CUT.carb[2]) { s -= 3; r.push({ k: "neg", n: "carb", d: -3, t: `Uses up most of your carbs: ${fmt(net)} g net carbs${fib} is ${Math.round(carbShare * 100)}% of your ${p.carb} g daily limit.` }); }
+      else if (carbShare >= CUT.carb[1]) { s -= 2; r.push({ k: "neg", n: "carb", d: -2, t: `High in carbs for your limit: ${fmt(net)} g net carbs${fib} is ${Math.round(carbShare * 100)}% of your ${p.carb} g a day.` }); }
+      else if (carbShare >= CUT.carb[0]) { s -= 1; r.push({ k: "neg", n: "carb", d: -1, t: `Some carbs: ${fmt(net)} g net (${Math.round(carbShare * 100)}% of your ${p.carb} g limit).` }); }
+    }
     if (K("sug") && K("add") && K("pro") && CONCENTRATED_SUGAR.test(f.n) && f.sug >= 25 && f.add < 10 && f.pro < 5) { s -= 1; r.push({ k: "neg", n: "sug", d: -1, t: `${fmt(f.sug)} g of sugar in one serving. Even natural sugar adds up at this amount.` }); }
     if ((f.tags || []).includes("treat")) { s -= 1; r.push({ k: "neg", n: "treat", d: -1, t: "A treat (dessert, candy or fried snack): best kept occasional, not a regular buy." }); }
     if ((f.tags || []).includes("processed")) { s -= 2; r.push({ k: "neg", n: "processed", d: -2, t: "Processed meat, which is linked to higher heart and cancer risk." }); }
@@ -298,6 +322,12 @@
       r.push({ k: "warn", t: K("cal") ? `Not much fiber or protein for its ${Math.round(f.cal)} calories, so it won't do much to keep you full.` : "Calories weren't reported, so there's not enough to judge it well." });
     }
 
+    // A serving that takes 30% or more of a carb limit can't be a top pick, whatever else it has going for it.
+    if (net != null && carbShare >= CUT.carb[1] && tier === "good") {
+      tier = "mid"; word = "In moderation"; why = "Good on nutrition, but heavy on carbs for your limit.";
+      r.push({ k: "warn", t: `Can't be "Get it" on your ${p.carb} g carb limit: one serving takes ${Math.round(carbShare * 100)}% of it.` });
+    }
+
     // Additives (scanned products only). Flagged ones get a "!" line; one a regulator has removed from food keeps
     // the product from being a top pick. Processing level is a note: nutrition still decides the verdict.
     const adds = ADD ? ADD.analyze(f) : null;
@@ -310,7 +340,7 @@
     }
 
     // Unknown or lower-bound limiting nutrients: say so, and never call it a "Get it" on incomplete data.
-    const unknownLimits = KEY_LIMITS.filter(k => unknownLimit(f, k, p));
+    const unknownLimits = limitsFor(p).filter(k => unknownLimit(f, k, p));
     const note = missingNote(f);
     if (note) r.push({ k: "warn", t: `${note} ${unknownLimits.length ? "Those aren't counted either way." : "They aren't counted either way."}` });
     if (unknownLimits.length && (tier === "good" || tier === "fine")) {
@@ -334,7 +364,9 @@
       trans: ["Trans fat", "low", "Mostly from processed food; small amounts occur naturally in meat and dairy. It raises LDL more than any other fat.", "Keep it as close to zero as possible."],
       chol: ["Cholesterol", "ctx", "Cholesterol in the food itself, found only in animal foods.", "For most people it affects blood cholesterol much less than saturated fat does, so don't avoid eggs or shrimp for this alone."],
       na: ["Sodium", "low", "Salt. Too much raises blood pressure and makes you hold water.", `Your limit is ${p.na.toLocaleString("en-US")} mg a day; ${it} is ${share(f.na, p.na)}% of it. Over 20% DV per serving is salty.`],
-      carb: ["Total carbohydrate", "ctx", "Starch, sugar and fiber combined: your main fuel.", "Judge the quality by the fiber and added-sugar lines beneath it."],
+      carb: p.carb > 0 && netCarb(f) != null
+        ? ["Total carbohydrate", "low", "Starch, sugar and fiber combined. Net carbs are what's left after subtracting fiber, which you don't digest.", `Your net-carb limit is ${p.carb} g a day; ${it} has ${fmt(netCarb(f))} g net, ${share(netCarb(f), p.carb)}% of it.`]
+        : ["Total carbohydrate", "ctx", "Starch, sugar and fiber combined: your main fuel.", "Judge the quality by the fiber and added-sugar lines beneath it."],
       fib: ["Dietary fiber", "more", "The part of plants you don't digest. It keeps you full, steadies blood sugar and lowers LDL a little.", `Your goal is ${p.fib} g a day; 3 g or more per serving is a good source.`],
       sug: ["Total sugars", "ctx", "Natural sugar (in fruit and milk) plus added sugar.", "Natural sugar is fine in whole foods. Check the added-sugar line instead."],
       add: ["Added sugars", "low", "Sugar put in during processing: calories that don't keep you full.", `Your limit is ${p.add} g a day; ${it} is ${share(f.add, p.add)}% of it.`],
@@ -746,7 +778,7 @@
   function health(f, p, basis = "serving") {
     const g = basis === "kcal" ? (per100kcal(f) || f) : f;
     const score = assess(g, { ...p, skip: "", mild: false }).score;
-    const harm = g.sat / p.sat + g.na / p.na + (p.add > 0 ? g.add / p.add : 0) + ((g.tags || []).includes("processed") ? 0.3 : 0);
+    const harm = g.sat / p.sat + g.na / p.na + (p.add > 0 ? g.add / p.add : 0) + (p.carb > 0 && netCarb(g) != null ? netCarb(g) / p.carb : 0) + ((g.tags || []).includes("processed") ? 0.3 : 0);
     return { score, harm, scaled: g !== f };
   }
 
@@ -788,7 +820,7 @@
   const OTHER_LABEL = { whole: f => f.c === "fruit" ? "Whole fruit" : "Whole vegetable", grain: "Whole grain", volume: "Lots of volume, few calories",
     goodfat: "Mostly unsaturated fat", trans: "Trans fat", sug: "A lot of sugar, even natural", treat: "A treat", processed: "Processed meat",
     empty: "Little protein or fiber", evidence: "Research beyond the label", balance: "Protein plus fruit or veg" };
-  const ROW_KEYS = ["pro", "fib", "cal", "sat", "na", "add"];
+  const ROW_KEYS = ["pro", "fib", "cal", "sat", "na", "add", "carb"];
   function breakdown(f, p) {
     const a = assess(f, p);
     if (a.score == null) return null;
@@ -797,7 +829,7 @@
     const pct = v => Math.round(v * 100);
     const num = (k, v) => k === "na" || k === "cal" ? Math.round(v).toLocaleString("en-US") : fmt(v);
     const rows = [];
-    const row = (k, o) => rows.push({ k, name: { pro: "Protein", fib: "Fiber", cal: "Calories", sat: "Saturated fat", na: "Sodium", add: "Added sugar" }[k],
+    const row = (k, o) => rows.push({ k, name: { pro: "Protein", fib: "Fiber", cal: "Calories", sat: "Saturated fat", na: "Sodium", add: "Added sugar", carb: "Net carbs" }[k],
       known: known(f, k), atLeast: isLowerBound(f, k), points: pts(k), ...o });
     // Protein: share of calories for one food (what earns the credit); share of the meal's goal for a plate.
     if (meal) row("pro", { kind: "goal", v: f.pro / p.pro, max: 0.5, marks: MEAL_CUT.pro.map(c => c * MEAL_SHARE),
@@ -819,6 +851,10 @@
       row(k, { kind: "limit", v, max: Math.max(0.5, meal ? 0.5 : CUT[k][1] + 0.15), marks: meal ? MEAL_CUT.limit.map(c => c * MEAL_SHARE) : CUT[k].slice(),
         text: `${isLowerBound(f, k) ? "≥" : ""}${num(k, f[k])}${u} · ${pct(v)}% of your limit`, axis: "share of your daily limit" });
     }
+    const net = netCarb(f);
+    if (p.carb > 0) rows.push({ k: "carb", name: "Net carbs", known: net != null, atLeast: isLowerBound(f, "carb"), points: pts("carb"), kind: "limit", v: net != null ? net / p.carb : 0,
+      max: meal ? 0.5 : 0.65, marks: meal ? MEAL_CUT.limit.map(c => c * MEAL_SHARE) : CUT.carb.slice(),
+      text: net != null ? `${isLowerBound(f, "carb") ? "≥" : ""}${fmt(net)} g · ${pct(net / p.carb)}% of your limit` : "Not reported", axis: "share of your daily net-carb limit" });
     const other = a.reasons.filter(r => r.n && !ROW_KEYS.includes(r.n))
       .map(r => ({ n: r.n, points: r.d, label: typeof OTHER_LABEL[r.n] === "function" ? OTHER_LABEL[r.n](f) : OTHER_LABEL[r.n] || r.n }));
     // A score between −2 and +2 is In moderation, or Fine for a serving with barely any calories and nothing to flag.
@@ -829,5 +865,5 @@
     return { rows, other, score: a.score, tier: a.tier, word: a.word, byScore, override, note, meal };
   }
 
-  return { allergyBlocks, breakdown, CUT, DENSITY, MEAL_CUT, NEGLIGIBLE_KCAL, RANK, DEFAULT_PROFILE, NUM_KEYS, NUTRIENT_WORD, skipMatch, healthyFatSource, servingGrams, isMissing, isLowerBound, missingNote, assess, explain, scale, findSwaps, kindOf, assessMeal, MEAL_SHARE, swapCategory, swapTarget, SWAP_GROUPS, swapDiffs, meaningfulDiff, FDA_DV, POS_FLOOR, HEAVY_SHARE, health, per100kcal, combine, KCAL_MIN, SWAP_HINTS, EVIDENCE, NOTES, slug, legacySlug, foldAccents, fmt };
+  return { netCarb, allergyBlocks, breakdown, CUT, DENSITY, MEAL_CUT, NEGLIGIBLE_KCAL, RANK, DEFAULT_PROFILE, NUM_KEYS, NUTRIENT_WORD, skipMatch, healthyFatSource, servingGrams, isMissing, isLowerBound, missingNote, assess, explain, scale, findSwaps, kindOf, assessMeal, MEAL_SHARE, swapCategory, swapTarget, SWAP_GROUPS, swapDiffs, meaningfulDiff, FDA_DV, POS_FLOOR, HEAVY_SHARE, health, per100kcal, combine, KCAL_MIN, SWAP_HINTS, EVIDENCE, NOTES, slug, legacySlug, foldAccents, fmt };
 });

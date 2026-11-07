@@ -329,6 +329,16 @@ details.fold > summary:focus-visible { outline: 2px solid var(--accent); outline
 .ctable th:first-child, .ctable td:first-child { text-align: left; color: var(--muted); }
 .ctable thead th { font-weight: 600; color: var(--ink); }
 .ctable thead .sv { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
+.sltable th { min-width: 6.5em; }
+.sltable th:first-child, .sltable td:first-child { position: sticky; left: 0; background: var(--paper); z-index: 1; min-width: 5.5em; max-width: 7em; }
+.sltable .slname { font: inherit; font-weight: 600; color: var(--ink); background: none; border: 0; padding: 0; text-align: right; cursor: pointer; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.sltable .slx { font: inherit; font-size: 16px; line-height: 1; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 999px; width: 26px; height: 26px; margin-top: 4px; cursor: pointer; }
+.sltable td .vp { white-space: nowrap; }
+.slrow { align-items: center; }
+.slhint { font-size: 13px; }
+.slhome { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.slhome[hidden] { display: none; }
+.slh-t { display: grid; gap: 2px; min-width: 0; } .slh-t small { color: var(--muted); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ctable td.win { background: var(--good-soft); color: var(--good); font-weight: 600; }
 
 /* lookups, scan, notices */
@@ -352,6 +362,12 @@ details.fold > summary:focus-visible { outline: 2px solid var(--accent); outline
 .sgpreg { font-size: 13.5px; color: var(--muted); }
 .sgstatus { margin: 10px 0 0; font-size: 14px; }
 .sgwhy { color: var(--mid); font-weight: 600; }
+.carbrow { display: grid; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.carbrow .lbl { font-weight: 600; font-size: 14px; }
+.carbrow .chiprow { margin: 0; }
+.carbin { font-size: 13.5px; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.carbin input { font: 500 16px var(--font-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 7px 8px; width: 4.6em; }
+.carbrow .hint { margin: 0; font-size: 13px; color: var(--muted); }
 .tcell { display: grid; align-content: start; gap: 4px; min-width: 0; }
 .sghint { font-size: 12.5px; min-height: 18px; }
 .sgok { color: var(--good, var(--accent)); font-weight: 600; }
@@ -452,6 +468,7 @@ details.box > summary .muted { font-weight: 400; font-size: 13.5px; }
 @media (hover: hover) {
   .suggest li:hover, .label [data-k]:hover { background: var(--accent-soft); }
   .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip.on:hover { color: var(--paper); border-color: var(--ink); }
   .swap:hover { border-color: var(--accent); }
   .results button:hover { border-color: var(--accent); }
   .bitem:hover { border-color: var(--accent); }
@@ -625,6 +642,7 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
   <section class="apphome" id="appHome" hidden data-pages-only aria-label="Scan">
     <button class="scanbig" type="button" id="scanBig"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5.5A1.5 1.5 0 015.5 4H8M16 4h2.5A1.5 1.5 0 0120 5.5V8M20 16v2.5a1.5 1.5 0 01-1.5 1.5H16M8 20H5.5A1.5 1.5 0 014 18.5V16"/><path d="M8 8v8M11 8v8M14 8v8M17 8v8"/></svg><span><b>Scan a barcode</b><small>Point your camera at any food's barcode</small></span></button>
     <button class="btn ghost cmpbig" type="button" id="cmpBig"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/></svg> <span class="cmpt"><span>Compare two products</span><small>Scan one, then the other</small></span></button>
+    <div class="slhome" id="slHome" hidden></div>
     <button class="photolink" type="button" id="labelBtn">No barcode, or it isn't found? <u>Read a photo of the label</u></button>
     <div class="scans" id="scanRecentBox" hidden>
       <h2 class="scans-h">Recent scans</h2>
@@ -724,6 +742,16 @@ body:not([data-view="check"]) #appHome, body:not([data-view="check"]) #installBa
         <label>Saturated fat limit (g)<input id="p-sat" type="number" min="5" max="40"></label>
         <label>Sodium limit (mg)<input id="p-na" type="number" min="500" max="5000" step="50"></label>
         <label>Added sugar limit (g)<input id="p-add" type="number" min="0" max="100"></label>
+      </div>
+      <div class="carbrow" id="carbRow">
+        <span class="lbl" id="carbLbl">Carb limit</span>
+        <div class="chiprow" role="group" aria-labelledby="carbLbl" id="carbChips">
+          <button class="chip" type="button" data-carb="0" aria-pressed="false">No limit</button>
+          <button class="chip" type="button" data-carb="100" aria-pressed="false">Low carb · 100 g</button>
+          <button class="chip" type="button" data-carb="25" aria-pressed="false">Keto · 25 g</button>
+        </div>
+        <label class="carbin">Or your own: <input id="p-carb" type="number" min="0" max="300" step="5" aria-describedby="carbHint"> g net carbs a day</label>
+        <p class="hint" id="carbHint">Net carbs are carbs minus fiber. With a limit set, carb-heavy foods lose points, and one serving that takes 30% or more of it can't be “Get it”. Keto is high in fat, so you may also want a higher saturated-fat limit; that's your call.</p>
       </div>
     </div>
   </section>
