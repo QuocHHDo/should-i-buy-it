@@ -369,8 +369,8 @@ const serve = () => new Promise(resolve => {
     ({ ctx, page } = await open("#apple"));
     const why = await page.evaluate(() => ({ n: document.querySelectorAll("#out .whyp").length, fiber: document.querySelector("#out .whyp .why-row .hint")?.textContent || "",
       dup: document.querySelectorAll("#out .reasons li").length, rows: document.querySelectorAll("#out .whyp .why-row").length, old: !!document.querySelector("#out .panel.whyp:not(.decided)") }));
-    ok(why.n === 1 && !why.old && why.rows >= 6 && why.fiber.length > 10, `one Why section: each nutrient's reason sits under its bar (${JSON.stringify(why)})`);
-    ok(await page.evaluate(() => { const t = document.querySelector("#out .tag").getBoundingClientRect().bottom, w = document.querySelector("#out .whyp").getBoundingClientRect().top, l = document.querySelector("#out .label").getBoundingClientRect().top; return t < w && w < l; }), "phones: verdict, then Why, then the label");
+    ok(why.n === 1 && !why.old && why.rows === 3 && why.fiber.length > 10 && await page.evaluate(() => document.querySelectorAll("#out .glance .gring").length === 3), `one Why section (protein, fiber, calories; the limits are rings at the top): each reason sits under its bar (${JSON.stringify(why)})`);
+    ok(await page.evaluate(() => { const t = document.querySelector("#out .tag").getBoundingClientRect().bottom, w = document.querySelector("#out .whyp").getBoundingClientRect().top, l = document.querySelector("#out .label").getBoundingClientRect().top; return t < w && w < l && document.querySelector("#out .glance").getBoundingClientRect().top < w; }), "phones: verdict, the rings and tiles, then Why, then the label");
     ok(await page.evaluate(() => !document.querySelector("#mini") || document.querySelector("#mini").hidden), "no pinned bar while the verdict is on screen");
     await page.evaluate(() => scrollTo(0, document.querySelector("#out .label").getBoundingClientRect().top + scrollY));
     await page.waitForSelector("#mini:not([hidden])");

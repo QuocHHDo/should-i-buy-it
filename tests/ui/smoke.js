@@ -215,10 +215,10 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     // "What decided it": the points shown add up to the total, and the total matches the verdict.
     w.location.hash = "#chicken-breast-grilled"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
     {
-      const pts = $$(".decided .pts, .why-chip b").map(e => Number(e.textContent.replace("−", "-").replace("?", "0")));
+      const pts = [...$$(".decided .pts, .why-chip b"), ...$$(".glance .gpts")].map(e => Number(e.textContent.replace(/[ ·]/g, "").replace("−", "-").replace("?", "0")));
       const tot = Number($(".why-total b").textContent.replace("−", "-"));
-      ok(pts.length >= 6 && pts.reduce((x, y) => x + y, 0) === tot, `chart points add up to the total (${pts.join(",")} = ${tot})`);
-      ok($$(".decided .tick").length >= 6, `chart shows the verdict's cutoffs as ticks (${$$(".decided .tick").length})`);
+      ok(pts.length >= 3 && $$(".glance .gring").length === 3 && pts.reduce((x, y) => x + y, 0) === tot, `the points in Why and on the limit rings add up to the total (${pts.join(",")} = ${tot})`);
+      ok($$(".decided .tick").length >= 3, `chart shows the verdict's cutoffs as ticks (${$$(".decided .tick").length})`);
       // Deep dives start folded to one line with their key fact; opening one is remembered.
       ok($(".decided").tagName === "SECTION" && !$("#out details.fold") && /Total [+−]?\d+ → /.test(text(".decided .fsum")), `the score breakdown is always shown, with its total by the heading (${text(".decided .fsum")})`);
       ok(/Get it/.test(text(".why-total")) && /Get it/.test(text(".tag .verdict")), `total matches the verdict (${text(".why-total").slice(0, 40)})`);
@@ -237,7 +237,7 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok(text("#out h2").toLowerCase() === fresh.description.toLowerCase() && /From USDA/.test(text(".src")), `#usda-<id> fetches a food this browser hasn't seen (${text("#out h2")})`);
     const addRow = $$(".label [data-k]").find(r => r.dataset.k === "add");
     ok(addRow && /—/.test(addRow.textContent) && !/0\s?g/.test(addRow.textContent), `unreported added sugar shows "—" on the label (${addRow && addRow.textContent})`);
-    ok(/Added sugar\s*not reported\s*\?/.test(text(".decided")), `and "not reported" on the chart, not counted (${text(".decided").slice(0, 200)})`);
+    ok(/\?\s*Added sugar\s*not reported/.test(text(".glance")), `and "not reported" on its ring, not counted (${text(".glance").slice(0, 200)})`);
     offMode = "ok"; w.location.hash = "#off-0123456789099"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(10);
     ok(/Open Food Facts/.test(text(".src")), `#off-<code> opens the product (${text("#out h2")})`);
     // Accented names: the folded slug and the old one both open Jalapeño; an unknown link never opens another food.

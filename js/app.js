@@ -197,6 +197,41 @@
     return el("section", { class: "panel fold " + cls },
       el("div", { class: "fhead" }, el("h3", { text: title }), summary ? el("span", { class: "fsum", text: summary }) : null), ...kids);
   }
+  // At a glance, right under the verdict: your daily limits as rings (how much of each one serving uses, colored green,
+  // amber or red by whether it costs points) and the key numbers as tiles. The same design as the extension's side panel.
+  const LIMIT_KEYS = ["sat", "na", "add", "carb"];
+  function renderGlance(f, a, isPlate) {
+    const b = V.breakdown(f, profile);
+    if (!b) return null;
+    const limits = b.rows.filter(r => LIMIT_KEYS.includes(r.k));
+    const short = { "Saturated fat": "Sat fat" };
+    const rings = limits.map(r => {
+      const tone = !r.known ? "na" : r.points <= -2 ? "bad" : r.points < 0 ? "warn" : "ok";
+      const pctv = r.known ? Math.round(r.v * 100) : null;
+      const amount = r.known ? r.text.split(" · ")[0] : "not reported";
+      const said = a.reasons.find(x => x.n === r.k);
+      const tip = `${r.name}: ${r.known ? `${amount}, ${pctv}% of your daily limit` : "not reported"}${r.known ? `, ${r.points ? signed(r.points) + " points" : "no points"}` : ", not counted"}. ${said ? said.t : ""}`.trim();
+      return el("div", { class: "gtile", role: "group", tabindex: "0", title: tip, "aria-label": tip },
+        el("div", { class: "gring " + tone, style: `--p:${Math.min(100, Math.max(0, pctv || 0))}`, "aria-hidden": "true" }, el("b", { text: r.known ? `${pctv}%` : "?" })),
+        el("span", { class: "gname", text: short[r.name] || r.name }),
+        el("span", { class: "gsub" }, amount, r.known && r.points ? el("span", { class: "gpts " + tone, text: ` · ${signed(r.points)}` }) : null));
+    });
+    // Key numbers for the amount you picked (the label's amount).
+    const g = isPlate ? f : V.scale(f, mult);
+    let cost = null;
+    if (PR && isPlate) { const c = PR.plateCost(plate.map(i => ({ food: byName(i.n), mult: i.mult })).filter(i => i.food), myPrices); if (c.priced && !c.missing) cost = c.total; }
+    else if (PR) { const p = storePriceOf(f) ? { cost: storePriceOf(f).perServing * mult } : PR.price({ ...f, mult }, myPrices); if (p && p.cost != null) cost = p.cost; }
+    const tile = (num, label, cls = "") => el("div", { class: "gtile num " + cls }, el("span", { class: "gnum", text: num }), el("span", { class: "gsub", text: label }));
+    const servingWord = isPlate ? "the meal" : mult === 1 ? "a serving" : `${fmt(mult)} servings`;
+    return el("section", { class: "glance", "aria-label": "At a glance" },
+      rings.length ? el("p", { class: "gh", text: isPlate ? "Your daily limits, this meal" : `Your daily limits, ${mult === 1 ? "one serving" : fmt(mult) + " servings"}` }) : null,
+      rings.length ? el("div", { class: "gtiles" + (rings.length === 4 ? " four" : "") }, ...rings) : null,
+      el("div", { class: "gtiles" },
+        tile(V.isMissing(g, "cal") ? "—" : Math.round(g.cal).toLocaleString("en-US"), "calories"),
+        tile(V.isMissing(g, "pro") ? "—" : `${fmt(g.pro)} g`, "protein"),
+        cost != null ? tile(PR.money(cost), servingWord) : tile(isPlate ? `${plate.length} item${plate.length === 1 ? "" : "s"}` : (f.s || "1 serving"), servingWord, "serv")));
+  }
+
   // "Why": the reasons and the score in one section. Each nutrient is one line (name, bar against the verdict's cutoffs,
   // amount, points) with its reason under it; reasons that aren't about one nutrient follow; then the total.
   const ICON = { pos: "+", neg: "−", warn: "!", note: "i" };
@@ -204,9 +239,10 @@
   function renderWhy(f, a) {
     const b = V.breakdown(f, profile);
     if (!b) return el("div", { class: "whyp whystack" }, el("section", { class: "panel" }, el("h3", { text: "Why" }), el("ul", { class: "reasons" }, ...a.reasons.map(reasonItem))), renderBars(V.scale(f, mult)));
-    const keys = new Set(b.rows.map(r => r.k));
+    const shownRows = b.rows.filter(r => !LIMIT_KEYS.includes(r.k)); // limits are the rings at the top
+    const keys = new Set(shownRows.map(r => r.k));
     const wrap = el("div", { class: "why-rows" });
-    for (const r of b.rows) {
+    for (const r of shownRows) {
       const tone = !r.known ? "na" : r.points > 0 ? "good" : r.points <= -2 ? "bad" : r.points < 0 ? "warn" : r.kind === "limit" ? "ok" : "neutral";
       const track = el("div", { class: "track" + (r.known ? "" : " na") });
       if (r.known) {
@@ -694,6 +730,7 @@
           el("div", { class: "tag " + a.tier }, el("div", { class: "for" }, goalsSet ? (isPlate ? "For you · whole meal" : "For you") : (isPlate ? "Standard goals · whole meal · " : "Standard goals · "),
             goalsSet ? null : el("button", { class: "linkbtn", type: "button", text: "Set yours", onclick: () => showView("goals") })), el("div", { class: "verdict" }, C2 ? el("span", { class: "vicon", "aria-hidden": "true", html: C2.icon(a.tier, 34) }) : null, a.word), a.spicy ? el("span", { class: "vp spicy flag", text: "Spicy" }) : null, el("p", { class: "why", text: a.why }),
             mult !== 1 ? el("p", { class: "per", text: "The verdict is for one standard serving; the label and bars show your amount." }) : null),
+          renderGlance(f, a, isPlate),
           alFirst ? null : renderAllergy(a),
           !isPlate && slOpen ? renderShortlist() : null,
           !isPlate && compareWith && compareWith.n !== f.n ? renderCompare(f) : null,
