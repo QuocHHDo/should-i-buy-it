@@ -190,13 +190,7 @@
   // Each bar is a nutrient against the verdict's own cutoffs (the tick marks), with the points it scored. Other
   // factors and the total follow, so the verdict reads as a sum. Always one standard serving: what the verdict judges.
   const signed = n => n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "0";
-  // A deep-dive section: always open, with its key fact next to the heading ("Ingredients · 6 ingredients · 2 added
-  // sugars") so it can be skimmed. Nothing on the product page is folded away.
-  try { localStorage.removeItem("openFolds"); } catch {} // left over from when these sections folded
-  function fold(cls, title, summary, kids) {
-    return el("section", { class: "panel fold " + cls },
-      el("div", { class: "fhead" }, el("h3", { text: title }), summary ? el("span", { class: "fsum", text: summary }) : null), ...kids);
-  }
+  try { localStorage.removeItem("openFolds"); } catch {} // left over from when sections folded
   // At a glance, right under the verdict: your daily limits as rings (how much of each one serving uses, colored green,
   // amber or red by whether it costs points) and the key numbers as tiles. The same design as the extension's side panel.
   const LIMIT_KEYS = ["sat", "na", "add", "carb"];
@@ -239,41 +233,32 @@
   function renderWhy(f, a) {
     const b = V.breakdown(f, profile);
     if (!b) return el("div", { class: "whyp whystack" }, el("section", { class: "panel" }, el("h3", { text: "Why" }), el("ul", { class: "reasons" }, ...a.reasons.map(reasonItem))), renderBars(V.scale(f, mult)));
-    const shownRows = b.rows.filter(r => !LIMIT_KEYS.includes(r.k)); // limits are the rings at the top
-    const keys = new Set(shownRows.map(r => r.k));
-    const wrap = el("div", { class: "why-rows" });
-    for (const r of shownRows) {
-      const tone = !r.known ? "na" : r.points > 0 ? "good" : r.points <= -2 ? "bad" : r.points < 0 ? "warn" : r.kind === "limit" ? "ok" : "neutral";
-      const track = el("div", { class: "track" + (r.known ? "" : " na") });
-      if (r.known) {
-        const w = Math.min(1, Math.max(0, r.v) / r.max);
-        track.append(el("div", { class: "fill " + tone, style: `width:${(w * 100).toFixed(1)}%` }));
-        if (r.v > r.max) track.append(el("span", { class: "over", "aria-hidden": "true", text: "›" }));
-      }
-      for (const m of r.marks) if (m < r.max) track.append(el("span", { class: "tick", style: `left:${(m / r.max * 100).toFixed(1)}%`, title: `${Math.round(m * 100)}%` }));
-      const said = a.reasons.filter(x => x.n === r.k);
-      wrap.append(el("div", { class: "why-row", role: "group", "aria-label": `${r.name}: ${r.known ? r.text : "not reported"}, ${r.known ? signed(r.points) + " points" : "not counted"}. Ticks at ${r.marks.map(m => Math.round(m * 100) + "%").join(" and ")} of the ${r.axis}.` },
-        el("div", { class: "why-line" }, el("span", { class: "name", text: r.name }), track,
-          el("span", { class: "val", text: r.known ? r.text : "not reported" }),
-          el("span", { class: "pts " + tone, text: r.known ? signed(r.points) : "?", "aria-label": r.known ? `${signed(r.points)} points` : "not counted" })),
-        said.length ? el("p", { class: "hint", text: said.map(x => x.t).join(" ") }) : r.hint && r.known ? el("p", { class: "hint", text: r.hint }) : null));
-    }
-    const rest = a.reasons.filter(x => !keys.has(x.n));
-    const other = rest.length ? el("ul", { class: "reasons why-more" }, ...rest.map(reasonItem)) : null;
-    const pos = s => Math.round((Math.max(-6, Math.min(6, s)) + 6) / 12 * 1000) / 10;
-    const scale = el("div", { class: "why-scale", "aria-hidden": "true" },
-      el("div", { class: "zone bad", style: `width:${pos(-1.5)}%` }), el("div", { class: "zone mid", style: `width:${(pos(1.5) - pos(-1.5)).toFixed(1)}%` }), el("div", { class: "zone good" }),
-      el("span", { class: "marker", style: `left:${pos(b.score)}%` }));
+    // "How the score adds up", like a receipt: every line that can earn or cost points, with its reason under it;
+    // other reasons follow; then the total. Lines worth 0 points are dimmed.
+    const line = (name, sub, points, known, tone, reason, key) => el("div", { class: "rline" + (known && points ? "" : " zero"), "data-k": key || null },
+      el("span", { class: "rwhat" }, el("b", { text: name }), sub ? el("small", { text: " " + sub }) : null),
+      el("span", { class: "rdots", "aria-hidden": "true" }),
+      el("span", { class: "pts ramt " + tone, text: known ? signed(points) : "?", "aria-label": known ? `${signed(points)} points` : "not counted" }),
+      reason ? el("p", { class: "rnote", text: reason }) : null);
+    const lines = b.rows.map(r => {
+      const tone = !r.known ? "na" : r.points > 0 ? "good" : r.points <= -2 ? "bad" : r.points < 0 ? "warn" : "neutral";
+      const said = a.reasons.filter(x => x.n === r.k).map(x => x.t).join(" ");
+      return line(r.name, r.known ? r.text : "not reported", r.points, r.known, tone, said || (r.known ? r.hint : "") || "", r.k);
+    });
+    const keys = new Set(b.rows.map(r => r.k));
+    const extra = a.reasons.filter(x => !keys.has(x.n));
+    const scored = extra.filter(x => x.d), plain = extra.filter(x => !x.d);
+    for (const x of scored) lines.push(line((b.other.find(o => o.n === x.n) || {}).label || "Other", "", x.d, true, x.d > 0 ? "good" : x.d <= -2 ? "bad" : "warn", x.t));
+    const notes = plain.length ? el("ul", { class: "reasons why-more" }, ...plain.map(reasonItem)) : null;
     const word = { good: "Get it", mid: "In moderation", bad: "Limit it", fine: "Fine" }[b.byScore];
-    const total = el("div", { class: "why-total" },
-      el("p", {}, "Total ", el("b", { text: signed(b.score) }), " → ", el("b", { class: "tw " + b.byScore, text: word })),
-      scale, el("div", { class: "why-scale-lbl", "aria-hidden": "true" }, el("span", { text: "Limit it ≤ −2" }), el("span", { text: "In moderation" }), el("span", { text: "Get it ≥ +2" })),
+    const total = el("div", { class: "why-total rsum" },
+      el("p", {}, el("span", { text: "Total" }), el("b", { class: "rscore", text: signed(b.score) }), el("b", { class: "tw " + b.byScore, text: word })),
+      el("p", { class: "legend", text: "−2 or lower: Limit it · +2 or higher: Get it · in between: In moderation" + (b.meal ? ". A meal is judged against a third of your daily goals." : ".") + (mult !== 1 && !b.meal ? " The score is for one serving." : "") }),
       b.note ? el("p", { class: "why-override", text: b.note }) : null,
       b.override ? el("p", { class: "why-override" }, el("b", { text: `Verdict: ${b.word}. ` }), b.override) : null);
-    return fold("decided whyp", b.meal ? "Why (whole meal)" : "Why", `Total ${signed(b.score)} → ${word}${b.override ? ` · verdict ${b.word}` : ""}`, [wrap, other, total,
-      el("p", { class: "legend", text: (b.meal ? "Bars: this meal against a third of your daily goals and limits. " : "")
-        + "Ticks are the cutoffs: past the first ±1 point, past the second ±2" + (profile.carb > 0 && !b.meal ? " (net carbs: −3 past half your limit)" : "") + "."
-        + (mult !== 1 && !b.meal ? ` Bars are one serving, which is what the verdict judges.` : "") })]);
+    return el("section", { class: "panel fold decided whyp receipt" },
+      el("div", { class: "fhead" }, el("h3", { text: b.meal ? "How the meal's score adds up" : "How the score adds up" })),
+      el("div", { class: "rlines" }, ...lines), notes, total);
   }
 
   // ---------- swaps ----------
@@ -342,61 +327,54 @@
   // ---------- additives (scanned products) ----------
   // Every additive with what it does; a few flagged with a sourced reason; the NOVA processing level.
   // The label's ingredients in plain groups (js/ingredients.js). Additives get one line each here; their notes are in the panel below.
-  function renderIngredients(f) {
-    const r = f && f.ingredients && window.SelfCheckIngredients ? window.SelfCheckIngredients.analyze(f.ingredients, f.n) : null;
-    if (!r) return null;
+  // Ingredients, processing and additives in one section: a numbered list in label order, each ingredient tagged
+  // with what it is (and its additive status), the processing level as a badge, then any additives explained.
+  function renderContents(f) {
+    const ING = window.SelfCheckIngredients, AD = window.SelfCheckAdditives;
+    const r = f && f.ingredients && ING ? ING.analyze(f.ingredients, f.n) : null;
+    const info = AD ? AD.analyze(f) : null;
+    if (!r && !info) return null;
     const ord = n => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
-    const sec = el("div", { class: "fbody" });
-    if (r.contains) sec.append(el("p", { class: "ing-allergen" }, el("b", { text: "Label says: " }), `Contains ${r.contains}.`));
-    for (const g of r.groups) {
-      sec.append(el("div", { class: "ig " + g.tone },
-        el("div", { class: "igh" }, el("span", { class: "gdot", "aria-hidden": "true" }), el("b", { text: g.label }), el("span", { class: "muted", text: ` ${g.items.length}` })),
-        g.note || g.detail ? el("p", { class: "ign", text: [g.detail, g.note].filter(Boolean).join(" ") }) : null,
-        el("div", { class: "ichips" }, ...g.items.map(i => el("span", { class: "ich" + (i.additive ? " st-" + i.additive.status : ""),
-          title: [i.pos ? `${ord(i.pos)} ingredient${i.minor ? " (2% or less)" : ""}` : i.inside ? `Part of ${i.inside}` : "", i.additive && (i.additive.role || i.additive.what)].filter(Boolean).join(": ") },
-          i.pos ? el("span", { class: "ipos", text: String(i.pos) }) : null, i.name, i.inside ? el("span", { class: "muted", text: ` in ${i.inside.toLowerCase()}` }) : null,
-          i.conflict ? el("span", { class: "iwarn", role: "img", "aria-label": "Conflicts with the product name", text: "⚠" }) : null))),
-        ...g.items.filter(i => i.conflict).map(i => el("p", { class: "ign iconf", text: `⚠ ${i.name}: ${i.conflict}` }))));
+    const body = el("div", { class: "fbody" });
+    if (r && r.contains) body.append(el("p", { class: "ing-allergen" }, el("b", { text: "Label says: " }), `Contains ${r.contains}.`));
+    if (r) {
+      const items = r.groups.flatMap(g => g.items.map(i => ({ ...i, g })));
+      const posOf = i => i.pos || ((items.find(x => x.name === i.inside) || {}).pos || 999) + 0.5;
+      items.sort((x, y) => posOf(x) - posOf(y));
+      body.append(el("ol", { class: "ilist" }, ...items.map(i => el("li", { class: i.additive ? "st-" + i.additive.status : null,
+        title: [i.pos ? `${ord(i.pos)} ingredient${i.minor ? " (2% or less)" : ""}` : i.inside ? `Part of ${i.inside}` : "", i.additive && (i.additive.role || i.additive.what)].filter(Boolean).join(": ") || null },
+        el("span", { class: "ipos", text: i.pos ? String(i.pos) : "·" }),
+        el("span", { class: "iname" }, i.name, i.inside ? el("span", { class: "muted", text: ` in ${i.inside.toLowerCase()}` }) : null,
+          i.conflict ? el("span", { class: "iwarn", role: "img", "aria-label": "Conflicts with the product name", text: " ⚠" }) : null),
+        el("span", { class: "itags" }, i.additive && i.additive.statusLabel
+          ? el("span", { class: "itag astat " + i.additive.status, text: `Additive · ${i.additive.statusLabel.toLowerCase()}` })
+          : el("span", { class: "itag " + i.g.tone, text: i.g.label })),
+        i.conflict ? el("p", { class: "ign iconf", text: `⚠ ${i.name}: ${i.conflict}` }) : null))));
+      if (r.may.length) body.append(el("p", { class: "legend", text: r.may.join(" ") }));
     }
-    if (r.may.length) sec.append(el("p", { class: "legend", text: r.may.join(" ") }));
-    sec.append(el("div", { class: "ingr" }, el("b", { text: "As written on the label" }), el("p", { text: f.ingredients })));
-    sec.append(el("p", { class: "legend", text: "Numbers are each ingredient's place on the label, from most to least by weight. Groups describe what each ingredient is; the verdict already counts the amounts that matter (added sugar, saturated fat, sodium)." }));
-    const summary = el("span", { class: "fsum ing-sum", text: r.summary + (r.contains ? ` · contains ${r.contains.toLowerCase()}` : "") });
-    return el("section", { class: "panel fold ingredients" }, el("div", { class: "fhead" }, el("h3", { text: "Ingredients" }), summary), sec);
-  }
-
-  function renderAdditives(f) {
-    const info = window.SelfCheckAdditives && window.SelfCheckAdditives.analyze(f);
-    if (!info) return null;
-    const sec = el("div", { class: "fbody" });
-    if (info.novaInfo) sec.append(el("div", { class: "nova n" + info.nova },
-      el("span", { class: "nova-badge", text: `NOVA ${info.nova}` }),
-      el("span", {}, el("b", { text: info.novaInfo[0] + ". " }), info.novaInfo[1])));
-    if (info.known) {
-      if (!info.items.length) sec.append(el("p", { class: "muted", text: "No additives listed." }));
-      else {
-        const list = el("ul", { class: "addlist" });
-        // Each row says what it is, why it's there and what the evidence says.
-        for (const a of info.items) {
-          const body = el("div", { class: "abody-more" },
-            a.what || a.role ? el("p", {}, a.what ? el("b", { text: a.what + " " }) : null, a.role || "") : null,
-            a.note ? el("p", {}, a.note, a.src ? " " : null, a.src ? el("a", { href: a.src, target: "_blank", rel: "noopener", text: "Source" }) : null) : null,
-            a.efsaHigh ? el("p", { class: "muted", text: "EFSA's safety review found some people may exceed the acceptable daily intake." }) : null,
-            el("p", { class: "muted", text: a.statusHint }));
-          const sum = el("div", { class: "arow" },
-            el("span", { class: "acode", text: a.code || "—" }),
-            el("span", { class: "aname", text: a.name }),
-            el("span", { class: `astatus ${a.status}`, text: a.statusLabel }));
-          list.append(el("li", { class: `st-${a.status}` }, sum, body));
-        }
-        sec.append(list);
-      }
+    // Additives, each explained (what it is, why it's there, the evidence).
+    if (info && info.known && info.items.length) {
+      const list = el("ul", { class: "addlist" });
+      for (const x of info.items) list.append(el("li", { class: `st-${x.status}` },
+        el("div", { class: "arow" }, el("span", { class: "acode", text: x.code || "—" }), el("span", { class: "aname", text: x.name }), el("span", { class: `astatus ${x.status}`, text: x.statusLabel })),
+        el("div", { class: "abody-more" },
+          x.what || x.role ? el("p", {}, x.what ? el("b", { text: x.what + " " }) : null, x.role || "") : null,
+          x.note ? el("p", {}, x.note, x.src ? " " : null, x.src ? el("a", { href: x.src, target: "_blank", rel: "noopener", text: "Source" }) : null) : null,
+          x.efsaHigh ? el("p", { class: "muted", text: "EFSA's safety review found some people may exceed the acceptable daily intake." }) : null)));
+      body.append(el("section", { class: "additives", "aria-label": "Additives" }, el("h4", { text: "Additives" }), list,
+        el("p", { class: "legend", text: (info.fromText ? "Found by name in the ingredient list, so one under an unusual name can be missed. " : "") + "Most approved additives are judged safe at normal amounts; “Mixed evidence” means approved but questioned." })));
     }
-    if (f.ingredients && !window.SelfCheckIngredients) sec.append(el("div", { class: "ingr" }, el("b", { text: "Ingredients" }), el("p", { text: f.ingredients })));
-    sec.append(el("p", { class: "legend", text: (info.fromText ? "Found by name in the ingredient list, so an additive listed under an unusual name can be missed. " : "From Open Food Facts. ") + "Most approved additives are judged safe at normal amounts; “Mixed evidence” means approved but questioned, with the source. Add any you avoid to your skip list (for example “sucralose” or “E407”)." }));
-    const n = info.known ? info.items.length : 0, removed = info.known && info.items.some(a => a.status === "removed"), mixed = info.known ? info.items.filter(a => a.status === "mixed").length : 0;
-    const summary = [info.novaInfo ? `${info.novaInfo[0]} (NOVA ${info.nova})` : "", info.known ? (n ? `${n} additive${n === 1 ? "" : "s"}${removed ? ", one removed from food by a regulator" : mixed ? `, ${mixed} with mixed evidence` : ""}` : "no additives") : ""].filter(Boolean).join(" · ");
-    return fold("additives", "Additives & processing", summary, [sec]);
+    if (f.ingredients) body.append(el("p", { class: "ingr" }, el("b", { text: "On the label: " }), f.ingredients));
+    // The processing level, once.
+    if (info && info.novaInfo) body.append(el("p", { class: "nova n" + info.nova }, el("span", { class: "nova-badge", text: `NOVA ${info.nova}` }), " ", el("b", { text: info.novaInfo[0] + ". " }), info.novaInfo[1]));
+    const n = info && info.known ? info.items.length : null;
+    const removed = info && info.known && info.items.some(x => x.status === "removed"), mixed = info && info.known ? info.items.filter(x => x.status === "mixed").length : 0;
+    const count = r ? `${r.count} ingredient${r.count === 1 ? "" : "s"}` : "";
+    const adds = n == null ? "" : n ? `${n} additive${n === 1 ? "" : "s"}${removed ? ", one removed from food by a regulator" : mixed ? `, ${mixed} with mixed evidence` : ""}` : "no additives";
+    const summary = [count, adds, r && r.contains ? `contains ${r.contains.toLowerCase()}` : ""].filter(Boolean).join(" · ");
+    return el("section", { class: "panel fold ingredients contents" },
+      el("div", { class: "fhead" }, el("h3", { text: r ? "Ingredients" : "Processing" }), summary ? el("span", { class: "fsum ing-sum", text: summary }) : null,
+        info && info.nova ? el("span", { class: "nova-chip n" + info.nova, title: info.novaInfo ? info.novaInfo[0] : "", text: `NOVA ${info.nova}` }) : null), body);
   }
 
   // ---------- price (typical, or your own) ----------
@@ -739,8 +717,7 @@
           isPlate ? null : renderBetter(f, a),
           isPlate ? renderPlatePrice() : renderPrice(f),
           renderWhy(f, a),
-          isPlate ? null : renderIngredients(f),
-          isPlate ? null : renderAdditives(f),
+          isPlate ? null : renderContents(f),
           wide ? null : cmpBox
         ))
     ].filter(Boolean));
@@ -1763,7 +1740,7 @@
           el("p", { class: "why", text: facts.length ? `Per serving${sp.serving ? ` (${sp.serving})` : ""}: ${facts.join(" · ")}.` : "This page has the Supplement Facts only as a photo; check the label for amounts." })),
         el("section", { class: "panel" }, el("h3", { text: "Good to know" }), el("ul", { class: "reasons" }, ...SUP.notes(sp).map(n => el("li", { class: n.k }, el("span", { class: "ic", "aria-hidden": "true", text: n.k === "warn" ? "!" : "i" }), el("span", {}, n.short + ". ", el("span", { class: "muted", text: n.full })))))),
         sp.actives.length ? el("section", { class: "panel" }, el("h3", { text: "What's in a serving, as listed" }), el("ul", { class: "reasons" }, ...sp.actives.map(x => el("li", { class: "note" }, el("span", { class: "ic", "aria-hidden": "true", text: "·" }), el("span", { text: [x.name, x.amount, x.dvp && x.dvp !== "**" ? `${x.dvp} DV` : ""].filter(Boolean).join(" · ") }))))) : null,
-        prod.ingredients ? renderIngredients({ n: prod.name, ingredients: prod.ingredients }) : null)));
+        prod.ingredients ? renderContents({ n: prod.name, ingredients: prod.ingredients }) : null)));
     toast("A supplement: shown, not scored");
   }
   function wireBookmarklet() {

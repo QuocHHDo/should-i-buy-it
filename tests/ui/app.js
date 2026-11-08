@@ -367,9 +367,9 @@ const serve = () => new Promise(resolve => {
 
     // 6f. Why is one section (reasons beside their bars); a pinned bar keeps the verdict in view once it scrolls away.
     ({ ctx, page } = await open("#apple"));
-    const why = await page.evaluate(() => ({ n: document.querySelectorAll("#out .whyp").length, fiber: document.querySelector("#out .whyp .why-row .hint")?.textContent || "",
-      dup: document.querySelectorAll("#out .reasons li").length, rows: document.querySelectorAll("#out .whyp .why-row").length, old: !!document.querySelector("#out .panel.whyp:not(.decided)") }));
-    ok(why.n === 1 && !why.old && why.rows === 3 && why.fiber.length > 10 && await page.evaluate(() => document.querySelectorAll("#out .glance .gring").length === 3), `one Why section (protein, fiber, calories; the limits are rings at the top): each reason sits under its bar (${JSON.stringify(why)})`);
+    const why = await page.evaluate(() => ({ n: document.querySelectorAll("#out .whyp").length, lines: [...document.querySelectorAll("#out .whyp .rline .rwhat b")].map(b => b.textContent),
+      fiber: (document.querySelector('#out .whyp .rline[data-k="fib"] .rnote') || {}).textContent || "", rings: document.querySelectorAll("#out .glance .gring").length }));
+    ok(why.n === 1 && why.lines.length >= 6 && /Fiber/.test(why.lines.join()) && why.fiber.length > 10 && why.rings === 3, `the score as a receipt: every scoring line with its reason under it (${JSON.stringify(why)})`);
     ok(await page.evaluate(() => { const t = document.querySelector("#out .tag").getBoundingClientRect().bottom, w = document.querySelector("#out .whyp").getBoundingClientRect().top, l = document.querySelector("#out .label").getBoundingClientRect().top; return t < w && w < l && document.querySelector("#out .glance").getBoundingClientRect().top < w; }), "phones: verdict, the rings and tiles, then Why, then the label");
     ok(await page.evaluate(() => !document.querySelector("#mini") || document.querySelector("#mini").hidden), "no pinned bar while the verdict is on screen");
     await page.evaluate(() => scrollTo(0, document.querySelector("#out .label").getBoundingClientRect().top + scrollY));

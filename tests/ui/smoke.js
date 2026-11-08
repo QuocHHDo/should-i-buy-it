@@ -130,14 +130,14 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok(text(".label .serv span:last-child") === "1 bar (60 g)", "barcode product uses per-serving values");
     // Additives panel: listed with functions, NOVA badge, flagged ones with sources; skip list covers additives.
     offMode = "cola"; $("#q").value = "0000000000017"; submit("#form"); await tick(10);
-    ok(/NOVA 4/.test(text(".additives .nova")) && $$(".additives .addlist li").length === 6 && /E951AspartameMixed evidence/.test(text(".additives")), `additives panel lists the cola's 6 additives (${text(".additives").slice(0, 120)})`);
+    ok(/NOVA 4/.test(text(".contents .nova")) && $$(".additives .addlist li").length === 6 && /E951AspartameMixed evidence/.test(text(".additives")), `additives panel lists the cola's 6 additives (${text(".additives").slice(0, 120)})`);
     ok(!$(".additives li.st-removed") && $$(".additives li.st-mixed").length >= 2 && /E330Citric acidConsidered safe/.test(text(".additives")), `statuses: none removed, sweeteners mixed, citric acid safe (${$$(".additives li").map(l => l.className).join(" ")})`);
     const asp = $$(".additives li").find(l => /Aspartame/.test(l.textContent));
     ok(!asp.querySelector("details") && /possibly carcinogenic/.test(asp.textContent) && asp.querySelector("a[href*='who.int']"), "aspartame's note and WHO source are shown without a tap");
     offMode = "candy"; $("#q").value = "0000000000024"; submit("#form"); await tick(10);
     ok($$(".additives li.st-removed").length === 3 && $$(".additives li.st-removed a").length === 3 && text(".tag .verdict") === "In moderation", `removed additives flagged with sources; verdict ${text(".tag .verdict")}`);
     ok($(".additives").tagName === "SECTION", "the additives section is always shown");
-    ok(/regulator/.test(text(".additives .fsum")), `and the line by the heading says so (${text(".additives .fsum")})`);
+    ok(/regulator/.test(text(".contents .fsum")), `and the line by the heading says so (${text(".contents .fsum")})`);
     offMode = "empty"; $("#q").value = "0000000000031"; submit("#form"); await tick(10);
     ok(/Found “Mystery Box”, but neither Open Food Facts nor USDA has its nutrition data/.test(text("#out .notice")), `a product with no nutrition values at all still says so (${text("#out .notice")})`);
     offMode = "ok";
@@ -215,12 +215,12 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     // "What decided it": the points shown add up to the total, and the total matches the verdict.
     w.location.hash = "#chicken-breast-grilled"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
     {
-      const pts = [...$$(".decided .pts, .why-chip b"), ...$$(".glance .gpts")].map(e => Number(e.textContent.replace(/[ ·]/g, "").replace("−", "-").replace("?", "0")));
-      const tot = Number($(".why-total b").textContent.replace("−", "-"));
-      ok(pts.length >= 3 && $$(".glance .gring").length === 3 && pts.reduce((x, y) => x + y, 0) === tot, `the points in Why and on the limit rings add up to the total (${pts.join(",")} = ${tot})`);
-      ok($$(".decided .tick").length >= 3, `chart shows the verdict's cutoffs as ticks (${$$(".decided .tick").length})`);
+      const pts = $$(".decided .ramt").map(e => Number(e.textContent.replace("−", "-").replace("?", "0")));
+      const tot = Number($(".why-total .rscore").textContent.replace("−", "-"));
+      ok(pts.length >= 6 && $$(".glance .gring").length === 3 && pts.reduce((x, y) => x + y, 0) === tot, `the receipt's lines add up to its total (${pts.join(",")} = ${tot})`);
+      ok($$(".decided .rline").length >= 6 && /−2 or lower: Limit it/.test(text(".decided")), `the receipt lists each line that can score, and says where the cutoffs are (${$$(".decided .rline").length})`);
       // Deep dives start folded to one line with their key fact; opening one is remembered.
-      ok($(".decided").tagName === "SECTION" && !$("#out details.fold") && /Total [+−]?\d+ → /.test(text(".decided .fsum")), `the score breakdown is always shown, with its total by the heading (${text(".decided .fsum")})`);
+      ok($(".decided").tagName === "SECTION" && !$("#out details.fold") && /How the score adds up/.test(text(".decided h3")) && /Total\s*[+−]?\d+/.test(text(".decided .rsum")), `the score is always shown, as a receipt ending in the total (${text(".decided .rsum").slice(0, 60)})`);
       ok(/Get it/.test(text(".why-total")) && /Get it/.test(text(".tag .verdict")), `total matches the verdict (${text(".why-total").slice(0, 40)})`);
     }
     w.location.hash = "#chicken-pho"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(4);
@@ -461,7 +461,7 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     const payload = JSON.stringify({ app: "should-i-buy-it", v: 1, kind: "walmart", data: data("chobani greek yogurt") });
     w.location.hash = "#wm=j." + Buffer.from(payload).toString("base64url"); w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(8);
     ok(/Chobani Non-Fat Greek Yogurt/.test(text("#out h2")) && /Get it/.test(text(".tag .verdict")) && /Walmart's Nutrition Facts panel/.test(text(".src")), `#wm= shows the Walmart product's verdict (${text("#out h2")})`);
-    ok(/1 ingredient · no additives found/.test(text(".ingredients .ing-sum")) && /Cultured Nonfat Milk/.test(text(".ingredients")), `the Walmart product's ingredients are grouped (${text(".ingredients .ing-sum")})`);
+    ok(/1 ingredient · no additives/.test(text(".ingredients .ing-sum")) && /Cultured Nonfat Milk/.test(text(".ingredients")), `the Walmart product's ingredients are grouped (${text(".ingredients .ing-sum")})`);
     ok(/Walmart's price/.test(text("#out")) && /\$1\.12 per serving/.test(text("#out")) && /\$5\.97/.test(text("#out")), `#wm= shows the price from the Walmart page (${(text("#out").match(/≈[^.]*\.[^.]*/) || [""])[0].slice(0, 90)})`);
     // A supplement from the bookmark: its own view, not a food verdict.
     const { build: buildPage } = require("../fixtures/walmart-compact.js");
