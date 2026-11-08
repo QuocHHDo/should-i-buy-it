@@ -369,7 +369,7 @@ const serve = () => new Promise(resolve => {
     ({ ctx, page } = await open("#apple"));
     const why = await page.evaluate(() => ({ n: document.querySelectorAll("#out .whyp").length, lines: [...document.querySelectorAll("#out .whyp .rline .rwhat b")].map(b => b.textContent),
       fiber: (document.querySelector('#out .whyp .rline[data-k="fib"] .rnote') || {}).textContent || "", rings: document.querySelectorAll("#out .glance .gring").length }));
-    ok(why.n === 1 && why.lines.length >= 6 && /Fiber/.test(why.lines.join()) && why.fiber.length > 10 && why.rings === 3, `the score as a receipt: every scoring line with its reason under it (${JSON.stringify(why)})`);
+    ok(why.n === 1 && why.lines.length >= 1 && /Fiber/.test(why.lines.join()) && why.fiber.length > 10 && why.rings === 3 && await page.evaluate(() => /No points either way: .*Saturated fat/.test(document.querySelector("#out .rzero").textContent)), `the score as a receipt: lines that scored highlighted with their reasons, the rest in one sentence (${JSON.stringify(why)})`);
     ok(await page.evaluate(() => { const t = document.querySelector("#out .tag").getBoundingClientRect().bottom, w = document.querySelector("#out .whyp").getBoundingClientRect().top, l = document.querySelector("#out .label").getBoundingClientRect().top; return t < w && w < l && document.querySelector("#out .glance").getBoundingClientRect().top < w; }), "phones: verdict, the rings and tiles, then Why, then the label");
     ok(await page.evaluate(() => !document.querySelector("#mini") || document.querySelector("#mini").hidden), "no pinned bar while the verdict is on screen");
     await page.evaluate(() => scrollTo(0, document.querySelector("#out .label").getBoundingClientRect().top + scrollY));

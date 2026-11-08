@@ -217,8 +217,9 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     {
       const pts = $$(".decided .ramt").map(e => Number(e.textContent.replace("−", "-").replace("?", "0")));
       const tot = Number($(".why-total .rscore").textContent.replace("−", "-"));
-      ok(pts.length >= 6 && $$(".glance .gring").length === 3 && pts.reduce((x, y) => x + y, 0) === tot, `the receipt's lines add up to its total (${pts.join(",")} = ${tot})`);
-      ok($$(".decided .rline").length >= 6 && /−2 or lower: Limit it/.test(text(".decided")), `the receipt lists each line that can score, and says where the cutoffs are (${$$(".decided .rline").length})`);
+      const quiet = ($(".decided .rzero") || { dataset: { keys: "" } }).dataset.keys.split(" ").filter(Boolean);
+      ok(pts.length >= 1 && pts.length + quiet.length >= 6 && $$(".glance .gring").length === 3 && pts.reduce((x, y) => x + y, 0) === tot, `the receipt's scoring lines add up to its total, and the rest are listed as no points (${pts.join(",")} = ${tot}; ${quiet.join(",")})`);
+      ok($$(".decided .rline").length >= 1 && /No points either way:/.test(text(".decided .rzero")) && /−2 or lower: Limit it/.test(text(".decided")), `the receipt highlights the lines that scored, lists the rest, and says where the cutoffs are (${text(".decided .rzero").slice(0, 80)})`);
       // Deep dives start folded to one line with their key fact; opening one is remembered.
       ok($(".decided").tagName === "SECTION" && !$("#out details.fold") && /How the score adds up/.test(text(".decided h3")) && /Total\s*[+−]?\d+/.test(text(".decided .rsum")), `the score is always shown, as a receipt ending in the total (${text(".decided .rsum").slice(0, 60)})`);
       ok(/Get it/.test(text(".why-total")) && /Get it/.test(text(".tag .verdict")), `total matches the verdict (${text(".why-total").slice(0, 40)})`);
@@ -237,7 +238,7 @@ const btn = (label, root = w.document) => [...root.querySelectorAll("button")].f
     ok(text("#out h2").toLowerCase() === fresh.description.toLowerCase() && /From USDA/.test(text(".src")), `#usda-<id> fetches a food this browser hasn't seen (${text("#out h2")})`);
     const addRow = $$(".label [data-k]").find(r => r.dataset.k === "add");
     ok(addRow && /—/.test(addRow.textContent) && !/0\s?g/.test(addRow.textContent), `unreported added sugar shows "—" on the label (${addRow && addRow.textContent})`);
-    ok(/\?\s*Added sugar\s*not reported/.test(text(".glance")), `and "not reported" on its ring, not counted (${text(".glance").slice(0, 200)})`);
+    ok(/\?\s*Added sugar\s*not reported/.test(text(".glance")) && /Added sugar not reported/.test(text(".decided .rzero")), `and "not reported" on its ring, not counted (${text(".glance").slice(0, 200)})`);
     offMode = "ok"; w.location.hash = "#off-0123456789099"; w.dispatchEvent(new w.HashChangeEvent("hashchange")); await tick(10);
     ok(/Open Food Facts/.test(text(".src")), `#off-<code> opens the product (${text("#out h2")})`);
     // Accented names: the folded slug and the old one both open Jalapeño; an unknown link never opens another food.

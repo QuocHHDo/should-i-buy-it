@@ -235,20 +235,25 @@
     if (!b) return el("div", { class: "whyp whystack" }, el("section", { class: "panel" }, el("h3", { text: "Why" }), el("ul", { class: "reasons" }, ...a.reasons.map(reasonItem))), renderBars(V.scale(f, mult)));
     // "How the score adds up", like a receipt: every line that can earn or cost points, with its reason under it;
     // other reasons follow; then the total. Lines worth 0 points are dimmed.
-    const line = (name, sub, points, known, tone, reason, key) => el("div", { class: "rline" + (known && points ? "" : " zero"), "data-k": key || null },
+    // Lines that scored stand out (a colored edge: green earns, amber costs a point, red costs two or more); lines
+    // that scored nothing are listed in one sentence underneath, with their amounts, so nothing is hidden.
+    const line = (name, sub, points, known, tone, reason, key) => el("div", { class: "rline hit " + tone, "data-k": key || null },
       el("span", { class: "rwhat" }, el("b", { text: name }), sub ? el("small", { text: " " + sub }) : null),
       el("span", { class: "rdots", "aria-hidden": "true" }),
       el("span", { class: "pts ramt " + tone, text: known ? signed(points) : "?", "aria-label": known ? `${signed(points)} points` : "not counted" }),
       reason ? el("p", { class: "rnote", text: reason }) : null);
-    const lines = b.rows.map(r => {
-      const tone = !r.known ? "na" : r.points > 0 ? "good" : r.points <= -2 ? "bad" : r.points < 0 ? "warn" : "neutral";
+    const hits = b.rows.filter(r => r.known && r.points), quiet = b.rows.filter(r => !(r.known && r.points));
+    const lines = hits.map(r => {
+      const tone = r.points > 0 ? "good" : r.points <= -2 ? "bad" : "warn";
       const said = a.reasons.filter(x => x.n === r.k).map(x => x.t).join(" ");
-      return line(r.name, r.known ? r.text : "not reported", r.points, r.known, tone, said || (r.known ? r.hint : "") || "", r.k);
+      return line(r.name, r.text, r.points, true, tone, said || r.hint || "", r.k);
     });
     const keys = new Set(b.rows.map(r => r.k));
     const extra = a.reasons.filter(x => !keys.has(x.n));
     const scored = extra.filter(x => x.d), plain = extra.filter(x => !x.d);
     for (const x of scored) lines.push(line((b.other.find(o => o.n === x.n) || {}).label || "Other", "", x.d, true, x.d > 0 ? "good" : x.d <= -2 ? "bad" : "warn", x.t));
+    const zeroLine = quiet.length ? el("p", { class: "rzero", "data-keys": quiet.map(r => r.k).join(" ") }, lines.length ? "No points either way: " : "Nothing scored either way: ",
+      ...quiet.flatMap((r, i) => [i ? ", " : "", el("span", { class: "rz" }, el("b", { text: r.name }), " " + (r.known ? r.text.split(" · ")[0] : "not reported"))]), ".") : null;
     const notes = plain.length ? el("ul", { class: "reasons why-more" }, ...plain.map(reasonItem)) : null;
     const word = { good: "Get it", mid: "In moderation", bad: "Limit it", fine: "Fine" }[b.byScore];
     const total = el("div", { class: "why-total rsum" },
@@ -258,7 +263,7 @@
       b.override ? el("p", { class: "why-override" }, el("b", { text: `Verdict: ${b.word}. ` }), b.override) : null);
     return el("section", { class: "panel fold decided whyp receipt" },
       el("div", { class: "fhead" }, el("h3", { text: b.meal ? "How the meal's score adds up" : "How the score adds up" })),
-      el("div", { class: "rlines" }, ...lines), notes, total);
+      el("div", { class: "rlines" }, ...lines, zeroLine), notes, total);
   }
 
   // ---------- swaps ----------
